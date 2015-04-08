@@ -10,7 +10,6 @@ import liquid.web.controller.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -38,7 +37,6 @@ public class AccountController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
     @Autowired
-    @Qualifier("db")
     private UserService userService;
 
     @Autowired

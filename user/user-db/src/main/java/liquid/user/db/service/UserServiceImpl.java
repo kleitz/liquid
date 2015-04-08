@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ import java.util.List;
 /**
  * Created by Tao Ma on 3/19/15.
  */
-@Service("db")
 public class UserServiceImpl implements UserService {
     @Autowired
     private AuthenticationManagerBuilder authenticationManagerBuilder;

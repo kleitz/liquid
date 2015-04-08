@@ -1,11 +1,14 @@
 package liquid.config;
 
+import net.sf.ehcache.management.ManagementService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jmx.support.MBeanServerFactoryBean;
 import org.springframework.orm.hibernate4.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -63,6 +66,9 @@ public class JpaConfig {
 
         Properties jpaProperties = new Properties();
         jpaProperties.setProperty("javax.persistence.validation.mode", "none");
+        jpaProperties.setProperty("hibernate.cache.use_second_level_cache", "true");
+        jpaProperties.setProperty("hibernate.cache.use_query_cache", "true");
+        jpaProperties.setProperty("hibernate.cache.region.factory_class", "org.hibernate.cache.ehcache.EhCacheRegionFactory");
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
@@ -85,7 +91,8 @@ public class JpaConfig {
 
     @Bean
     public EntityManager entityManager(EntityManagerFactory entityManagerFactory) {
-        return entityManagerFactory.createEntityManager();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        return entityManager;
     }
 
     @Bean
@@ -98,5 +105,25 @@ public class JpaConfig {
     @Bean
     public HibernateExceptionTranslator hibernateExceptionTranslator() {
         return new HibernateExceptionTranslator();
+    }
+
+    // The following three beans are used for monitoring of ehcache.
+    @Bean
+    public MBeanServerFactoryBean mBeanServerFactory() {
+        MBeanServerFactoryBean mBeanServerFactory = new MBeanServerFactoryBean();
+        mBeanServerFactory.setLocateExistingServerIfPossible(true);
+        return mBeanServerFactory;
+    }
+
+    @Bean
+    public EhCacheManagerFactoryBean ehCacheManagerFactory() {
+        EhCacheManagerFactoryBean ehCacheManagerFactory = new EhCacheManagerFactoryBean();
+        ehCacheManagerFactory.setShared(true);
+        return ehCacheManagerFactory;
+    }
+
+    @Bean(initMethod = "init", destroyMethod = "dispose")
+    public ManagementService managementService() {
+        return new ManagementService(ehCacheManagerFactory().getObject(), mBeanServerFactory().getObject(), true, true, true, true);
     }
 }
