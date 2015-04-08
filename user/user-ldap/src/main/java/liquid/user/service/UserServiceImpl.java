@@ -2,7 +2,6 @@ package liquid.user.service;
 
 import liquid.user.domain.Group;
 import liquid.user.domain.GroupMember;
-import liquid.user.model.PasswordChange;
 import liquid.user.model.User;
 import liquid.user.persistence.domain.GroupType;
 import liquid.user.persistence.domain.PasswordPolicy;
@@ -15,7 +14,6 @@ import org.springframework.ldap.core.support.AbstractContextMapper;
 import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.ldap.filter.AndFilter;
 import org.springframework.ldap.filter.EqualsFilter;
-import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Service;
 
 import javax.naming.InvalidNameException;
@@ -34,7 +32,7 @@ import java.util.*;
  * Date: 10/6/13
  * Time: 12:22 PM
  */
-@Service
+@Service("ldap")
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 

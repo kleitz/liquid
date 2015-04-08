@@ -39,7 +39,6 @@ public class TaskServiceImpl implements TaskService {
     protected MessageSource messageSource;
 
 //    @Autowired
-//    @Qualifier("db")
 //    private UserService accountService;
 
 //    @Autowired
