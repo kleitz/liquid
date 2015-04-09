@@ -1,10 +1,11 @@
-package liquid.user.service;
+package liquid.ldap.service;
 
+import liquid.ldap.domain.GroupType;
+import liquid.ldap.domain.PasswordPolicy;
 import liquid.user.domain.Group;
 import liquid.user.domain.GroupMember;
 import liquid.user.model.User;
-import liquid.user.persistence.domain.GroupType;
-import liquid.user.persistence.domain.PasswordPolicy;
+import liquid.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
