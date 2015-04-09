@@ -3,7 +3,7 @@ package liquid.accounting.persistence.domain;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.order.domain.OrderEntity;
-import liquid.persistence.domain.BaseUpdateEntity;
+import liquid.common.domain.BaseUpdateEntity;
 import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.ShipmentEntity;
 

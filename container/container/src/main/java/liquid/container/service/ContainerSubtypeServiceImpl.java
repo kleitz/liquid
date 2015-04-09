@@ -2,7 +2,7 @@ package liquid.container.service;
 
 import liquid.container.domain.ContainerSubtypeEntity;
 import liquid.container.domain.ContainerType;
-import liquid.container.persistence.repository.ContainerSubtypeRepository;
+import liquid.container.repository.ContainerSubtypeRepository;
 import liquid.service.AbstractCachedService;
 import org.springframework.stereotype.Service;
 

@@ -17,7 +17,7 @@ import liquid.order.facade.ValueAddedOrderFacade;
 import liquid.order.model.TransportedContainer;
 import liquid.order.model.ValueAddedOrder;
 import liquid.order.service.ReceivingOrderServiceImpl;
-import liquid.persistence.domain.ServiceTypeEntity;
+import liquid.common.domain.ServiceTypeEntity;
 import liquid.service.ServiceTypeServiceImpl;
 import liquid.web.controller.BaseController;
 import liquid.web.domain.SearchBarForm;

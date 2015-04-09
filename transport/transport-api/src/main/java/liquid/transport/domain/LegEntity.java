@@ -1,7 +1,7 @@
 package liquid.transport.domain;
 
 import liquid.operation.domain.ServiceProvider;
-import liquid.persistence.domain.BaseIdEntity;
+import liquid.common.domain.BaseIdEntity;
 import liquid.operation.domain.Location;
 
 import javax.persistence.*;

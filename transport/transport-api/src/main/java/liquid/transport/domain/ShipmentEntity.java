@@ -1,7 +1,7 @@
 package liquid.transport.domain;
 
 import liquid.order.domain.OrderEntity;
-import liquid.persistence.domain.BaseTaskEntity;
+import liquid.common.domain.BaseTaskEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;

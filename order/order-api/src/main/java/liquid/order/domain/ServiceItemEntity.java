@@ -1,7 +1,7 @@
 package liquid.order.domain;
 
 import liquid.operation.domain.ServiceSubtype;
-import liquid.persistence.domain.BaseIdEntity;
+import liquid.common.domain.BaseIdEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

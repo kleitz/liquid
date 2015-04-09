@@ -2,7 +2,7 @@ package liquid.container.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import liquid.container.domain.*;
-import liquid.container.persistence.repository.ContainerRepository;
+import liquid.container.repository.ContainerRepository;
 import liquid.excel.AbstractExcelService;
 import liquid.excel.RowMapper;
 import liquid.operation.domain.Location;

@@ -1,6 +1,6 @@
 package liquid.order.service;
 
-import liquid.persistence.domain.BaseUpdateEntity;
+import liquid.common.domain.BaseUpdateEntity;
 import liquid.service.AbstractService;
 import liquid.service.SequenceService;
 import liquid.service.ServiceTypeServiceImpl;

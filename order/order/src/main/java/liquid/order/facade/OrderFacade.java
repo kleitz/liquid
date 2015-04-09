@@ -20,7 +20,7 @@ import liquid.order.model.Order;
 import liquid.order.model.ServiceItem;
 import liquid.order.service.OrderService;
 import liquid.order.service.RailwayService;
-import liquid.persistence.domain.ServiceTypeEntity;
+import liquid.common.domain.ServiceTypeEntity;
 import liquid.process.service.BusinessKey;
 import liquid.process.service.ProcessService;
 import liquid.security.SecurityContext;

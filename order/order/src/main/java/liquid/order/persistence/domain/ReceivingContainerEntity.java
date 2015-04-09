@@ -1,7 +1,7 @@
 package liquid.order.persistence.domain;
 
 import liquid.order.domain.ReceivingOrderEntity;
-import liquid.persistence.domain.BaseUpdateEntity;
+import liquid.common.domain.BaseUpdateEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;

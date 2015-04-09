@@ -2,7 +2,7 @@ package liquid.container.domain;
 
 import liquid.operation.domain.Location;
 import liquid.operation.domain.ServiceProvider;
-import liquid.persistence.domain.BaseUpdateEntity;
+import liquid.common.domain.BaseUpdateEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;

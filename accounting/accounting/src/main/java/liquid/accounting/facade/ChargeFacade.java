@@ -3,7 +3,6 @@ package liquid.accounting.facade;
 import liquid.accounting.persistence.domain.ChargeEntity;
 import liquid.accounting.service.ChargeService;
 import liquid.accounting.web.domain.Charge;
-import liquid.facade.Facade;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.transport.domain.LegEntity;
@@ -23,7 +22,7 @@ import java.util.List;
  * Created by redbrick9 on 6/9/14.
  */
 @Service
-public class ChargeFacade implements Facade<Charge, ChargeEntity> {
+public class ChargeFacade  {
     @Autowired
     private ChargeService chargeService;
 
@@ -32,7 +31,6 @@ public class ChargeFacade implements Facade<Charge, ChargeEntity> {
         return chargeService.save(entity);
     }
 
-    @Override
     public ChargeEntity convert(Charge charge) {
         ChargeEntity entity = new ChargeEntity();
         entity.setId(charge.getId());
@@ -79,7 +77,6 @@ public class ChargeFacade implements Facade<Charge, ChargeEntity> {
         return new EnhancedPageImpl<Charge>(chargeList, pageable, entityPage.getTotalElements(), sum);
     }
 
-    @Override
     public Charge convert(ChargeEntity entity) {
         Charge charge = new Charge();
         charge.setId(entity.getId());

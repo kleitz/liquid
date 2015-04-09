@@ -17,7 +17,7 @@
         <!-- liquid -->
         <dependency>
             <groupId>liquid</groupId>
-            <artifactId>liquid-common</artifactId>
+            <artifactId>liquid-core</artifactId>
         </dependency>
         <dependency>
             <groupId>liquid</groupId>

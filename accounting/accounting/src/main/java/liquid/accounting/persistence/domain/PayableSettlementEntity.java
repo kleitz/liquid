@@ -2,7 +2,7 @@ package liquid.accounting.persistence.domain;
 
 import liquid.operation.domain.ServiceProvider;
 import liquid.order.domain.OrderEntity;
-import liquid.persistence.domain.BaseUpdateEntity;
+import liquid.common.domain.BaseUpdateEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

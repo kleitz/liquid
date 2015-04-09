@@ -88,8 +88,9 @@
             </dependency>
             <dependency>
                 <groupId>liquid</groupId>
-                <artifactId>liquid-common</artifactId>
+                <artifactId>liquid-core</artifactId>
                 <version>${project.version}</version>
+                <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>liquid</groupId>
@@ -359,12 +360,8 @@
     </build>
 
     <modules>
-        <module>poc</module>
-        <module>util</module>
-        <module>pinyin4j</module>
-        <module>audit</module>
-        <module>excel</module>
         <module>common</module>
+        <module>core</module>
         <module>user</module>
         <module>operation</module>
         <module>container</module>

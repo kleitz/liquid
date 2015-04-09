@@ -1,6 +1,6 @@
 package liquid.transport.domain;
 
-import liquid.persistence.domain.BaseUpdateEntity;
+import liquid.common.domain.BaseUpdateEntity;
 
 import javax.persistence.*;
 import java.util.Date;
