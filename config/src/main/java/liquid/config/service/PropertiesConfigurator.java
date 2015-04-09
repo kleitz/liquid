@@ -9,7 +9,7 @@ import java.util.Properties;
  */
 public class PropertiesConfigurator {
     private final Properties properties = new Properties();
-    private static final String USER_SERVICE_CLASS_NAME = "user.service";
+    private static final String USER_SERVICE_CLASS_NAME = "user.service.class.name";
 
     private String userServiceClassName;
 
