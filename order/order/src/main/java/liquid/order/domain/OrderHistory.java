@@ -1,4 +1,4 @@
-package liquid.order.persistence.domain;
+package liquid.order.domain;
 
 import liquid.operation.domain.Customer;
 import liquid.operation.domain.Goods;

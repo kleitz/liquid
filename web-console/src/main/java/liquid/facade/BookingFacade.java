@@ -4,7 +4,7 @@ import liquid.operation.domain.ServiceProvider;
 import liquid.order.domain.OrderEntity;
 import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.ShipmentEntity;
-import liquid.transport.persistence.domain.SpaceBookingEntity;
+import liquid.transport.domain.SpaceBookingEntity;
 import liquid.transport.service.BookingService;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.web.domain.Booking;

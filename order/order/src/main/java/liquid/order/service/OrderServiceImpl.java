@@ -3,7 +3,7 @@ package liquid.order.service;
 import liquid.order.domain.OrderEntity;
 import liquid.order.domain.OrderEntity_;
 import liquid.order.domain.OrderStatus;
-import liquid.order.persistence.repository.OrderRepository;
+import liquid.order.repository.OrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

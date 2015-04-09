@@ -4,7 +4,7 @@ import liquid.accounting.service.PurchaseService;
 import liquid.service.AbstractService;
 import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.ShipmentEntity;
-import liquid.transport.persistence.repository.ShipmentRepository;
+import liquid.transport.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

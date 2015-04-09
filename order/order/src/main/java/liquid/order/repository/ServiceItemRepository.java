@@ -1,4 +1,4 @@
-package liquid.order.persistence.repository;
+package liquid.order.repository;
 
 import liquid.order.domain.ServiceItemEntity;
 import org.springframework.data.repository.CrudRepository;

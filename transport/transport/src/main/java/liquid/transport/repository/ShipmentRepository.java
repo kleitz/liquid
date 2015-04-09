@@ -1,4 +1,4 @@
-package liquid.transport.persistence.repository;
+package liquid.transport.repository;
 
 import liquid.core.PageRepository;
 import liquid.transport.domain.ShipmentEntity;

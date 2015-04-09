@@ -1,4 +1,4 @@
-package liquid.transport.persistence.repository;
+package liquid.transport.repository;
 
 import liquid.order.domain.OrderEntity;
 import liquid.transport.domain.BargeContainerEntity;

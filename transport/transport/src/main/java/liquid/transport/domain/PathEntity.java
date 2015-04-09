@@ -1,4 +1,4 @@
-package liquid.transport.persistence.domain;
+package liquid.transport.domain;
 
 import liquid.operation.domain.Location;
 import liquid.core.domain.BaseIdEntity;

@@ -1,9 +1,9 @@
 package liquid.transport.service;
 
 import liquid.service.AbstractService;
-import liquid.transport.persistence.domain.PathEntity;
-import liquid.transport.persistence.domain.RouteEntity;
-import liquid.transport.persistence.repository.RouteRepository;
+import liquid.transport.domain.PathEntity;
+import liquid.transport.domain.RouteEntity;
+import liquid.transport.repository.RouteRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

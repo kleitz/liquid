@@ -2,7 +2,7 @@ package liquid.transport.service;
 
 import liquid.service.AbstractService;
 import liquid.transport.domain.TruckEntity;
-import liquid.transport.persistence.repository.TruckRepository;
+import liquid.transport.repository.TruckRepository;
 import org.springframework.stereotype.Service;
 
 /**

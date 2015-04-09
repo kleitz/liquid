@@ -1,6 +1,6 @@
-package liquid.transport.persistence.repository;
+package liquid.transport.repository;
 
-import liquid.transport.persistence.domain.PathEntity;
+import liquid.transport.domain.PathEntity;
 import org.springframework.data.repository.CrudRepository;
 
 /**

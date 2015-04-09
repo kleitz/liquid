@@ -1,8 +1,8 @@
 package liquid.order.service;
 
 import liquid.order.domain.ReceivingOrderEntity;
-import liquid.order.persistence.repository.ReceivingContainerRepository;
-import liquid.order.persistence.repository.ReceivingOrderRepository;
+import liquid.order.repository.ReceivingContainerRepository;
+import liquid.order.repository.ReceivingOrderRepository;
 import liquid.operation.domain.Location;
 import liquid.util.CollectionUtil;
 import org.slf4j.Logger;

@@ -2,7 +2,7 @@ package liquid.transport.service;
 
 import liquid.service.AbstractService;
 import liquid.transport.domain.RailContainerEntity;
-import liquid.transport.persistence.repository.RailContainerRepository;
+import liquid.transport.repository.RailContainerRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

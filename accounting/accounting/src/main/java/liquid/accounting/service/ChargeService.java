@@ -12,7 +12,7 @@ import liquid.security.SecurityContext;
 import liquid.service.AbstractService;
 import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.ShipmentEntity;
-import liquid.transport.persistence.repository.LegRepository;
+import liquid.transport.repository.LegRepository;
 import liquid.transport.service.ShipmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -9,7 +9,7 @@ import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
 import liquid.service.AbstractService;
 import liquid.transport.domain.*;
-import liquid.transport.persistence.repository.*;
+import liquid.transport.repository.*;
 import liquid.transport.web.domain.*;
 import liquid.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;

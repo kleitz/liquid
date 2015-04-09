@@ -1,8 +1,8 @@
 package liquid.transport.web.controller;
 
 import liquid.operation.domain.Location;
-import liquid.transport.persistence.domain.PathEntity;
-import liquid.transport.persistence.domain.RouteEntity;
+import liquid.transport.domain.PathEntity;
+import liquid.transport.domain.RouteEntity;
 import liquid.transport.service.RouteService;
 import liquid.transport.web.domain.Path;
 import liquid.transport.domain.TransMode;

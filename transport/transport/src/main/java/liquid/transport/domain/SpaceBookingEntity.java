@@ -1,4 +1,4 @@
-package liquid.transport.persistence.domain;
+package liquid.transport.domain;
 
 import liquid.operation.domain.ServiceProvider;
 import liquid.order.domain.OrderEntity;

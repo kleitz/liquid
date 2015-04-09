@@ -34,9 +34,9 @@ import java.util.Properties;
         "liquid.core.repository",
         "liquid.operation.repository",
         "liquid.container.repository",
-        "liquid.accounting.repository",
-        "liquid.order.persistence.repository",
-        "liquid.transport.persistence.repository"})
+        "liquid.order.repository",
+        "liquid.transport.repository",
+        "liquid.accounting.repository"})
 @Import(PropertyPlaceholderConfig.class)
 public class JpaConfig {
     @Value("${jdbc.url}")
@@ -75,8 +75,6 @@ public class JpaConfig {
                 "liquid.operation.domain",
                 "liquid.container.domain",
                 "liquid.order.domain",
-                "liquid.order.persistence.domain",
-                "liquid.transport.persistence.domain", // FIXME
                 "liquid.transport.domain",
                 "liquid.accounting.domain");
         factory.setDataSource(dataSource());

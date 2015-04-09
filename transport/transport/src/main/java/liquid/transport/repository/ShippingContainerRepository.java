@@ -1,4 +1,4 @@
-package liquid.transport.persistence.repository;
+package liquid.transport.repository;
 
 import liquid.transport.domain.ShippingContainerEntity;
 import org.springframework.data.repository.CrudRepository;

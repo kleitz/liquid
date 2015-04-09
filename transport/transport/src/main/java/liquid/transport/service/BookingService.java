@@ -1,8 +1,8 @@
 package liquid.transport.service;
 
 import liquid.service.AbstractService;
-import liquid.transport.persistence.domain.SpaceBookingEntity;
-import liquid.transport.persistence.repository.BookingRepository;
+import liquid.transport.domain.SpaceBookingEntity;
+import liquid.transport.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

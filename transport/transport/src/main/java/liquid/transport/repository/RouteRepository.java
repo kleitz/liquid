@@ -1,7 +1,7 @@
-package liquid.transport.persistence.repository;
+package liquid.transport.repository;
 
 import liquid.core.PageRepository;
-import liquid.transport.persistence.domain.RouteEntity;
+import liquid.transport.domain.RouteEntity;
 
 import java.util.List;
 

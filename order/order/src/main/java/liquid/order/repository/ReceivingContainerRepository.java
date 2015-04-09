@@ -1,6 +1,6 @@
-package liquid.order.persistence.repository;
+package liquid.order.repository;
 
-import liquid.order.persistence.domain.ReceivingContainerEntity;
+import liquid.order.domain.ReceivingContainerEntity;
 import liquid.order.domain.ReceivingOrderEntity;
 import org.springframework.data.repository.CrudRepository;
 

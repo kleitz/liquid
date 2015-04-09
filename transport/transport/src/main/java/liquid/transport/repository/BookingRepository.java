@@ -1,6 +1,6 @@
-package liquid.transport.persistence.repository;
+package liquid.transport.repository;
 
-import liquid.transport.persistence.domain.SpaceBookingEntity;
+import liquid.transport.domain.SpaceBookingEntity;
 import org.springframework.data.repository.CrudRepository;
 
 /**
