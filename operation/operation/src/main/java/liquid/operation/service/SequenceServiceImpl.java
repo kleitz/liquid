@@ -1,7 +1,7 @@
-package liquid.service;
+package liquid.operation.service;
 
-import liquid.core.domain.Sequence;
-import liquid.core.repository.SequenceRepository;
+import liquid.operation.domain.Sequence;
+import liquid.operation.repository.SequenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by redbrick9 on 4/26/14.
  */
 @Service
-public class SequenceService {
+public class SequenceServiceImpl implements SequenceService{
 
     @Autowired
     private SequenceRepository sequenceRepository;

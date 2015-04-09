@@ -10,9 +10,8 @@ import liquid.domain.TradeType;
 import liquid.operation.domain.Customer;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.ServiceSubtype;
-import liquid.operation.service.CustomerService;
-import liquid.operation.service.GoodsService;
-import liquid.operation.service.LocationService;
+import liquid.operation.domain.ServiceTypeEntity;
+import liquid.operation.service.*;
 import liquid.order.domain.OrderEntity;
 import liquid.order.domain.OrderRailEntity;
 import liquid.order.domain.ServiceItemEntity;
@@ -20,12 +19,9 @@ import liquid.order.model.Order;
 import liquid.order.model.ServiceItem;
 import liquid.order.service.OrderService;
 import liquid.order.service.RailwayService;
-import liquid.core.domain.ServiceTypeEntity;
 import liquid.process.service.BusinessKey;
 import liquid.process.service.ProcessService;
 import liquid.security.SecurityContext;
-import liquid.service.RailwayPlanTypeService;
-import liquid.service.ServiceTypeServiceImpl;
 import liquid.util.DateUtil;
 import liquid.validation.FormValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +49,7 @@ public class OrderFacade {
     private LocationService locationService;
 
     @Autowired
-    private ServiceTypeServiceImpl serviceTypeService;
+    private ServiceTypeService serviceTypeService;
 
     @Autowired
     private ProcessService processService;

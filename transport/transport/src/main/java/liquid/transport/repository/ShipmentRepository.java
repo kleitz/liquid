@@ -1,6 +1,6 @@
 package liquid.transport.repository;
 
-import liquid.core.PageRepository;
+import liquid.core.repository.PageRepository;
 import liquid.transport.domain.ShipmentEntity;
 import org.springframework.data.repository.CrudRepository;
 

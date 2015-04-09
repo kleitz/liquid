@@ -1,5 +1,6 @@
-package liquid.core.domain;
+package liquid.operation.domain;
 
+import liquid.core.domain.BaseUpdateEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;

@@ -4,6 +4,7 @@ import liquid.container.domain.ContainerCap;
 import liquid.container.domain.ContainerSubtypeEntity;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
+import liquid.operation.domain.ServiceTypeEntity;
 import liquid.operation.domain.Customer;
 import liquid.operation.domain.Goods;
 import liquid.operation.domain.Location;
@@ -11,14 +12,13 @@ import liquid.operation.domain.LocationType;
 import liquid.operation.service.CustomerService;
 import liquid.operation.service.GoodsService;
 import liquid.operation.service.LocationService;
+import liquid.operation.service.ServiceTypeService;
 import liquid.order.domain.OrderStatus;
 import liquid.order.domain.ReceivingOrderEntity;
 import liquid.order.facade.ValueAddedOrderFacade;
 import liquid.order.model.TransportedContainer;
 import liquid.order.model.ValueAddedOrder;
 import liquid.order.service.ReceivingOrderServiceImpl;
-import liquid.core.domain.ServiceTypeEntity;
-import liquid.service.ServiceTypeServiceImpl;
 import liquid.web.controller.BaseController;
 import liquid.web.domain.SearchBarForm;
 import org.slf4j.Logger;
@@ -66,7 +66,7 @@ public class ReceivingOrderController extends BaseController {
     private GoodsService goodsService;
 
     @Autowired
-    private ServiceTypeServiceImpl serviceTypeService;
+    private ServiceTypeService serviceTypeService;
 
     @Autowired
     private ContainerSubtypeService containerSubtypeService;

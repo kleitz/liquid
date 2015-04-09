@@ -1,7 +1,7 @@
-package liquid.controller;
+package liquid.operation.controller;
 
-import liquid.core.domain.ServiceTypeEntity;
-import liquid.service.ServiceTypeServiceImpl;
+import liquid.operation.domain.ServiceTypeEntity;
+import liquid.operation.service.ServiceTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class ServiceTypeController {
     private static final Logger logger = LoggerFactory.getLogger(ServiceTypeController.class);
 
     @Autowired
-    private ServiceTypeServiceImpl serviceTypeService;
+    private ServiceTypeService serviceTypeService;
 
     @ModelAttribute("serviceTypes")
     public Iterable<ServiceTypeEntity> findAll() {

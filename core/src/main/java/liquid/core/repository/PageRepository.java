@@ -1,4 +1,4 @@
-package liquid.core;
+package liquid.core.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

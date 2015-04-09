@@ -2,18 +2,18 @@ package liquid.order.facade;
 
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
+import liquid.operation.domain.ServiceTypeEntity;
 import liquid.operation.service.CustomerService;
 import liquid.operation.service.GoodsService;
 import liquid.operation.service.LocationService;
+import liquid.operation.service.ServiceTypeService;
+import liquid.order.domain.ReceivingContainerEntity;
 import liquid.order.domain.ReceivingOrderEntity;
 import liquid.order.model.TransportedContainer;
 import liquid.order.model.ValueAddedOrder;
-import liquid.order.domain.ReceivingContainerEntity;
 import liquid.order.repository.ReceivingContainerRepository;
 import liquid.order.service.ReceivingOrderServiceImpl;
-import liquid.core.domain.ServiceTypeEntity;
 import liquid.security.SecurityContext;
-import liquid.service.ServiceTypeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -47,7 +47,7 @@ public class ValueAddedOrderFacade {
     private ContainerSubtypeService containerSubtypeService;
 
     @Autowired
-    private ServiceTypeServiceImpl serviceTypeService;
+    private ServiceTypeService serviceTypeService;
 
     @Autowired
     private ReceivingContainerRepository receivingContainerRepository;

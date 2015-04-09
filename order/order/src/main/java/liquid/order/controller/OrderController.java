@@ -1,38 +1,29 @@
 package liquid.order.controller;
 
+import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.facade.InvoiceFacade;
 import liquid.accounting.facade.ReceiptFacade;
 import liquid.accounting.facade.SettlementFacade;
-import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.model.*;
 import liquid.accounting.service.ChargeService;
 import liquid.container.domain.ContainerCap;
 import liquid.container.domain.ContainerSubtypeEntity;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
+import liquid.operation.domain.RailPlanTypeEntity;
 import liquid.domain.LoadingType;
 import liquid.domain.TradeType;
-import liquid.operation.domain.Goods;
-import liquid.operation.domain.Location;
-import liquid.operation.domain.LocationType;
-import liquid.operation.domain.ServiceSubtype;
-import liquid.operation.service.CustomerService;
-import liquid.operation.service.GoodsService;
-import liquid.operation.service.LocationService;
-import liquid.operation.service.ServiceSubtypeService;
+import liquid.operation.domain.*;
+import liquid.operation.service.*;
 import liquid.order.domain.OrderEntity;
 import liquid.order.domain.OrderStatus;
 import liquid.order.facade.OrderFacade;
 import liquid.order.model.Order;
 import liquid.order.model.ServiceItem;
 import liquid.order.service.OrderService;
-import liquid.core.domain.RailPlanTypeEntity;
-import liquid.core.domain.ServiceTypeEntity;
 import liquid.process.domain.Task;
 import liquid.process.service.TaskService;
 import liquid.security.SecurityContext;
-import liquid.service.RailwayPlanTypeService;
-import liquid.service.ServiceTypeServiceImpl;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.service.ShipmentService;
 import liquid.util.DateUtil;
@@ -90,7 +81,7 @@ public class OrderController extends BaseController {
     private ChargeService chargeService;
 
     @Autowired
-    private ServiceTypeServiceImpl serviceTypeService;
+    private ServiceTypeService serviceTypeService;
 
     @Autowired
     private ContainerSubtypeService containerSubtypeService;

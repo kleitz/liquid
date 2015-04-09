@@ -1,6 +1,6 @@
-package liquid.core.repository;
+package liquid.operation.repository;
 
-import liquid.core.domain.Sequence;
+import liquid.operation.domain.Sequence;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

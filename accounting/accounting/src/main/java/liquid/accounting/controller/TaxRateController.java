@@ -1,9 +1,9 @@
-package liquid.controller;
+package liquid.accounting.controller;
 
-import liquid.domain.TaxRates;
+import liquid.accounting.model.TaxRates;
 import liquid.model.Alert;
-import liquid.core.domain.TaxRateEntity;
-import liquid.service.TaxRateService;
+import liquid.accounting.domain.TaxRateEntity;
+import liquid.accounting.service.TaxRateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

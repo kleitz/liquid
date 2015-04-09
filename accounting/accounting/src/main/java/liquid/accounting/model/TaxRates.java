@@ -1,6 +1,6 @@
-package liquid.domain;
+package liquid.accounting.model;
 
-import liquid.core.domain.TaxRateEntity;
+import liquid.accounting.domain.TaxRateEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,6 +1,6 @@
-package liquid.core.repository;
+package liquid.accounting.repository;
 
-import liquid.core.domain.TaxRateEntity;
+import liquid.accounting.domain.TaxRateEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Collection;

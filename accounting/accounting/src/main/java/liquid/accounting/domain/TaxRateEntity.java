@@ -1,4 +1,6 @@
-package liquid.core.domain;
+package liquid.accounting.domain;
+
+import liquid.core.domain.BaseUpdateEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,7 +8,7 @@ import javax.persistence.Entity;
 /**
  * Created by redbrick9 on 8/29/14.
  */
-@Entity(name = "OPS_TAX_RATE")
+@Entity(name = "ACT_TAX_RATE")
 public class TaxRateEntity extends BaseUpdateEntity {
     @Column(name = "NAME")
     private String name;

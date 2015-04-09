@@ -31,7 +31,6 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories({
-        "liquid.core.repository",
         "liquid.operation.repository",
         "liquid.container.repository",
         "liquid.order.repository",
@@ -71,7 +70,6 @@ public class JpaConfig {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan(
-                "liquid.core.domain",
                 "liquid.operation.domain",
                 "liquid.container.domain",
                 "liquid.order.domain",

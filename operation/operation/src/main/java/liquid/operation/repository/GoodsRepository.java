@@ -1,6 +1,6 @@
 package liquid.operation.repository;
 
-import liquid.core.PageRepository;
+import liquid.core.repository.PageRepository;
 import liquid.operation.domain.Goods;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

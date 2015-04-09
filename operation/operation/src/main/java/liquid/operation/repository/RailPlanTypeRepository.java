@@ -1,6 +1,6 @@
-package liquid.core.repository;
+package liquid.operation.repository;
 
-import liquid.core.domain.RailPlanTypeEntity;
+import liquid.operation.domain.RailPlanTypeEntity;
 import org.springframework.data.repository.CrudRepository;
 
 /**
