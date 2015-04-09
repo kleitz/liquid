@@ -1,6 +1,6 @@
 package liquid.process.service;
 
-import liquid.accounting.persistence.domain.ReceivableSummaryEntity;
+import liquid.accounting.domain.ReceivableSummaryEntity;
 import liquid.accounting.service.ReceivableSummaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

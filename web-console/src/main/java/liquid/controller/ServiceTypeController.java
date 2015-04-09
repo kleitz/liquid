@@ -1,6 +1,6 @@
 package liquid.controller;
 
-import liquid.common.domain.ServiceTypeEntity;
+import liquid.core.domain.ServiceTypeEntity;
 import liquid.service.ServiceTypeServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
 package liquid.service;
 
-import liquid.common.domain.ServiceTypeEntity;
-import liquid.common.repository.ServiceTypeRepository;
+import liquid.core.domain.ServiceTypeEntity;
+import liquid.core.repository.ServiceTypeRepository;
 import org.springframework.stereotype.Service;
 
 /**

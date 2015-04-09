@@ -1,7 +1,7 @@
 package liquid.service;
 
-import liquid.common.PageRepository;
-import liquid.common.domain.BaseUpdateEntity;
+import liquid.core.PageRepository;
+import liquid.core.domain.BaseUpdateEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

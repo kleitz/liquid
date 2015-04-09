@@ -1,7 +1,7 @@
 package liquid.accounting.service;
 
-import liquid.accounting.persistence.domain.PayableSettlementEntity;
-import liquid.accounting.persistence.repository.PayableSettlementRepository;
+import liquid.accounting.domain.PayableSettlementEntity;
+import liquid.accounting.repository.PayableSettlementRepository;
 import liquid.service.AbstractService;
 import org.springframework.stereotype.Service;
 

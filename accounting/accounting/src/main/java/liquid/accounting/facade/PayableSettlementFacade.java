@@ -1,8 +1,8 @@
 package liquid.accounting.facade;
 
-import liquid.accounting.persistence.domain.PayableSettlementEntity;
+import liquid.accounting.domain.PayableSettlementEntity;
 import liquid.accounting.service.PayableSettlementService;
-import liquid.accounting.web.domain.PayableSettlement;
+import liquid.accounting.model.PayableSettlement;
 import liquid.operation.domain.ServiceProvider;
 import liquid.order.domain.OrderEntity;
 import liquid.util.DateUtil;

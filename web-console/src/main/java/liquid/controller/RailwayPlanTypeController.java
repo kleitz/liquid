@@ -1,6 +1,6 @@
 package liquid.controller;
 
-import liquid.common.domain.RailPlanTypeEntity;
+import liquid.core.domain.RailPlanTypeEntity;
 import liquid.service.RailwayPlanTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

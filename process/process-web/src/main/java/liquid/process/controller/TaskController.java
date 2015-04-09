@@ -1,9 +1,9 @@
 package liquid.process.controller;
 
 import liquid.accounting.facade.ReceivableFacade;
-import liquid.accounting.persistence.domain.ChargeEntity;
+import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.service.ChargeService;
-import liquid.accounting.web.domain.ChargeWay;
+import liquid.accounting.model.ChargeWay;
 import liquid.accounting.web.domain.Earning;
 import liquid.model.Alert;
 import liquid.operation.domain.ServiceSubtype;

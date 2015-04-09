@@ -1,6 +1,6 @@
 package liquid.order.domain;
 
-import liquid.common.domain.BaseIdEntity;
+import liquid.core.domain.BaseIdEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

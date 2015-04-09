@@ -1,8 +1,8 @@
 package liquid.accounting.service;
 
-import liquid.accounting.persistence.domain.InvoiceEntity;
-import liquid.accounting.persistence.domain.InvoiceEntity_;
-import liquid.accounting.persistence.repository.InvoiceRepository;
+import liquid.accounting.domain.InvoiceEntity;
+import liquid.accounting.domain.InvoiceEntity_;
+import liquid.accounting.repository.InvoiceRepository;
 import liquid.service.AbstractService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

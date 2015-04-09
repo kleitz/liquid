@@ -11,7 +11,7 @@ import liquid.order.model.ValueAddedOrder;
 import liquid.order.persistence.domain.ReceivingContainerEntity;
 import liquid.order.persistence.repository.ReceivingContainerRepository;
 import liquid.order.service.ReceivingOrderServiceImpl;
-import liquid.common.domain.ServiceTypeEntity;
+import liquid.core.domain.ServiceTypeEntity;
 import liquid.security.SecurityContext;
 import liquid.service.ServiceTypeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

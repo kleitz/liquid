@@ -1,7 +1,7 @@
 package liquid.transport.domain;
 
 import liquid.container.domain.ContainerEntity;
-import liquid.common.domain.BaseUpdateEntity;
+import liquid.core.domain.BaseUpdateEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;

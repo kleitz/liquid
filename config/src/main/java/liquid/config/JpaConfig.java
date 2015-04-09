@@ -31,14 +31,12 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories({
-        "liquid.common.repository",
+        "liquid.core.repository",
         "liquid.operation.repository",
         "liquid.container.repository",
-        "liquid.accounting.persistence.repository",
-        "liquid.purchase.persistence.repository",
+        "liquid.accounting.repository",
         "liquid.order.persistence.repository",
-        "liquid.transport.persistence.repository",
-        "liquid.purchase.persistence.repository"})
+        "liquid.transport.persistence.repository"})
 @Import(PropertyPlaceholderConfig.class)
 public class JpaConfig {
     @Value("${jdbc.url}")
@@ -73,16 +71,14 @@ public class JpaConfig {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan(
-                "liquid.common.domain",
+                "liquid.core.domain",
                 "liquid.operation.domain",
                 "liquid.container.domain",
                 "liquid.order.domain",
                 "liquid.order.persistence.domain",
                 "liquid.transport.persistence.domain", // FIXME
                 "liquid.transport.domain",
-                "liquid.charge.persistence.domain",
-                "liquid.accounting.persistence.domain",
-                "liquid.purchase.persistence.domain");
+                "liquid.accounting.domain");
         factory.setDataSource(dataSource());
         factory.setJpaProperties(jpaProperties);
         factory.afterPropertiesSet();

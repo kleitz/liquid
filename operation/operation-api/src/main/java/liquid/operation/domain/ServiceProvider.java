@@ -1,7 +1,7 @@
 package liquid.operation.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import liquid.common.domain.StatefulEntity;
+import liquid.core.domain.StatefulEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;

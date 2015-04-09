@@ -2,7 +2,7 @@ package liquid.controller;
 
 import liquid.domain.TaxRates;
 import liquid.model.Alert;
-import liquid.common.domain.TaxRateEntity;
+import liquid.core.domain.TaxRateEntity;
 import liquid.service.TaxRateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

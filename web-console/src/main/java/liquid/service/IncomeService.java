@@ -1,8 +1,8 @@
 package liquid.service;
 
-import liquid.accounting.persistence.domain.IncomeEntity;
-import liquid.accounting.persistence.domain.ReceivableSummaryEntity;
-import liquid.accounting.persistence.repository.IncomeRepository;
+import liquid.accounting.domain.IncomeEntity;
+import liquid.accounting.domain.ReceivableSummaryEntity;
+import liquid.accounting.repository.IncomeRepository;
 import liquid.accounting.service.ReceivableSummaryService;
 import liquid.metadata.IncomeType;
 import liquid.order.domain.OrderEntity;

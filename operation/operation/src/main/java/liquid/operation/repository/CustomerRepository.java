@@ -1,7 +1,7 @@
 package liquid.operation.repository;
 
 import liquid.operation.domain.Customer;
-import liquid.common.PageRepository;
+import liquid.core.PageRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

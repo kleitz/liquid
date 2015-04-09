@@ -1,7 +1,7 @@
 package liquid.operation.domain;
 
 import liquid.converter.Text;
-import liquid.common.domain.BaseUpdateEntity;
+import liquid.core.domain.BaseUpdateEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;

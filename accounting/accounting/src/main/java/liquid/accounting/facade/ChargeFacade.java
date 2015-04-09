@@ -1,8 +1,8 @@
 package liquid.accounting.facade;
 
-import liquid.accounting.persistence.domain.ChargeEntity;
+import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.service.ChargeService;
-import liquid.accounting.web.domain.Charge;
+import liquid.accounting.model.Charge;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.transport.domain.LegEntity;

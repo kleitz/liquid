@@ -1,6 +1,6 @@
 package liquid.order.domain;
 
-import liquid.common.domain.BaseUpdateEntity;
+import liquid.core.domain.BaseUpdateEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;

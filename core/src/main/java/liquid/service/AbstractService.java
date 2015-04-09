@@ -1,6 +1,6 @@
 package liquid.service;
 
-import liquid.common.domain.BaseUpdateEntity;
+import liquid.core.domain.BaseUpdateEntity;
 import liquid.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;

@@ -1,7 +1,7 @@
 package liquid.service;
 
-import liquid.common.domain.Sequence;
-import liquid.common.repository.SequenceRepository;
+import liquid.core.domain.Sequence;
+import liquid.core.repository.SequenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

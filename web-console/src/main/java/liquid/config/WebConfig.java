@@ -48,7 +48,7 @@ import java.util.Locale;
         "liquid.container.controller",
         "liquid.container.restfulapi",
         "liquid.transport.web.controller",
-        "liquid.accounting.web.controller",
+        "liquid.accounting.controller",
         "liquid.purchase.api.controller",
         "liquid.purchase.web.controller"})
 public class WebConfig extends WebMvcConfigurerAdapter {

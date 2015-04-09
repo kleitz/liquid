@@ -2,7 +2,7 @@ package liquid.transport.persistence.domain;
 
 import liquid.operation.domain.ServiceProvider;
 import liquid.order.domain.OrderEntity;
-import liquid.common.domain.BaseUpdateEntity;
+import liquid.core.domain.BaseUpdateEntity;
 import liquid.transport.domain.LegEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 

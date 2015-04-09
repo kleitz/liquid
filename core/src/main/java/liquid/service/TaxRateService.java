@@ -1,7 +1,7 @@
 package liquid.service;
 
-import liquid.common.domain.TaxRateEntity;
-import liquid.common.repository.TaxRateRepository;
+import liquid.core.domain.TaxRateEntity;
+import liquid.core.repository.TaxRateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,8 @@
 package liquid.controller;
 
-import liquid.accounting.persistence.domain.ChargeEntity;
+import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.service.ChargeService;
-import liquid.accounting.web.domain.ChargeWay;
+import liquid.accounting.model.ChargeWay;
 import liquid.dto.TruckingDto;
 import liquid.user.domain.Role;
 import liquid.operation.service.ServiceProviderService;

@@ -1,13 +1,12 @@
 package liquid.accounting.service;
 
-import liquid.accounting.persistence.domain.AccountingOperator;
-import liquid.accounting.persistence.domain.AccountingType;
-import liquid.accounting.persistence.domain.ReceivableSummaryEntity;
-import liquid.accounting.persistence.domain.ReceivableSummaryEntity_;
-import liquid.accounting.persistence.repository.ReceivableSummaryRepository;
+import liquid.accounting.domain.AccountingOperator;
+import liquid.accounting.domain.AccountingType;
+import liquid.accounting.domain.ReceivableSummaryEntity;
+import liquid.accounting.domain.ReceivableSummaryEntity_;
+import liquid.accounting.repository.ReceivableSummaryRepository;
 import liquid.order.domain.OrderEntity_;
 import liquid.service.AbstractService;
-import liquid.service.ExchangeRateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

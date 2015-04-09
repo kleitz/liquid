@@ -1,11 +1,11 @@
 package liquid.controller;
 
 import liquid.accounting.facade.ChargeFacade;
-import liquid.accounting.persistence.domain.ChargeEntity;
-import liquid.accounting.persistence.domain.IncomeEntity;
+import liquid.accounting.domain.ChargeEntity;
+import liquid.accounting.domain.IncomeEntity;
 import liquid.accounting.service.ChargeService;
-import liquid.accounting.web.domain.Charge;
-import liquid.accounting.web.domain.ChargeWay;
+import liquid.accounting.model.Charge;
+import liquid.accounting.model.ChargeWay;
 import liquid.metadata.IncomeType;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;

@@ -1,16 +1,15 @@
 package liquid.accounting.service;
 
-import liquid.accounting.persistence.domain.ChargeEntity;
-import liquid.accounting.persistence.domain.ChargeEntity_;
-import liquid.accounting.persistence.repository.ChargeRepository;
-import liquid.accounting.web.domain.ChargeWay;
+import liquid.accounting.domain.ChargeEntity;
+import liquid.accounting.domain.ChargeEntity_;
+import liquid.accounting.model.ChargeWay;
+import liquid.accounting.repository.ChargeRepository;
 import liquid.operation.domain.ServiceProvider_;
 import liquid.order.domain.OrderEntity;
 import liquid.order.domain.OrderEntity_;
 import liquid.order.service.OrderService;
 import liquid.security.SecurityContext;
 import liquid.service.AbstractService;
-import liquid.service.ExchangeRateService;
 import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.persistence.repository.LegRepository;

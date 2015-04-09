@@ -1,9 +1,9 @@
 package liquid.accounting.facade;
 
-import liquid.accounting.persistence.domain.SettlementEntity;
+import liquid.accounting.domain.SettlementEntity;
 import liquid.accounting.service.SettlementService;
-import liquid.accounting.web.domain.Settlement;
-import liquid.accounting.web.domain.Statement;
+import liquid.accounting.model.Settlement;
+import liquid.accounting.model.Statement;
 import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
 import liquid.util.DateUtil;

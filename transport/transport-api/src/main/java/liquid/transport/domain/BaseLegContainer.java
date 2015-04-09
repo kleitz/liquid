@@ -1,7 +1,7 @@
 package liquid.transport.domain;
 
 import liquid.order.domain.OrderEntity;
-import liquid.common.domain.BaseUpdateEntity;
+import liquid.core.domain.BaseUpdateEntity;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;

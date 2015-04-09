@@ -1,6 +1,6 @@
 package liquid.service;
 
-import liquid.common.domain.BaseUpdateEntity;
+import liquid.core.domain.BaseUpdateEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Map;

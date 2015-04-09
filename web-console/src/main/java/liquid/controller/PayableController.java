@@ -1,9 +1,9 @@
 package liquid.controller;
 
 import liquid.accounting.facade.PayableSettlementFacade;
-import liquid.accounting.persistence.domain.PayableSettlementEntity;
+import liquid.accounting.domain.PayableSettlementEntity;
 import liquid.accounting.service.PayableSettlementService;
-import liquid.accounting.web.domain.PayableSettlement;
+import liquid.accounting.model.PayableSettlement;
 import liquid.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

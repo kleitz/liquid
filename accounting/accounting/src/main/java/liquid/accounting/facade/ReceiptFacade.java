@@ -1,12 +1,12 @@
 package liquid.accounting.facade;
 
-import liquid.accounting.persistence.domain.AccountingOperator;
-import liquid.accounting.persistence.domain.AccountingType;
-import liquid.accounting.persistence.domain.ReceiptEntity;
+import liquid.accounting.domain.AccountingOperator;
+import liquid.accounting.domain.AccountingType;
+import liquid.accounting.domain.ReceiptEntity;
 import liquid.accounting.service.ReceiptService;
 import liquid.accounting.service.ReceivableSummaryService;
-import liquid.accounting.web.domain.Receipt;
-import liquid.accounting.web.domain.Statement;
+import liquid.accounting.model.Receipt;
+import liquid.accounting.model.Statement;
 import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
 import liquid.util.DateUtil;
