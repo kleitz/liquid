@@ -4,8 +4,8 @@ import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.order.domain.OrderEntity;
 import liquid.persistence.domain.BaseUpdateEntity;
-import liquid.transport.persistence.domain.LegEntity;
-import liquid.transport.persistence.domain.ShipmentEntity;
+import liquid.transport.domain.LegEntity;
+import liquid.transport.domain.ShipmentEntity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

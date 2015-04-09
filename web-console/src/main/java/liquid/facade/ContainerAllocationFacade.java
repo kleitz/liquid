@@ -1,16 +1,16 @@
 package liquid.facade;
 
+import liquid.container.domain.ContainerEntity;
 import liquid.container.domain.ContainerType;
-import liquid.container.persistence.domain.ContainerEntity;
 import liquid.container.service.ContainerSubtypeService;
 import liquid.domain.ContainerAllocation;
 import liquid.domain.SelfContainerAllocation;
 import liquid.domain.ShipmentContainerAllocation;
 import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
-import liquid.transport.persistence.domain.RailContainerEntity;
-import liquid.transport.persistence.domain.ShipmentEntity;
-import liquid.transport.persistence.domain.ShippingContainerEntity;
+import liquid.transport.domain.RailContainerEntity;
+import liquid.transport.domain.ShipmentEntity;
+import liquid.transport.domain.ShippingContainerEntity;
 import liquid.transport.service.ContainerAllocationService;
 import liquid.transport.service.RailContainerService;
 import liquid.transport.service.ShipmentService;

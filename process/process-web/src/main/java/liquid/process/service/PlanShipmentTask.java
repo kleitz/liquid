@@ -1,8 +1,8 @@
 package liquid.process.service;
 
 import liquid.transport.domain.TransMode;
-import liquid.transport.persistence.domain.LegEntity;
-import liquid.transport.persistence.domain.ShipmentEntity;
+import liquid.transport.domain.LegEntity;
+import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.service.ShipmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

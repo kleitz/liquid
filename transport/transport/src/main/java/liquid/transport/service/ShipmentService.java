@@ -2,8 +2,8 @@ package liquid.transport.service;
 
 import liquid.accounting.service.PurchaseService;
 import liquid.service.AbstractService;
-import liquid.transport.persistence.domain.LegEntity;
-import liquid.transport.persistence.domain.ShipmentEntity;
+import liquid.transport.domain.LegEntity;
+import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.persistence.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

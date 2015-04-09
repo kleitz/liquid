@@ -1,7 +1,7 @@
 package liquid.transport.facade;
 
-import liquid.transport.persistence.domain.ShipmentEntity;
-import liquid.transport.persistence.domain.TruckEntity;
+import liquid.transport.domain.ShipmentEntity;
+import liquid.transport.domain.TruckEntity;
 import liquid.transport.service.TruckService;
 import liquid.transport.web.domain.TruckForm;
 import liquid.util.DateUtil;

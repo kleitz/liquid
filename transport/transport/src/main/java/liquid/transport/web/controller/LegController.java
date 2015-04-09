@@ -3,7 +3,7 @@ package liquid.transport.web.controller;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.ServiceProviderService;
 import liquid.transport.domain.TransMode;
-import liquid.transport.persistence.domain.LegEntity;
+import liquid.transport.domain.LegEntity;
 import liquid.transport.service.LegService;
 import liquid.transport.web.domain.Leg;
 import org.springframework.beans.factory.annotation.Autowired;

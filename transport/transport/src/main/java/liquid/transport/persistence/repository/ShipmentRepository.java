@@ -1,7 +1,7 @@
 package liquid.transport.persistence.repository;
 
 import liquid.persistence.PageRepository;
-import liquid.transport.persistence.domain.ShipmentEntity;
+import liquid.transport.domain.ShipmentEntity;
 import org.springframework.data.repository.CrudRepository;
 
 /**

@@ -105,7 +105,7 @@
             </dependency>
             <dependency>
                 <groupId>liquid</groupId>
-                <artifactId>liquid-container</artifactId>
+                <artifactId>liquid-container-api</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
@@ -133,12 +133,14 @@
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
+            <!--
             <dependency>
                 <groupId>liquid</groupId>
                 <artifactId>liquid-process-web</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
+            -->
             <dependency>
                 <groupId>liquid</groupId>
                 <artifactId>liquid-transport-api</artifactId>

@@ -33,7 +33,7 @@
         </dependency>
         <dependency>
             <groupId>liquid</groupId>
-            <artifactId>liquid-container</artifactId>
+            <artifactId>liquid-container-api</artifactId>
         </dependency>
 
         <!-- FIXME - -->

@@ -2,8 +2,8 @@ package liquid.facade;
 
 import liquid.operation.domain.ServiceProvider;
 import liquid.order.domain.OrderEntity;
-import liquid.transport.persistence.domain.LegEntity;
-import liquid.transport.persistence.domain.ShipmentEntity;
+import liquid.transport.domain.LegEntity;
+import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.persistence.domain.SpaceBookingEntity;
 import liquid.transport.service.BookingService;
 import liquid.transport.service.ShipmentService;

@@ -1,13 +1,16 @@
 package liquid.controller;
 
-import liquid.container.domain.Container;
+import liquid.container.domain.ContainerEntity;
+import liquid.container.domain.ContainerSubtypeEntity;
 import liquid.container.domain.ContainerType;
-import liquid.container.facade.ContainerFacade;
-import liquid.container.persistence.domain.ContainerEntity;
-import liquid.container.persistence.domain.ContainerSubtypeEntity;
+import liquid.container.model.Container;
+import liquid.container.model.EnterContainerAllocForm;
 import liquid.container.service.ContainerService;
 import liquid.container.service.ContainerSubtypeService;
-import liquid.domain.*;
+import liquid.domain.ContainerAllocation;
+import liquid.domain.SearchContainerAllocForm;
+import liquid.domain.SelfContainerAllocation;
+import liquid.domain.ShipmentContainerAllocation;
 import liquid.facade.ContainerAllocationFacade;
 import liquid.model.Alert;
 import liquid.operation.domain.Location;
@@ -17,10 +20,10 @@ import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
 import liquid.order.service.ServiceItemService;
 import liquid.process.controller.BaseTaskController;
+import liquid.transport.domain.RailContainerEntity;
+import liquid.transport.domain.ShipmentEntity;
+import liquid.transport.domain.TruckEntity;
 import liquid.transport.facade.TruckFacade;
-import liquid.transport.persistence.domain.RailContainerEntity;
-import liquid.transport.persistence.domain.ShipmentEntity;
-import liquid.transport.persistence.domain.TruckEntity;
 import liquid.transport.service.RailContainerService;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.ShippingContainerService;
@@ -61,9 +64,6 @@ public class AllocationController extends BaseTaskController {
 
     @Autowired
     private ContainerService containerService;
-
-    @Autowired
-    private ContainerFacade containerFacade;
 
     @Autowired
     private ServiceItemService serviceItemService;
@@ -321,7 +321,22 @@ public class AllocationController extends BaseTaskController {
         logger.debug("taskId: {}", taskId);
         logger.debug("searchContainerAllocForm: {}", containers);
 
-        Iterable<ContainerEntity> containerEntities = containerFacade.enter(containers);
+        List<ContainerEntity> entities = new ArrayList<>();
+        for (int i = 0; i < containers.getList().size(); i++) {
+            Container container = containers.getList().get(i);
+            ContainerEntity containerEntity = new ContainerEntity();
+            if (null == container.getBicCode() || container.getBicCode().trim().isEmpty())
+                continue;
+            containerEntity.setId(container.getId());
+            containerEntity.setBicCode(container.getBicCode());
+            containerEntity.setOwner(ServiceProvider.newInstance(ServiceProvider.class, container.getOwnerId()));
+            containerEntity.setYard(Location.newInstance(Location.class, container.getYardId()));
+            containerEntity.setSubtype(ContainerSubtypeEntity.newInstance(ContainerSubtypeEntity.class, container.getSubtypeId()));
+            containerEntity.setStatus(0);
+            entities.add(containerEntity);
+        }
+        Iterable<ContainerEntity> containerEntities = containerService.save(entities);
+
         List<Long> containerIds = new ArrayList<>();
         for (ContainerEntity containerEntity : containerEntities) {
             containerIds.add(containerEntity.getId());

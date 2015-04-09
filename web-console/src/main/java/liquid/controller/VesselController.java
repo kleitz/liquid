@@ -1,8 +1,8 @@
 package liquid.controller;
 
 import liquid.process.controller.BaseTaskController;
-import liquid.transport.persistence.domain.ShipmentEntity;
-import liquid.transport.persistence.domain.VesselContainerEntity;
+import liquid.transport.domain.ShipmentEntity;
+import liquid.transport.domain.VesselContainerEntity;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.ShippingContainerService;
 import org.slf4j.Logger;

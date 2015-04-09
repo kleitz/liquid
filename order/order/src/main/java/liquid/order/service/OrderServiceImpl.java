@@ -1,6 +1,5 @@
 package liquid.order.service;
 
-import liquid.container.service.ContainerSubtypeService;
 import liquid.order.domain.OrderEntity;
 import liquid.order.domain.OrderEntity_;
 import liquid.order.domain.OrderStatus;
@@ -33,9 +32,6 @@ import static org.springframework.data.jpa.domain.Specifications.where;
 @Service
 public class OrderServiceImpl extends AbstractBaseOrderService<OrderEntity, OrderRepository> implements OrderService {
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
-
-    @Autowired
-    private ContainerSubtypeService containerSubtypeService;
 
     @Autowired
     private ServiceItemServiceImpl serviceItemService;

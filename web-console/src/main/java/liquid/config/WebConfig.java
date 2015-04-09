@@ -45,6 +45,8 @@ import java.util.Locale;
         "liquid.process.controller",
         "liquid.order.restfulapi",
         "liquid.order.controller",
+        "liquid.container.controller",
+        "liquid.container.restfulapi",
         "liquid.transport.web.controller",
         "liquid.accounting.web.controller",
         "liquid.purchase.api.controller",

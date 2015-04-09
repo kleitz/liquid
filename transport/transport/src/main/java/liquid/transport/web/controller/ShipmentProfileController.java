@@ -1,8 +1,8 @@
 package liquid.transport.web.controller;
 
 import liquid.operation.domain.Location;
-import liquid.transport.persistence.domain.LegEntity;
-import liquid.transport.persistence.domain.ShipmentEntity;
+import liquid.transport.domain.LegEntity;
+import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.persistence.repository.ShipmentRepository;
 import liquid.transport.web.domain.Leg;
 import liquid.transport.domain.TransMode;

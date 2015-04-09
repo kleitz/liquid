@@ -22,7 +22,7 @@ import liquid.order.service.OrderService;
 import liquid.process.service.TaskService;
 import liquid.service.ExchangeRateService;
 import liquid.transport.domain.TransMode;
-import liquid.transport.persistence.domain.LegEntity;
+import liquid.transport.domain.LegEntity;
 import liquid.transport.service.LegService;
 import liquid.web.domain.ExchangeRateDto;
 import liquid.web.domain.SearchBarForm;

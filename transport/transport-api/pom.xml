@@ -18,6 +18,18 @@
             <groupId>liquid</groupId>
             <artifactId>liquid-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>liquid</groupId>
+            <artifactId>liquid-operation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>liquid</groupId>
+            <artifactId>liquid-container-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>liquid</groupId>
+            <artifactId>liquid-order-api</artifactId>
+        </dependency>
 
         <!-- jackson -->
         <dependency>

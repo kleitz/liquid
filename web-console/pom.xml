@@ -61,6 +61,8 @@
         <dependency>
             <groupId>liquid</groupId>
             <artifactId>liquid-container</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>liquid</groupId>
@@ -93,6 +95,9 @@
         <dependency>
             <groupId>liquid</groupId>
             <artifactId>liquid-process-web</artifactId>
+            <version>${project.version}</version>
+            <!-- FIXME - need to change to runtime -->
+            <scope>compile</scope>
         </dependency>
 
         <!-- servlet -->

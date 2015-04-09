@@ -1,7 +1,7 @@
 package liquid.transport.persistence.repository;
 
 import liquid.order.domain.OrderEntity;
-import liquid.transport.persistence.domain.VesselContainerEntity;
+import liquid.transport.domain.VesselContainerEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Collection;

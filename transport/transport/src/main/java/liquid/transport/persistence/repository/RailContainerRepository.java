@@ -1,8 +1,8 @@
 package liquid.transport.persistence.repository;
 
 import liquid.order.domain.OrderEntity;
-import liquid.transport.persistence.domain.RailContainerEntity;
-import liquid.transport.persistence.domain.ShipmentEntity;
+import liquid.transport.domain.RailContainerEntity;
+import liquid.transport.domain.ShipmentEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;

@@ -9,7 +9,7 @@ import liquid.operation.service.ServiceProviderService;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceSubtypeService;
 import liquid.process.controller.BaseTaskController;
-import liquid.transport.persistence.domain.ShipmentEntity;
+import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.ShippingContainerService;
 import liquid.transport.domain.TransMode;

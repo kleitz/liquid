@@ -1,6 +1,6 @@
 package liquid.transport.web.domain;
 
-import liquid.transport.persistence.domain.ShipmentEntity;
+import liquid.transport.domain.ShipmentEntity;
 
 import java.util.ArrayList;
 import java.util.Arrays;

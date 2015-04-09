@@ -1,7 +1,7 @@
 package liquid.process.service;
 
-import liquid.transport.persistence.domain.ShipmentEntity;
-import liquid.transport.persistence.domain.ShippingContainerEntity;
+import liquid.transport.domain.ShipmentEntity;
+import liquid.transport.domain.ShippingContainerEntity;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.ShippingContainerService;
 import org.springframework.beans.factory.annotation.Autowired;

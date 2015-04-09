@@ -75,10 +75,11 @@ public class JpaConfig {
         factory.setPackagesToScan(
                 "liquid.persistence.domain",
                 "liquid.operation.domain",
-                "liquid.container.persistence.domain",
+                "liquid.container.domain",
                 "liquid.order.domain",
                 "liquid.order.persistence.domain",
-                "liquid.transport.persistence.domain",
+                "liquid.transport.persistence.domain", // FIXME
+                "liquid.transport.domain",
                 "liquid.charge.persistence.domain",
                 "liquid.accounting.persistence.domain",
                 "liquid.purchase.persistence.domain");

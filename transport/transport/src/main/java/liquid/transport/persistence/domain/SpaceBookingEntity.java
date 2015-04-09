@@ -3,6 +3,7 @@ package liquid.transport.persistence.domain;
 import liquid.operation.domain.ServiceProvider;
 import liquid.order.domain.OrderEntity;
 import liquid.persistence.domain.BaseUpdateEntity;
+import liquid.transport.domain.LegEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
