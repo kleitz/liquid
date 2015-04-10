@@ -12,6 +12,10 @@
     <packaging>war</packaging>
     <name>Web Console</name>
 
+    <properties>
+        <root.dir>../</root.dir>
+    </properties>
+
     <dependencies>
         <!-- liquid -->
         <dependency>

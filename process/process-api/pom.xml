@@ -13,6 +13,10 @@
     <packaging>jar</packaging>
     <name>Process API</name>
 
+    <properties>
+        <root.dir>../../</root.dir>
+    </properties>
+
     <dependencies>
         <!-- liquid -->
         <dependency>

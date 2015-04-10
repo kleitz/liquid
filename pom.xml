@@ -39,6 +39,7 @@
         <junit-version>4.12</junit-version>
 
         <!-- Build System Configuration -->
+        <root.dir>.</root.dir>
         <java-version>1.8</java-version>
         <resources-version>2.7</resources-version>
         <compiler-version>3.3</compiler-version>
@@ -388,6 +389,7 @@
                     <xmlOutput>true</xmlOutput>
                     <!-- Optional directory to put findbugs xdoc xml report -->
                     <xmlOutputDirectory>target/site</xmlOutputDirectory>
+                    <excludeFilterFile>${root.dir}/tools/findbugs/exclude.xml</excludeFilterFile>
                 </configuration>
             </plugin>
         </plugins>

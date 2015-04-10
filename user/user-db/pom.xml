@@ -14,6 +14,10 @@
     <packaging>jar</packaging>
     <name>User Database Backend</name>
 
+    <properties>
+        <root.dir>../../</root.dir>
+    </properties>
+
     <dependencies>
         <!-- liquid -->
         <dependency>

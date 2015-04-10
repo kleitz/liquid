@@ -12,6 +12,10 @@
     <artifactId>liquid-operation-api</artifactId>
     <name>Operation API</name>
 
+    <properties>
+        <root.dir>../../</root.dir>
+    </properties>
+
     <dependencies>
         <!-- liquid -->
         <dependency>

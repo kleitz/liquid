@@ -12,6 +12,10 @@
     <artifactId>liquid-user-web</artifactId>
     <name>User Web</name>
 
+    <properties>
+        <root.dir>../../</root.dir>
+    </properties>
+
     <dependencies>
         <!-- liquid -->
         <dependency>

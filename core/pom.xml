@@ -13,6 +13,10 @@
     <packaging>jar</packaging>
     <name>Core</name>
 
+    <properties>
+        <root.dir>../</root.dir>
+    </properties>
+
     <dependencies>
         <!-- liquid -->
         <dependency>

@@ -12,6 +12,10 @@
     <artifactId>liquid-transport-api</artifactId>
     <name>Transport API</name>
 
+    <properties>
+        <root.dir>../../</root.dir>
+    </properties>
+
     <dependencies>
         <!-- liquid -->
         <dependency>

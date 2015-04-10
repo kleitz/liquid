@@ -12,6 +12,10 @@
     <artifactId>liquid-process-web</artifactId>
     <name>Process Web</name>
 
+    <properties>
+        <root.dir>../../</root.dir>
+    </properties>
+
     <dependencies>
         <!-- liquid -->
         <dependency>
