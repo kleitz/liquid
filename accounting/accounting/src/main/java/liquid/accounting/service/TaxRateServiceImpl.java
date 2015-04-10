@@ -1,6 +1,6 @@
 package liquid.accounting.service;
 
-import liquid.accounting.domain.TaxRateEntity;
+import liquid.accounting.domain.TaxRate;
 import liquid.accounting.repository.TaxRateRepository;
 import liquid.service.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +12,16 @@ import java.util.Collection;
  * Created by redbrick9 on 8/29/14.
  */
 @Service
-public class TaxRateService extends AbstractService<TaxRateEntity, TaxRateRepository> {
+public class TaxRateServiceImpl extends AbstractService<TaxRate, TaxRateRepository>
+        implements TaxRateService {
 
     @Autowired
     private TaxRateRepository taxRateRepository;
 
     @Override
-    public void doSaveBefore(TaxRateEntity entity) {}
+    public void doSaveBefore(TaxRate entity) {}
 
-    public Collection<TaxRateEntity> findAll() {
+    public Collection<TaxRate> findAll() {
         return taxRateRepository.findAll();
     }
 }

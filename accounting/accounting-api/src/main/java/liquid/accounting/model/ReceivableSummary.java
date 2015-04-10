@@ -1,4 +1,4 @@
-package liquid.accounting.web.domain;
+package liquid.accounting.model;
 
 import liquid.order.model.Order;
 

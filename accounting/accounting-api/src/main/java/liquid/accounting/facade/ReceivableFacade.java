@@ -1,7 +1,7 @@
 package liquid.accounting.facade;
 
-import liquid.accounting.web.domain.Earning;
-import liquid.accounting.web.domain.ReceivableSummary;
+import liquid.accounting.model.Earning;
+import liquid.accounting.model.ReceivableSummary;
 import org.springframework.stereotype.Service;
 
 /**

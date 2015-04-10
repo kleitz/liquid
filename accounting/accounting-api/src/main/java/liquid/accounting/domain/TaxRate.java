@@ -9,7 +9,7 @@ import javax.persistence.Entity;
  * Created by redbrick9 on 8/29/14.
  */
 @Entity(name = "ACT_TAX_RATE")
-public class TaxRateEntity extends BaseUpdateEntity {
+public class TaxRate extends BaseUpdateEntity {
     @Column(name = "NAME")
     private String name;
 

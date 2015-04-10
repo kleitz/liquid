@@ -1,4 +1,4 @@
-package liquid.accounting.web.domain;
+package liquid.accounting.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

@@ -1,7 +1,7 @@
 package liquid.order.facade;
 
 import liquid.accounting.facade.ReceivableFacade;
-import liquid.accounting.web.domain.ReceivableSummary;
+import liquid.accounting.model.ReceivableSummary;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
 import liquid.domain.Currency;

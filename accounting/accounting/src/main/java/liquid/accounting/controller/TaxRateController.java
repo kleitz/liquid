@@ -1,9 +1,9 @@
 package liquid.accounting.controller;
 
+import liquid.accounting.domain.TaxRate;
 import liquid.accounting.model.TaxRates;
-import liquid.model.Alert;
-import liquid.accounting.domain.TaxRateEntity;
 import liquid.accounting.service.TaxRateService;
+import liquid.model.Alert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class TaxRateController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model) {
-        Collection<TaxRateEntity> list = taxRateService.findAll();
+        Collection<TaxRate> list = taxRateService.findAll();
         TaxRates taxRates = new TaxRates();
         taxRates.setList(list);
         model.addAttribute("taxRates", taxRates);
@@ -39,7 +39,7 @@ public class TaxRateController {
 
     @RequestMapping(method = RequestMethod.POST, params = "addTaxRate")
     public String addTaxRate(@ModelAttribute TaxRates taxRates) {
-        taxRates.getList().add(new TaxRateEntity());
+        taxRates.getList().add(new TaxRate());
         return "charge/tax_rate";
     }
 

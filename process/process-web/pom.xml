@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>liquid</groupId>
     <artifactId>liquid-process-web</artifactId>
-    <name>User Process</name>
+    <name>Process Web</name>
 
     <dependencies>
         <!-- liquid -->

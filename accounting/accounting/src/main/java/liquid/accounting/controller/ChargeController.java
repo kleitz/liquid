@@ -8,7 +8,7 @@ import liquid.accounting.service.ChargeService;
 import liquid.accounting.model.Charge;
 import liquid.accounting.model.ChargeStatus;
 import liquid.accounting.model.ChargeWay;
-import liquid.accounting.web.domain.Earning;
+import liquid.accounting.model.Earning;
 import liquid.container.domain.ContainerCap;
 import liquid.container.domain.ContainerType;
 import liquid.domain.LoadingType;

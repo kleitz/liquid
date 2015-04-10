@@ -11,7 +11,7 @@ import java.util.List;
 public class EnhancedPageImpl<T> extends PageImpl {
     private T sum;
 
-    public EnhancedPageImpl(List content, Pageable pageable, long total, T sum) {
+    public EnhancedPageImpl(List<T> content, Pageable pageable, long total, T sum) {
         super(content, pageable, total);
         this.sum = sum;
     }

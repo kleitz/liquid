@@ -2,8 +2,8 @@ package liquid.accounting.facade;
 
 import liquid.accounting.domain.ReceivableSummaryEntity;
 import liquid.accounting.service.ReceivableSummaryService;
-import liquid.accounting.web.domain.Earning;
-import liquid.accounting.web.domain.ReceivableSummary;
+import liquid.accounting.model.Earning;
+import liquid.accounting.model.ReceivableSummary;
 import liquid.order.domain.OrderEntity;
 import liquid.accounting.service.ExchangeRateService;
 import liquid.util.DateUtil;

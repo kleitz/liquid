@@ -4,7 +4,7 @@ import liquid.accounting.facade.ReceivableFacade;
 import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.service.ChargeService;
 import liquid.accounting.model.ChargeWay;
-import liquid.accounting.web.domain.Earning;
+import liquid.accounting.model.Earning;
 import liquid.model.Alert;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceProviderService;

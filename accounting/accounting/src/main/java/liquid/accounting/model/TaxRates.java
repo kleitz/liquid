@@ -1,6 +1,6 @@
 package liquid.accounting.model;
 
-import liquid.accounting.domain.TaxRateEntity;
+import liquid.accounting.domain.TaxRate;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,13 +9,13 @@ import java.util.Collection;
  * Created by redbrick9 on 8/29/14.
  */
 public class TaxRates {
-    private Collection<TaxRateEntity> list = new ArrayList<>();
+    private Collection<TaxRate> list = new ArrayList<>();
 
-    public Collection<TaxRateEntity> getList() {
+    public Collection<TaxRate> getList() {
         return list;
     }
 
-    public void setList(Collection<TaxRateEntity> list) {
+    public void setList(Collection<TaxRate> list) {
         this.list = list;
     }
 }

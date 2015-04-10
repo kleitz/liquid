@@ -45,6 +45,9 @@
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
         <native2ascii-version>1.0-beta-1</native2ascii-version>
+        <site-plugin-version>3.4</site-plugin-version>
+        <report-plugin-version>2.8</report-plugin-version>
+        <findbugs-version>3.0.1</findbugs-version>
 
         <!-- Debug Configuration -->
         <tomcat7-version>2.2</tomcat7-version>
@@ -358,6 +361,44 @@
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>${site-plugin-version}</version>
+            </plugin>
+
+            <plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-project-info-reports-plugin</artifactId>
+        		<version>${report-plugin-version}</version>
+        		<configuration>
+        		  <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+        		</configuration>
+        	</plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>${findbugs-version}</version>
+                <configuration>
+                    <xmlOutput>true</xmlOutput>
+                    <!-- Optional directory to put findbugs xdoc xml report -->
+                    <xmlOutputDirectory>target/site</xmlOutputDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+ 
+    <distributionManagement>
+        <site>
+            <id>local-website</id>
+            <name>Local Website</name>
+            <url>http://www.liquid.com</url>
+        </site>
+    </distributionManagement>
 
     <modules>
         <module>common</module>
