@@ -6,6 +6,7 @@
     <packaging>pom</packaging>
     <version>2.1.54-SNAPSHOT</version>
     <name>Liquid</name>
+    <url>https://github.com/redbrick9/liquid</url>
 
     <properties>
         <!-- Third Party Software Version -->
@@ -394,9 +395,9 @@
  
     <distributionManagement>
         <site>
-            <id>local-website</id>
-            <name>Local Website</name>
-            <url>http://www.liquid.com</url>
+            <id>mock-website</id>
+            <name>Mock Website</name>
+            <url>https://github.com/redbrick9/liquid</url>
         </site>
     </distributionManagement>
 
