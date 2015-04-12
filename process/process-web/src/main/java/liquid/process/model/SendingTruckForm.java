@@ -1,7 +1,7 @@
 package liquid.process.model;
 
 import liquid.process.web.domain.TaskForm;
-import liquid.transport.web.domain.TruckForm;
+import liquid.transport.model.TruckForm;
 
 import javax.validation.Valid;
 import java.util.List;

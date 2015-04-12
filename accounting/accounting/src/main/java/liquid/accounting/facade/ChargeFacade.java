@@ -1,8 +1,8 @@
 package liquid.accounting.facade;
 
 import liquid.accounting.domain.ChargeEntity;
-import liquid.accounting.service.ChargeService;
 import liquid.accounting.model.Charge;
+import liquid.accounting.service.InternalChargeService;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.transport.domain.LegEntity;
@@ -24,7 +24,7 @@ import java.util.List;
 @Service
 public class ChargeFacade  {
     @Autowired
-    private ChargeService chargeService;
+    private InternalChargeService chargeService;
 
     public ChargeEntity save(Charge charge) {
         ChargeEntity entity = convert(charge);

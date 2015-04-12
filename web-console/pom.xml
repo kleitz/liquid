@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>liquid</groupId>
-            <artifactId>liquid-core</artifactId>
+            <artifactId>liquid-excel</artifactId>
         </dependency>
         <dependency>
             <groupId>liquid</groupId>
@@ -32,23 +32,11 @@
         </dependency>
         <dependency>
             <groupId>liquid</groupId>
-            <artifactId>liquid-operation-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>liquid</groupId>
-            <artifactId>liquid-operation</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
+            <artifactId>liquid-core</artifactId>
         </dependency>
         <dependency>
             <groupId>liquid</groupId>
             <artifactId>liquid-user-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>liquid</groupId>
-            <artifactId>liquid-user-ldap</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>liquid</groupId>
@@ -64,29 +52,53 @@
         </dependency>
         <dependency>
             <groupId>liquid</groupId>
+            <artifactId>liquid-operation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>liquid</groupId>
+            <artifactId>liquid-operation</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>liquid</groupId>
+            <artifactId>liquid-container-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>liquid</groupId>
             <artifactId>liquid-container</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>liquid</groupId>
+            <artifactId>liquid-order-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>liquid</groupId>
             <artifactId>liquid-order</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>liquid</groupId>
+            <artifactId>liquid-transport-api</artifactId>
         </dependency>
         <dependency>
             <groupId>liquid</groupId>
             <artifactId>liquid-transport</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>liquid</groupId>
+            <artifactId>liquid-accounting-api</artifactId>
         </dependency>
         <dependency>
             <groupId>liquid</groupId>
             <artifactId>liquid-accounting</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>liquid</groupId>
-            <artifactId>liquid-config</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>liquid</groupId>
-            <artifactId>liquid-excel</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>liquid</groupId>
@@ -95,6 +107,9 @@
         <dependency>
             <groupId>liquid</groupId>
             <artifactId>liquid-process-activiti</artifactId>
+            <version>${project.version}</version>
+            <!-- FIXME - need to change to runtime -->
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>liquid</groupId>
@@ -119,11 +134,39 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
+        </dependency>
+
+        <!-- hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
+        <!-- ehcache -->
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-core</artifactId>
         </dependency>
 
         <!-- spring security -->
@@ -142,6 +185,27 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-ldap</artifactId>
+        </dependency>
+
+        <!-- activiti -->
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-engine</artifactId>
+            <version>${activiti.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-spring</artifactId>
+            <version>${activiti.version}</version>
+            <scope>compile</scope>
+            <exclusions>
+                <!-- Exclude Commons Logging in favor of logback -->
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- aspectj -->

@@ -3,10 +3,11 @@ package liquid.accounting.facade;
 import liquid.accounting.domain.AccountingOperator;
 import liquid.accounting.domain.AccountingType;
 import liquid.accounting.domain.InvoiceEntity;
-import liquid.accounting.service.InvoiceService;
-import liquid.accounting.service.ReceivableSummaryService;
 import liquid.accounting.model.Invoice;
 import liquid.accounting.model.Statement;
+import liquid.accounting.service.InternalInvoiceService;
+import liquid.accounting.service.InternalReceivableSummaryService;
+import liquid.accounting.service.InvoiceServiceImpl;
 import liquid.operation.service.CustomerService;
 import liquid.order.domain.OrderEntity;
 import liquid.util.DateUtil;
@@ -21,16 +22,16 @@ import java.util.List;
  * Created by Tao Ma on 1/8/15.
  */
 @Service
-public class InvoiceFacade {
+public class InvoiceFacade implements InternalInvoiceService {
 
     @Autowired
-    private InvoiceService invoiceService;
+    private InvoiceServiceImpl invoiceService;
 
     @Autowired
     private CustomerService customerService;
 
     @Autowired
-    private ReceivableSummaryService receivableSummaryService;
+    private InternalReceivableSummaryService receivableSummaryService;
 
     public Statement<Invoice> findByOrderId(Long orderId) {
         Statement<Invoice> statement = new Statement<>();

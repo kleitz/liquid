@@ -29,6 +29,8 @@
         <dependency>
             <groupId>liquid</groupId>
             <artifactId>liquid-process-activiti</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>liquid</groupId>
@@ -38,15 +40,15 @@
             <groupId>liquid</groupId>
             <artifactId>liquid-order-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>liquid</groupId>
+            <artifactId>liquid-accounting-api</artifactId>
+        </dependency>
 
         <!-- FIXME - Replace the following packages using api. -->
         <dependency>
             <groupId>liquid</groupId>
-            <artifactId>liquid-transport</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>liquid</groupId>
-            <artifactId>liquid-accounting</artifactId>
+            <artifactId>liquid-transport-api</artifactId>
         </dependency>
 
         <!-- spring -->

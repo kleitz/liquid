@@ -1,10 +1,10 @@
 package liquid.accounting.controller;
 
-import liquid.accounting.facade.InvoiceFacade;
-import liquid.accounting.facade.ReceiptFacade;
 import liquid.accounting.model.Invoice;
 import liquid.accounting.model.Receipt;
 import liquid.accounting.model.Statement;
+import liquid.accounting.service.InternalInvoiceService;
+import liquid.accounting.service.InternalReceiptService;
 import liquid.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,19 +24,19 @@ import javax.validation.Valid;
 public class InvoiceController {
 
     @Autowired
-    private InvoiceFacade invoiceFacade;
+    private InternalInvoiceService invoiceService;
 
     @Autowired
-    private ReceiptFacade receiptFacade;
+    private InternalReceiptService receiptService;
 
     @RequestMapping(method = RequestMethod.POST)
     public String add(@Valid @ModelAttribute Invoice invoice,
                       BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            Statement<Invoice> statement = invoiceFacade.findByOrderId(invoice.getOrderId());
+            Statement<Invoice> statement = invoiceService.findByOrderId(invoice.getOrderId());
             model.addAttribute("statement", statement);
 
-            Statement<Receipt> receiptStatement = receiptFacade.findByOrderId(invoice.getOrderId());
+            Statement<Receipt> receiptStatement = receiptService.findByOrderId(invoice.getOrderId());
             model.addAttribute("receiptStatement", receiptStatement);
             Receipt receipt = new Receipt();
             receipt.setOrderId(invoice.getOrderId());
@@ -44,7 +44,7 @@ public class InvoiceController {
             model.addAttribute("receipt", receipt);
             return "receivable/panel";
         }
-        invoiceFacade.save(invoice);
+        invoiceService.save(invoice);
         return "redirect:" + "/receivable/120";
     }
 }

@@ -1,10 +1,10 @@
 package liquid.process.controller;
 
-import liquid.accounting.facade.ReceivableFacade;
 import liquid.accounting.domain.ChargeEntity;
-import liquid.accounting.service.ChargeService;
-import liquid.accounting.model.ChargeWay;
+import liquid.accounting.domain.ChargeWay;
+import liquid.accounting.facade.ReceivableFacade;
 import liquid.accounting.model.Earning;
+import liquid.accounting.service.ChargeService;
 import liquid.model.Alert;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceProviderService;
@@ -16,16 +16,12 @@ import liquid.process.domain.VerificationSheetForm;
 import liquid.process.model.SendingTruckForm;
 import liquid.process.service.TaskService;
 import liquid.security.SecurityContext;
-import liquid.transport.domain.TransMode;
-import liquid.transport.facade.TruckFacade;
-import liquid.transport.domain.LegEntity;
-import liquid.transport.domain.PathEntity;
-import liquid.transport.domain.RouteEntity;
-import liquid.transport.domain.ShipmentEntity;
+import liquid.transport.domain.*;
+import liquid.transport.model.Shipment;
+import liquid.transport.model.TruckForm;
 import liquid.transport.service.RouteService;
 import liquid.transport.service.ShipmentService;
-import liquid.transport.web.domain.Shipment;
-import liquid.transport.web.domain.TruckForm;
+import liquid.transport.service.TruckService;
 import liquid.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,7 +76,7 @@ public class TaskController extends BaseTaskController {
     private ServiceProviderService serviceProviderService;
 
     @Autowired
-    private TruckFacade truckFacade;
+    private TruckService truckService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String initForm(@PathVariable String taskId, Model model) {
@@ -109,7 +105,13 @@ public class TaskController extends BaseTaskController {
                 Iterable<ShipmentEntity> shipmentEntities = shipmentService.findByOrderId(order.getId());
                 List<TruckForm> truckList = new ArrayList<>();
                 for (ShipmentEntity shipmentEntity : shipmentEntities) {
-                    List<TruckForm> truckFormListForShipment = truckFacade.findByShipmentId(shipmentEntity.getId());
+                    Iterable<TruckEntity> truckEntityIterable = truckService.findByShipmentId(shipmentEntity.getId());
+                    List<TruckForm> truckFormListForShipment = new ArrayList<>();
+                    for (TruckEntity truckEntity : truckEntityIterable) {
+                        TruckForm truck = convert(truckEntity);
+                        truckFormListForShipment.add(truck);
+                    }
+
                     for (int i = truckFormListForShipment.size(); i < shipmentEntity.getContainerQty(); i++) {
                         TruckForm truck = new TruckForm();
                         truck.setPickingAt(DateUtil.stringOf(new Date()));
@@ -129,6 +131,17 @@ public class TaskController extends BaseTaskController {
         }
 
         return "redirect:" + taskService.computeTaskMainPath(taskId);
+    }
+
+    private TruckForm convert(TruckEntity entity) {
+        TruckForm truck = new TruckForm();
+        truck.setId(entity.getId());
+        truck.setShipmentId(entity.getShipment().getId());
+        truck.setPickingAt(DateUtil.stringOf(entity.getPickingAt()));
+        truck.setServiceProviderId(entity.getServiceProviderId());
+        truck.setLicensePlate(entity.getLicensePlate());
+        truck.setDriver(entity.getDriver());
+        return truck;
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "definitionKey=CDCI")
@@ -169,10 +182,26 @@ public class TaskController extends BaseTaskController {
             return "truck/sending_truck_task";
         }
 
-        List<TruckForm> truckFormList = truckFacade.save(sendingTruckForm.getTruckList());
+        List<TruckEntity> truckEntityList = new ArrayList<>();
+        for (TruckForm truck : sendingTruckForm.getTruckList()) {
+            TruckEntity truckEntity = convert(truck);
+            truckEntityList.add(truckEntity);
+        }
+        truckService.save(truckEntityList);
 
         redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
         return "redirect:/task/" + taskId;
+    }
+
+    private TruckEntity convert(TruckForm truck) {
+        TruckEntity entity = new TruckEntity();
+        entity.setId(truck.getId());
+        entity.setShipment(ShipmentEntity.newInstance(ShipmentEntity.class, truck.getShipmentId()));
+        entity.setPickingAt(DateUtil.dateOf(truck.getPickingAt()));
+        entity.setServiceProviderId(truck.getServiceProviderId());
+        entity.setLicensePlate(truck.getLicensePlate());
+        entity.setDriver(truck.getDriver());
+        return entity;
     }
 
     /**
@@ -316,7 +345,7 @@ public class TaskController extends BaseTaskController {
             shipmentEntityntity.setTaskId(taskId);
 
             if (null != shipment.getRouteId() && shipment.getRouteId() > 0L) {
-                RouteEntity route = routeService.findOne(shipment.getRouteId());
+                RouteEntity route = routeService.find(shipment.getRouteId());
                 List<PathEntity> paths = route.getPaths();
                 List<LegEntity> legs = new ArrayList<>(paths.size());
                 for (PathEntity path : paths) {

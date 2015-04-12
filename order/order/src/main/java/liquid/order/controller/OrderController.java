@@ -1,16 +1,19 @@
 package liquid.order.controller;
 
 import liquid.accounting.domain.ChargeEntity;
-import liquid.accounting.facade.InvoiceFacade;
-import liquid.accounting.facade.ReceiptFacade;
-import liquid.accounting.facade.SettlementFacade;
-import liquid.accounting.model.*;
+import liquid.accounting.domain.ChargeWay;
+import liquid.accounting.model.Invoice;
+import liquid.accounting.model.Receipt;
+import liquid.accounting.model.Settlement;
+import liquid.accounting.model.Statement;
 import liquid.accounting.service.ChargeService;
+import liquid.accounting.service.InvoiceService;
+import liquid.accounting.service.ReceiptService;
+import liquid.accounting.service.SettlementService;
 import liquid.container.domain.ContainerCap;
 import liquid.container.domain.ContainerSubtypeEntity;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
-import liquid.operation.domain.RailPlanTypeEntity;
 import liquid.domain.LoadingType;
 import liquid.domain.TradeType;
 import liquid.operation.domain.*;
@@ -96,13 +99,13 @@ public class OrderController extends BaseController {
     private RailwayPlanTypeService railwayPlanTypeService;
 
     @Autowired
-    private InvoiceFacade invoiceFacade;
+    private InvoiceService invoiceFacade;
 
     @Autowired
-    private ReceiptFacade receiptFacade;
+    private ReceiptService receiptFacade;
 
     @Autowired
-    private SettlementFacade settlementFacade;
+    private SettlementService settlementService;
 
     @ModelAttribute("serviceTypes")
     public Iterable<ServiceTypeEntity> populateServiceTypes() {
@@ -461,7 +464,7 @@ public class OrderController extends BaseController {
         Statement<Receipt> receiptStatement = receiptFacade.findByOrderId(orderId);
         model.addAttribute("receiptStatement", receiptStatement);
 
-        Statement<Settlement> settlementStatement = settlementFacade.findByOrderId(orderId);
+        Statement<Settlement> settlementStatement = settlementService.findByOrderId(orderId);
         model.addAttribute("settlementStatement", settlementStatement);
 
         return "receivable/panel";
@@ -524,7 +527,7 @@ public class OrderController extends BaseController {
         if (bindingResult.hasErrors()) {
             return "settlement/form";
         }
-        settlementFacade.save(settlement);
+        settlementService.save(settlement);
         return "redirect:/order/" + orderId + "/receivable";
     }
 }

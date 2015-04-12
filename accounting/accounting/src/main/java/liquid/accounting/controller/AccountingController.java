@@ -5,7 +5,7 @@ import liquid.accounting.model.ReceivableSummary;
 import liquid.domain.TradeType;
 import liquid.accounting.facade.ChargeFacade;
 import liquid.accounting.model.Charge;
-import liquid.accounting.model.ChargeWay;
+import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.service.ExchangeRateService;
 import liquid.web.domain.SearchBarForm;
 import org.springframework.beans.factory.annotation.Autowired;

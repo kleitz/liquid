@@ -1,19 +1,19 @@
 package liquid.controller;
 
 import liquid.accounting.domain.ChargeEntity;
+import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.service.ChargeService;
-import liquid.accounting.model.ChargeWay;
 import liquid.dto.TruckingDto;
-import liquid.user.domain.Role;
-import liquid.operation.service.ServiceProviderService;
 import liquid.operation.domain.ServiceSubtype;
+import liquid.operation.service.ServiceProviderService;
 import liquid.operation.service.ServiceSubtypeService;
 import liquid.process.controller.BaseTaskController;
 import liquid.transport.domain.ShipmentEntity;
+import liquid.transport.domain.TransMode;
+import liquid.transport.model.Truck;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.ShippingContainerService;
-import liquid.transport.domain.TransMode;
-import liquid.transport.web.domain.Truck;
+import liquid.user.domain.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,11 +1,11 @@
 package liquid.accounting.facade;
 
 import liquid.accounting.domain.ReceivableSummaryEntity;
-import liquid.accounting.service.ReceivableSummaryService;
 import liquid.accounting.model.Earning;
 import liquid.accounting.model.ReceivableSummary;
-import liquid.order.domain.OrderEntity;
 import liquid.accounting.service.ExchangeRateService;
+import liquid.accounting.service.InternalReceivableSummaryService;
+import liquid.order.domain.OrderEntity;
 import liquid.util.DateUtil;
 import liquid.web.domain.EnhancedPageImpl;
 import liquid.web.domain.SearchBarForm;
@@ -25,7 +25,7 @@ import java.util.List;
 public class ReceivableFacadeImpl implements ReceivableFacade {
 
     @Autowired
-    private ReceivableSummaryService receivableSummaryService;
+    private InternalReceivableSummaryService receivableSummaryService;
 
     @Autowired
     private ExchangeRateService exchangeRateService;

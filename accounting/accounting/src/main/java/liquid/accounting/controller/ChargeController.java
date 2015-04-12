@@ -1,14 +1,15 @@
 package liquid.accounting.controller;
 
 
+import liquid.accounting.domain.ChargeEntity;
+import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.facade.ChargeFacade;
 import liquid.accounting.facade.ReceivableFacade;
-import liquid.accounting.domain.ChargeEntity;
-import liquid.accounting.service.ChargeService;
 import liquid.accounting.model.Charge;
 import liquid.accounting.model.ChargeStatus;
-import liquid.accounting.model.ChargeWay;
 import liquid.accounting.model.Earning;
+import liquid.accounting.service.ExchangeRateService;
+import liquid.accounting.service.InternalChargeService;
 import liquid.container.domain.ContainerCap;
 import liquid.container.domain.ContainerType;
 import liquid.domain.LoadingType;
@@ -20,9 +21,8 @@ import liquid.operation.service.ServiceSubtypeService;
 import liquid.order.domain.OrderStatus;
 import liquid.order.service.OrderService;
 import liquid.process.service.TaskService;
-import liquid.accounting.service.ExchangeRateService;
-import liquid.transport.domain.TransMode;
 import liquid.transport.domain.LegEntity;
+import liquid.transport.domain.TransMode;
 import liquid.transport.service.LegService;
 import liquid.web.domain.ExchangeRateDto;
 import liquid.web.domain.SearchBarForm;
@@ -63,7 +63,7 @@ public class ChargeController {
     private OrderService orderService;
 
     @Autowired
-    private ChargeService chargeService;
+    private InternalChargeService chargeService;
 
     @Autowired
     private ChargeFacade chargeFacade;

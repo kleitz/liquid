@@ -1,7 +1,7 @@
 package liquid.controller;
 
 import liquid.process.controller.BaseTaskController;
-import liquid.transport.web.domain.RailArrival;
+import liquid.transport.model.RailArrival;
 import liquid.transport.service.ShippingContainerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -38,19 +38,16 @@ import java.util.Locale;
 @EnableWebMvc
 @ComponentScan(basePackages = {
         "liquid.controller",
-        "liquid.api.controller",
         "liquid.user.controller",
         "liquid.operation.controller",
         "liquid.operation.restfulapi",
-        "liquid.process.controller",
         "liquid.order.restfulapi",
         "liquid.order.controller",
         "liquid.container.controller",
         "liquid.container.restfulapi",
-        "liquid.transport.web.controller",
-        "liquid.accounting.controller",
-        "liquid.purchase.api.controller",
-        "liquid.purchase.web.controller"})
+        "liquid.process.controller",
+        "liquid.transport.controller",
+        "liquid.accounting.controller"})
 public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private GenericFormatter<ServiceProviderType> serviceProviderTypeFormatter;

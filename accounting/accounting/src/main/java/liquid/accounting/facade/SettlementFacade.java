@@ -1,9 +1,10 @@
 package liquid.accounting.facade;
 
 import liquid.accounting.domain.SettlementEntity;
-import liquid.accounting.service.SettlementService;
 import liquid.accounting.model.Settlement;
 import liquid.accounting.model.Statement;
+import liquid.accounting.service.InternalSettlementService;
+import liquid.accounting.service.SettlementServiceImpl;
 import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
 import liquid.util.DateUtil;
@@ -17,10 +18,10 @@ import java.util.List;
  * Created by Tao Ma on 1/10/15.
  */
 @Service
-public class SettlementFacade {
+public class SettlementFacade implements InternalSettlementService {
 
     @Autowired
-    private SettlementService settlementService;
+    private SettlementServiceImpl settlementService;
 
     @Autowired
     private OrderService orderService;

@@ -69,26 +69,25 @@
                 <groupId>liquid</groupId>
                 <artifactId>liquid-util</artifactId>
                 <version>${project.version}</version>
+                <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>liquid</groupId>
                 <artifactId>liquid-pinyin4j</artifactId>
                 <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>liquid</groupId>
+                <artifactId>liquid-excel</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>liquid</groupId>
                 <artifactId>liquid-audit</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>liquid</groupId>
-                <artifactId>liquid-accounting-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>liquid</groupId>
-                <artifactId>liquid-accounting</artifactId>
-                <version>${project.version}</version>
+                <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>liquid</groupId>
@@ -98,13 +97,19 @@
             </dependency>
             <dependency>
                 <groupId>liquid</groupId>
-                <artifactId>liquid-operation-api</artifactId>
+                <artifactId>liquid-user-api</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>liquid</groupId>
-                <artifactId>liquid-user-api</artifactId>
+                <artifactId>liquid-process-api</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>liquid</groupId>
+                <artifactId>liquid-operation-api</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
@@ -122,65 +127,28 @@
             </dependency>
             <dependency>
                 <groupId>liquid</groupId>
-                <artifactId>liquid-order</artifactId>
-                <version>${project.version}</version>
-                <scope>runtime</scope>
-            </dependency>
-            <dependency>
-                <groupId>liquid</groupId>
-                <artifactId>liquid-process-api</artifactId>
-                <version>${project.version}</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>liquid</groupId>
-                <artifactId>liquid-process-activiti</artifactId>
-                <version>${project.version}</version>
-                <scope>compile</scope>
-            </dependency>
-            <!--
-            <dependency>
-                <groupId>liquid</groupId>
-                <artifactId>liquid-process-web</artifactId>
-                <version>${project.version}</version>
-                <scope>compile</scope>
-            </dependency>
-            -->
-            <dependency>
-                <groupId>liquid</groupId>
                 <artifactId>liquid-transport-api</artifactId>
                 <version>${project.version}</version>
+                <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>liquid</groupId>
-                <artifactId>liquid-transport</artifactId>
+                <artifactId>liquid-accounting-api</artifactId>
                 <version>${project.version}</version>
+                <scope>compile</scope>
             </dependency>
-            <dependency>
-                <groupId>liquid</groupId>
-                <artifactId>liquid-config</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>liquid</groupId>
-                <artifactId>liquid-excel</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
 
             <!-- spring -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>${spring.version}</version>
-                <!--
                 <exclusions>
                     <exclusion>
                         <groupId>commons-logging</groupId>
                         <artifactId>commons-logging</artifactId>
                     </exclusion>
                 </exclusions>
-                -->
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -412,7 +380,6 @@
         <module>transport</module>
         <module>accounting</module>
         <module>process</module>
-        <module>config</module>
         <module>web-console</module>
     </modules>
 </project>

@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
     <name>Accounting Implementation</name>
 
-	<properties>
+    <properties>
         <root.dir>../../</root.dir>
     </properties>
 
@@ -33,6 +33,10 @@
         </dependency>
         <dependency>
             <groupId>liquid</groupId>
+            <artifactId>liquid-process-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>liquid</groupId>
             <artifactId>liquid-container-api</artifactId>
         </dependency>
         <dependency>
@@ -41,7 +45,7 @@
         </dependency>
         <dependency>
             <groupId>liquid</groupId>
-            <artifactId>liquid-transport</artifactId>
+            <artifactId>liquid-transport-api</artifactId>
         </dependency>
 
         <!-- spring -->
