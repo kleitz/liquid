@@ -58,6 +58,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private LocationTypeFormatter locationTypeFormatter;
 
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");

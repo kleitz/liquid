@@ -16,6 +16,5 @@ public interface ServiceProviderService {
 
     Iterable<ServiceProvider> findByQueryNameLike(String name);
 
-    @Deprecated
     Iterable<ServiceProvider> findAll();
 }

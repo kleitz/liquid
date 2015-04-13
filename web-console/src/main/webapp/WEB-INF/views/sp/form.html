@@ -36,10 +36,14 @@
             <div class="col-xs-4">
                 <div class="form-group">
                     <label th:text="#{sp.type}" class="control-label">SP Type</label>
-                    <select th:field="*{type}" class="form-control input-sm">
+                    <!-- HACK - To avoid to look up a lot of times from database, we should not use th:field.
+                         For detaled information, please refer to https://jira.spring.io/browse/SPR-12472
+                     -->
+                    <select id="type" name="type" class="form-control input-sm">
                         <option th:each="spType : ${spTypes}"
-                                th:value="${spType.key}"
-                                th:text="${spType.value}">SP Type
+                                th:value="${spType.id}"
+                                th:text="${spType.name}"
+                                th:selected="${sp.type} ? ${spType.id == sp.type.id}">SP Type
                         </option>
                     </select>
                 </div>
