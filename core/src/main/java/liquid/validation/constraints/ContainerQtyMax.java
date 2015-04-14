@@ -13,7 +13,6 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * TODO: Comments.
  * User: tao
  * Date: 10/15/13
  * Time: 7:12 PM

@@ -5,7 +5,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 /**
- * TODO: Comments.
  * User: tao
  * Date: 10/16/13
  * Time: 9:24 PM

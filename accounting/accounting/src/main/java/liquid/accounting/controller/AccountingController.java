@@ -2,7 +2,7 @@ package liquid.accounting.controller;
 
 import liquid.accounting.facade.ReceivableFacadeImpl;
 import liquid.accounting.model.ReceivableSummary;
-import liquid.domain.TradeType;
+import liquid.order.domain.TradeType;
 import liquid.accounting.facade.ChargeFacade;
 import liquid.accounting.model.Charge;
 import liquid.accounting.domain.ChargeWay;

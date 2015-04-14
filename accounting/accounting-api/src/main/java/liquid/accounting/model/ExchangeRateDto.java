@@ -1,9 +1,8 @@
-package liquid.web.domain;
+package liquid.accounting.model;
 
 import java.math.BigDecimal;
 
 /**
- * TODO: Comments.
  * User: tao
  * Date: 11/16/13
  * Time: 5:04 PM
