@@ -6,7 +6,7 @@ import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 9/20/13
  * Time: 10:12 AM

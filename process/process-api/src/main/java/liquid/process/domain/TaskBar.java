@@ -3,7 +3,7 @@ package liquid.process.domain;
 import java.io.Serializable;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/26/13
  * Time: 2:58 PM

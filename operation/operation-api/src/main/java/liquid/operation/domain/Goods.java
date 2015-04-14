@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 9/28/13
  * Time: 3:27 PM

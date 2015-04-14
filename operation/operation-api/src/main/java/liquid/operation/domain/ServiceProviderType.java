@@ -2,6 +2,8 @@ package liquid.operation.domain;
 
 import liquid.converter.Text;
 import liquid.core.domain.BaseUpdateEntity;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
@@ -9,12 +11,13 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 /**
- * TODO: Comments.
+ * Service Provider Type which is major business of the service provider.
  * User: tao
  * Date: 10/25/13
  * Time: 7:31 PM
  */
 @Entity(name = "OPS_SERVICE_PROVIDER_TYPE")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class ServiceProviderType extends BaseUpdateEntity implements Text {
     @NotNull
     @NotEmpty

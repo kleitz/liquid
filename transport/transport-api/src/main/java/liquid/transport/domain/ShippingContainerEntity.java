@@ -8,7 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/10/13
  * Time: 8:15 PM

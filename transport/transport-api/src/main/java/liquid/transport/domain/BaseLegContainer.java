@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/14/13
  * Time: 8:10 PM

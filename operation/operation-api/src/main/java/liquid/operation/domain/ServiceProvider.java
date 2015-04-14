@@ -2,6 +2,7 @@ package liquid.operation.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import liquid.core.domain.StatefulEntity;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -10,12 +11,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * TODO: Comments.
+ * Service Provider.
  * User: tao
  * Date: 10/2/13
  * Time: 4:38 PM
  */
 @Entity(name = "OPS_SERVICE_PROVIDER")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class ServiceProvider extends StatefulEntity {
     @NotNull
     @NotEmpty

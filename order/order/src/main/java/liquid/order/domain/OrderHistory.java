@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 11/12/13
  * Time: 10:59 PM

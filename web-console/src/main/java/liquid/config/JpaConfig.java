@@ -2,6 +2,9 @@ package liquid.config;
 
 import net.sf.ehcache.management.ManagementService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +26,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 9/24/13
  * Time: 9:06 PM
@@ -37,6 +40,7 @@ import java.util.Properties;
         "liquid.transport.repository",
         "liquid.accounting.repository"})
 @Import(PropertyPlaceholderConfig.class)
+@EnableCaching
 public class JpaConfig {
     @Value("${jdbc.url}")
     private String jdbcUrl;
@@ -118,5 +122,10 @@ public class JpaConfig {
     @Bean(initMethod = "init", destroyMethod = "dispose")
     public ManagementService managementService() {
         return new ManagementService(ehCacheManagerFactory().getObject(), mBeanServerFactory().getObject(), true, true, true, true);
+    }
+
+    @Bean
+    public CacheManager cacheManager() {
+        return new EhCacheCacheManager(ehCacheManagerFactory().getObject());
     }
 }

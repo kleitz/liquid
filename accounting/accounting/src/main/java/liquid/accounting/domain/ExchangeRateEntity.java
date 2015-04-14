@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import java.math.BigDecimal;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 11/16/13
  * Time: 1:32 PM

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.security.Principal;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/12/13
  * Time: 4:28 PM

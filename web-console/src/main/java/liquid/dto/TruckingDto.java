@@ -3,7 +3,7 @@ package liquid.dto;
 import java.io.Serializable;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/23/13
  * Time: 12:14 AM

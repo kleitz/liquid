@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/19/13
  * Time: 2:21 PM

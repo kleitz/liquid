@@ -1,7 +1,7 @@
 package liquid.accounting.domain;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/2/13
  * Time: 8:39 PM

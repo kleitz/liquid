@@ -2,6 +2,8 @@ package liquid.operation.domain;
 
 import liquid.converter.Text;
 import liquid.core.domain.BaseUpdateEntity;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
@@ -9,9 +11,11 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 /**
+ * Service Provider Type which means what kind of service the providers offer.
  * Created by redbrick9 on 5/9/14.
  */
 @Entity(name = "OPS_SERVICE_SUBTYPE")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class ServiceSubtype extends BaseUpdateEntity implements Text {
     @NotNull
     @NotEmpty
