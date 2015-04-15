@@ -14,12 +14,14 @@ import liquid.container.domain.ContainerCap;
 import liquid.container.domain.ContainerSubtypeEntity;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
-import liquid.order.domain.LoadingType;
-import liquid.order.domain.TradeType;
+import liquid.core.controller.BaseController;
+import liquid.model.SearchBarForm;
 import liquid.operation.domain.*;
 import liquid.operation.service.*;
+import liquid.order.domain.LoadingType;
 import liquid.order.domain.OrderEntity;
 import liquid.order.domain.OrderStatus;
+import liquid.order.domain.TradeType;
 import liquid.order.facade.OrderFacade;
 import liquid.order.model.Order;
 import liquid.order.model.ServiceItem;
@@ -31,8 +33,6 @@ import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.service.ShipmentService;
 import liquid.util.DateUtil;
 import liquid.validation.FormValidationResult;
-import liquid.core.controller.BaseController;
-import liquid.model.SearchBarForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -427,7 +427,6 @@ public class OrderController extends BaseController {
                 model.addAttribute("completedTasks", completedTasks);
                 break;
             case "railway":
-                OrderEntity orderEntity = orderService.find(id);
                 break;
             case "container":
                 Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(id);
