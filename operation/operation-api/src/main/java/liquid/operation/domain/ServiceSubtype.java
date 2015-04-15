@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  * Created by redbrick9 on 5/9/14.
  */
 @Entity(name = "OPS_SERVICE_SUBTYPE")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ServiceSubtype extends BaseUpdateEntity implements Text {
     @NotNull
     @NotEmpty

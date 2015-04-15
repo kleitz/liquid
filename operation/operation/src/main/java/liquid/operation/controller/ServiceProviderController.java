@@ -1,10 +1,10 @@
 package liquid.operation.controller;
 
+import liquid.core.controller.BaseController;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.InternalServiceProviderService;
 import liquid.operation.service.ServiceProviderTypeService;
 import liquid.operation.service.ServiceSubtypeService;
-import liquid.core.controller.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 /**
- *  
  * User: tao
  * Date: 10/2/13
  * Time: 5:02 PM
@@ -75,6 +74,7 @@ public class ServiceProviderController extends BaseController {
         if (bindingResult.hasErrors()) {
             return "sp/sp";
         } else {
+            sp.setStatus(0);
             serviceProviderService.save(sp);
             return "redirect:/sp";
         }

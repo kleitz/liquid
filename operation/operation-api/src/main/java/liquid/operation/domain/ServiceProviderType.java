@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
  * Time: 7:31 PM
  */
 @Entity(name = "OPS_SERVICE_PROVIDER_TYPE")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ServiceProviderType extends BaseUpdateEntity implements Text {
     @NotNull
     @NotEmpty

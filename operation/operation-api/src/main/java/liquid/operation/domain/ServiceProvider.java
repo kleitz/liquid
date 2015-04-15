@@ -2,6 +2,7 @@ package liquid.operation.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import liquid.core.domain.StatefulEntity;
+import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -17,7 +18,7 @@ import java.util.Set;
  * Time: 4:38 PM
  */
 @Entity(name = "OPS_SERVICE_PROVIDER")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ServiceProvider extends StatefulEntity {
     @NotNull
     @NotEmpty
@@ -56,6 +57,7 @@ public class ServiceProvider extends StatefulEntity {
     @JoinTable(name = "OPS_SERVICE_PROVIDER_SUBTYPE",
             joinColumns = @JoinColumn(name = "SERVICE_PROVIDER_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "SERVICE_SUBTYPE_ID", referencedColumnName = "ID"))
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ServiceSubtype> subtypes = new HashSet<>();
 
     public String getCode() {

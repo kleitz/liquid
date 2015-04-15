@@ -12,11 +12,4 @@
             eternal="true"
             memoryStoreEvictionPolicy="LRU"
             statistics="true"/>
-
-    <cache
-            name="serviceProviderTypeCache"
-            maxEntriesLocalHeap="10000"
-            eternal="true"
-            memoryStoreEvictionPolicy="LRU"
-            statistics="true"/>
 </ehcache>
