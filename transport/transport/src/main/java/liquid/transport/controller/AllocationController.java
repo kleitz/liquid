@@ -7,7 +7,7 @@ import liquid.container.model.Container;
 import liquid.container.model.EnterContainerAllocForm;
 import liquid.container.service.ContainerService;
 import liquid.container.service.ContainerSubtypeService;
-import liquid.model.Alert;
+import liquid.core.model.Alert;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.LocationService;

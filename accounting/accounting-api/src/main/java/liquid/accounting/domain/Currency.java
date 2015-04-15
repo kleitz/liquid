@@ -1,4 +1,4 @@
-package liquid.domain;
+package liquid.accounting.domain;
 
 /**
  * Created by redbrick9 on 5/8/14.

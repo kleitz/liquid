@@ -25,7 +25,7 @@ import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.TransMode;
 import liquid.transport.service.LegService;
 import liquid.accounting.model.ExchangeRateDto;
-import liquid.web.domain.SearchBarForm;
+import liquid.model.SearchBarForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package liquid.transport.controller;
 
 
-import liquid.model.Alert;
+import liquid.core.model.Alert;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.ServiceProviderService;
 import liquid.order.domain.OrderEntity;

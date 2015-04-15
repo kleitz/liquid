@@ -1,4 +1,4 @@
-package liquid.web.domain;
+package liquid.model;
 
 import liquid.util.DateUtil;
 import org.hibernate.validator.constraints.NotEmpty;

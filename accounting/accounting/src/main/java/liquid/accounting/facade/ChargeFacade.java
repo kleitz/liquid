@@ -8,8 +8,8 @@ import liquid.operation.domain.ServiceSubtype;
 import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.util.DateUtil;
-import liquid.web.domain.EnhancedPageImpl;
-import liquid.web.domain.SearchBarForm;
+import liquid.core.model.EnhancedPageImpl;
+import liquid.model.SearchBarForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +22,7 @@ import java.util.List;
  * Created by redbrick9 on 6/9/14.
  */
 @Service
-public class ChargeFacade  {
+public class ChargeFacade {
     @Autowired
     private InternalChargeService chargeService;
 
@@ -74,7 +74,7 @@ public class ChargeFacade  {
 
             }
         }
-        return new EnhancedPageImpl<Charge>(chargeList, pageable, entityPage.getTotalElements(), sum);
+        return new EnhancedPageImpl<>(chargeList, pageable, entityPage.getTotalElements(), sum);
     }
 
     public Charge convert(ChargeEntity entity) {

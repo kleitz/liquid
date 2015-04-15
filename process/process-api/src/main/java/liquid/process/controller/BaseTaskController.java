@@ -2,7 +2,7 @@ package liquid.process.controller;
 
 import liquid.process.domain.Task;
 import liquid.process.service.TaskService;
-import liquid.web.controller.BaseController;
+import liquid.core.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ModelAttribute;

@@ -5,7 +5,7 @@ import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.facade.ReceivableFacade;
 import liquid.accounting.model.Earning;
 import liquid.accounting.service.ChargeService;
-import liquid.model.Alert;
+import liquid.core.model.Alert;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceProviderService;
 import liquid.operation.service.ServiceSubtypeService;

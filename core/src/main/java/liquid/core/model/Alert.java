@@ -1,4 +1,4 @@
-package liquid.model;
+package liquid.core.model;
 
 import java.util.Arrays;
 

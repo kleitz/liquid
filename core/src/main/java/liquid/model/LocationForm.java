@@ -1,4 +1,4 @@
-package liquid.domain;
+package liquid.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 

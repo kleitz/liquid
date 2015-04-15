@@ -4,7 +4,7 @@ import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.InternalServiceProviderService;
 import liquid.operation.service.ServiceProviderTypeService;
 import liquid.operation.service.ServiceSubtypeService;
-import liquid.web.controller.BaseController;
+import liquid.core.controller.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

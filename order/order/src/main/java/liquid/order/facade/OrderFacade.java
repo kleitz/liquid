@@ -4,7 +4,7 @@ import liquid.accounting.facade.ReceivableFacade;
 import liquid.accounting.model.ReceivableSummary;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
-import liquid.domain.Currency;
+import liquid.accounting.domain.Currency;
 import liquid.order.domain.LoadingType;
 import liquid.order.domain.TradeType;
 import liquid.operation.domain.Customer;

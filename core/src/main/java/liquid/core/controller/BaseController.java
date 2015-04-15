@@ -1,4 +1,4 @@
-package liquid.web.controller;
+package liquid.core.controller;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
