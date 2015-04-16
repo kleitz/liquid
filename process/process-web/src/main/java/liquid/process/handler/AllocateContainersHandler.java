@@ -19,7 +19,6 @@ import java.util.Map;
  */
 @Component
 public class AllocateContainersHandler extends AbstractTaskHandler {
-    public static final String TASK_DEFINITION_KEY = "AllocateContainers";
 
     @Autowired
     private ShipmentService shipmentService;
@@ -28,7 +27,7 @@ public class AllocateContainersHandler extends AbstractTaskHandler {
     private ShippingContainerService shippingContainerService;
 
     @Override
-    public void doBeforeComplete(String taskId, Map<String, Object> variableMap) {
+    public void preComplete(String taskId, Map<String, Object> variableMap) {
         long orderId = taskService.getOrderIdByTaskId(taskId);
         Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(orderId);
         int shippingContainerQuantity = 0;
@@ -51,22 +50,12 @@ public class AllocateContainersHandler extends AbstractTaskHandler {
     }
 
     @Override
-    public String getDefinitionKey() {
-        return TASK_DEFINITION_KEY;
-    }
-
-    @Override
     public boolean isRedirect() {
         return true;
     }
 
     @Override
     public void init(Task task, Model model) {
-
-    }
-
-    @Override
-    public void claim(Task task) {
 
     }
 }

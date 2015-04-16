@@ -1,9 +1,17 @@
 package liquid.process.handler;
 
+import liquid.accounting.domain.ChargeEntity;
+import liquid.accounting.domain.ChargeWay;
+import liquid.accounting.service.ChargeService;
+import liquid.order.domain.OrderEntity;
+import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
-import liquid.transport.domain.TransMode;
 import liquid.transport.domain.LegEntity;
+import liquid.transport.domain.RouteEntity;
 import liquid.transport.domain.ShipmentEntity;
+import liquid.transport.domain.TransMode;
+import liquid.transport.model.Shipment;
+import liquid.transport.service.RouteService;
 import liquid.transport.service.ShipmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +22,7 @@ import org.springframework.ui.Model;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,10 +33,58 @@ public class PlanShipmentHandler extends AbstractTaskHandler {
     private static final Logger logger = LoggerFactory.getLogger(PlanShipmentHandler.class);
 
     @Autowired
+    private OrderService orderService;
+
+    @Autowired
     private ShipmentService shipmentService;
 
+    @Autowired
+    private RouteService routeService;
+
+    @Autowired
+    private ChargeService chargeService;
+
     @Override
-    public void doBeforeComplete(String taskId, Map<String, Object> variableMap) {
+    public boolean isRedirect() {
+        return false;
+    }
+
+    @Override
+    public void init(Task task, Model model) {
+        OrderEntity order = orderService.find(task.getOrderId());
+
+        Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(task.getOrderId());
+
+        int containerUsage = 0;
+        for (ShipmentEntity shipment : shipmentSet) {
+            containerUsage += shipment.getContainerQty();
+        }
+
+        Shipment shipment = new Shipment();
+        // set remaining container quantity as the default value for the next shipment planning.
+        shipment.setContainerQuantity(order.getContainerQty() - containerUsage);
+
+        // shipment planning bar
+        model.addAttribute("shipment", shipment);
+        model.addAttribute("containerTotality", order.getContainerQty());
+
+        List<RouteEntity> routes = routeService.find(order.getSrcLocId(), order.getDstLocId());
+        routes.add(RouteEntity.newInstance(RouteEntity.class, 0L));
+        model.addAttribute("routes", routes);
+
+        // shipment table
+        model.addAttribute("shipmentSet", shipmentSet);
+        model.addAttribute("transModes", TransMode.toMap());
+
+        // charge table
+        model.addAttribute("chargeWays", ChargeWay.values());
+        Iterable<ChargeEntity> charges = chargeService.findByTaskId(task.getId());
+        model.addAttribute("charges", charges);
+        model.addAttribute("total", chargeService.total(charges));
+    }
+
+    @Override
+    public void preComplete(String taskId, Map<String, Object> variableMap) {
         Map<String, Object> transTypes = getTransTypes(taskId);
         variableMap.putAll(transTypes);
 
@@ -85,25 +142,5 @@ public class PlanShipmentHandler extends AbstractTaskHandler {
 
         logger.debug("The order has the transportation {}.", transTypes);
         return transTypes;
-    }
-
-    @Override
-    public String getDefinitionKey() {
-        return null;
-    }
-
-    @Override
-    public boolean isRedirect() {
-        return true;
-    }
-
-    @Override
-    public void init(Task task, Model model) {
-
-    }
-
-    @Override
-    public void claim(Task task) {
-
     }
 }

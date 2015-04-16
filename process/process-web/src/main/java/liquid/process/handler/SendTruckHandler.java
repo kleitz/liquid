@@ -40,13 +40,8 @@ public class SendTruckHandler extends AbstractTaskHandler {
     private TruckService truckService;
 
     @Override
-    public void doBeforeComplete(String taskId, Map<String, Object> variableMap) {
+    public void preComplete(String taskId, Map<String, Object> variableMap) {
 
-    }
-
-    @Override
-    public String getDefinitionKey() {
-        return TASK_DEFINITION_KEY;
     }
 
     @Override
@@ -99,11 +94,5 @@ public class SendTruckHandler extends AbstractTaskHandler {
         truck.setLicensePlate(entity.getLicensePlate());
         truck.setDriver(entity.getDriver());
         return truck;
-    }
-
-
-    @Override
-    public void claim(Task task) {
-
     }
 }

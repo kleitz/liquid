@@ -14,21 +14,14 @@ import java.util.Map;
  * FIXME - Need to change name by convention.
  * Created by Tao Ma on 4/16/15.
  */
-@Component(CDCIHandler.TASK_DEFINITION_KEY + "Handler")
+@Component("CDCIHandler")
 public class CDCIHandler extends AbstractTaskHandler {
-    public static final String TASK_DEFINITION_KEY = "CDCI";
-
     @Autowired
     private OrderService orderService;
 
     @Override
-    public void doBeforeComplete(String taskId, Map<String, Object> variableMap) {
+    public void preComplete(String taskId, Map<String, Object> variableMap) {
 
-    }
-
-    @Override
-    public String getDefinitionKey() {
-        return TASK_DEFINITION_KEY;
     }
 
     @Override
@@ -45,10 +38,5 @@ public class CDCIHandler extends AbstractTaskHandler {
         verificationSheetForm.setSn(verificationSheetSn);
         verificationSheetForm.setOrderId(task.getOrderId());
         model.addAttribute("verificationSheetForm", verificationSheetForm);
-    }
-
-    @Override
-    public void claim(Task task) {
-
     }
 }

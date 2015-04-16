@@ -12,12 +12,7 @@ import java.util.Map;
 @Component
 public class DefaultHandler extends AbstractTaskHandler {
     @Override
-    public void doBeforeComplete(String taskId, Map<String, Object> variableMap) {
-    }
-
-    @Override
-    public String getDefinitionKey() {
-        return null;
+    public void preComplete(String taskId, Map<String, Object> variableMap) {
     }
 
     @Override
@@ -27,11 +22,5 @@ public class DefaultHandler extends AbstractTaskHandler {
 
     @Override
     public void init(Task task, Model model) {
-
-    }
-
-    @Override
-    public void claim(Task task) {
-
     }
 }

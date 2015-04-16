@@ -18,15 +18,10 @@ public class SendInvoicingHandler extends AbstractTaskHandler {
     private ReceivableSummaryService receivableSummaryService;
 
     @Override
-    public void doBeforeComplete(String taskId, Map<String, Object> variableMap) {
+    public void preComplete(String taskId, Map<String, Object> variableMap) {
         Long orderId = taskService.getOrderIdByTaskId(taskId);
         ReceivableSummaryEntity receivableSummaryEntity = receivableSummaryService.findByOrderId(orderId);
         variableMap.put("salesPrice", "CNY: " + receivableSummaryEntity.getCny() + "; USD: " + receivableSummaryEntity.getUsd());
-    }
-
-    @Override
-    public String getDefinitionKey() {
-        return null;
     }
 
     @Override
@@ -36,11 +31,6 @@ public class SendInvoicingHandler extends AbstractTaskHandler {
 
     @Override
     public void init(Task task, Model model) {
-
-    }
-
-    @Override
-    public void claim(Task task) {
 
     }
 }

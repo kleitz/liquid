@@ -15,20 +15,8 @@ import java.util.Map;
  */
 @Component
 public class FeedDistyPriceHandler extends AbstractTaskHandler {
-    public static final String TASK_DEFINITION_KEY = "feedDistyPrice";
-
     @Autowired
     private OrderService orderService;
-
-    @Override
-    public void doBeforeComplete(String taskId, Map<String, Object> variableMap) {
-
-    }
-
-    @Override
-    public final String getDefinitionKey() {
-        return TASK_DEFINITION_KEY;
-    }
 
     @Override
     public boolean isRedirect() {
@@ -46,7 +34,5 @@ public class FeedDistyPriceHandler extends AbstractTaskHandler {
     }
 
     @Override
-    public void claim(Task task) {
-
-    }
+    public void preComplete(String taskId, Map<String, Object> variableMap) {}
 }

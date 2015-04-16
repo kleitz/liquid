@@ -30,7 +30,7 @@ public class FeedContainerNoHandler extends AbstractTaskHandler {
     private ShippingContainerService shippingContainerService;
 
     @Override
-    public void doBeforeComplete(String taskId, Map<String, Object> variableMap) {
+    public void preComplete(String taskId, Map<String, Object> variableMap) {
         Long orderId = taskService.getOrderIdByTaskId(taskId);
         OrderEntity order = orderService.find(orderId);
         Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(orderId);
@@ -52,22 +52,12 @@ public class FeedContainerNoHandler extends AbstractTaskHandler {
     }
 
     @Override
-    public String getDefinitionKey() {
-        return null;
-    }
-
-    @Override
     public boolean isRedirect() {
         return true;
     }
 
     @Override
     public void init(Task task, Model model) {
-
-    }
-
-    @Override
-    public void claim(Task task) {
 
     }
 }

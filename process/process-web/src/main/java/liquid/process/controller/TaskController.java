@@ -10,30 +10,26 @@ import liquid.operation.service.ServiceProviderService;
 import liquid.operation.service.ServiceSubtypeService;
 import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
+import liquid.process.NotCompletedException;
 import liquid.process.domain.Task;
 import liquid.process.handler.TaskHandler;
 import liquid.process.handler.TaskHandlerFactory;
 import liquid.process.service.TaskService;
 import liquid.security.SecurityContext;
-import liquid.transport.domain.*;
-import liquid.transport.model.Shipment;
 import liquid.transport.service.RouteService;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.TruckService;
+import org.activiti.engine.ActivitiTaskAlreadyClaimedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * User: tao
@@ -92,6 +88,37 @@ public class TaskController extends AbstractTaskController {
         return locateTemplate(task.getDefinitionKey());
     }
 
+    @RequestMapping(method = RequestMethod.POST, params = "claim")
+    public String claim(@PathVariable String taskId, Model model, RedirectAttributes redirectAttributes) {
+        logger.debug("taskId: {}", taskId);
+        try {
+            taskService.claim(taskId, SecurityContext.getInstance().getUsername());
+        } catch (ActivitiTaskAlreadyClaimedException e) {
+            // FIXME
+            model.addAttribute("message", "task.claimed.by.someone.else");
+            return "error/error";
+        }
+        return "redirect:/task/" + taskId;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, params = "complete")
+    public String complete(@PathVariable String taskId,
+                           @RequestHeader(value = "referer") String referer,
+                           Model model) {
+        logger.debug("taskId: {}", taskId);
+
+        try {
+            taskService.complete(taskId);
+        } catch (NotCompletedException e) {
+            return "redirect:" + referer;
+        } catch (Exception e) {
+            logger.error(String.format("Complete taskId '%s' and referer '%s'.", taskId, referer), e);
+            return "redirect:" + referer;
+        }
+
+        return "redirect:/task";
+    }
+
     /**
      * TODO: Move to another controller.
      *
@@ -145,110 +172,5 @@ public class TaskController extends AbstractTaskController {
         Earning earning = receivableFacade.calculateEarning(order.getId());
         model.addAttribute("earning", earning);
         return "charge/settlement";
-    }
-
-    @RequestMapping(value = "/planning", method = RequestMethod.GET)
-    public String init(@PathVariable String taskId, Model model) {
-        logger.debug("taskId: {}", taskId);
-
-        Long orderId = taskService.getOrderIdByTaskId(taskId);
-        OrderEntity order = orderService.find(orderId);
-
-        Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(orderId);
-
-        int containerUsage = 0;
-        for (ShipmentEntity shipment : shipmentSet) {
-            containerUsage += shipment.getContainerQty();
-        }
-
-        Shipment shipment = new Shipment();
-        // set remaining container quantity as the default value for the next shipment planning.
-        shipment.setContainerQuantity(order.getContainerQty() - containerUsage);
-
-        // shipment planning bar
-        model.addAttribute("shipment", shipment);
-        model.addAttribute("containerTotality", order.getContainerQty());
-
-        List<RouteEntity> routes = routeService.find(order.getSrcLocId(), order.getDstLocId());
-        routes.add(RouteEntity.newInstance(RouteEntity.class, 0L));
-        model.addAttribute("routes", routes);
-
-        // shipment table
-        model.addAttribute("shipmentSet", shipmentSet);
-        model.addAttribute("transModes", TransMode.toMap());
-
-        // charge table
-        model.addAttribute("chargeWays", ChargeWay.values());
-        Iterable<ChargeEntity> charges = chargeService.findByTaskId(taskId);
-        model.addAttribute("charges", charges);
-        model.addAttribute("total", chargeService.total(charges));
-        return "planning/main";
-    }
-
-    @RequestMapping(value = "/planning/shipment", method = RequestMethod.POST)
-    public String addShipment(@PathVariable String taskId, @Valid @ModelAttribute(value = "shipment") Shipment shipment,
-                              BindingResult result, Model model) {
-        logger.debug("taskId: {}", taskId);
-        logger.debug("shipment: {}", shipment);
-
-        Long orderId = taskService.getOrderIdByTaskId(taskId);
-        OrderEntity order = orderService.find(orderId);
-
-        int containerUsage = 0;
-        Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(orderId);
-        for (ShipmentEntity r : shipmentSet) {
-            containerUsage += r.getContainerQty();
-        }
-
-        if (result.hasErrors()) {
-            model.addAttribute("containerTotality", order.getContainerQty());
-
-            model.addAttribute("shipmentSet", shipmentSet);
-            model.addAttribute("transModes", TransMode.toMap());
-
-            // charge table
-            model.addAttribute("chargeWays", ChargeWay.values());
-            Iterable<ChargeEntity> charges = chargeService.findByTaskId(taskId);
-            model.addAttribute("charges", charges);
-            model.addAttribute("total", chargeService.total(charges));
-            return "planning/main";
-        } else if (shipment.getContainerQuantity() > (order.getContainerQty() - containerUsage)) {
-            addFieldError(result, "shipment", "containerQty", shipment.getContainerQuantity(), (order.getContainerQty() - containerUsage));
-
-            model.addAttribute("containerTotality", order.getContainerQty());
-
-            model.addAttribute("shipmentSet", shipmentSet);
-            model.addAttribute("transModes", TransMode.toMap());
-
-            // charge table
-            model.addAttribute("chargeWays", ChargeWay.values());
-            Iterable<ChargeEntity> charges = chargeService.findByTaskId(taskId);
-            model.addAttribute("charges", charges);
-            model.addAttribute("total", chargeService.total(charges));
-            return "planning/main";
-        } else {
-            ShipmentEntity shipmentEntityntity = new ShipmentEntity();
-            shipmentEntityntity.setOrder(order);
-            shipmentEntityntity.setContainerQty(shipment.getContainerQuantity());
-            shipmentEntityntity.setTaskId(taskId);
-
-            if (null != shipment.getRouteId() && shipment.getRouteId() > 0L) {
-                RouteEntity route = routeService.find(shipment.getRouteId());
-                List<PathEntity> paths = route.getPaths();
-                List<LegEntity> legs = new ArrayList<>(paths.size());
-                for (PathEntity path : paths) {
-                    LegEntity leg = new LegEntity();
-                    leg.setShipment(shipmentEntityntity);
-                    leg.setTransMode(path.getTransportMode());
-                    leg.setSrcLoc(path.getFrom());
-                    leg.setDstLoc(path.getTo());
-                    legs.add(leg);
-                }
-                shipmentEntityntity.setLegs(legs);
-            }
-
-            shipmentService.save(shipmentEntityntity);
-            return "redirect:/task/" + taskId + "/planning";
-        }
     }
 }

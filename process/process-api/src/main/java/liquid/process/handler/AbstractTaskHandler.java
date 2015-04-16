@@ -14,11 +14,11 @@ public abstract class AbstractTaskHandler implements TaskHandler {
     @Autowired
     protected TaskService taskService;
 
-    public abstract void doBeforeComplete(String taskId, Map<String, Object> variableMap);
+    public abstract void preComplete(String taskId, Map<String, Object> variableMap);
 
     public void complete(String taskId) {
         Map<String, Object> variableMap = new HashMap<>();
-        doBeforeComplete(taskId, variableMap);
+        preComplete(taskId, variableMap);
         taskService.complete(taskId, SecurityContext.getInstance().getUsername(), variableMap);
     }
 }
