@@ -1,5 +1,6 @@
-package liquid.process.service;
+package liquid.process.handler;
 
+import liquid.process.domain.Task;
 import liquid.transport.domain.TransMode;
 import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.ShipmentEntity;
@@ -7,8 +8,9 @@ import liquid.transport.service.ShipmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,9 +19,9 @@ import java.util.Map;
 /**
  * Created by redbrick9 on 6/7/14.
  */
-@Service("planShipment")
-public class PlanShipmentTask extends AbstractTaskProxy {
-    private static final Logger logger = LoggerFactory.getLogger(PlanShipmentTask.class);
+@Component
+public class PlanShipmentHandler extends AbstractTaskHandler {
+    private static final Logger logger = LoggerFactory.getLogger(PlanShipmentHandler.class);
 
     @Autowired
     private ShipmentService shipmentService;
@@ -83,5 +85,25 @@ public class PlanShipmentTask extends AbstractTaskProxy {
 
         logger.debug("The order has the transportation {}.", transTypes);
         return transTypes;
+    }
+
+    @Override
+    public String getDefinitionKey() {
+        return null;
+    }
+
+    @Override
+    public boolean isRedirect() {
+        return true;
+    }
+
+    @Override
+    public void init(Task task, Model model) {
+
+    }
+
+    @Override
+    public void claim(Task task) {
+
     }
 }

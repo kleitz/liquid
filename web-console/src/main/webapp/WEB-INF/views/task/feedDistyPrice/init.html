@@ -15,7 +15,7 @@
 <div id="f" class="container" th:if="${task.assignee}">
     <div th:include="layout :: alert"/>
     
-    <form method="POST" th:object="${disty}" th:action="'/dp?t=' + ${task.id}" class="form">
+    <form method="POST" th:object="${disty}" th:action="'/task/' + ${task.id}" class="form">
         <h3 class="form-heading" th:text="#{disty.price}">Disty Price</h3>
         
         <div class="form-group" th:classappend="${#fields.hasErrors('distyCny')} ? 'has-error'">
@@ -30,8 +30,8 @@
             <span th:errors="*{distyUsd}">error</span>
         </div>        
 
+        <input type="hidden" id="definitionKey" name="definitionKey" th:value="${task.definitionKey}"/>
         <input type="submit" name="save" value="Save Order" class="btn btn-success btn-block" th:value="#{save}"/>
-        <span th:if="${done}" class="glyphicon glyphicon-ok"/>
     </form>
 </div>
 <!-- /.container -->

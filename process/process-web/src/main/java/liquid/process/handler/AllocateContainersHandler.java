@@ -1,11 +1,13 @@
-package liquid.process.service;
+package liquid.process.handler;
 
+import liquid.process.domain.Task;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.domain.ShippingContainerEntity;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.ShippingContainerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,8 +17,10 @@ import java.util.Map;
 /**
  * Created by redbrick9 on 6/7/14.
  */
-@Service("allocateContainers")
-public class AllocationContainerTask extends AbstractTaskProxy {
+@Component
+public class AllocateContainersHandler extends AbstractTaskHandler {
+    public static final String TASK_DEFINITION_KEY = "AllocateContainers";
+
     @Autowired
     private ShipmentService shipmentService;
 
@@ -44,5 +48,25 @@ public class AllocationContainerTask extends AbstractTaskProxy {
         }
         // TODO: This is temp solution for dual-allocated containers.
         shippingContainerService.save(shippingContainers);
+    }
+
+    @Override
+    public String getDefinitionKey() {
+        return TASK_DEFINITION_KEY;
+    }
+
+    @Override
+    public boolean isRedirect() {
+        return true;
+    }
+
+    @Override
+    public void init(Task task, Model model) {
+
+    }
+
+    @Override
+    public void claim(Task task) {
+
     }
 }

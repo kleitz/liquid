@@ -1,11 +1,11 @@
 package liquid.process.controller;
 
+import liquid.core.controller.BaseController;
 import liquid.process.NotCompletedException;
 import liquid.process.domain.Task;
 import liquid.process.domain.TaskBar;
 import liquid.process.service.TaskService;
 import liquid.security.SecurityContext;
-import liquid.core.controller.BaseController;
 import org.activiti.engine.ActivitiTaskAlreadyClaimedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

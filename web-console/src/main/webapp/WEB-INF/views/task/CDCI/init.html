@@ -25,8 +25,8 @@
             <span th:errors="*{sn}">error</span>
         </div>
 
-        <input type="hidden" th:field="*{definitionKey}" class="form-control"/>
-        <input type="hidden" th:field="*{orderId}" class="form-control"/>        
+        <input type="hidden" th:field="*{orderId}"/>        
+        <input type="hidden" id="definitionKey" name="definitionKey" th:value="${task.definitionKey}"/>
         <input type="submit" value="Fill In" class="btn btn-success btn-block btn-sm" th:value="#{save}"/>
     </form>
 </div>

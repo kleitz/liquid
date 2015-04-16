@@ -1,4 +1,4 @@
-package liquid.domain;
+package liquid.process.model;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

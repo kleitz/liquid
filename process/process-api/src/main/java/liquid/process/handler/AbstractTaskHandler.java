@@ -1,8 +1,8 @@
-package liquid.process.service;
+package liquid.process.handler;
 
+import liquid.process.service.TaskService;
 import liquid.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,8 +10,7 @@ import java.util.Map;
 /**
  * Created by redbrick9 on 6/7/14.
  */
-@Service
-public abstract class AbstractTaskProxy {
+public abstract class AbstractTaskHandler implements TaskHandler {
     @Autowired
     protected TaskService taskService;
 

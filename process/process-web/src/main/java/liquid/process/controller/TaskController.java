@@ -5,24 +5,21 @@ import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.facade.ReceivableFacade;
 import liquid.accounting.model.Earning;
 import liquid.accounting.service.ChargeService;
-import liquid.core.model.Alert;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceProviderService;
 import liquid.operation.service.ServiceSubtypeService;
 import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
-import liquid.process.domain.VerificationSheetForm;
-import liquid.process.model.SendingTruckForm;
+import liquid.process.handler.TaskHandler;
+import liquid.process.handler.TaskHandlerFactory;
 import liquid.process.service.TaskService;
 import liquid.security.SecurityContext;
 import liquid.transport.domain.*;
 import liquid.transport.model.Shipment;
-import liquid.transport.model.TruckForm;
 import liquid.transport.service.RouteService;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.TruckService;
-import liquid.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,23 +30,23 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
- *  
  * User: tao
  * Date: 9/26/13
  * Time: 11:25 PM
  */
 @Controller
 @RequestMapping("/task/{taskId}")
-public class TaskController extends BaseTaskController {
+public class TaskController extends AbstractTaskController {
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
+
+    @Autowired
+    private TaskHandlerFactory factory;
 
     @Autowired
     private TaskService taskService;
@@ -83,125 +80,16 @@ public class TaskController extends BaseTaskController {
         logger.debug("taskId: {}", taskId);
         Task task = taskService.getTask(taskId);
         logger.debug("task: {}", task);
+
         model.addAttribute("task", task);
 
-        OrderEntity order = orderService.find(task.getOrderId());
-
-        switch (task.getDefinitionKey()) {
-            case "CDCI":
-                String verificationSheetSn = order.getVerificationSheetSn();
-                VerificationSheetForm verificationSheetForm = new VerificationSheetForm();
-                verificationSheetForm.setDefinitionKey(task.getDefinitionKey());
-                verificationSheetForm.setSn(verificationSheetSn);
-                verificationSheetForm.setOrderId(task.getOrderId());
-                model.addAttribute("task", task);
-                model.addAttribute("verificationSheetForm", verificationSheetForm);
-                return "order/verification_sheet_sn";
-            case "sendTruck":
-                SendingTruckForm sendingTruckForm = new SendingTruckForm();
-                sendingTruckForm.setDefinitionKey(task.getDefinitionKey());
-                sendingTruckForm.setOrderId(task.getOrderId());
-
-                Iterable<ShipmentEntity> shipmentEntities = shipmentService.findByOrderId(order.getId());
-                List<TruckForm> truckList = new ArrayList<>();
-                for (ShipmentEntity shipmentEntity : shipmentEntities) {
-                    Iterable<TruckEntity> truckEntityIterable = truckService.findByShipmentId(shipmentEntity.getId());
-                    List<TruckForm> truckFormListForShipment = new ArrayList<>();
-                    for (TruckEntity truckEntity : truckEntityIterable) {
-                        TruckForm truck = convert(truckEntity);
-                        truckFormListForShipment.add(truck);
-                    }
-
-                    for (int i = truckFormListForShipment.size(); i < shipmentEntity.getContainerQty(); i++) {
-                        TruckForm truck = new TruckForm();
-                        truck.setPickingAt(DateUtil.stringOf(new Date()));
-                        truck.setShipmentId(shipmentEntity.getId());
-                        truckFormListForShipment.add(truck);
-                    }
-                    truckList.addAll(truckFormListForShipment);
-                }
-
-                sendingTruckForm.setTruckList(truckList);
-
-                model.addAttribute("sendingTruckForm", sendingTruckForm);
-                model.addAttribute("sps", serviceProviderService.findByType(4L));
-
-                model.addAttribute("task", task);
-                return "truck/sending_truck_task";
+        TaskHandler handler = factory.locateHandler(task.getDefinitionKey());
+        // FIXME - This is temporary solution for refactor.
+        if (handler.isRedirect()) {
+            return "redirect:" + taskService.computeTaskMainPath(taskId);
         }
-
-        return "redirect:" + taskService.computeTaskMainPath(taskId);
-    }
-
-    private TruckForm convert(TruckEntity entity) {
-        TruckForm truck = new TruckForm();
-        truck.setId(entity.getId());
-        truck.setShipmentId(entity.getShipment().getId());
-        truck.setPickingAt(DateUtil.stringOf(entity.getPickingAt()));
-        truck.setServiceProviderId(entity.getServiceProviderId());
-        truck.setLicensePlate(entity.getLicensePlate());
-        truck.setDriver(entity.getDriver());
-        return truck;
-    }
-
-    @RequestMapping(method = RequestMethod.POST, params = "definitionKey=CDCI")
-    public String fillIn(@PathVariable String taskId,
-                         @Valid @ModelAttribute VerificationSheetForm verificationSheetForm, BindingResult bindingResult,
-                         Model model, RedirectAttributes redirectAttributes) {
-        logger.debug("taskId: {}", taskId);
-        Task task = taskService.getTask(taskId);
-        logger.debug("task: {}", task);
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("verificationSheetForm", verificationSheetForm);
-            model.addAttribute("task", task);
-            return "order/verification_sheet_sn";
-        }
-
-        OrderEntity order = orderService.find(verificationSheetForm.getOrderId());
-        order.setVerificationSheetSn(verificationSheetForm.getSn());
-        orderService.save(order);
-
-        redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
-        return "redirect:/task/" + taskId;
-    }
-
-    @RequestMapping(method = RequestMethod.POST, params = "definitionKey=sendTruck")
-    public String fillIn(@PathVariable String taskId,
-                         @Valid @ModelAttribute SendingTruckForm sendingTruckForm, BindingResult bindingResult,
-                         Model model, RedirectAttributes redirectAttributes) {
-        logger.debug("taskId: {}", taskId);
-        Task task = taskService.getTask(taskId);
-        logger.debug("task: {}", task);
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("sendingTruckForm", sendingTruckForm);
-            model.addAttribute("sps", serviceProviderService.findByType(4L));
-
-            model.addAttribute("task", task);
-            return "truck/sending_truck_task";
-        }
-
-        List<TruckEntity> truckEntityList = new ArrayList<>();
-        for (TruckForm truck : sendingTruckForm.getTruckList()) {
-            TruckEntity truckEntity = convert(truck);
-            truckEntityList.add(truckEntity);
-        }
-        truckService.save(truckEntityList);
-
-        redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
-        return "redirect:/task/" + taskId;
-    }
-
-    private TruckEntity convert(TruckForm truck) {
-        TruckEntity entity = new TruckEntity();
-        entity.setId(truck.getId());
-        entity.setShipment(ShipmentEntity.newInstance(ShipmentEntity.class, truck.getShipmentId()));
-        entity.setPickingAt(DateUtil.dateOf(truck.getPickingAt()));
-        entity.setServiceProviderId(truck.getServiceProviderId());
-        entity.setLicensePlate(truck.getLicensePlate());
-        entity.setDriver(truck.getDriver());
-        return entity;
+        handler.init(task, model);
+        return locateTemplate(task.getDefinitionKey());
     }
 
     /**
