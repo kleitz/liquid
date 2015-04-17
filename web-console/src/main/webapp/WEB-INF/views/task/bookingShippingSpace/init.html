@@ -15,7 +15,7 @@
 <div id="t" class="container" th:if="${task.assignee}">
     <div th:include="layout :: alert"/>
     
-    <form method="POST" th:object="${booking}" th:action="'/task/' + ${taskId} + '/booking'">
+    <form method="POST" th:object="${booking}" th:action="'/task/' + ${task.Id}">
           
         <table class="table table-striped table-hover table-condensed table-16">
             <thead>
@@ -75,6 +75,7 @@
         
         <div class="row">
             <div class="col-xs-3 pull-right">
+                <input type="hidden" id="definitionKey" name="definitionKey" th:value="${task.definitionKey}"/>
                 <input type="submit" name="save" value="Save" class="btn btn-success btn-block btn-sm" th:value="#{save}"/>
             </div>
         </div>           

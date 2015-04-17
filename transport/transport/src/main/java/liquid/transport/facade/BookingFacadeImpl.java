@@ -19,9 +19,10 @@ import java.util.List;
 
 /**
  * Created by redbrick9 on 8/16/14.
+ * FIXME - need to remove facade layer.
  */
 @Service
-public class BookingFacade {
+public class BookingFacadeImpl implements BookingFacade {
 
     @Autowired
     private BookingService bookingService;
@@ -29,7 +30,7 @@ public class BookingFacade {
     @Autowired
     private ShipmentService shipmentService;
 
-
+    @Override
     public Booking computeBooking(Long orderId) {
         Booking booking = new Booking();
 
@@ -63,6 +64,7 @@ public class BookingFacade {
         return booking;
     }
 
+    @Override
     public void save(Long orderId, Booking booking) {
         List<SpaceBookingEntity> bookingEntities = new ArrayList<>();
 
