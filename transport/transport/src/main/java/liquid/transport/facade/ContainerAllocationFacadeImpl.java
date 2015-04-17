@@ -28,7 +28,7 @@ import java.util.List;
  * Created by redbrick9 on 5/20/14.
  */
 @Service
-public class ContainerAllocationFacade {
+public class ContainerAllocationFacadeImpl implements ContainerAllocationFacade {
 
     @Autowired
     private ShippingContainerService shippingContainerService;

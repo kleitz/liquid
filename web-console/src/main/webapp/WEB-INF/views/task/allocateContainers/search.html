@@ -8,7 +8,7 @@
 <div th:include="layout :: header"></div>
 <!-- {!end layout} -->
 
-<div th:include="allocation/template :: console-header"></div>
+<div th:include="task/allocateContainers/template :: console-header"></div>
 
 <div class="container" id="t">
     <form method="post" th:action="'/task/' + ${taskId} + '/allocation/search'" th:object="${searchContainerAllocForm}">                
@@ -28,9 +28,9 @@
     </form>
 </div>
 
-<div th:include="allocation/template :: console-separator"></div>
+<div th:include="task/allocateContainers/template :: console-separator"></div>
 
-<div th:include="allocation/template :: console-result"></div>
+<div th:include="task/allocateContainers/template :: console-result"></div>
 
 <!-- {!begin layout} -->
 <div th:include="layout :: footer"></div>

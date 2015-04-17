@@ -13,7 +13,7 @@
 <!-- {!end task bar} -->
 
 <div th:if="${task.assignee}" th:each="shipmentContainerAllocation : ${shipmentContainerAllocations}">
-    <div th:include="allocation/template :: console-header"></div>
+    <div th:include="task/allocateContainers/template :: console-header"></div>
     
     <div class="container" id="t">
         <form method="post" th:object="${shipmentContainerAllocation}" th:action="'/task/' + ${taskId} + '/allocation/release'">

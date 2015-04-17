@@ -1,4 +1,4 @@
-package liquid.transport.controller;
+package liquid.process.controller;
 
 import liquid.container.domain.ContainerEntity;
 import liquid.container.domain.ContainerSubtypeEntity;
@@ -14,7 +14,6 @@ import liquid.operation.service.LocationService;
 import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
 import liquid.order.service.ServiceItemService;
-import liquid.process.controller.BaseTaskController;
 import liquid.transport.domain.RailContainerEntity;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.domain.TruckEntity;
@@ -49,8 +48,8 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/task/{taskId}/allocation")
-public class AllocationController extends BaseTaskController {
-    private static final Logger logger = LoggerFactory.getLogger(AllocationController.class);
+public class AllocationContainersController extends BaseTaskController {
+    private static final Logger logger = LoggerFactory.getLogger(AllocationContainersController.class);
 
     @Autowired
     private ShipmentService shipmentService;
@@ -96,7 +95,7 @@ public class AllocationController extends BaseTaskController {
         model.addAttribute("shipmentContainerAllocations", shipmentContainerAllocations);
 
         if (ContainerType.RAIL.getType() == order.getContainerType()) {
-            return "allocation/rail_container";
+            return "task/allocateContainers/rail_container";
         } else {
             List<TruckForm> truckForms = new ArrayList<>();
 
@@ -114,7 +113,7 @@ public class AllocationController extends BaseTaskController {
 
             model.addAttribute("shipmentContainerAllocation", new ShipmentContainerAllocation());
             model.addAttribute("truckForms", truckForms);
-            return "allocation/self_container";
+            return "task/allocateContainers/self_container";
         }
     }
 
@@ -148,7 +147,7 @@ public class AllocationController extends BaseTaskController {
 
         // For the allocation form
         model.addAttribute("containerSubtypes", subtypes);
-        return "allocation/rail_enter";
+        return "task/allocateContainers/rail_enter";
     }
 
     /**
@@ -229,7 +228,7 @@ public class AllocationController extends BaseTaskController {
         SelfContainerAllocation selfContainerAllocation = new SelfContainerAllocation();
         selfContainerAllocation.setShipmentId(shipmentId);
         model.addAttribute("selfContainerAllocation", selfContainerAllocation);
-        return "allocation/list";
+        return "task/allocateContainers/list";
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "self")
@@ -283,7 +282,7 @@ public class AllocationController extends BaseTaskController {
         SearchContainerAllocForm searchContainerAllocForm = new SearchContainerAllocForm();
         searchContainerAllocForm.setShipmentId(shipmentId);
         model.addAttribute("searchContainerAllocForm", searchContainerAllocForm);
-        return "allocation/search";
+        return "task/allocateContainers/search";
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
@@ -331,7 +330,7 @@ public class AllocationController extends BaseTaskController {
         model.addAttribute("locations", yards);
         model.addAttribute("containerSubtypes", subtypes);
         model.addAttribute("containers", containers);
-        return "allocation/enter";
+        return "task/allocateContainers/enter";
     }
 
     @RequestMapping(value = "/enter", method = RequestMethod.POST)

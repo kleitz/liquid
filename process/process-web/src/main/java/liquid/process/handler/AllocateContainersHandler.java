@@ -20,6 +20,17 @@ import java.util.Map;
 @Component
 public class AllocateContainersHandler extends AbstractTaskHandler {
 
+
+    @Override
+    public boolean isRedirect() {
+        return true;
+    }
+
+    @Override
+    public void init(Task task, Model model) {
+
+    }
+    
     @Autowired
     private ShipmentService shipmentService;
 
@@ -47,15 +58,5 @@ public class AllocateContainersHandler extends AbstractTaskHandler {
         }
         // TODO: This is temp solution for dual-allocated containers.
         shippingContainerService.save(shippingContainers);
-    }
-
-    @Override
-    public boolean isRedirect() {
-        return true;
-    }
-
-    @Override
-    public void init(Task task, Model model) {
-
     }
 }

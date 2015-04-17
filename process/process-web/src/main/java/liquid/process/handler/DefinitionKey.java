@@ -8,9 +8,9 @@ public interface DefinitionKey {
     String planShipment = "planShipment";
     String planRoute = "planRoute"; // FIXME - Remove this after the old processes are completed.
     String bookingShippingSpace = "bookingShippingSpace";
+    String allocateContainers = "allocateContainers";
     String feedContainerNo = "feedContainerNo";
     String CDCI = "CDCI";
-    String allocateContainers = "allocateContainers";
     String sendInvoicing = "sendInvoicing";
     String sendTruck = "sendTruck";
 }

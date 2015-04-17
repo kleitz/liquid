@@ -13,9 +13,9 @@
 <!-- {!end task bar} -->
 
 <div th:if="${task.assignee}" th:each="shipmentContainerAllocation : ${shipmentContainerAllocations}">
-    <div th:include="allocation/template :: rail-console-header"></div>
+    <div th:include="task/allocateContainers/template :: rail-console-header"></div>
     
-    <div th:include="allocation/template :: rail-allocated-table"></div>
+    <div th:include="task/allocateContainers/template :: rail-allocated-table"></div>
 </div>
 
 <!-- {!begin layout} -->
