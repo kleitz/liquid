@@ -5,14 +5,11 @@ import liquid.poc.service.PocService;
 import liquid.service.MailNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- *  
  * User: tao
  * Date: 12/2/13
  * Time: 8:12 PM
@@ -25,13 +22,10 @@ public class PocController {
     private MailNotificationService mailNotificationService;
 
     @Autowired
-    private PocService testService;
+    private PocService pocService;
 
     @RequestMapping(value = "/{template}", method = RequestMethod.GET)
-    public String combobox(@PathVariable String template,
-                           @RequestParam(required = false) String msg,
-                           Model model) {
-        model.addAttribute("msg", msg);
+    public String init(@PathVariable String template) {
         return "poc/" + template;
     }
 
@@ -43,7 +37,7 @@ public class PocController {
 
     @RequestMapping(value = "/message", method = RequestMethod.POST)
     public String message(String msgKey) {
-        String msg = testService.i18n(msgKey);
+        String msg = pocService.i18n(msgKey);
         return "redirect:/poc/message?msg=" + msg;
     }
 }

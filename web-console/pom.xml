@@ -118,6 +118,13 @@
             <!-- FIXME - need to change to runtime -->
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>liquid</groupId>
+            <artifactId>liquid-poc</artifactId>
+            <version>${project.version}</version>
+            <!-- FIXME - need to change to runtime -->
+            <scope>compile</scope>
+        </dependency>
 
         <!-- servlet -->
         <dependency>

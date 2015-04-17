@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="layout :: head" />
+
+<body>
+
+<div class="container">
+    <h3>Progress Bar</h3>
+    <hr />
+
+    <div id="bar" class="progress">
+        <div id ="progress" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
+            <span class="sr-only">60% Complete</span>
+        </div>
+    </div>
+</div>
+
+<!-- {!begin layout} -->
+<div th:replace="layout :: js"></div>
+<!-- {!end layout} -->
+
+<script>
+/*<![CDATA[*/
+    $(document).ready(function() {
+        var pbIntervalId = null;
+
+        function updatePb() {
+            console.log($('#bar').width())
+            console.log(parseInt($('#progress').css('width'), 10))
+            if(parseInt($('#progress').css('width'), 10) > 800)
+                clearInterval(pbIntervalId);
+            $('#progress').css('width', '+=5%')
+        }
+        pbIntervalId = setInterval(updatePb, 300);
+    }); // ready end
+/*]]>*/
+</script>
+ 
+</body>
+</html>

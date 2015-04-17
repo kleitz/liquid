@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="layout :: head" />
+
+<body>
+
+<div class="container">
+    <h3>Ajax</h3>
+    <hr />
+
+    <input id="message" type="text" />
+    <hr />
+
+    <div id="content"></div>
+</div>
+
+<!-- {!begin layout} -->
+<div th:replace="layout :: js"></div>
+<!-- {!end layout} -->
+
+<script>
+/*<![CDATA[*/
+    $(document).ready(function() {
+        $('#message').blur(function() {
+            var message = $('#message').val();
+            $.ajax({
+                url: "/api/poc/ajax"
+            })
+            .done(function(data) {
+                console.log("ajax done: " + data.length);
+                var text = '';
+                for (i = 0; i < data.length; i++) {
+                    text += data[i].value; 
+                }
+                 
+                $('#content').append('<p>' + message + text + '</p>');
+            })
+            .fail(function() {
+                console.log("ajax fail");
+            })
+            .always(function() {
+                console.log("ajax always");
+            });   
+        });
+    }); // ready end
+/*]]>*/
+</script>
+ 
+</body>
+</html>

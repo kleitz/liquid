@@ -14,7 +14,6 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- *  
  * User: tao
  * Date: 9/22/13
  * Time: 11:24 PM
@@ -33,7 +32,8 @@ import java.util.Map;
         "liquid.accounting.facade", "liquid.accounting.service",
         "liquid.container.facade", "liquid.container.service",
         "liquid.order.facade", "liquid.order.service",
-        "liquid.transport.facade", "liquid.transport.service"})
+        "liquid.transport.facade", "liquid.transport.service",
+        "liquid.poc.service"})
 @EnableAspectJAutoProxy
 public class RootConfig {
     @Bean

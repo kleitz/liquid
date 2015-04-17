@@ -29,7 +29,6 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import java.util.Locale;
 
 /**
- *  
  * User: tao
  * Date: 9/19/13
  * Time: 9:22 PM
@@ -47,7 +46,10 @@ import java.util.Locale;
         "liquid.container.restfulapi",
         "liquid.process.controller",
         "liquid.transport.controller",
-        "liquid.accounting.controller"})
+        "liquid.accounting.controller",
+        "liquid.poc.controller",
+        "liquid.poc.restfulapi"
+})
 public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private GenericFormatter<ServiceProviderType> serviceProviderTypeFormatter;
