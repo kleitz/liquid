@@ -1,6 +1,5 @@
-package liquid.controller;
+package liquid.process.controller;
 
-import liquid.process.controller.BaseTaskController;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.model.RailPlan;
 import liquid.transport.service.ShipmentService;
@@ -19,15 +18,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.validation.Valid;
 
 /**
- *  
+ * FIXME - This is multiple operations task, we need a more better solution for this kind of tasks. For this, we could redesign the interations.
+ * <p>
  * User: tao
  * Date: 10/19/13
  * Time: 2:27 PM
  */
 @Controller
 @RequestMapping("/task/{taskId}/rail_plan")
-public class RailPlanController extends BaseTaskController {
-    private static final Logger logger = LoggerFactory.getLogger(RailPlanController.class);
+public class ApplyRailwayPlanController extends BaseTaskController {
+    private static final Logger logger = LoggerFactory.getLogger(ApplyRailwayPlanController.class);
 
     private static final String TASK_PATH = "rail_plan";
 

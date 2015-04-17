@@ -42,6 +42,7 @@ import java.util.List;
 
 /**
  * Container allocation controller.
+ * FIXME - This is multiple operations task, we need a more better solution for this kind of tasks.
  * User: tao
  * Date: 10/3/13
  * Time: 2:42 PM
