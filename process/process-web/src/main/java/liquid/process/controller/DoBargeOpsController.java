@@ -1,8 +1,7 @@
-package liquid.controller;
+package liquid.process.controller;
 
-import liquid.process.controller.BaseTaskController;
+import liquid.transport.domain.BargeContainerEntity;
 import liquid.transport.domain.ShipmentEntity;
-import liquid.transport.model.RailYard;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.ShippingContainerService;
 import org.slf4j.Logger;
@@ -16,20 +15,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.validation.Valid;
+import java.security.Principal;
 
 /**
  *  
  * User: tao
- * Date: 10/19/13
- * Time: 1:04 PM
+ * Date: 10/12/13
+ * Time: 3:33 PM
  */
 @Controller
-@RequestMapping("/task/{taskId}/rail_yard")
-public class RailYardController extends BaseTaskController {
-    private static final Logger logger = LoggerFactory.getLogger(RailYardController.class);
-
-    private static final String TASK_PATH = "rail_yard";
+@RequestMapping("/task/{taskId}/barge")
+public class DoBargeOpsController extends BaseTaskController {
+    private static final Logger logger = LoggerFactory.getLogger(DoBargeOpsController.class);
 
     @Autowired
     private ShippingContainerService scService;
@@ -41,42 +38,39 @@ public class RailYardController extends BaseTaskController {
     public String init(@PathVariable String taskId, Model model) {
         logger.debug("taskId: {}", taskId);
         Long orderId = taskService.getOrderIdByTaskId(taskId);
-        model.addAttribute("containers", scService.initializeRailContainers(orderId));
-        model.addAttribute("rail_task", TASK_PATH);
+        scService.initBargeContainers(orderId);
 
         Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(orderId);
         model.addAttribute("shipmentSet", shipmentSet);
-        return "rail/main";
+        return "barge/main";
     }
 
     @RequestMapping(value = "/{containerId}", method = RequestMethod.GET)
     public String initRecord(@PathVariable String taskId,
                              @PathVariable long containerId,
-                             Model model) {
+                             Model model, Principal principal) {
         logger.debug("taskId: {}", taskId);
         logger.debug("containerId: {}", containerId);
 
-        RailYard railYard = scService.findRailYardDto(containerId);
-        logger.debug("railYard: {}", railYard);
-        model.addAttribute("container", railYard);
-        return TASK_PATH + "/edit";
+        BargeContainerEntity bargeContainer = scService.findBargeContainer(containerId);
+        logger.debug("bargeContainer: {}", bargeContainer);
+        model.addAttribute("container", bargeContainer);
+        return "barge/edit";
     }
 
     @RequestMapping(value = "/{containerId}", method = RequestMethod.POST)
     public String record(@PathVariable String taskId,
                          @PathVariable long containerId,
-                         @Valid @ModelAttribute("container") RailYard railYard,
+                         @ModelAttribute("container") BargeContainerEntity formBean,
                          BindingResult bindingResult) {
         logger.debug("taskId: {}", taskId);
         logger.debug("containerId: {}", containerId);
-        logger.debug("railYard: {}", railYard);
 
         if (bindingResult.hasErrors()) {
-            return TASK_PATH + "/edit";
+            return "barge/edit";
         } else {
-            scService.saveRailYard(railYard);
+            scService.saveBargeContainer(containerId, formBean);
+            return "redirect:/task/" + taskId + "/barge";
         }
-
-        return "redirect:/task/" + taskId + "/" + TASK_PATH;
     }
 }

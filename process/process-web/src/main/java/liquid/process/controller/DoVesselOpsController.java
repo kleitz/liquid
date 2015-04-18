@@ -1,8 +1,7 @@
-package liquid.controller;
+package liquid.process.controller;
 
-import liquid.process.controller.BaseTaskController;
-import liquid.transport.domain.BargeContainerEntity;
 import liquid.transport.domain.ShipmentEntity;
+import liquid.transport.domain.VesselContainerEntity;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.ShippingContainerService;
 import org.slf4j.Logger;
@@ -22,12 +21,12 @@ import java.security.Principal;
  *  
  * User: tao
  * Date: 10/12/13
- * Time: 3:33 PM
+ * Time: 4:28 PM
  */
 @Controller
-@RequestMapping("/task/{taskId}/barge")
-public class BargeController extends BaseTaskController {
-    private static final Logger logger = LoggerFactory.getLogger(BargeController.class);
+@RequestMapping("/task/{taskId}/vessel")
+public class DoVesselOpsController extends BaseTaskController {
+    private static final Logger logger = LoggerFactory.getLogger(DoVesselOpsController.class);
 
     @Autowired
     private ShippingContainerService scService;
@@ -39,11 +38,10 @@ public class BargeController extends BaseTaskController {
     public String init(@PathVariable String taskId, Model model) {
         logger.debug("taskId: {}", taskId);
         Long orderId = taskService.getOrderIdByTaskId(taskId);
-        scService.initBargeContainers(orderId);
-
+        scService.initVesselContainers(orderId);
         Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(orderId);
         model.addAttribute("shipmentSet", shipmentSet);
-        return "barge/main";
+        return "vessel/main";
     }
 
     @RequestMapping(value = "/{containerId}", method = RequestMethod.GET)
@@ -53,25 +51,25 @@ public class BargeController extends BaseTaskController {
         logger.debug("taskId: {}", taskId);
         logger.debug("containerId: {}", containerId);
 
-        BargeContainerEntity bargeContainer = scService.findBargeContainer(containerId);
-        logger.debug("bargeContainer: {}", bargeContainer);
-        model.addAttribute("container", bargeContainer);
-        return "barge/edit";
+        VesselContainerEntity vesselContainer = scService.findVesselContainer(containerId);
+        logger.debug("vesselContainer: {}", vesselContainer);
+        model.addAttribute("container", vesselContainer);
+        return "vessel/edit";
     }
 
     @RequestMapping(value = "/{containerId}", method = RequestMethod.POST)
     public String record(@PathVariable String taskId,
                          @PathVariable long containerId,
-                         @ModelAttribute("container") BargeContainerEntity formBean,
-                         BindingResult bindingResult) {
+                         @ModelAttribute("container") VesselContainerEntity formBean,
+                         BindingResult bindingResult, Principal principal) {
         logger.debug("taskId: {}", taskId);
         logger.debug("containerId: {}", containerId);
 
         if (bindingResult.hasErrors()) {
-            return "barge/edit";
+            return "vessel/edit";
         } else {
-            scService.saveBargeContainer(containerId, formBean);
-            return "redirect:/task/" + taskId + "/barge";
+            scService.saveVesselContainer(containerId, formBean);
+            return "redirect:/task/" + taskId + "/vessel";
         }
     }
 }

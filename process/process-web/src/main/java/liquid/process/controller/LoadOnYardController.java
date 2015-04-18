@@ -1,13 +1,12 @@
-package liquid.controller;
+package liquid.process.controller;
 
 import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.service.ChargeService;
-import liquid.dto.TruckingDto;
+import liquid.process.model.TruckingDto;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceProviderService;
 import liquid.operation.service.ServiceSubtypeService;
-import liquid.process.controller.BaseTaskController;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.domain.TransMode;
 import liquid.transport.model.Truck;
@@ -32,8 +31,8 @@ import javax.validation.Valid;
  */
 @Controller
 @RequestMapping("/task/{taskId}/rail_truck")
-public class RailTruckController extends BaseTaskController {
-    private static final Logger logger = LoggerFactory.getLogger(RailTruckController.class);
+public class LoadOnYardController extends BaseTaskController {
+    private static final Logger logger = LoggerFactory.getLogger(LoadOnYardController.class);
 
     private static final String TASK_PATH = "rail_truck";
 

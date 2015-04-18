@@ -56,7 +56,7 @@ public class SendTruckController extends AbstractTaskController {
             model.addAttribute("sps", serviceProviderService.findByType(4L));
 
             model.addAttribute("task", task);
-            return "truck/sending_truck_task";
+            return "task/sendTruck/init";
         }
 
         List<TruckEntity> truckEntityList = new ArrayList<>();

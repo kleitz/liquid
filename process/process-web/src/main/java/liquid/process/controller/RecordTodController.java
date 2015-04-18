@@ -1,6 +1,5 @@
-package liquid.controller;
+package liquid.process.controller;
 
-import liquid.process.controller.BaseTaskController;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.model.RailShipping;
 import liquid.transport.service.ShipmentService;
@@ -26,8 +25,8 @@ import javax.validation.Valid;
  */
 @Controller
 @RequestMapping("/task/{taskId}/rail_shipping")
-public class RailShippingController extends BaseTaskController {
-    private static final Logger logger = LoggerFactory.getLogger(RailShippingController.class);
+public class RecordTodController extends BaseTaskController {
+    private static final Logger logger = LoggerFactory.getLogger(RecordTodController.class);
 
     private static final String TASK_PATH = "rail_shipping";
 

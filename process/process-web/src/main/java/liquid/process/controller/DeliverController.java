@@ -1,11 +1,10 @@
-package liquid.controller;
+package liquid.process.controller;
 
 import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.service.ChargeService;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceSubtypeService;
-import liquid.process.controller.BaseTaskController;
 import liquid.transport.domain.DeliveryContainerEntity;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.domain.TransMode;
@@ -31,8 +30,8 @@ import java.security.Principal;
  */
 @Controller
 @RequestMapping("/task/{taskId}/delivery")
-public class DeliveryController extends BaseTaskController {
-    private static final Logger logger = LoggerFactory.getLogger(DeliveryController.class);
+public class DeliverController extends BaseTaskController {
+    private static final Logger logger = LoggerFactory.getLogger(DeliverController.class);
 
     @Autowired
     private DeliveryContainerService deliveryContainerService;

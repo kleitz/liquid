@@ -1,6 +1,7 @@
-package liquid.controller;
+package liquid.process.controller;
 
 import liquid.process.controller.BaseTaskController;
+import liquid.process.controller.RecordTodController;
 import liquid.transport.model.RailArrival;
 import liquid.transport.service.ShippingContainerService;
 import org.slf4j.Logger;
@@ -24,8 +25,8 @@ import javax.validation.Valid;
  */
 @Controller
 @RequestMapping("/task/{taskId}/rail_arrival")
-public class RailArrivalController extends BaseTaskController {
-    private static final Logger logger = LoggerFactory.getLogger(RailShippingController.class);
+public class RecordToaController extends BaseTaskController {
+    private static final Logger logger = LoggerFactory.getLogger(RecordTodController.class);
 
     private static final String TASK_PATH = "rail_arrival";
 

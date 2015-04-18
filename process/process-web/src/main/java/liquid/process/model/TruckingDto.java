@@ -1,4 +1,4 @@
-package liquid.dto;
+package liquid.process.model;
 
 import java.io.Serializable;
 
