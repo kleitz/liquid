@@ -4,6 +4,7 @@ import liquid.core.model.Alert;
 import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
 import liquid.process.handler.DefinitionKey;
+import liquid.process.handler.TaskHandlerFactory;
 import liquid.process.model.Disty;
 import liquid.process.service.TaskService;
 import liquid.security.SecurityContext;
@@ -36,6 +37,9 @@ public class FeedDistyPriceController extends AbstractTaskController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private TaskHandlerFactory factory;
+
     @RequestMapping(method = RequestMethod.POST, params = "definitionKey=" + DefinitionKey.feedDistyPrice)
     public String feed(@PathVariable String taskId,
                        @Valid @ModelAttribute("disty") Disty disty, BindingResult bindingResult,
@@ -43,7 +47,7 @@ public class FeedDistyPriceController extends AbstractTaskController {
         logger.debug("taskId: {}", taskId);
 
         if (bindingResult.hasErrors()) {
-            return locateTemplate(DefinitionKey.feedDistyPrice);
+            return factory.locateHandler(DefinitionKey.feedDistyPrice).locateTemplate(DefinitionKey.feedDistyPrice);
         }
 
         Long orderId = taskService.getOrderIdByTaskId(taskId);

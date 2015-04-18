@@ -1,18 +1,14 @@
 package liquid.process.controller;
 
-import liquid.accounting.domain.ChargeEntity;
-import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.service.ChargeService;
 import liquid.core.model.Alert;
-import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceProviderService;
 import liquid.operation.service.ServiceSubtypeService;
 import liquid.process.handler.DefinitionKey;
 import liquid.process.model.RailContainerListForm;
+import liquid.process.service.TaskService;
 import liquid.transport.domain.RailContainerEntity;
-import liquid.transport.domain.TransMode;
 import liquid.transport.service.RailContainerService;
-import liquid.transport.service.ShipmentService;
 import liquid.transport.service.ShippingContainerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,17 +26,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * Time: 12:08 AM
  */
 @Controller
-@RequestMapping("/task/{taskId}/rail_truck")
-public class LoadOnYardController extends BaseTaskController {
+public class LoadOnYardController extends AbstractTaskController {
     private static final Logger logger = LoggerFactory.getLogger(LoadOnYardController.class);
 
-    private static final String TASK_PATH = "rail_truck";
+    @Autowired
+    private TaskService taskService;
 
     @Autowired
     private ShippingContainerService scService;
-
-    @Autowired
-    private ShipmentService shipmentService;
 
     @Autowired
     private ChargeService chargeService;
@@ -54,29 +47,7 @@ public class LoadOnYardController extends BaseTaskController {
     @Autowired
     private RailContainerService railContainerService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String init(@PathVariable String taskId, Model model) {
-        logger.debug("taskId: {}", taskId);
-
-        Long orderId = taskService.getOrderIdByTaskId(taskId);
-        model.addAttribute("containerListForm", new RailContainerListForm(scService.initializeRailContainers(orderId)));
-        model.addAttribute("action", "/task/" + taskId + "/rail_truck");
-        model.addAttribute("definitionKey", DefinitionKey.loadOnYard);
-        // FIXME - this is bug, we need to use subtype instead.
-        model.addAttribute("sps", serviceProviderService.findByType(4L));
-
-        // for charges
-        Iterable<ServiceSubtype> serviceSubtypes = serviceSubtypeService.findEnabled();
-        model.addAttribute("serviceSubtypes", serviceSubtypes);
-        model.addAttribute("chargeWays", ChargeWay.values());
-        model.addAttribute("transModes", TransMode.toMap());
-        Iterable<ChargeEntity> charges = chargeService.findByTaskId(taskId);
-        model.addAttribute("charges", charges);
-        model.addAttribute("total", chargeService.total(charges));
-        return "rail/main";
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, params = "definitionKey=" + DefinitionKey.loadOnYard)
     public String save(@PathVariable String taskId, RailContainerListForm railContainerListForm,
                        Model model, RedirectAttributes redirectAttributes) {
         logger.debug("taskId: {}", taskId);
@@ -99,6 +70,6 @@ public class LoadOnYardController extends BaseTaskController {
         railContainerService.save(iterable);
 
         redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
-        return "redirect:/task/" + taskId + "/rail_truck";
+        return computeRedirect(taskId);
     }
 }

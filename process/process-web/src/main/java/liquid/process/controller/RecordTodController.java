@@ -4,6 +4,7 @@ import liquid.core.model.Alert;
 import liquid.operation.service.ServiceProviderService;
 import liquid.process.handler.DefinitionKey;
 import liquid.process.model.RailContainerListForm;
+import liquid.process.service.TaskService;
 import liquid.transport.domain.RailContainerEntity;
 import liquid.transport.service.RailContainerService;
 import liquid.transport.service.ShipmentService;
@@ -24,11 +25,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * Time: 3:38 PM
  */
 @Controller
-@RequestMapping("/task/{taskId}/rail_shipping")
-public class RecordTodController extends BaseTaskController {
+public class RecordTodController extends AbstractTaskController {
     private static final Logger logger = LoggerFactory.getLogger(RecordTodController.class);
 
-    private static final String TASK_PATH = "rail_shipping";
+    @Autowired
+    private TaskService taskService;
 
     @Autowired
     private ShippingContainerService scService;
@@ -42,21 +43,7 @@ public class RecordTodController extends BaseTaskController {
     @Autowired
     private RailContainerService railContainerService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String init(@PathVariable String taskId, Model model) {
-        logger.debug("taskId: {}", taskId);
-        Long orderId = taskService.getOrderIdByTaskId(taskId);
-
-        model.addAttribute("containerListForm", new RailContainerListForm(scService.initializeRailContainers(orderId)));
-        model.addAttribute("action", "/task/" + taskId + "/rail_shipping");
-        model.addAttribute("definitionKey", DefinitionKey.recordTod);
-        // FIXME - this is bug, we need to use subtype instead.
-        model.addAttribute("sps", serviceProviderService.findByType(4L));
-
-        return "rail/main";
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, params = "definitionKey=" + DefinitionKey.recordTod)
     public String save(@PathVariable String taskId, RailContainerListForm railContainerListForm,
                        Model model, RedirectAttributes redirectAttributes) {
         logger.debug("taskId: {}", taskId);
@@ -75,6 +62,6 @@ public class RecordTodController extends BaseTaskController {
         }
         railContainerService.save(iterable);
         redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
-        return "redirect:/task/" + taskId + "/rail_shipping";
+        return computeRedirect(taskId);
     }
 }

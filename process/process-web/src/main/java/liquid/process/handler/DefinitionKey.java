@@ -13,6 +13,9 @@ public interface DefinitionKey {
     String feedContainerNo = "feedContainerNo";
     String sendLoadingOnYard = "sendLoadingOnYard";
     String sendTruck = "sendTruck";
+    // FIXME - Remove this after the process has been finished.
+    @Deprecated
+    String sendLoadingByTruck = "sendLoadingByTruck";
     // FIXME - We can't move the pages of this task into the specific folder.
     // The following 4 tasks are opearate rail_container entity.
     String applyRailwayPlan = "applyRailwayPlan";

@@ -85,7 +85,8 @@ public class TaskController extends AbstractTaskController {
             return "redirect:" + taskService.computeTaskMainPath(taskId);
         }
         handler.init(task, model);
-        return locateTemplate(task.getDefinitionKey());
+
+        return handler.locateTemplate(task.getDefinitionKey());
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "claim")

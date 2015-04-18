@@ -3,11 +3,11 @@ package liquid.process.model;
 import java.io.Serializable;
 
 /**
- *  
  * User: tao
  * Date: 10/23/13
  * Time: 12:14 AM
  */
+@Deprecated
 public class TruckingDto implements Serializable {
     private String role = "SALES";
 

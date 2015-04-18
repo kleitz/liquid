@@ -14,6 +14,11 @@ public abstract class AbstractTaskHandler implements TaskHandler {
     @Autowired
     protected TaskService taskService;
 
+    @Override
+    public String locateTemplate(String definitionKey) {
+        return Constants.TASK_ROOT_DIR + "/" + definitionKey + "/init";
+    }
+
     public abstract void preComplete(String taskId, Map<String, Object> variableMap);
 
     public void complete(String taskId) {

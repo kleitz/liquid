@@ -3,9 +3,9 @@ package liquid.process.controller;
 import liquid.core.model.Alert;
 import liquid.process.handler.DefinitionKey;
 import liquid.process.model.RailContainerListForm;
+import liquid.process.service.TaskService;
 import liquid.transport.domain.RailContainerEntity;
 import liquid.transport.service.RailContainerService;
-import liquid.transport.service.ShipmentService;
 import liquid.transport.service.ShippingContainerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,12 +25,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * Time: 2:27 PM
  */
 @Controller
-@RequestMapping("/task/{taskId}/rail_plan")
-public class ApplyRailwayPlanController extends BaseTaskController {
+public class ApplyRailwayPlanController extends AbstractTaskController {
     private static final Logger logger = LoggerFactory.getLogger(ApplyRailwayPlanController.class);
 
     @Autowired
-    private ShipmentService shipmentService;
+    private TaskService taskService;
 
     @Autowired
     private ShippingContainerService scService;
@@ -38,17 +37,7 @@ public class ApplyRailwayPlanController extends BaseTaskController {
     @Autowired
     private RailContainerService railContainerService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String init(@PathVariable String taskId, Model model) {
-        logger.debug("taskId: {}", taskId);
-        Long orderId = taskService.getOrderIdByTaskId(taskId);
-        model.addAttribute("containerListForm", new RailContainerListForm(scService.initializeRailContainers(orderId)));
-        model.addAttribute("action", "/task/" + taskId + "/rail_plan");
-        model.addAttribute("definitionKey", DefinitionKey.applyRailwayPlan);
-        return "rail/main";
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, params = "definitionKey=" + DefinitionKey.applyRailwayPlan)
     public String save(@PathVariable String taskId, RailContainerListForm railContainerListForm,
                        Model model, RedirectAttributes redirectAttributes) {
         logger.debug("taskId: {}", taskId);
@@ -68,6 +57,6 @@ public class ApplyRailwayPlanController extends BaseTaskController {
         }
         railContainerService.save(iterable);
         redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
-        return "redirect:/task/" + taskId + "/rail_plan";
+        return computeRedirect(taskId);
     }
 }

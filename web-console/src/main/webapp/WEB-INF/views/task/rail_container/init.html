@@ -21,7 +21,7 @@
                 <div class="panel-heading">
                     <span th:text="#{container.quantity} + '(' + ${#lists.size(containerListForm.list)} + ')'">Container Qty</span>
                 </div>
-    
+
                 <table id="f" class="table table-bordered table-16">
                     <thead>
                     <tr>
@@ -73,7 +73,7 @@
                                 <input type="text" th:field="*{list[__${rowStat.index}__].transPlanNo}" class="form-control input-sm" th:readonly="${definitionKey != 'applyRailwayPlan'}" />
                             </div>
                         </td>
-                        <td>    
+                        <td>
                             <div class="input-group input-group-sm date" th:id="'etsPicker' + ${rowStat.index}">
                                 <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{list[__${rowStat.index}__].ets}" th:readonly="${definitionKey != 'applyRailwayPlan'}" />
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -108,6 +108,7 @@
                     </tbody>
                 </table>
             </div><!-- panel -->
+            <input type="hidden" id="definitionKey" name="definitionKey" th:value="${task.definitionKey}" />
             <button type="submit" name="save" class="btn btn-success btn-sm pull-right"><span th:text="#{save}" /></button>
         </form>
     </div><!-- unless -->

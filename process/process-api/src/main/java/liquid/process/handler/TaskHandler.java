@@ -12,5 +12,7 @@ public interface TaskHandler {
 
     void init(Task task, Model model);
 
+    String locateTemplate(String definitionKey);
+
     void complete(String taskId);
 }
