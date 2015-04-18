@@ -1,7 +1,10 @@
 package liquid.process.controller;
 
-import liquid.transport.domain.ShipmentEntity;
-import liquid.transport.model.RailPlan;
+import liquid.core.model.Alert;
+import liquid.process.handler.DefinitionKey;
+import liquid.process.model.RailContainerListForm;
+import liquid.transport.domain.RailContainerEntity;
+import liquid.transport.service.RailContainerService;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.ShippingContainerService;
 import org.slf4j.Logger;
@@ -9,13 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * FIXME - This is multiple operations task, we need a more better solution for this kind of tasks. For this, we could redesign the interations.
@@ -29,54 +29,45 @@ import javax.validation.Valid;
 public class ApplyRailwayPlanController extends BaseTaskController {
     private static final Logger logger = LoggerFactory.getLogger(ApplyRailwayPlanController.class);
 
-    private static final String TASK_PATH = "rail_plan";
-
     @Autowired
     private ShipmentService shipmentService;
 
     @Autowired
     private ShippingContainerService scService;
 
+    @Autowired
+    private RailContainerService railContainerService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String init(@PathVariable String taskId, Model model) {
         logger.debug("taskId: {}", taskId);
         Long orderId = taskService.getOrderIdByTaskId(taskId);
-        model.addAttribute("containers", scService.initializeRailContainers(orderId));
-        model.addAttribute("rail_task", TASK_PATH);
-        Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(orderId);
-        model.addAttribute("shipmentSet", shipmentSet);
+        model.addAttribute("containerListForm", new RailContainerListForm(scService.initializeRailContainers(orderId)));
+        model.addAttribute("action", "/task/" + taskId + "/rail_plan");
+        model.addAttribute("definitionKey", DefinitionKey.applyRailwayPlan);
         return "rail/main";
     }
 
-    @RequestMapping(value = "/{containerId}", method = RequestMethod.GET)
-    public String initRecord(@PathVariable String taskId,
-                             @PathVariable long containerId,
-                             Model model) {
+    @RequestMapping(method = RequestMethod.POST)
+    public String save(@PathVariable String taskId, RailContainerListForm railContainerListForm,
+                       Model model, RedirectAttributes redirectAttributes) {
         logger.debug("taskId: {}", taskId);
-        logger.debug("containerId: {}", containerId);
+        logger.debug("railContainerListForm: {}", railContainerListForm);
 
-        RailPlan railPlan = scService.findRailPlanDto(containerId);
-        logger.debug("railPlan: {}", railPlan);
-        model.addAttribute("container", railPlan);
-        return TASK_PATH + "/edit";
-    }
+        Long orderId = taskService.getOrderIdByTaskId(taskId);
 
-    @RequestMapping(value = "/{containerId}", method = RequestMethod.POST)
-    public String record(@PathVariable String taskId,
-                         @PathVariable long containerId,
-                         @Valid @ModelAttribute("container") RailPlan railPlan,
-                         BindingResult bindingResult) {
-        logger.debug("taskId: {}", taskId);
-        logger.debug("containerId: {}", containerId);
-        logger.debug("railPlan: {}", railPlan);
-
-        if (bindingResult.hasErrors()) {
-            return TASK_PATH + "/edit";
-        } else {
-            scService.saveRailPlan(railPlan);
+        Iterable<RailContainerEntity> iterable = scService.initializeRailContainers(orderId);
+        for (RailContainerEntity oldOne : iterable) {
+            for (RailContainerEntity newOne : railContainerListForm.getList()) {
+                if (oldOne.getId() == newOne.getId()) {
+                    oldOne.setTransPlanNo(newOne.getTransPlanNo());
+                    oldOne.setEts(newOne.getEts());
+                }
+                continue;
+            }
         }
-
-        return "redirect:/task/" + taskId + "/" + TASK_PATH;
+        railContainerService.save(iterable);
+        redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
+        return "redirect:/task/" + taskId + "/rail_plan";
     }
-
 }

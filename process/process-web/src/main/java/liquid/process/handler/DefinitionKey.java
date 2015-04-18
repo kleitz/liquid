@@ -12,9 +12,10 @@ public interface DefinitionKey {
     String allocateContainers = "allocateContainers";
     String feedContainerNo = "feedContainerNo";
     String sendLoadingOnYard = "sendLoadingOnYard";
-    // FIXME - We can't move the pages of this task into the specific folder.
-    String applyRailwayPlan = "applyRailwayPlan";
     String sendTruck = "sendTruck";
+    // FIXME - We can't move the pages of this task into the specific folder.
+    // The following 4 tasks are opearate rail_container entity.
+    String applyRailwayPlan = "applyRailwayPlan";
     String loadOnYard = "loadOnYard";
     String recordTory = "recordTory";
     String recordTod = "recordTod";

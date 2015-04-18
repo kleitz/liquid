@@ -6,6 +6,7 @@ import liquid.transport.domain.ShippingContainerEntity;
 import liquid.transport.domain.VesselContainerEntity;
 import liquid.transport.model.*;
 
+import java.util.Collection;
 import java.util.List;
 
 /**

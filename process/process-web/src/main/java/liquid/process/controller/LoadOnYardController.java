@@ -3,28 +3,28 @@ package liquid.process.controller;
 import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.service.ChargeService;
-import liquid.process.model.TruckingDto;
+import liquid.core.model.Alert;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceProviderService;
 import liquid.operation.service.ServiceSubtypeService;
-import liquid.transport.domain.ShipmentEntity;
+import liquid.process.handler.DefinitionKey;
+import liquid.process.model.RailContainerListForm;
+import liquid.transport.domain.RailContainerEntity;
 import liquid.transport.domain.TransMode;
-import liquid.transport.model.Truck;
+import liquid.transport.service.RailContainerService;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.ShippingContainerService;
-import liquid.user.domain.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
- *  
  * User: tao
  * Date: 10/19/13
  * Time: 12:08 AM
@@ -51,14 +51,19 @@ public class LoadOnYardController extends BaseTaskController {
     @Autowired
     private ServiceSubtypeService serviceSubtypeService;
 
+    @Autowired
+    private RailContainerService railContainerService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String init(@PathVariable String taskId, Model model) {
         logger.debug("taskId: {}", taskId);
+
         Long orderId = taskService.getOrderIdByTaskId(taskId);
-        model.addAttribute("containers", scService.initializeRailContainers(orderId));
-        model.addAttribute("rail_task", TASK_PATH);
-        Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(orderId);
-        model.addAttribute("shipmentSet", shipmentSet);
+        model.addAttribute("containerListForm", new RailContainerListForm(scService.initializeRailContainers(orderId)));
+        model.addAttribute("action", "/task/" + taskId + "/rail_truck");
+        model.addAttribute("definitionKey", DefinitionKey.loadOnYard);
+        // FIXME - this is bug, we need to use subtype instead.
+        model.addAttribute("sps", serviceProviderService.findByType(4L));
 
         // for charges
         Iterable<ServiceSubtype> serviceSubtypes = serviceSubtypeService.findEnabled();
@@ -71,64 +76,29 @@ public class LoadOnYardController extends BaseTaskController {
         return "rail/main";
     }
 
-    @RequestMapping(value = "/{containerId}", method = RequestMethod.GET)
-    public String initRecord(@PathVariable String taskId,
-                             @PathVariable long containerId,
-                             Model model) {
+    @RequestMapping(method = RequestMethod.POST)
+    public String save(@PathVariable String taskId, RailContainerListForm railContainerListForm,
+                       Model model, RedirectAttributes redirectAttributes) {
         logger.debug("taskId: {}", taskId);
-        logger.debug("containerId: {}", containerId);
+        logger.debug("railContainerListForm: {}", railContainerListForm);
 
-        Truck truck = scService.findTruckDto(containerId);
-        logger.debug("truck: {}", truck);
-        model.addAttribute("truck", truck);
-        model.addAttribute("sps", serviceProviderService.findByType(4L));
-        return TASK_PATH + "/edit";
-    }
+        Long orderId = taskService.getOrderIdByTaskId(taskId);
 
-    @RequestMapping(value = "/{containerId}", method = RequestMethod.POST)
-    public String record(@PathVariable String taskId,
-                         @PathVariable long containerId,
-                         @Valid @ModelAttribute("truck") Truck truck,
-                         BindingResult bindingResult) {
-        logger.debug("taskId: {}", taskId);
-        logger.debug("containerId: {}", containerId);
-        logger.debug("truck: {}", truck);
-
-        if (bindingResult.hasErrors()) {
-            return TASK_PATH + "/edit";
-        } else {
-            scService.saveTruck(truck);
+        Iterable<RailContainerEntity> iterable = scService.initializeRailContainers(orderId);
+        for (RailContainerEntity oldOne : iterable) {
+            for (RailContainerEntity newOne : railContainerListForm.getList()) {
+                if (oldOne.getId() == newOne.getId()) {
+                    oldOne.setFleet(newOne.getFleet());
+                    oldOne.setPlateNo(newOne.getPlateNo());
+                    oldOne.setTrucker(newOne.getTrucker());
+                    oldOne.setLoadingToc(newOne.getLoadingToc());
+                }
+                continue;
+            }
         }
+        railContainerService.save(iterable);
 
-        return "redirect:/task/" + taskId + "/" + TASK_PATH;
-    }
-
-    @RequestMapping(value = "/sending", method = RequestMethod.GET)
-    public String initTrucking(@PathVariable String taskId,
-                               @RequestParam(required = false) boolean done,
-                               Model model) {
-        logger.debug("taskId: {}", taskId);
-
-        TruckingDto trucking = new TruckingDto();
-        Object role = taskService.getVariable(taskId, "truckingRole");
-        if (null != role) trucking.setRole(role.toString());
-
-        model.addAttribute("roles", new Role[]{Role.SALES, Role.MARKETING});
-        model.addAttribute("done", done);
-        model.addAttribute("trucking", trucking);
-        return TASK_PATH + "/sending";
-    }
-
-    @RequestMapping(value = "/sending", method = RequestMethod.POST)
-    public String trucking(@PathVariable String taskId,
-                           @Valid @ModelAttribute("trucking") TruckingDto trucking,
-                           Model model) {
-        logger.debug("taskId: {}", taskId);
-        logger.debug("trucking: {}", trucking);
-
-        taskService.setVariable(taskId, "truckingRole", trucking.getRole());
-
-        model.addAttribute("done", true);
-        return "redirect:/task/" + taskId + "/" + TASK_PATH + "/sending";
+        redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
+        return "redirect:/task/" + taskId + "/rail_truck";
     }
 }

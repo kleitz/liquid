@@ -18,5 +18,7 @@ public interface RailContainerService {
 
     RailContainerEntity save(RailContainerEntity railContainerEntity);
 
+    Iterable<RailContainerEntity> save(Iterable<RailContainerEntity> entities);
+
     Iterable<RailContainerEntity> findByReleasedAtToday();
 }
