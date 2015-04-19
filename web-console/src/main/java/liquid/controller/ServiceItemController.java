@@ -1,9 +1,9 @@
 package liquid.controller;
 
 import liquid.operation.domain.ServiceSubtype;
+import liquid.operation.service.ServiceSubtypeService;
 import liquid.order.domain.ServiceItemEntity;
 import liquid.order.service.ServiceItemService;
-import liquid.operation.service.ServiceSubtypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Created by redbrick9 on 5/9/14.
  */
 @Controller
+@Deprecated
 @RequestMapping("/service_item")
 public class ServiceItemController {
     private static final Logger logger = LoggerFactory.getLogger(ServiceItemController.class);

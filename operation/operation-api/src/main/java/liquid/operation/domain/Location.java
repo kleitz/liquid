@@ -7,7 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/5/13
  * Time: 10:33 AM

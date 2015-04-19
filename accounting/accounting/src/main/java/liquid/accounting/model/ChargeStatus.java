@@ -1,7 +1,7 @@
 package liquid.accounting.model;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/7/13
  * Time: 3:30 PM

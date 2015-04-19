@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/10/13
  * Time: 9:15 PM
@@ -31,7 +31,7 @@ public class ShipmentEntity extends BaseTaskEntity {
     private List<ShippingContainerEntity> containers;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "shipment")
-    private Collection<RailContainerEntity> railContainers;
+    private Collection<RailContainer> railContainers;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "shipment")
     private Collection<BargeContainerEntity> bargeContainers;
@@ -74,11 +74,11 @@ public class ShipmentEntity extends BaseTaskEntity {
         this.containers = containers;
     }
 
-    public Collection<RailContainerEntity> getRailContainers() {
+    public Collection<RailContainer> getRailContainers() {
         return railContainers;
     }
 
-    public void setRailContainers(Collection<RailContainerEntity> railContainers) {
+    public void setRailContainers(Collection<RailContainer> railContainers) {
         this.railContainers = railContainers;
     }
 

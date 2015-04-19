@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/18/13
  * Time: 10:24 PM

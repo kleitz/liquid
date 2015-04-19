@@ -1,7 +1,10 @@
 package liquid.operation.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import liquid.converter.Text;
 import liquid.core.domain.StatefulEntity;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -10,13 +13,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * TODO: Comments.
+ * Service Provider.
  * User: tao
  * Date: 10/2/13
  * Time: 4:38 PM
  */
 @Entity(name = "OPS_SERVICE_PROVIDER")
-public class ServiceProvider extends StatefulEntity {
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+public class ServiceProvider extends StatefulEntity implements Text {
     @NotNull
     @NotEmpty
     @Column(name = "CODE")
@@ -54,6 +58,7 @@ public class ServiceProvider extends StatefulEntity {
     @JoinTable(name = "OPS_SERVICE_PROVIDER_SUBTYPE",
             joinColumns = @JoinColumn(name = "SERVICE_PROVIDER_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "SERVICE_SUBTYPE_ID", referencedColumnName = "ID"))
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ServiceSubtype> subtypes = new HashSet<>();
 
     public String getCode() {
@@ -134,5 +139,10 @@ public class ServiceProvider extends StatefulEntity {
 
     public void setSubtypes(Set<ServiceSubtype> subtypes) {
         this.subtypes = subtypes;
+    }
+
+    @Override
+    public String toText() {
+        return String.valueOf(id);
     }
 }

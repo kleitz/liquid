@@ -1,7 +1,7 @@
 package liquid;
 
 /**
- * TODO: Comments.
+ * System error, and base class for all the error.
  * User: tao
  * Date: 9/26/13
  * Time: 11:33 PM

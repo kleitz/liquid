@@ -18,4 +18,10 @@ public class ServiceProviderTypeServiceImpl implements ServiceProviderTypeServic
     public ServiceProviderType find(Long id) {
         return serviceProviderTypeRepository.findOne(id);
     }
+
+
+    @Override
+    public Iterable<ServiceProviderType> findAll() {
+        return serviceProviderTypeRepository.findAll();
+    }
 }

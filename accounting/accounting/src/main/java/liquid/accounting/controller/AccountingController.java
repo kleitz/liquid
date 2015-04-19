@@ -2,12 +2,12 @@ package liquid.accounting.controller;
 
 import liquid.accounting.facade.ReceivableFacadeImpl;
 import liquid.accounting.model.ReceivableSummary;
-import liquid.domain.TradeType;
+import liquid.order.domain.TradeType;
 import liquid.accounting.facade.ChargeFacade;
 import liquid.accounting.model.Charge;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.service.ExchangeRateService;
-import liquid.web.domain.SearchBarForm;
+import liquid.model.SearchBarForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

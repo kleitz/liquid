@@ -19,8 +19,8 @@ import liquid.order.facade.ValueAddedOrderFacade;
 import liquid.order.model.TransportedContainer;
 import liquid.order.model.ValueAddedOrder;
 import liquid.order.service.ReceivingOrderServiceImpl;
-import liquid.web.controller.BaseController;
-import liquid.web.domain.SearchBarForm;
+import liquid.core.controller.BaseController;
+import liquid.model.SearchBarForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/13/13
  * Time: 4:33 PM

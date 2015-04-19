@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/13/13
  * Time: 5:48 PM

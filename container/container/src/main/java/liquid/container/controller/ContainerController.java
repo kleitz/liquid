@@ -11,10 +11,10 @@ import liquid.operation.domain.LocationType;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.LocationService;
 import liquid.order.service.ServiceItemService;
-import liquid.transport.domain.RailContainerEntity;
+import liquid.transport.domain.RailContainer;
 import liquid.transport.service.RailContainerService;
-import liquid.web.controller.BaseController;
-import liquid.web.domain.SearchBarForm;
+import liquid.core.controller.BaseController;
+import liquid.model.SearchBarForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/3/13
  * Time: 3:59 PM
@@ -257,7 +257,7 @@ public class ContainerController extends BaseController {
 
     @RequestMapping(value = "/release/now", method = RequestMethod.GET)
     public String listReleasedNow(Model model) {
-        Iterable<RailContainerEntity> containers = railContainerService.findByReleasedAtToday();
+        Iterable<RailContainer> containers = railContainerService.findByReleasedAtToday();
 
         model.addAttribute("containers", containers);
         model.addAttribute("tab", "now");
@@ -267,7 +267,7 @@ public class ContainerController extends BaseController {
     @RequestMapping(value = "/release/all", method = RequestMethod.GET)
     public String listReleasedAll(@RequestParam(defaultValue = "0", required = false) int number, Model model) {
         PageRequest pageRequest = new PageRequest(number, size, new Sort(Sort.Direction.DESC, "id"));
-        Page<RailContainerEntity> page = railContainerService.findAll(pageRequest);
+        Page<RailContainer> page = railContainerService.findAll(pageRequest);
 
         model.addAttribute("page", page);
         model.addAttribute("tab", "all");

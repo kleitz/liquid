@@ -125,7 +125,7 @@ public class ShipmentController {
     public String edit(@RequestParam(value = "o") Long orderId, @ModelAttribute ShipmentSet shipmentSet) {
         RailTransport[] railTransportSet = null;
 
-        Collection<RailContainerEntity> entities = RailTransport.toEntities(railTransportSet);
+        Collection<RailContainer> entities = RailTransport.toEntities(railTransportSet);
         railContainerRepository.save(entities);
 
         return "redirect:/shipment?o=" + orderId;

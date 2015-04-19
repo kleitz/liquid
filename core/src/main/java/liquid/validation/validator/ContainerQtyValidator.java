@@ -6,7 +6,6 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
- * TODO: Comments.
  * User: tao
  * Date: 10/15/13
  * Time: 7:25 PM

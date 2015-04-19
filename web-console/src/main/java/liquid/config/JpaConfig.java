@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * TODO: Comments.
  * User: tao
  * Date: 9/24/13
  * Time: 9:06 PM

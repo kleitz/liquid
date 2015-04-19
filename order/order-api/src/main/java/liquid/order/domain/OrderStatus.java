@@ -1,7 +1,7 @@
 package liquid.order.domain;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 9/29/13
  * Time: 10:16 PM

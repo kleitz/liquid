@@ -1,14 +1,14 @@
 package liquid.operation.controller;
 
-import liquid.domain.LocationForm;
-import liquid.model.Alert;
-import liquid.model.AlertType;
+import liquid.model.LocationForm;
+import liquid.core.model.Alert;
+import liquid.core.model.AlertType;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.LocationType;
 import liquid.operation.service.InternalLocationService;
 import liquid.operation.service.LocationTypeService;
 import liquid.pinyin4j.PinyinHelper;
-import liquid.web.controller.BaseController;
+import liquid.core.controller.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/5/13
  * Time: 11:09 AM

@@ -7,4 +7,5 @@ import liquid.service.CrudService;
  * Created by Tao Ma on 4/2/15.
  */
 public interface ServiceProviderTypeService extends CrudService<ServiceProviderType> {
+    Iterable<ServiceProviderType> findAll();
 }

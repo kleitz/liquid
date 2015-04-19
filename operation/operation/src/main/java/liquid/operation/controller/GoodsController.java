@@ -1,10 +1,10 @@
 package liquid.operation.controller;
 
-import liquid.model.Alert;
-import liquid.model.AlertType;
+import liquid.core.model.Alert;
+import liquid.core.model.AlertType;
 import liquid.operation.domain.Goods;
 import liquid.operation.service.InternalGoodsService;
-import liquid.web.controller.BaseController;
+import liquid.core.controller.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 9/28/13
  * Time: 3:30 PM

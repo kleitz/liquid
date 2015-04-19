@@ -1,12 +1,12 @@
 package liquid.user.controller;
 
-import liquid.model.Alert;
+import liquid.core.model.Alert;
 import liquid.user.domain.GroupMember;
 import liquid.user.model.PasswordChange;
 import liquid.user.model.User;
 import liquid.user.service.UserService;
 import liquid.util.StringUtil;
-import liquid.web.controller.BaseController;
+import liquid.core.controller.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import javax.validation.Valid;
 import java.util.Collection;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/6/13
  * Time: 11:50 AM

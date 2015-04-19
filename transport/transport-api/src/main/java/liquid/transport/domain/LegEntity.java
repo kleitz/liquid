@@ -7,7 +7,7 @@ import liquid.operation.domain.Location;
 import javax.persistence.*;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/10/13
  * Time: 8:18 PM

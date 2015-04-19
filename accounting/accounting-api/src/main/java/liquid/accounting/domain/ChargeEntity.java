@@ -11,7 +11,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/2/13
  * Time: 7:43 PM

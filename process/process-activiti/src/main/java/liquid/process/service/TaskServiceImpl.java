@@ -3,6 +3,8 @@ package liquid.process.service;
 import liquid.process.NotCompletedException;
 import liquid.process.domain.Task;
 import liquid.process.domain.TaskBar;
+import liquid.process.handler.TaskHandler;
+import liquid.process.handler.TaskHandlerFactory;
 import liquid.util.DatePattern;
 import liquid.util.DateUtil;
 import liquid.util.StringUtil;
@@ -20,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 /**
- * TODO: Comments.
  * User: tao
  * Date: 10/18/13
  * Time: 11:12 PM
@@ -33,7 +34,7 @@ public class TaskServiceImpl implements TaskService {
     private ProcessEngine processEngine;
 
     @Autowired
-    protected TaskFactory taskFactory;
+    protected TaskHandlerFactory taskFactory;
 
     @Autowired
     protected MessageSource messageSource;
@@ -76,7 +77,7 @@ public class TaskServiceImpl implements TaskService {
             logger.warn("The taskId '{}' is null.", taskId);
             return;
         }
-        AbstractTaskProxy task = taskFactory.findTask(activitiTask.getTaskDefinitionKey());
+        TaskHandler task = taskFactory.locateHandler(activitiTask.getTaskDefinitionKey());
         task.complete(taskId);
     }
 
@@ -182,19 +183,10 @@ public class TaskServiceImpl implements TaskService {
             case "allocateContainers":
             case "feedContainerNo":
                 return "/task/" + task.getId() + "/allocation";
-            case "applyRailwayPlan":
-                return "/task/" + task.getId() + "/rail_plan";
-            case "loadOnYard":
             case "loadByTruck":
             case "salesSendingTruck":
             case "marketingSendingTruck":
                 return "/task/" + task.getId() + "/rail_truck";
-            case "sendLoadingByTruck":
-                return "/task/" + task.getId() + "/rail_truck/sending";
-            case "recordTory":
-                return "/task/" + task.getId() + "/rail_yard";
-            case "recordTod":
-                return "/task/" + task.getId() + "/rail_shipping";
             case "recordToa":
                 return "/task/" + task.getId() + "/rail_arrival";
             case "doBargeOps":
@@ -212,8 +204,6 @@ public class TaskServiceImpl implements TaskService {
                 return "/task/" + task.getId() + "/check_amount";
             case "confirmPurchaingSettlement":
                 return "/task/" + task.getId() + "/settlement";
-            case "bookingShippingSpace":
-                return "/task/" + task.getId() + "/booking";
             default:
                 return "/task/" + task.getId() + "/common";
         }

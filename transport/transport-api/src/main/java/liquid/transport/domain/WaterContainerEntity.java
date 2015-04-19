@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * TODO: Comments.
+ *  
  * User: tao
  * Date: 10/12/13
  * Time: 2:42 PM

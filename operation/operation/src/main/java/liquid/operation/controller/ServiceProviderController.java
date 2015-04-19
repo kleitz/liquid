@@ -1,9 +1,10 @@
 package liquid.operation.controller;
 
+import liquid.core.controller.BaseController;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.InternalServiceProviderService;
+import liquid.operation.service.ServiceProviderTypeService;
 import liquid.operation.service.ServiceSubtypeService;
-import liquid.web.controller.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 /**
- * TODO: Comments.
  * User: tao
  * Date: 10/2/13
  * Time: 5:02 PM
@@ -34,6 +34,9 @@ public class ServiceProviderController extends BaseController {
     @Autowired
     private ServiceSubtypeService serviceSubtypeService;
 
+    @Autowired
+    private ServiceProviderTypeService serviceProviderTypeService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String list(@RequestParam(defaultValue = "0", required = false) int number, Model model) {
         PageRequest pageRequest = new PageRequest(number, size, new Sort(Sort.Direction.DESC, "id"));
@@ -45,7 +48,7 @@ public class ServiceProviderController extends BaseController {
 
     @RequestMapping(value = "/form", method = RequestMethod.GET)
     public String initForm(Model model) {
-        model.addAttribute("spTypes", serviceProviderService.getSpTypes());
+        model.addAttribute("spTypes", serviceProviderTypeService.findAll());
         model.addAttribute("serviceSubtypes", serviceSubtypeService.findEnabled());
 
         model.addAttribute("sp", new ServiceProvider());
@@ -56,7 +59,7 @@ public class ServiceProviderController extends BaseController {
     public String initEdit(@PathVariable Long id, Model model) {
         logger.debug("id: {}", id);
 
-        model.addAttribute("spTypes", serviceProviderService.getSpTypes());
+        model.addAttribute("spTypes", serviceProviderTypeService.findAll());
         model.addAttribute("serviceSubtypes", serviceSubtypeService.findEnabled());
 
         ServiceProvider sp = serviceProviderService.find(id);
@@ -71,6 +74,7 @@ public class ServiceProviderController extends BaseController {
         if (bindingResult.hasErrors()) {
             return "sp/sp";
         } else {
+            sp.setStatus(0);
             serviceProviderService.save(sp);
             return "redirect:/sp";
         }
