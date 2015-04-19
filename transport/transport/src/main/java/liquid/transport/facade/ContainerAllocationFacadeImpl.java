@@ -5,7 +5,7 @@ import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
 import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
-import liquid.transport.domain.RailContainerEntity;
+import liquid.transport.domain.RailContainer;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.domain.ShippingContainerEntity;
 import liquid.transport.model.ContainerAllocation;
@@ -90,7 +90,7 @@ public class ContainerAllocationFacadeImpl implements ContainerAllocationFacade 
         List<ShippingContainerEntity> shippingContainers = shippingContainerService.findByShipmentId(shipment.getId());
         int allocatedQuantity = shippingContainers == null ? 0 : shippingContainers.size();
 
-        Collection<RailContainerEntity> railContainerEntities = railContainerService.findByShipmentId(shipment.getId());
+        Collection<RailContainer> railContainers = railContainerService.findByShipmentId(shipment.getId());
         for (int j = 0; j < allocatedQuantity; j++) {
             ContainerAllocation containerAllocation = new ContainerAllocation();
             ShippingContainerEntity shippingContainer = shippingContainers.get(j);
@@ -105,10 +105,10 @@ public class ContainerAllocationFacadeImpl implements ContainerAllocationFacade 
                 containerAllocation.setOwner(shippingContainers.get(j).getContainer().getOwner().getName());
                 containerAllocation.setYard(shippingContainers.get(j).getContainer().getYard().getName());
 
-                for (RailContainerEntity railContainerEntity : railContainerEntities) {
-                    if (railContainerEntity.getSc().getId().equals(shippingContainer.getId())) {
-                        if (null != railContainerEntity.getTruck())
-                            containerAllocation.setTruckId(railContainerEntity.getTruck().getId());
+                for (RailContainer railContainer : railContainers) {
+                    if (railContainer.getSc().getId().equals(shippingContainer.getId())) {
+                        if (null != railContainer.getTruck())
+                            containerAllocation.setTruckId(railContainer.getTruck().getId());
                     }
                 }
                 containerAllocations.add(containerAllocation);

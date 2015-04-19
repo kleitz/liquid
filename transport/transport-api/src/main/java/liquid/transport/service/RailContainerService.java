@@ -1,6 +1,6 @@
 package liquid.transport.service;
 
-import liquid.transport.domain.RailContainerEntity;
+import liquid.transport.domain.RailContainer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -11,14 +11,14 @@ import java.util.Collection;
  */
 public interface RailContainerService {
     // FIXME - Page should not occur here.
-    Page<RailContainerEntity> findAll(Pageable pageable);
+    Page<RailContainer> findAll(Pageable pageable);
 
     // FIXME - The method should be internal.
-    Collection<RailContainerEntity> findByShipmentId(Long shipmentId);
+    Collection<RailContainer> findByShipmentId(Long shipmentId);
 
-    RailContainerEntity save(RailContainerEntity railContainerEntity);
+    RailContainer save(RailContainer railContainer);
 
-    Iterable<RailContainerEntity> save(Iterable<RailContainerEntity> entities);
+    Iterable<RailContainer> save(Iterable<RailContainer> entities);
 
-    Iterable<RailContainerEntity> findByReleasedAtToday();
+    Iterable<RailContainer> findByReleasedAtToday();
 }

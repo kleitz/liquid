@@ -4,7 +4,7 @@ import liquid.core.model.Alert;
 import liquid.process.handler.DefinitionKey;
 import liquid.process.model.RailContainerListForm;
 import liquid.process.service.TaskService;
-import liquid.transport.domain.RailContainerEntity;
+import liquid.transport.domain.RailContainer;
 import liquid.transport.service.RailContainerService;
 import liquid.transport.service.ShippingContainerService;
 import org.slf4j.Logger;
@@ -45,9 +45,9 @@ public class ApplyRailwayPlanController extends AbstractTaskController {
 
         Long orderId = taskService.getOrderIdByTaskId(taskId);
 
-        Iterable<RailContainerEntity> iterable = scService.initializeRailContainers(orderId);
-        for (RailContainerEntity oldOne : iterable) {
-            for (RailContainerEntity newOne : railContainerListForm.getList()) {
+        Iterable<RailContainer> iterable = scService.initializeRailContainers(orderId);
+        for (RailContainer oldOne : iterable) {
+            for (RailContainer newOne : railContainerListForm.getList()) {
                 if (oldOne.getId() == newOne.getId()) {
                     oldOne.setTransPlanNo(newOne.getTransPlanNo());
                     oldOne.setEts(newOne.getEts());

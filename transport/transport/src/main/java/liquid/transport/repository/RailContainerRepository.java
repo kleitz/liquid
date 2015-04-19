@@ -1,7 +1,7 @@
 package liquid.transport.repository;
 
 import liquid.order.domain.OrderEntity;
-import liquid.transport.domain.RailContainerEntity;
+import liquid.transport.domain.RailContainer;
 import liquid.transport.domain.ShipmentEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,14 +15,14 @@ import java.util.Date;
  * Date: 10/12/13
  * Time: 10:23 AM
  */
-public interface RailContainerRepository extends CrudRepository<RailContainerEntity, Long> {
-    Collection<RailContainerEntity> findByOrder(OrderEntity order);
+public interface RailContainerRepository extends CrudRepository<RailContainer, Long> {
+    Collection<RailContainer> findByOrder(OrderEntity order);
 
-    Collection<RailContainerEntity> findByShipment(ShipmentEntity shipment);
+    Collection<RailContainer> findByShipment(ShipmentEntity shipment);
 
-    Collection<RailContainerEntity> findByShipmentId(Long shipmentId);
+    Collection<RailContainer> findByShipmentId(Long shipmentId);
 
-    Iterable<RailContainerEntity> findByReleasedAtGreaterThan(Date releasedAt);
+    Iterable<RailContainer> findByReleasedAtGreaterThan(Date releasedAt);
 
-    Page<RailContainerEntity> findAll(Pageable pageable);
+    Page<RailContainer> findAll(Pageable pageable);
 }

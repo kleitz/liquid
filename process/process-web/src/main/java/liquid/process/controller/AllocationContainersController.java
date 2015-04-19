@@ -14,7 +14,7 @@ import liquid.operation.service.LocationService;
 import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
 import liquid.order.service.ServiceItemService;
-import liquid.transport.domain.RailContainerEntity;
+import liquid.transport.domain.RailContainer;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.domain.TruckEntity;
 import liquid.transport.facade.ContainerAllocationFacade;
@@ -245,17 +245,17 @@ public class AllocationContainersController extends BaseTaskController {
     public String release(@PathVariable String taskId, ShipmentContainerAllocation shipmentContainerAllocation,
                           @RequestHeader(value = "referer", required = false) final String referer) {
         List<ContainerAllocation> containerAllocations = shipmentContainerAllocation.getContainerAllocations();
-        Collection<RailContainerEntity> railContainerEntities = railContainerService.findByShipmentId(shipmentContainerAllocation.getShipmentId());
-        for (RailContainerEntity railContainerEntity : railContainerEntities) {
+        Collection<RailContainer> railContainers = railContainerService.findByShipmentId(shipmentContainerAllocation.getShipmentId());
+        for (RailContainer railContainer : railContainers) {
             for (ContainerAllocation containerAllocation : containerAllocations) {
-                if (railContainerEntity.getSc().getId().equals(containerAllocation.getAllocationId())) {
+                if (railContainer.getSc().getId().equals(containerAllocation.getAllocationId())) {
                     TruckEntity truckEntity = truckService.find(containerAllocation.getTruckId());
-                    railContainerEntity.setTruck(truckEntity);
-                    railContainerEntity.setFleet(ServiceProvider.newInstance(liquid.operation.domain.ServiceProvider.class, truckEntity.getServiceProviderId()));
-                    railContainerEntity.setPlateNo(truckEntity.getLicensePlate());
-                    railContainerEntity.setTrucker(truckEntity.getDriver());
-                    railContainerEntity.setReleasedAt(new Date());
-                    railContainerService.save(railContainerEntity);
+                    railContainer.setTruck(truckEntity);
+                    railContainer.setFleet(ServiceProvider.newInstance(liquid.operation.domain.ServiceProvider.class, truckEntity.getServiceProviderId()));
+                    railContainer.setPlateNo(truckEntity.getLicensePlate());
+                    railContainer.setTrucker(truckEntity.getDriver());
+                    railContainer.setReleasedAt(new Date());
+                    railContainerService.save(railContainer);
                 }
             }
         }

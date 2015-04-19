@@ -9,7 +9,7 @@ import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
 import liquid.service.AbstractService;
 import liquid.transport.domain.*;
-import liquid.transport.model.*;
+import liquid.transport.model.Truck;
 import liquid.transport.repository.*;
 import liquid.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,21 +116,21 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
         }
     }
 
-    public Iterable<RailContainerEntity> initializeRailContainers(Long orderId) {
+    public Iterable<RailContainer> initializeRailContainers(Long orderId) {
         OrderEntity order = orderService.find(orderId);
-        Collection<RailContainerEntity> rcList = rcRepository.findByOrder(order);
+        Collection<RailContainer> rcList = rcRepository.findByOrder(order);
         if (rcList.size() > 0) {
             return rcList;
         }
 
-        rcList = new ArrayList<RailContainerEntity>();
+        rcList = new ArrayList<RailContainer>();
         Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(order.getId());
         for (ShipmentEntity shipment : shipmentSet) {
             List<LegEntity> legList = legRepository.findByShipmentAndTransMode(shipment, TransMode.RAIL.getType());
             if (legList.size() > 0) {
                 List<ShippingContainerEntity> shippingContainers = findByShipmentId(shipment.getId());
                 for (ShippingContainerEntity sc : shippingContainers) {
-                    RailContainerEntity rc = new RailContainerEntity();
+                    RailContainer rc = new RailContainer();
                     rc.setOrder(shipment.getOrder());
                     rc.setShipment(shipment);
                     rc.setLeg(legList.get(0));
@@ -144,31 +144,11 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
     }
 
     public Truck findTruckDto(long railContainerId) {
-        RailContainerEntity railContainer = rcRepository.findOne(railContainerId);
+        RailContainer railContainer = rcRepository.findOne(railContainerId);
         return toTruckDto(railContainer);
     }
 
-    public RailYard findRailYardDto(long railContainerId) {
-        RailContainerEntity railContainer = rcRepository.findOne(railContainerId);
-        return toRailYardDto(railContainer);
-    }
-
-    public RailPlan findRailPlanDto(long railContainerId) {
-        RailContainerEntity railContainer = rcRepository.findOne(railContainerId);
-        return toRailPlanDto(railContainer);
-    }
-
-    public RailShipping findRailShippingDto(long railContainerId) {
-        RailContainerEntity railContainer = rcRepository.findOne(railContainerId);
-        return toRailShippingDto(railContainer);
-    }
-
-    public RailArrival findRailArrivalDto(long railContainerId) {
-        RailContainerEntity railContainer = rcRepository.findOne(railContainerId);
-        return toRailArrivalDto(railContainer);
-    }
-
-    private Truck toTruckDto(RailContainerEntity railContainer) {
+    private Truck toTruckDto(RailContainer railContainer) {
         Truck truck = new Truck();
         if (null != railContainer.getFleet())
             truck.setFleetId(railContainer.getFleet().getId());
@@ -187,74 +167,13 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
         return truck;
     }
 
-    private RailYard toRailYardDto(RailContainerEntity railContainer) {
-        RailYard railYard = new RailYard();
-        railYard.setRailContainerId(railContainer.getId());
-        if (null != railContainer.getSc().getContainer())
-            railYard.setBicCode(railContainer.getSc().getContainer().getBicCode());
-        else
-            railYard.setBicCode(railContainer.getSc().getBicCode());
-        if (null == railContainer.getStationToa()) {
-            railYard.setRailYardToa(DateUtil.stringOf(new Date()));
-        } else {
-            railYard.setRailYardToa(DateUtil.stringOf(railContainer.getStationToa()));
-        }
-        return railYard;
-    }
-
-    private RailPlan toRailPlanDto(RailContainerEntity railContainer) {
-        RailPlan railPlan = new RailPlan();
-        railPlan.setRailContainerId(railContainer.getId());
-        if (null != railContainer.getSc().getContainer())
-            railPlan.setBicCode(railContainer.getSc().getContainer().getBicCode());
-        else
-            railPlan.setBicCode(railContainer.getSc().getBicCode());
-        railPlan.setPlanNo(railContainer.getTransPlanNo());
-        if (null == railContainer.getEts()) {
-            railPlan.setEts(DateUtil.dayStrOf(new Date()));
-        } else {
-            railPlan.setEts(DateUtil.dayStrOf(railContainer.getEts()));
-        }
-        return railPlan;
-    }
-
-    private RailShipping toRailShippingDto(RailContainerEntity railContainer) {
-        RailShipping railShipping = new RailShipping();
-        railShipping.setRailContainerId(railContainer.getId());
-        if (null != railContainer.getSc().getContainer())
-            railShipping.setBicCode(railContainer.getSc().getContainer().getBicCode());
-        else
-            railShipping.setBicCode(railContainer.getSc().getBicCode());
-        if (null == railContainer.getAts()) {
-            railShipping.setAts(DateUtil.stringOf(new Date()));
-        } else {
-            railShipping.setAts(DateUtil.stringOf(railContainer.getAts()));
-        }
-        return railShipping;
-    }
-
-    private RailArrival toRailArrivalDto(RailContainerEntity railContainer) {
-        RailArrival railArrivalDto = new RailArrival();
-        railArrivalDto.setRailContainerId(railContainer.getId());
-        if (null != railContainer.getSc().getContainer())
-            railArrivalDto.setBicCode(railContainer.getSc().getContainer().getBicCode());
-        else
-            railArrivalDto.setBicCode(railContainer.getSc().getBicCode());
-        if (null == railContainer.getAta()) {
-            railArrivalDto.setAta(DateUtil.stringOf(new Date()));
-        } else {
-            railArrivalDto.setAta(DateUtil.stringOf(railContainer.getAta()));
-        }
-        return railArrivalDto;
-    }
-
     public void saveTruck(Truck truck) {
-        RailContainerEntity container = rcRepository.findOne(truck.getRailContainerId());
+        RailContainer container = rcRepository.findOne(truck.getRailContainerId());
         ServiceProvider fleet = serviceProviderService.find(truck.getFleetId());
 
         if (truck.isBatch()) {
-            Collection<RailContainerEntity> containers = rcRepository.findByShipment(container.getShipment());
-            for (RailContainerEntity railContainer : containers) {
+            Collection<RailContainer> containers = rcRepository.findByShipment(container.getShipment());
+            for (RailContainer railContainer : containers) {
                 railContainer.setFleet(fleet);
                 railContainer.setPlateNo(truck.getPlateNo());
                 railContainer.setTrucker(truck.getTrucker());
@@ -267,72 +186,6 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
             container.setPlateNo(truck.getPlateNo());
             container.setTrucker(truck.getTrucker());
             container.setLoadingToc(DateUtil.dateOf(truck.getLoadingToc()));
-            rcRepository.save(container);
-        }
-    }
-
-    public void saveRailYard(RailYard railYard) {
-        RailContainerEntity container = rcRepository.findOne(railYard.getRailContainerId());
-
-        if (railYard.isBatch()) {
-            Collection<RailContainerEntity> containers = rcRepository.findByShipment(container.getShipment());
-            for (RailContainerEntity railContainer : containers) {
-                railContainer.setStationToa(DateUtil.dateOf(railYard.getRailYardToa()));
-            }
-
-            rcRepository.save(containers);
-        } else {
-            container.setStationToa(DateUtil.dateOf(railYard.getRailYardToa()));
-            rcRepository.save(container);
-        }
-    }
-
-    public void saveRailPlan(RailPlan railPlan) {
-        RailContainerEntity container = rcRepository.findOne(railPlan.getRailContainerId());
-
-        if (railPlan.isBatch()) {
-            Collection<RailContainerEntity> containers = rcRepository.findByShipment(container.getShipment());
-            for (RailContainerEntity railContainer : containers) {
-                railContainer.setTransPlanNo(railPlan.getPlanNo());
-                railContainer.setEts(DateUtil.dayOf(railPlan.getEts()));
-            }
-
-            rcRepository.save(containers);
-        } else {
-            container.setTransPlanNo(railPlan.getPlanNo());
-            container.setEts(DateUtil.dayOf(railPlan.getEts()));
-            rcRepository.save(container);
-        }
-    }
-
-    public void saveRailShipping(RailShipping railShipping) {
-        RailContainerEntity container = rcRepository.findOne(railShipping.getRailContainerId());
-
-        if (railShipping.isBatch()) {
-            Collection<RailContainerEntity> containers = rcRepository.findByShipment(container.getShipment());
-            for (RailContainerEntity railContainer : containers) {
-                railContainer.setAts(DateUtil.dateOf(railShipping.getAts()));
-            }
-
-            rcRepository.save(containers);
-        } else {
-            container.setAts(DateUtil.dateOf(railShipping.getAts()));
-            rcRepository.save(container);
-        }
-    }
-
-    public void saveRailArrival(RailArrival railArrival) {
-        RailContainerEntity container = rcRepository.findOne(railArrival.getRailContainerId());
-
-        if (railArrival.isBatch()) {
-            Collection<RailContainerEntity> containers = rcRepository.findByShipment(container.getShipment());
-            for (RailContainerEntity railContainer : containers) {
-                railContainer.setAta(DateUtil.dateOf(railArrival.getAta()));
-            }
-
-            rcRepository.save(containers);
-        } else {
-            container.setAta(DateUtil.dateOf(railArrival.getAta()));
             rcRepository.save(container);
         }
     }

@@ -1,27 +1,18 @@
 package liquid.transport.service;
 
 import liquid.transport.domain.BargeContainerEntity;
-import liquid.transport.domain.RailContainerEntity;
+import liquid.transport.domain.RailContainer;
 import liquid.transport.domain.ShippingContainerEntity;
 import liquid.transport.domain.VesselContainerEntity;
-import liquid.transport.model.*;
+import liquid.transport.model.Truck;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
  * Created by Tao Ma on 4/12/15.
  */
 public interface ShippingContainerService {
-    Iterable<RailContainerEntity> initializeRailContainers(Long orderId);
-
-    RailYard findRailYardDto(long railContainerId);
-
-    void saveRailYard(RailYard railYard);
-
-    RailPlan findRailPlanDto(long railContainerId);
-
-    void saveRailPlan(RailPlan railPlan);
+    Iterable<RailContainer> initializeRailContainers(Long orderId);
 
     Iterable<VesselContainerEntity> initVesselContainers(Long orderId);
 
@@ -35,10 +26,6 @@ public interface ShippingContainerService {
 
     void saveBargeContainer(long containerId, BargeContainerEntity formBean);
 
-    RailShipping findRailShippingDto(long railContainerId);
-
-    void saveRailShipping(RailShipping railShipping);
-
     Truck findTruckDto(long railContainerId);
 
     void saveTruck(Truck truck);
@@ -50,8 +37,4 @@ public interface ShippingContainerService {
     ShippingContainerEntity save(ShippingContainerEntity shippingContainerEntity);
 
     ShippingContainerEntity find(Long id);
-
-    RailArrival findRailArrivalDto(long railContainerId);
-
-    void saveRailArrival(RailArrival railArrival);
 }

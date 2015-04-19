@@ -1,6 +1,6 @@
 package liquid.process.model;
 
-import liquid.transport.domain.RailContainerEntity;
+import liquid.transport.domain.RailContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,26 +9,26 @@ import java.util.List;
  * Created by Tao Ma on 4/18/15.
  */
 public class RailContainerListForm {
-    List<RailContainerEntity> list;
+    List<RailContainer> list;
 
     public RailContainerListForm() { }
 
-    public RailContainerListForm(List<RailContainerEntity> list) {
+    public RailContainerListForm(List<RailContainer> list) {
         this.list = list;
     }
 
-    public RailContainerListForm(Iterable<RailContainerEntity> iterable) {
+    public RailContainerListForm(Iterable<RailContainer> iterable) {
         this.list = new ArrayList<>();
-        for (RailContainerEntity railContainerEntity : iterable) {
-            this.list.add(railContainerEntity);
+        for (RailContainer railContainer : iterable) {
+            this.list.add(railContainer);
         }
     }
 
-    public List<RailContainerEntity> getList() {
+    public List<RailContainer> getList() {
         return list;
     }
 
-    public void setList(List<RailContainerEntity> list) {
+    public void setList(List<RailContainer> list) {
         this.list = list;
     }
 

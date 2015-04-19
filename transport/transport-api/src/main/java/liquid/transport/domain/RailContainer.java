@@ -12,7 +12,7 @@ import java.util.Date;
  * Time: 10:22 AM
  */
 @Entity(name = "TSP_RAIL_CONTAINER")
-public class RailContainerEntity extends BaseLegContainer {
+public class RailContainer extends BaseLegContainer {
     @OneToOne
     @JoinColumn(name = "TRUCK_ID")
     private TruckEntity truck;
