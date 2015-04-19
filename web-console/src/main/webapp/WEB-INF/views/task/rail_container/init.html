@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html>
-
+<html> 
 <head th:replace="layout :: head" />
 
 <body>
@@ -47,7 +46,7 @@
                             <span th:text="${container.sc.container} ? ${container.sc.container.bicCode} : ${container.sc.bicCode}">Container No.</span>
                         </td>
                         <td>
-                            <select th:field="*{list[__${rowStat.index}__].fleet}" class="form-control input-sm" th:readonly="${definitionKey != 'loadOnYard'}">
+                            <select th:field="*{list[__${rowStat.index}__].fleet}" class="form-control input-sm" th:readonly="${task.definitionKey != 'loadOnYard'}">
                                 <option th:each="sp : ${sps}"
                                         th:value="${sp.id}"
                                         th:text="${sp.name}"
@@ -57,37 +56,37 @@
                             </select>
                         </td>
                         <td>
-                            <input type="text" th:field="*{list[__${rowStat.index}__].plateNo}" class="form-control input-sm" th:readonly="${definitionKey != 'loadOnYard'}" />
+                            <input type="text" th:field="*{list[__${rowStat.index}__].plateNo}" class="form-control input-sm" th:readonly="${task.definitionKey != 'loadOnYard'}" />
                         </td>
                         <td>
-                            <input type="text" th:field="*{list[__${rowStat.index}__].trucker}" class="form-control input-sm" th:readonly="${definitionKey != 'loadOnYard'}" />
+                            <input type="text" th:field="*{list[__${rowStat.index}__].trucker}" class="form-control input-sm" th:readonly="${task.definitionKey != 'loadOnYard'}" />
                         </td>
                         <td>
                             <div class='input-group input-group-sm date' th:id="'loadingTocPicker' + ${rowStat.index}">
-                                <input type='text' data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{list[__${rowStat.index}__].loadingToc}" th:readonly="${definitionKey != 'loadOnYard'}" />
+                                <input type='text' data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{list[__${rowStat.index}__].loadingToc}" th:readonly="${task.definitionKey != 'loadOnYard'}" />
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
                         </td>
                         <td>
                             <div class="form-group">
-                                <input type="text" th:field="*{list[__${rowStat.index}__].transPlanNo}" class="form-control input-sm" th:readonly="${definitionKey != 'applyRailwayPlan'}" />
+                                <input type="text" th:field="*{list[__${rowStat.index}__].transPlanNo}" class="form-control input-sm" th:readonly="${task.definitionKey != 'applyRailwayPlan'}" />
                             </div>
                         </td>
                         <td>
                             <div class="input-group input-group-sm date" th:id="'etsPicker' + ${rowStat.index}">
-                                <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{list[__${rowStat.index}__].ets}" th:readonly="${definitionKey != 'applyRailwayPlan'}" />
+                                <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{list[__${rowStat.index}__].ets}" th:readonly="${task.definitionKey != 'applyRailwayPlan'}" />
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
                         </td>
                         <td>
                             <div class='input-group input-group-sm date' th:id="'stationToaPicker' + ${rowStat.index}">
-                                <input type='text' data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{list[__${rowStat.index}__].stationToa}" th:readonly="${definitionKey != 'recordTory'}" />
+                                <input type='text' data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{list[__${rowStat.index}__].stationToa}" th:readonly="${task.definitionKey != 'recordTory'}" />
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
                         </td>
                         <td>
                             <div class='input-group input-group-sm date' th:id="'atsPicker' + ${rowStat.index}">
-                                <input type='text' data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{list[__${rowStat.index}__].ats}" th:readonly="${definitionKey != 'recordTod'}" />
+                                <input type='text' data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{list[__${rowStat.index}__].ats}" th:readonly="${task.definitionKey != 'recordTod'}" />
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
                         </td>

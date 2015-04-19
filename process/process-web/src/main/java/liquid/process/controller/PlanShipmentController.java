@@ -6,7 +6,7 @@ import liquid.accounting.service.ChargeService;
 import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
 import liquid.process.handler.DefinitionKey;
-import liquid.process.handler.PlanShipmentHandler;
+import liquid.process.handler.TaskHandlerFactory;
 import liquid.process.service.TaskService;
 import liquid.transport.domain.*;
 import liquid.transport.model.Shipment;
@@ -49,6 +49,9 @@ public class PlanShipmentController extends AbstractTaskController {
     @Autowired
     private ChargeService chargeService;
 
+    @Autowired
+    private TaskHandlerFactory factory;
+
     @RequestMapping(method = RequestMethod.POST, params = "definitionKey=" + DefinitionKey.planShipment)
     public String addShipment(@PathVariable String taskId, @Valid @ModelAttribute(value = "shipment") Shipment shipment,
                               BindingResult result, Model model) {
@@ -75,7 +78,7 @@ public class PlanShipmentController extends AbstractTaskController {
             Iterable<ChargeEntity> charges = chargeService.findByTaskId(taskId);
             model.addAttribute("charges", charges);
             model.addAttribute("total", chargeService.total(charges));
-            return "planning/main";
+            return factory.locateHandler(DefinitionKey.planShipment).locateTemplate(DefinitionKey.planShipment);
         } else if (shipment.getContainerQuantity() > (order.getContainerQty() - containerUsage)) {
             addFieldError(result, "shipment", "containerQty", shipment.getContainerQuantity(), (order.getContainerQty() - containerUsage));
 
@@ -89,7 +92,7 @@ public class PlanShipmentController extends AbstractTaskController {
             Iterable<ChargeEntity> charges = chargeService.findByTaskId(taskId);
             model.addAttribute("charges", charges);
             model.addAttribute("total", chargeService.total(charges));
-            return "planning/main";
+            return factory.locateHandler(DefinitionKey.planShipment).locateTemplate(DefinitionKey.planShipment);
         } else {
             ShipmentEntity shipmentEntityntity = new ShipmentEntity();
             shipmentEntityntity.setOrder(order);
@@ -112,7 +115,7 @@ public class PlanShipmentController extends AbstractTaskController {
             }
 
             shipmentService.save(shipmentEntityntity);
-            return "redirect:/task/" + taskId + "/planning";
+            return computeRedirect(taskId);
         }
     }
 }

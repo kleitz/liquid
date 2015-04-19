@@ -2,7 +2,6 @@ package liquid.process.controller;
 
 import liquid.core.model.Alert;
 import liquid.operation.service.ServiceProviderService;
-import liquid.process.handler.DefinitionKey;
 import liquid.process.model.RailContainerListForm;
 import liquid.transport.domain.RailContainer;
 import liquid.transport.service.RailContainerService;
@@ -36,20 +35,6 @@ public class RecordToaController extends BaseTaskController {
 
     @Autowired
     private RailContainerService railContainerService;
-
-    @RequestMapping(method = RequestMethod.GET)
-    public String init(@PathVariable String taskId, Model model) {
-        logger.debug("taskId: {}", taskId);
-        Long orderId = taskService.getOrderIdByTaskId(taskId);
-
-        model.addAttribute("containerListForm", new RailContainerListForm(scService.initializeRailContainers(orderId)));
-        model.addAttribute("action", "/task/" + taskId + "/rail_arrival");
-        model.addAttribute("definitionKey", DefinitionKey.recordTod);
-        // FIXME - this is bug, we need to use subtype instead.
-
-        model.addAttribute("sps", serviceProviderService.findByType(4L));
-        return "rail/main";
-    }
 
     @RequestMapping(method = RequestMethod.POST)
     public String save(@PathVariable String taskId, RailContainerListForm railContainerListForm,

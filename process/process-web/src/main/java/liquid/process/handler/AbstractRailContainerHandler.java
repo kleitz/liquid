@@ -45,7 +45,6 @@ public abstract class AbstractRailContainerHandler extends AbstractTaskHandler {
     public void init(Task task, Model model) {
         model.addAttribute("containerListForm", new RailContainerListForm(scService.initializeRailContainers(task.getOrderId())));
         model.addAttribute("action", "/task/" + task.getId());
-        model.addAttribute("definitionKey", DefinitionKey.loadOnYard);
         // FIXME - this is bug, we need to use subtype instead.
         model.addAttribute("sps", serviceProviderService.findByType(4L));
 

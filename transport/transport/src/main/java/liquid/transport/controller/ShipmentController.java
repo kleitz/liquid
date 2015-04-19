@@ -135,7 +135,7 @@ public class ShipmentController {
     public String deleteShipment(@PathVariable Long id) {
         ShipmentEntity shipmentEntity = shipmentService.find(id);
         shipmentService.delete(id);
-        return "redirect:/task/" + shipmentEntity.getTaskId() + "/planning";
+        return "redirect:/task/" + shipmentEntity.getTaskId();
     }
 
     @RequestMapping(value = "/{id}/leg", method = RequestMethod.GET)
@@ -180,7 +180,7 @@ public class ShipmentController {
         legEntity.setShipment(shipmentEntity);
         legService.save(legEntity);
 
-        return "redirect:/task/" + shipmentEntity.getTaskId() + "/planning";
+        return "redirect:/task/" + shipmentEntity.getTaskId();
     }
 
     private Long computeDefaultDstLocId(List<Location> locationEntities) {
