@@ -182,13 +182,11 @@ public class TaskServiceImpl implements TaskService {
             case "allocateContainers":
             case "feedContainerNo":
                 return "/task/" + task.getId() + "/allocation";
-            case "salesSendingTruck":
-            case "marketingSendingTruck":
-                return "/task/" + task.getId() + "/rail_truck";
-            case "recordToa":
-                return "/task/" + task.getId() + "/rail_arrival";
-            case "doBargeOps":
-                return "/task/" + task.getId() + "/barge";
+//            case "salesSendingTruck":
+//            case "marketingSendingTruck":
+//                return "/task/" + task.getId() + "/rail_truck";
+//            case "recordToa":
+//                return "/task/" + task.getId() + "/rail_arrival";
             case "doVesselOps":
                 return "/task/" + task.getId() + "/vessel";
             case "deliver":

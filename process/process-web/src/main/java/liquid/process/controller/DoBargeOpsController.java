@@ -1,76 +1,61 @@
 package liquid.process.controller;
 
+import liquid.core.model.Alert;
+import liquid.process.handler.DefinitionKey;
+import liquid.process.model.BargeContainerListForm;
+import liquid.process.service.TaskService;
 import liquid.transport.domain.BargeContainerEntity;
-import liquid.transport.domain.ShipmentEntity;
-import liquid.transport.service.ShipmentService;
+import liquid.transport.service.BargeContainerService;
 import liquid.transport.service.ShippingContainerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.security.Principal;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
- *  
  * User: tao
  * Date: 10/12/13
  * Time: 3:33 PM
  */
 @Controller
-@RequestMapping("/task/{taskId}/barge")
-public class DoBargeOpsController extends BaseTaskController {
+public class DoBargeOpsController extends AbstractTaskController {
     private static final Logger logger = LoggerFactory.getLogger(DoBargeOpsController.class);
+
+    @Autowired
+    private TaskService taskService;
 
     @Autowired
     private ShippingContainerService scService;
 
     @Autowired
-    private ShipmentService shipmentService;
+    private BargeContainerService bargeContainerService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String init(@PathVariable String taskId, Model model) {
+    @RequestMapping(method = RequestMethod.POST, params = "definitionKey=" + DefinitionKey.doBargeOps)
+    public String save(@PathVariable String taskId, BargeContainerListForm railContainerListForm,
+                       Model model, RedirectAttributes redirectAttributes) {
         logger.debug("taskId: {}", taskId);
+        logger.debug("railContainerListForm: {}", railContainerListForm);
+
         Long orderId = taskService.getOrderIdByTaskId(taskId);
-        scService.initBargeContainers(orderId);
-
-        Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(orderId);
-        model.addAttribute("shipmentSet", shipmentSet);
-        return "barge/main";
-    }
-
-    @RequestMapping(value = "/{containerId}", method = RequestMethod.GET)
-    public String initRecord(@PathVariable String taskId,
-                             @PathVariable long containerId,
-                             Model model, Principal principal) {
-        logger.debug("taskId: {}", taskId);
-        logger.debug("containerId: {}", containerId);
-
-        BargeContainerEntity bargeContainer = scService.findBargeContainer(containerId);
-        logger.debug("bargeContainer: {}", bargeContainer);
-        model.addAttribute("container", bargeContainer);
-        return "barge/edit";
-    }
-
-    @RequestMapping(value = "/{containerId}", method = RequestMethod.POST)
-    public String record(@PathVariable String taskId,
-                         @PathVariable long containerId,
-                         @ModelAttribute("container") BargeContainerEntity formBean,
-                         BindingResult bindingResult) {
-        logger.debug("taskId: {}", taskId);
-        logger.debug("containerId: {}", containerId);
-
-        if (bindingResult.hasErrors()) {
-            return "barge/edit";
-        } else {
-            scService.saveBargeContainer(containerId, formBean);
-            return "redirect:/task/" + taskId + "/barge";
+        Iterable<BargeContainerEntity> iterable = scService.initBargeContainers(orderId);
+        for (BargeContainerEntity oldOne : iterable) {
+            for (BargeContainerEntity newOne : railContainerListForm.getList()) {
+                if (oldOne.getId() == newOne.getId()) {
+                    oldOne.setBolNo(newOne.getBolNo());
+                    oldOne.setSlot(newOne.getSlot());
+                    oldOne.setEts(newOne.getEts());
+                }
+                continue;
+            }
         }
+        bargeContainerService.save(iterable);
+
+        redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
+        return computeRedirect(taskId);
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
  * Created by Tao Ma on 4/18/15.
  */
 public class RailContainerListForm {
-    List<RailContainer> list;
+    private List<RailContainer> list;
 
     public RailContainerListForm() { }
 

@@ -16,6 +16,7 @@ public class TaskHandlerFactory {
         TaskHandler handler = context.containsBean(definitionKey + "Handler")
                 ? context.getBean(definitionKey + "Handler", TaskHandler.class)
                 : context.getBean("defaultHandler", TaskHandler.class);
+        handler.setDefinitionKey(definitionKey);
         return handler;
     }
 }

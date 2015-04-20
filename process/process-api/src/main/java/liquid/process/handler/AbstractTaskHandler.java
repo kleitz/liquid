@@ -14,6 +14,16 @@ public abstract class AbstractTaskHandler implements TaskHandler {
     @Autowired
     protected TaskService taskService;
 
+    private String definitionKey;
+
+    public String getDefinitionKey() {
+        return definitionKey;
+    }
+
+    public void setDefinitionKey(String definitionKey) {
+        this.definitionKey = definitionKey;
+    }
+
     @Override
     public String locateTemplate(String definitionKey) {
         return Constants.TASK_ROOT_DIR + "/" + definitionKey + "/init";
