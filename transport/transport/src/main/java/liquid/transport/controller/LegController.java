@@ -58,6 +58,6 @@ public class LegController {
     public String deleteLeg(@PathVariable Long id) {
         LegEntity legEntity = legService.find(id);
         legService.delete(id);
-        return "redirect:/task/" + legEntity.getShipment().getTaskId() + "/planning";
+        return "redirect:/task/" + legEntity.getShipment().getTaskId();
     }
 }

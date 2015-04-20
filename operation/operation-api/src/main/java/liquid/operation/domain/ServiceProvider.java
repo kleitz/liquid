@@ -1,6 +1,7 @@
 package liquid.operation.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import liquid.converter.Text;
 import liquid.core.domain.StatefulEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -19,7 +20,7 @@ import java.util.Set;
  */
 @Entity(name = "OPS_SERVICE_PROVIDER")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class ServiceProvider extends StatefulEntity {
+public class ServiceProvider extends StatefulEntity implements Text {
     @NotNull
     @NotEmpty
     @Column(name = "CODE")
@@ -138,5 +139,10 @@ public class ServiceProvider extends StatefulEntity {
 
     public void setSubtypes(Set<ServiceSubtype> subtypes) {
         this.subtypes = subtypes;
+    }
+
+    @Override
+    public String toText() {
+        return String.valueOf(id);
     }
 }

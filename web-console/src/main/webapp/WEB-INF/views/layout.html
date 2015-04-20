@@ -170,9 +170,7 @@
                 </div>
             
                 <div class="col-xs-2">
-                    <form action="/task" method="POST">
-                        <input type="hidden" name="taskId" value="taskId" th:value="${task.id}"/>
-
+                    <form th:action="'/task/' + ${task.id}" method="POST">
                         <button type="submit" name="claim" value="Claim" class="btn btn-sm btn-warning btn-block" th:unless="${task.assignee}">
                             <span th:text="#{task.claim}"/>
                         </button>                                        
@@ -204,8 +202,7 @@
                     </h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="/task" method="POST">
-                        <input type="hidden" name="taskId" value="taskId" th:value="${task.id}"/>
+                    <form th:action="'/task/' + ${task.id}" method="POST">
                         <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
                             <span th:text="#{modal.close}"/>
                         </button>

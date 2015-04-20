@@ -1,10 +1,10 @@
 package liquid.config;
 
-import liquid.converter.GenericFormatter;
 import liquid.interceptor.LoggingInterceptor;
 import liquid.operation.converter.LocationTypeFormatter;
+import liquid.operation.converter.ServiceProviderFormatter;
+import liquid.operation.converter.ServiceProviderTypeFormatter;
 import liquid.operation.converter.ToServiceSubtypeConverter;
-import liquid.operation.domain.ServiceProviderType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
@@ -52,7 +53,10 @@ import java.util.Locale;
 })
 public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
-    private GenericFormatter<ServiceProviderType> serviceProviderTypeFormatter;
+    private ServiceProviderTypeFormatter serviceProviderTypeFormatter;
+
+    @Autowired
+    private ServiceProviderFormatter serviceProviderFormatter;
 
     @Autowired
     private ToServiceSubtypeConverter toServiceSubtypeConverter;
@@ -73,7 +77,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
+        registry.addFormatter(new DateFormatter("yyyy-MM-dd HH:mm"));
         registry.addFormatter(serviceProviderTypeFormatter);
+        registry.addFormatter(serviceProviderFormatter);
         registry.addFormatter(locationTypeFormatter);
         registry.addConverter(toServiceSubtypeConverter);
     }

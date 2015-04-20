@@ -3,7 +3,7 @@ package liquid.transport.model;
 import liquid.operation.domain.ServiceProvider;
 import liquid.order.domain.OrderEntity;
 import liquid.transport.domain.LegEntity;
-import liquid.transport.domain.RailContainerEntity;
+import liquid.transport.domain.RailContainer;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.util.DateUtil;
 
@@ -39,8 +39,8 @@ public class RailTransport extends TransportBase {
 
     private String actualShippedAt;
 
-    public static RailContainerEntity toEntity(RailTransport transport) {
-        RailContainerEntity entity = new RailContainerEntity();
+    public static RailContainer toEntity(RailTransport transport) {
+        RailContainer entity = new RailContainer();
         entity.setId(transport.getId());
         entity.setOrder(OrderEntity.newInstance(OrderEntity.class, transport.getOrderId()));
         entity.setShipment(ShipmentEntity.newInstance(ShipmentEntity.class, transport.getShipmentId()));
@@ -56,20 +56,20 @@ public class RailTransport extends TransportBase {
         return entity;
     }
 
-    public RailContainerEntity toEntity() {
+    public RailContainer toEntity() {
         return toEntity(this);
     }
 
-    public static Collection<RailContainerEntity> toEntities(RailTransport[] transportSet) {
-        List<RailContainerEntity> entities = new ArrayList<RailContainerEntity>();
+    public static Collection<RailContainer> toEntities(RailTransport[] transportSet) {
+        List<RailContainer> entities = new ArrayList<RailContainer>();
         for (RailTransport transport : transportSet) {
-            RailContainerEntity entity = toEntity(transport);
+            RailContainer entity = toEntity(transport);
             entities.add(entity);
         }
         return entities;
     }
 
-    public static RailTransport valueOf(RailContainerEntity entity) {
+    public static RailTransport valueOf(RailContainer entity) {
         RailTransport value = new RailTransport();
         value.setId(entity.getId());
         value.setOrderId(entity.getOrder().getId());
@@ -88,10 +88,10 @@ public class RailTransport extends TransportBase {
         return value;
     }
 
-    public static RailTransport[] valueOf(Collection<RailContainerEntity> entities) {
+    public static RailTransport[] valueOf(Collection<RailContainer> entities) {
         RailTransport[] railTransport = new RailTransport[entities.size()];
         int i = 0;
-        for (RailContainerEntity entity : entities) {
+        for (RailContainer entity : entities) {
             railTransport[i] = RailTransport.valueOf(entity);
             i++;
         }

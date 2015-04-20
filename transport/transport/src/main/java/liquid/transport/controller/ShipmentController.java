@@ -125,7 +125,7 @@ public class ShipmentController {
     public String edit(@RequestParam(value = "o") Long orderId, @ModelAttribute ShipmentSet shipmentSet) {
         RailTransport[] railTransportSet = null;
 
-        Collection<RailContainerEntity> entities = RailTransport.toEntities(railTransportSet);
+        Collection<RailContainer> entities = RailTransport.toEntities(railTransportSet);
         railContainerRepository.save(entities);
 
         return "redirect:/shipment?o=" + orderId;
@@ -135,7 +135,7 @@ public class ShipmentController {
     public String deleteShipment(@PathVariable Long id) {
         ShipmentEntity shipmentEntity = shipmentService.find(id);
         shipmentService.delete(id);
-        return "redirect:/task/" + shipmentEntity.getTaskId() + "/planning";
+        return "redirect:/task/" + shipmentEntity.getTaskId();
     }
 
     @RequestMapping(value = "/{id}/leg", method = RequestMethod.GET)
@@ -180,7 +180,7 @@ public class ShipmentController {
         legEntity.setShipment(shipmentEntity);
         legService.save(legEntity);
 
-        return "redirect:/task/" + shipmentEntity.getTaskId() + "/planning";
+        return "redirect:/task/" + shipmentEntity.getTaskId();
     }
 
     private Long computeDefaultDstLocId(List<Location> locationEntities) {
