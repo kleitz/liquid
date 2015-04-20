@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="layout :: head" />
+
+<body>
+
+<div class="container">
+    <h3>JS</h3>
+    <hr />
+
+    <div id="content"></div>
+</div>
+
+<!-- {!begin layout} -->
+<div th:replace="layout :: js"></div>
+<!-- {!end layout} -->
+
+<script>
+/*<![CDATA[*/
+    // The follwing comments at above snippet is its output.
+    // IIFE
+    (function() {
+        console.log("IIFE");
+    })();
+    console.log("----------");
+
+    // IIFE obj
+    // undefined
+    var obj = (function() {
+        console.log("IIFE obj");
+    })();
+    console.log(obj);
+    console.log(typeof obj);
+    console.log("----------");
+   
+    // function 
+    obj = (function() {
+        return function() {
+            console.log(obj);
+            console.log(typeof obj);
+        }
+    })();
+    obj();
+    console.log("----------");
+
+    // object
+    // Hi Tao
+    obj = (function() {
+        return {
+            greet: function(name) {
+                return "Hi " + name;
+            }
+        }
+    }());
+    obj.id = 1;
+    console.log(obj);
+    console.log(typeof obj);
+    console.log(obj.greet("Tao"));
+    console.log("----------");
+    
+    //
+    obj = (function() {
+        console.log(this);
+        return {
+            text: "Hi",
+            setText: function(text) {
+                this.text = text; 
+                return this;
+            }, 
+            greetTo: function(name) { 
+                return this.text + ", " + name;
+            }
+        }
+    }());
+    console.log(obj);
+    console.log(typeof obj);
+    console.log(obj.greetTo("Brick"));
+    console.log(obj.setText("Oh").greetTo("Brick"));
+
+/*]]>*/
+</script>
+ 
+</body>
+</html>

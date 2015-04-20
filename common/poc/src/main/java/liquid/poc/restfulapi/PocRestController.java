@@ -17,6 +17,9 @@ public class PocRestController {
     @RequestMapping("/ajax")
     @ResponseBody
     public Data[] doAjax() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) { }
 
         return new Data[]{
                 new Data("UUID-01", UUID.randomUUID().toString()),

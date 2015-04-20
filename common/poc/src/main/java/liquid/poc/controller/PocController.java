@@ -26,13 +26,13 @@ public class PocController {
 
     @RequestMapping(value = "/{template}", method = RequestMethod.GET)
     public String init(@PathVariable String template) {
-        return "poc/" + template;
+        return "common/poc/" + template;
     }
 
     @RequestMapping(value = "/mail", method = RequestMethod.POST)
     public String sendMail(MailDto mailDto) {
         mailNotificationService.send(mailDto.getMailTo(), mailDto.getSubject(), mailDto.getContent());
-        return "poc/mail";
+        return "common/poc/mail";
     }
 
     @RequestMapping(value = "/message", method = RequestMethod.POST)

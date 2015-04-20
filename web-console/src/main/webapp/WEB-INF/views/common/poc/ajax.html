@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="layout :: head" />
+
+<body>
+
+<div class="container">
+    <h3>Ajax</h3>
+    <hr />
+
+    <input id="message" type="text" />
+    <hr />
+
+    <div id="content"></div>
+</div>
+
+<!-- {!begin layout} -->
+<div th:replace="layout :: js"></div>
+<!-- {!end layout} -->
+
+<script>
+/*<![CDATA[*/
+    var poller = (function() {
+        return {
+            done: function(data) {
+                console.log("poller done");
+            },
+            poll: function() {
+                $.ajax({ 
+                    url: "/api/poc/ajax",
+                    timeout: 30000
+                })
+                .done(function(data) {
+                    console.log("ajax done: " + data.length);
+                    poller.done(data);
+                })
+                .fail(function() {
+                    console.log("ajax fail");
+                })
+                .always(function() {
+                    console.log("ajax always");
+                    poller.poll();
+                });
+            }
+        }  
+    }());
+
+    $(document).ready(function() {
+        $('#message').blur(function() {
+            var message = $('#message').val();
+            poller.done = function(data) {
+                var text = '';
+                for (i = 0; i < data.length; i++) {
+                    text += data[i].value; 
+                }
+                $('#content').append('<p>' + text + '</p>');
+            };
+            poller.poll();
+        });
+    }); // ready end
+/*]]>*/
+</script>
+ 
+</body>
+</html>
