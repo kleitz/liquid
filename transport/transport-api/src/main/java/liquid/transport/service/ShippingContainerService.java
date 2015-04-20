@@ -1,9 +1,9 @@
 package liquid.transport.service;
 
-import liquid.transport.domain.BargeContainerEntity;
+import liquid.transport.domain.BargeContainer;
 import liquid.transport.domain.RailContainer;
 import liquid.transport.domain.ShippingContainerEntity;
-import liquid.transport.domain.VesselContainerEntity;
+import liquid.transport.domain.VesselContainer;
 import liquid.transport.model.Truck;
 
 import java.util.List;
@@ -14,17 +14,17 @@ import java.util.List;
 public interface ShippingContainerService {
     Iterable<RailContainer> initializeRailContainers(Long orderId);
 
-    Iterable<VesselContainerEntity> initVesselContainers(Long orderId);
+    Iterable<VesselContainer> initVesselContainers(Long orderId);
 
-    VesselContainerEntity findVesselContainer(long containerId);
+    VesselContainer findVesselContainer(long containerId);
 
-    void saveVesselContainer(long containerId, VesselContainerEntity formBean);
+    void saveVesselContainer(long containerId, VesselContainer formBean);
 
-    Iterable<BargeContainerEntity> initBargeContainers(Long orderId);
+    Iterable<BargeContainer> initBargeContainers(Long orderId);
 
-    BargeContainerEntity findBargeContainer(long containerId);
+    BargeContainer findBargeContainer(long containerId);
 
-    void saveBargeContainer(long containerId, BargeContainerEntity formBean);
+    void saveBargeContainer(long containerId, BargeContainer formBean);
 
     Truck findTruckDto(long railContainerId);
 

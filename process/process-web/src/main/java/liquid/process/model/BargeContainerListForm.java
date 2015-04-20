@@ -1,6 +1,6 @@
 package liquid.process.model;
 
-import liquid.transport.domain.BargeContainerEntity;
+import liquid.transport.domain.BargeContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,22 +9,22 @@ import java.util.List;
  * Created by Tao Ma on 4/20/15.
  */
 public class BargeContainerListForm {
-    private List<BargeContainerEntity> list;
+    private List<BargeContainer> list;
 
     public BargeContainerListForm() { }
 
-    public BargeContainerListForm(Iterable<BargeContainerEntity> iterable) {
+    public BargeContainerListForm(Iterable<BargeContainer> iterable) {
         this.list = new ArrayList<>();
-        for (BargeContainerEntity container : iterable) {
+        for (BargeContainer container : iterable) {
             this.list.add(container);
         }
     }
 
-    public List<BargeContainerEntity> getList() {
+    public List<BargeContainer> getList() {
         return list;
     }
 
-    public void setList(List<BargeContainerEntity> list) {
+    public void setList(List<BargeContainer> list) {
         this.list = list;
     }
 

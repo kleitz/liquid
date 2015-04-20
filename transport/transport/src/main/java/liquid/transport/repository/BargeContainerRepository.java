@@ -1,7 +1,7 @@
 package liquid.transport.repository;
 
 import liquid.order.domain.OrderEntity;
-import liquid.transport.domain.BargeContainerEntity;
+import liquid.transport.domain.BargeContainer;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Collection;
@@ -12,8 +12,8 @@ import java.util.Collection;
  * Date: 10/12/13
  * Time: 2:48 PM
  */
-public interface BargeContainerRepository extends CrudRepository<BargeContainerEntity, Long> {
-    Collection<BargeContainerEntity> findByOrder(OrderEntity order);
+public interface BargeContainerRepository extends CrudRepository<BargeContainer, Long> {
+    Collection<BargeContainer> findByOrder(OrderEntity order);
 
-    Collection<BargeContainerEntity> findByShipmentId(Long shipmentId);
+    Collection<BargeContainer> findByShipmentId(Long shipmentId);
 }

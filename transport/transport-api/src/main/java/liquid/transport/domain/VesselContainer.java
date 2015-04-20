@@ -9,4 +9,4 @@ import javax.persistence.Entity;
  * Time: 4:23 PM
  */
 @Entity(name = "TSP_VESSEL_CONTAINER")
-public class VesselContainerEntity extends WaterContainerEntity {}
+public class VesselContainer extends WaterContainerEntity {}

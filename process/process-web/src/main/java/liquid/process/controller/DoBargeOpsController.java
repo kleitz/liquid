@@ -4,7 +4,7 @@ import liquid.core.model.Alert;
 import liquid.process.handler.DefinitionKey;
 import liquid.process.model.BargeContainerListForm;
 import liquid.process.service.TaskService;
-import liquid.transport.domain.BargeContainerEntity;
+import liquid.transport.domain.BargeContainer;
 import liquid.transport.service.BargeContainerService;
 import liquid.transport.service.ShippingContainerService;
 import org.slf4j.Logger;
@@ -42,9 +42,9 @@ public class DoBargeOpsController extends AbstractTaskController {
         logger.debug("railContainerListForm: {}", railContainerListForm);
 
         Long orderId = taskService.getOrderIdByTaskId(taskId);
-        Iterable<BargeContainerEntity> iterable = scService.initBargeContainers(orderId);
-        for (BargeContainerEntity oldOne : iterable) {
-            for (BargeContainerEntity newOne : railContainerListForm.getList()) {
+        Iterable<BargeContainer> iterable = scService.initBargeContainers(orderId);
+        for (BargeContainer oldOne : iterable) {
+            for (BargeContainer newOne : railContainerListForm.getList()) {
                 if (oldOne.getId() == newOne.getId()) {
                     oldOne.setBolNo(newOne.getBolNo());
                     oldOne.setSlot(newOne.getSlot());

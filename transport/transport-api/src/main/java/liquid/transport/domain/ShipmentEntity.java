@@ -34,10 +34,10 @@ public class ShipmentEntity extends BaseTaskEntity {
     private Collection<RailContainer> railContainers;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "shipment")
-    private Collection<BargeContainerEntity> bargeContainers;
+    private Collection<BargeContainer> bargeContainers;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "shipment")
-    private Collection<VesselContainerEntity> vesselContainers;
+    private Collection<VesselContainer> vesselContainers;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "shipment")
     private Collection<DeliveryContainerEntity> deliveryContainers;
@@ -82,19 +82,19 @@ public class ShipmentEntity extends BaseTaskEntity {
         this.railContainers = railContainers;
     }
 
-    public Collection<BargeContainerEntity> getBargeContainers() {
+    public Collection<BargeContainer> getBargeContainers() {
         return bargeContainers;
     }
 
-    public void setBargeContainers(Collection<BargeContainerEntity> bargeContainers) {
+    public void setBargeContainers(Collection<BargeContainer> bargeContainers) {
         this.bargeContainers = bargeContainers;
     }
 
-    public Collection<VesselContainerEntity> getVesselContainers() {
+    public Collection<VesselContainer> getVesselContainers() {
         return vesselContainers;
     }
 
-    public void setVesselContainers(Collection<VesselContainerEntity> vesselContainers) {
+    public void setVesselContainers(Collection<VesselContainer> vesselContainers) {
         this.vesselContainers = vesselContainers;
     }
 
