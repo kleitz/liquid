@@ -10,13 +10,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
- * User: tao
- * Date: 10/19/13
- * Time: 12:08 AM
+ * Created by Tao Ma on 4/20/15.
  */
 @Controller
-public class LoadOnYardController extends AbstractTruckController {
-    @RequestMapping(method = RequestMethod.POST, params = "definitionKey=" + DefinitionKey.loadOnYard)
+public class LoadByTruckController extends AbstractTruckController {
+    @RequestMapping(method = RequestMethod.POST, params = "definitionKey=" + DefinitionKey.loadByTruck)
     public String save(@PathVariable String taskId, RailContainerListForm railContainerListForm,
                        Model model, RedirectAttributes redirectAttributes) {
         return super.save(taskId, railContainerListForm, model, redirectAttributes);

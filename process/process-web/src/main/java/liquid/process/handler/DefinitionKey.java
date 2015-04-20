@@ -20,6 +20,7 @@ public interface DefinitionKey {
     // The following 4 tasks are opearate rail_container entity.
     String applyRailwayPlan = "applyRailwayPlan";
     String loadOnYard = "loadOnYard";
+    String loadByTruck = "loadByTruck";
     String recordTory = "recordTory";
     String recordTod = "recordTod";
     String CDCI = "CDCI";
