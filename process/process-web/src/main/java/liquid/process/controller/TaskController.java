@@ -12,6 +12,7 @@ import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
 import liquid.process.NotCompletedException;
 import liquid.process.domain.Task;
+import liquid.process.domain.TaskBar;
 import liquid.process.handler.TaskHandler;
 import liquid.process.handler.TaskHandlerFactory;
 import liquid.process.service.TaskService;
@@ -25,10 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -37,7 +35,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * Time: 11:25 PM
  */
 @Controller
-@RequestMapping("/task/{taskId}")
+@RequestMapping("/task")
 public class TaskController extends AbstractTaskController {
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
 
@@ -72,6 +70,38 @@ public class TaskController extends AbstractTaskController {
     private TruckService truckService;
 
     @RequestMapping(method = RequestMethod.GET)
+    public String tasks(Model model) {
+        return "redirect:/task?q=all";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, params = "q")
+    public String list(@RequestParam("q") String tab, Model model) {
+        Task[] tasks;
+
+        switch (tab) {
+            case "all":
+                tasks = taskService.listTasks(SecurityContext.getInstance().getRole());
+                break;
+            case "my":
+                tasks = taskService.listMyTasks(SecurityContext.getInstance().getUsername());
+                break;
+            case "warning":
+                tasks = taskService.listWarningTasks();
+                break;
+            default:
+                tasks = new Task[0];
+                break;
+        }
+        TaskBar taskBar = taskService.calculateTaskBar(SecurityContext.getInstance().getRole(),
+                SecurityContext.getInstance().getUsername());
+        taskBar.setTitle("task." + tab);
+        model.addAttribute("taskBar", taskBar);
+        model.addAttribute("tab", tab);
+        model.addAttribute("tasks", tasks);
+        return "task/list";
+    }
+
+    @RequestMapping(value = "/{taskId}", method = RequestMethod.GET)
     public String initForm(@PathVariable String taskId, Model model) {
         logger.debug("taskId: {}", taskId);
         Task task = taskService.getTask(taskId);
@@ -89,7 +119,7 @@ public class TaskController extends AbstractTaskController {
         return handler.locateTemplate(task.getDefinitionKey());
     }
 
-    @RequestMapping(method = RequestMethod.POST, params = "claim")
+    @RequestMapping(value = "/{taskId}", method = RequestMethod.POST, params = "claim")
     public String claim(@PathVariable String taskId, Model model, RedirectAttributes redirectAttributes) {
         logger.debug("taskId: {}", taskId);
         try {
@@ -102,7 +132,7 @@ public class TaskController extends AbstractTaskController {
         return "redirect:/task/" + taskId;
     }
 
-    @RequestMapping(method = RequestMethod.POST, params = "complete")
+    @RequestMapping(value = "/{taskId}", method = RequestMethod.POST, params = "complete")
     public String complete(@PathVariable String taskId,
                            @RequestHeader(value = "referer") String referer,
                            Model model) {
@@ -127,7 +157,7 @@ public class TaskController extends AbstractTaskController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/common", method = RequestMethod.GET)
+    @RequestMapping(value = "/{taskId}/common", method = RequestMethod.GET)
     public String toCommon(@PathVariable String taskId, Model model) {
         logger.debug("taskId: {}", taskId);
         Task task = taskService.getTask(taskId);
@@ -135,7 +165,7 @@ public class TaskController extends AbstractTaskController {
         return "task/common";
     }
 
-    @RequestMapping(value = "/check_amount", method = RequestMethod.GET)
+    @RequestMapping(value = "/{taskId}/check_amount", method = RequestMethod.GET)
     public String checkAmount(@PathVariable String taskId, Model model) {
         long orderId = taskService.getOrderIdByTaskId(taskId);
         Task task = taskService.getTask(taskId);
@@ -156,7 +186,7 @@ public class TaskController extends AbstractTaskController {
         return "charge/list";
     }
 
-    @RequestMapping(value = "/settlement", method = RequestMethod.GET)
+    @RequestMapping(value = "/{taskId}/settlement", method = RequestMethod.GET)
     public String settle(@PathVariable String taskId, Model model) {
         Task task = taskService.getTask(taskId);
         model.addAttribute("task", task);

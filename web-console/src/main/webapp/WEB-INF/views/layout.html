@@ -190,16 +190,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel"><span th:text="#{modal.complete.task}"/></h4>
-                    <!--
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                    -->
+                    <h4 class="modal-title" id="myModalLabel"><span th:text="#{task.complete}" /></h4>
                 </div>
                 <div class="modal-body">
-                    <h4>
-                        <span class="glyphicon glyphicon-warning-sign text-danger" />
-                        <span th:text="${task.prompt}" />
-                    </h4>
+                    <p>
+                        <span class="glyphicon glyphicon-warning-sign text-danger" />               
+                        <span th:text="#{modal.complete.task}" />
+                    </p>
                 </div>
                 <div class="modal-footer">
                     <form th:action="'/task/' + ${task.id}" method="POST">
