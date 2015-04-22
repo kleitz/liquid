@@ -17,9 +17,8 @@
     <div class="panel panel-default" th:if="false">
         <div class="panel-heading">
             <strong th:text="#{shipment} + ${shipment.id}">Shipment ID</strong>
-
-            <a href="/task/{taskId}" class="btn btn-default btn-xs pull-right"
-               th:href="${backToTask}">
+            <!-- FIXME ${backToTask} could be used by some taskes. -->
+            <a class="btn btn-default btn-xs pull-right" th:href="'/task/' + ${taskId}">
                 <i class="glyphicon glyphicon-arrow-left"/>
             </a>
         </div>
@@ -66,7 +65,8 @@
             <span th:text="${leg.srcLoc.name} + '-' + ${leg.dstLoc.name}"></span>
             <span th:text="#{container.quantity} + '(' + ${leg.shipment.containerQty}+ ')'"></span>
 
-            <a href="/task/{taskId}" class="pull-right" th:href="${backToTask}">
+            <!-- FIXME ${backToTask} could be used by some taskes. -->
+            <a class="pull-right" th:href="'/task/' + ${taskId}">
                 <i class="glyphicon glyphicon-arrow-left text-success"/>
             </a>
         </div>

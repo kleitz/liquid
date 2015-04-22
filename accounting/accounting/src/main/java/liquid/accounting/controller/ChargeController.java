@@ -8,24 +8,24 @@ import liquid.accounting.facade.ReceivableFacade;
 import liquid.accounting.model.Charge;
 import liquid.accounting.model.ChargeStatus;
 import liquid.accounting.model.Earning;
+import liquid.accounting.model.ExchangeRateDto;
 import liquid.accounting.service.ExchangeRateService;
 import liquid.accounting.service.InternalChargeService;
 import liquid.container.domain.ContainerCap;
 import liquid.container.domain.ContainerType;
-import liquid.order.domain.LoadingType;
-import liquid.order.domain.TradeType;
+import liquid.model.SearchBarForm;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceProviderService;
 import liquid.operation.service.ServiceSubtypeService;
+import liquid.order.domain.LoadingType;
 import liquid.order.domain.OrderStatus;
+import liquid.order.domain.TradeType;
 import liquid.order.service.OrderService;
 import liquid.process.service.TaskService;
 import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.TransMode;
 import liquid.transport.service.LegService;
-import liquid.accounting.model.ExchangeRateDto;
-import liquid.model.SearchBarForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  
  * User: tao
  * Date: 10/2/13
  * Time: 9:17 PM
@@ -201,7 +200,7 @@ public class ChargeController {
         model.addAttribute("shipment", leg.getShipment());
         model.addAttribute("leg", leg);
         model.addAttribute("charges", charges);
-        model.addAttribute("backToTask", taskService.computeTaskMainPath(taskId));
+        model.addAttribute("taskId", taskId);
         return "charge/console";
     }
 

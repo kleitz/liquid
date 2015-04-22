@@ -1,14 +1,14 @@
 package liquid.operation.controller;
 
-import liquid.model.LocationForm;
+import liquid.core.controller.BaseController;
 import liquid.core.model.Alert;
 import liquid.core.model.AlertType;
+import liquid.model.LocationForm;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.LocationType;
 import liquid.operation.service.InternalLocationService;
 import liquid.operation.service.LocationTypeService;
 import liquid.pinyin4j.PinyinHelper;
-import liquid.core.controller.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  
  * User: tao
  * Date: 10/5/13
  * Time: 11:09 AM
@@ -33,6 +32,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/location")
 public class LocationController extends BaseController {
+    private final static String ROOT_DIR = "operation/location/";
     private static final Logger logger = LoggerFactory.getLogger(LocationController.class);
 
     @Autowired
@@ -62,13 +62,13 @@ public class LocationController extends BaseController {
         model.addAttribute("type", type);
         model.addAttribute("location", new Location());
         model.addAttribute("contextPath", "/location?");
-        return "location/list";
+        return ROOT_DIR + "list";
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String initNew(Model model) {
         model.addAttribute("location", new LocationForm());
-        return "location/form";
+        return ROOT_DIR + "form";
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -77,7 +77,7 @@ public class LocationController extends BaseController {
         logger.debug("location: {}", location);
 
         if (bindingResult.hasErrors()) {
-            return "location/form";
+            return ROOT_DIR + "form";
         } else {
             try {
                 List<Location> entities = new ArrayList<>();
@@ -94,7 +94,7 @@ public class LocationController extends BaseController {
             } catch (Exception e) {
                 logger.warn(e.getMessage(), e);
                 model.addAttribute("alert", new Alert("duplicated.key"));
-                return "location/form";
+                return ROOT_DIR + "form";
             }
         }
     }
@@ -104,7 +104,7 @@ public class LocationController extends BaseController {
         logger.debug("id: {}", id);
 
         model.addAttribute("location", locationService.find(id));
-        return "location/edit";
+        return ROOT_DIR + "edit";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
@@ -113,7 +113,7 @@ public class LocationController extends BaseController {
         logger.debug("location: {}", location);
 
         if (bindingResult.hasErrors()) {
-            return "location/edit";
+            return ROOT_DIR + "edit";
         } else {
             try {
                 locationService.save(location);
@@ -121,7 +121,7 @@ public class LocationController extends BaseController {
             } catch (Exception e) {
                 logger.warn(e.getMessage(), e);
                 model.addAttribute("alert", new Alert(AlertType.DANGER, "duplicated.key"));
-                return "location/edit";
+                return ROOT_DIR + "edit";
             }
         }
     }

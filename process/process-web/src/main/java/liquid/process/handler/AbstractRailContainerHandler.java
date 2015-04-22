@@ -9,11 +9,13 @@ import liquid.operation.service.ServiceSubtypeService;
 import liquid.process.domain.Task;
 import liquid.process.model.RailContainerListForm;
 import liquid.process.service.TaskService;
+import liquid.transport.domain.RailContainer;
 import liquid.transport.domain.TransMode;
 import liquid.transport.service.ShippingContainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -43,7 +45,16 @@ public abstract class AbstractRailContainerHandler extends AbstractTaskHandler {
 
     @Override
     public void init(Task task, Model model) {
-        model.addAttribute("containerListForm", new RailContainerListForm(scService.initializeRailContainers(task.getOrderId())));
+        Iterable<RailContainer> containers = scService.initializeRailContainers(task.getOrderId());
+        for (RailContainer container : containers) {
+            if (null == container.getEts()) container.setEts(new Date());
+            if (null == container.getAts()) container.setAts(new Date());
+            if (null == container.getAta()) container.setAta(new Date());
+            if (null == container.getLoadingToc()) container.setLoadingToc(new Date());
+            if (null == container.getStationToa()) container.setStationToa(new Date());
+            if (null == container.getReleasedAt()) container.setReleasedAt(new Date());
+        }
+        model.addAttribute("containerListForm", new RailContainerListForm(containers));
         model.addAttribute("action", "/task/" + task.getId());
         // FIXME - this is bug, we need to use subtype instead.
         model.addAttribute("sps", serviceProviderService.findByType(4L));

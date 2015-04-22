@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/railway_plan_type")
 public class RailwayPlanTypeController {
+    private final static String ROOT_DIR = "operation/railway_plan_type/";
+
     private static final Logger logger = LoggerFactory.getLogger(RailwayPlanTypeController.class);
 
     @Autowired
@@ -28,13 +30,13 @@ public class RailwayPlanTypeController {
         Iterable<RailPlanTypeEntity> railwayPlanTypes = railwayPlanTypeService.findAll();
 
         model.addAttribute("railwayPlanTypes", railwayPlanTypes);
-        return "railway_plan_type/list";
+        return ROOT_DIR + "list";
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String initNew(Model model) {
         model.addAttribute("railwayPlanType", new RailPlanTypeEntity());
-        return "railway_plan_type/form";
+        return ROOT_DIR + "form";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -42,7 +44,7 @@ public class RailwayPlanTypeController {
         logger.debug("id: {}", id);
 
         model.addAttribute("railwayPlanType", railwayPlanTypeService.find(id));
-        return "railway_plan_type/form";
+        return ROOT_DIR + "form";
     }
 
     @RequestMapping(method = RequestMethod.POST)

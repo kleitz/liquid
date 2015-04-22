@@ -15,7 +15,7 @@
         </div>
     
         <div class="col-xs-3 pull-right">
-            <br />
+            <br></br>
             <form method="GET" role="form" action="/order/search" th:object="${searchBarForm}">
                 <input type="hidden" th:field="*{id}"/>
                 <input type="hidden" th:field="*{type}"/>
@@ -25,7 +25,7 @@
                     <span class="input-group-btn">                    
                         <button type="submit" name="search" class="btn btn-primary"><i class="glyphicon glyphicon-search" /></button>
                     </span>
-                </div>   
+                </div>
             </form>
         </div>
     </div><!-- row -->
@@ -37,7 +37,7 @@
     <table class="table table-striped table-hover table-condensed table-16">
         <thead>
         <tr>
-            <th th:text="#{order.no}">Order No</th>                    
+            <th th:text="#{order.no}">Order No</th>
             <th th:text="#{customer.name}">Customer Name</th>
             <th th:text="#{service.type}">Service Type</th>
             <th th:text="#{origination}">Origin</th>
@@ -68,7 +68,7 @@
                 <i th:if="${order.status} == 8" class="glyphicon glyphicon-flag" />
                 &nbsp;
                 <a href="/order/id?action=edit" th:href="'/order/' + ${order.id}" th:text="${order.orderNo}"/>
-            </td>                    
+            </td>
             <td th:text="${order.customerName}">Customer Name</td>
             <td th:text="${order.serviceType}">Service Type</td>
             <td th:text="${order.origination}">Origin</td>
@@ -80,8 +80,9 @@
             <td th:text="#{${containerTypeMap[order.containerType]}}">Container Type</td>
             <td th:text="${order.containerSubtype}">Container Subtype</td>
             <td th:text="${order.containerQuantity}">Container Quantity</td>
-            <td th:text="${order.cnyTotal}">CNY Price</td>
-            <td th:text="${order.usdTotal}">USD Price</td>
+
+            <td><span th:text="${#numbers.formatDecimal(order.cnyTotal, 0, 'COMMA', 2, 'POINT')}">CNY Price</span></td>
+            <td><span th:text="${#numbers.formatDecimal(order.usdTotal, 0, 'COMMA', 2, 'POINT')}">USD Price</span></td>
             <td th:text="${order.updatedAt}">Update At</td>
             <td>
                 <a sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING')"
@@ -89,7 +90,7 @@
                    th:href="'/order/' + ${order.id} + '/duplicate'">
                     <i class="glyphicon glyphicon-file text-success"/>
                 </a>
-            </td>                    
+            </td>
             <td>
                 <a sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING')"
                    th:if="${order.status} == 1"

@@ -1,10 +1,10 @@
 package liquid.operation.controller;
 
+import liquid.core.controller.BaseController;
 import liquid.core.model.Alert;
 import liquid.core.model.AlertType;
 import liquid.operation.domain.Goods;
 import liquid.operation.service.InternalGoodsService;
-import liquid.core.controller.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 /**
- *  
  * User: tao
  * Date: 9/28/13
  * Time: 3:30 PM
@@ -27,6 +26,8 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/goods")
 public class GoodsController extends BaseController {
+    private final static String ROOT_DIR = "operation/goods/";
+
     private static final Logger logger = LoggerFactory.getLogger(GoodsController.class);
 
     @Autowired
@@ -41,13 +42,13 @@ public class GoodsController extends BaseController {
         model.addAttribute("page", page);
         model.addAttribute("goods", new Goods());
         model.addAttribute("contextPath", "/goods?");
-        return "goods/list";
+        return ROOT_DIR + "list";
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String initNew(Model model) {
         model.addAttribute("goods", new Goods());
-        return "goods/form";
+        return ROOT_DIR + "form";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -55,7 +56,7 @@ public class GoodsController extends BaseController {
         logger.debug("id: {}", id);
 
         model.addAttribute("goods", goodsService.find(id));
-        return "goods/form";
+        return ROOT_DIR + "form";
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -64,7 +65,7 @@ public class GoodsController extends BaseController {
         logger.debug("Goods: {}", goods);
 
         if (bindingResult.hasErrors()) {
-            return "goods/form";
+            return ROOT_DIR + "form";
         } else {
             try {
                 goodsService.save(goods);
@@ -72,7 +73,7 @@ public class GoodsController extends BaseController {
             } catch (Exception e) {
                 logger.warn(e.getMessage(), e);
                 model.addAttribute("alert", new Alert(AlertType.DANGER, "duplicated.key"));
-                return "goods/form";
+                return ROOT_DIR + "form";
             }
         }
     }

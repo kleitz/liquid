@@ -26,6 +26,8 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/sp")
 public class ServiceProviderController extends BaseController {
+    private final static String ROOT_DIR = "operation/sp/";
+
     private static final Logger logger = LoggerFactory.getLogger(ServiceProviderController.class);
 
     @Autowired
@@ -43,7 +45,7 @@ public class ServiceProviderController extends BaseController {
         Page<ServiceProvider> page = serviceProviderService.findAll(pageRequest);
         model.addAttribute("page", page);
         model.addAttribute("contextPath", "/sp?");
-        return "sp/sp";
+        return ROOT_DIR + "list";
     }
 
     @RequestMapping(value = "/form", method = RequestMethod.GET)
@@ -52,7 +54,7 @@ public class ServiceProviderController extends BaseController {
         model.addAttribute("serviceSubtypes", serviceSubtypeService.findEnabled());
 
         model.addAttribute("sp", new ServiceProvider());
-        return "sp/form";
+        return ROOT_DIR + "form";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -64,7 +66,7 @@ public class ServiceProviderController extends BaseController {
 
         ServiceProvider sp = serviceProviderService.find(id);
         model.addAttribute("sp", sp);
-        return "sp/form";
+        return ROOT_DIR + "form";
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -72,11 +74,11 @@ public class ServiceProviderController extends BaseController {
         logger.debug("sp: {}", sp);
 
         if (bindingResult.hasErrors()) {
-            return "sp/sp";
+            return ROOT_DIR + "sp";
         } else {
             sp.setStatus(0);
             serviceProviderService.save(sp);
-            return "redirect:/sp";
+            return "redirect:/list";
         }
     }
 }
