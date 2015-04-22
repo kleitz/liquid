@@ -1,6 +1,6 @@
 package liquid.accounting.repository;
 
-import liquid.accounting.domain.ExchangeRateEntity;
+import liquid.accounting.domain.ExchangeRate;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -9,4 +9,4 @@ import org.springframework.data.repository.CrudRepository;
  * Date: 11/16/13
  * Time: 1:44 PM
  */
-public interface ExchangeRateRepository extends CrudRepository<ExchangeRateEntity, Long> {}
+public interface ExchangeRateRepository extends CrudRepository<ExchangeRate, Long> {}

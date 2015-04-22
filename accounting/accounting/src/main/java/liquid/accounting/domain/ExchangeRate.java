@@ -7,14 +7,19 @@ import javax.persistence.Entity;
 import java.math.BigDecimal;
 
 /**
- *  
  * User: tao
  * Date: 11/16/13
  * Time: 1:32 PM
  */
 @Entity(name = "ACT_EXCHANGE_RATE")
-public class ExchangeRateEntity extends BaseUpdateEntity {
+public class ExchangeRate extends BaseUpdateEntity {
     public static final BigDecimal DEFAULT_EXCHANGE_RATE = new BigDecimal("6.09");
+
+    public ExchangeRate() { }
+
+    public ExchangeRate(BigDecimal value) {
+        this.value = value;
+    }
 
     /**
      * 1 usd = ? cny

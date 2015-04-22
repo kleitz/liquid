@@ -36,7 +36,6 @@ import java.util.List;
 import static org.springframework.data.jpa.domain.Specifications.where;
 
 /**
- *  
  * User: tao
  * Date: 10/5/13
  * Time: 2:59 PM
@@ -98,7 +97,7 @@ public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepos
         if (entity.getCurrency() == 0) {
             order.setGrandTotal(order.getGrandTotal().add(entity.getTotalPrice()));
         } else {
-            order.setGrandTotal(order.getGrandTotal().add(entity.getTotalPrice().multiply(exchangeRateService.getExchangeRate())));
+            order.setGrandTotal(order.getGrandTotal().add(entity.getTotalPrice().multiply(exchangeRateService.getExchangeRate().getValue())));
         }
         orderService.save(order);
 
@@ -116,7 +115,7 @@ public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepos
         if (charge.getCurrency() == 0) {
             order.setGrandTotal(order.getGrandTotal().subtract(charge.getTotalPrice()));
         } else {
-            order.setGrandTotal(order.getGrandTotal().subtract(charge.getTotalPrice().multiply(exchangeRateService.getExchangeRate())));
+            order.setGrandTotal(order.getGrandTotal().subtract(charge.getTotalPrice().multiply(exchangeRateService.getExchangeRate().getValue())));
         }
 
         orderService.save(order);
@@ -142,7 +141,7 @@ public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepos
             if (charge.getCurrency() == 0) {
                 total = total.add(charge.getTotalPrice());
             } else {
-                total = total.add(charge.getTotalPrice().multiply(exchangeRateService.getExchangeRate()));
+                total = total.add(charge.getTotalPrice().multiply(exchangeRateService.getExchangeRate().getValue()));
             }
         }
         return total;

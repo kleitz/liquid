@@ -3,16 +3,17 @@ package liquid.accounting.controller;
 
 import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.domain.ChargeWay;
+import liquid.accounting.domain.ExchangeRate;
 import liquid.accounting.facade.ChargeFacade;
 import liquid.accounting.facade.ReceivableFacade;
 import liquid.accounting.model.Charge;
 import liquid.accounting.model.ChargeStatus;
 import liquid.accounting.model.Earning;
-import liquid.accounting.model.ExchangeRateDto;
 import liquid.accounting.service.ExchangeRateService;
 import liquid.accounting.service.InternalChargeService;
 import liquid.container.domain.ContainerCap;
 import liquid.container.domain.ContainerType;
+import liquid.core.model.Alert;
 import liquid.model.SearchBarForm;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
@@ -36,6 +37,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -119,7 +121,7 @@ public class ChargeController {
 
     @ModelAttribute("exchangeRate")
     public BigDecimal populateExchangeRate() {
-        return exchangeRateService.getExchangeRate();
+        return exchangeRateService.getExchangeRate().getValue();
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -302,26 +304,19 @@ public class ChargeController {
     }
 
     @RequestMapping(value = "/exchange_rate", method = RequestMethod.GET)
-    public String getExchangeRate(@RequestParam(required = false) boolean done,
-                                  Model model, Principal principal) {
-        logger.debug("done: {}", done);
+    public String getExchangeRate(Model model) {
+        ExchangeRate exchangeRate = exchangeRateService.getExchangeRate();
 
-        BigDecimal value = exchangeRateService.getExchangeRate();
-        ExchangeRateDto exchangeRate = new ExchangeRateDto();
-        exchangeRate.setValue(value);
-
-        model.addAttribute("exchangeRate", exchangeRate);
-        model.addAttribute("done", done);
+        model.addAttribute("exchangeRateForm", exchangeRate);
         return "charge/exchange_rate";
     }
 
     @RequestMapping(value = "/exchange_rate", method = RequestMethod.POST)
-    public String setExchangeRate(@ModelAttribute("exchangeRate") ExchangeRateDto exchangeRate,
-                                  Model model, Principal principal) {
+    public String setExchangeRate(@ModelAttribute("exchangeRateForm") ExchangeRate exchangeRate, RedirectAttributes redirectAttributes) {
         logger.debug("exchangeRate: {}", exchangeRate);
 
-        exchangeRateService.setExchangeRate(exchangeRate.getValue());
-        model.addAttribute("done", true);
+        exchangeRateService.save(exchangeRate);
+        redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
 
         return "redirect:/charge/exchange_rate";
     }

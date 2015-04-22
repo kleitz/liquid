@@ -9,11 +9,13 @@
 <!-- {!end layout} -->
 
 <div id="f" class="container">
+    <div th:include="layout :: alert"/>
+
     <h3><span th:text="#{exchange.rate}"></span></h3>
     
     <hr />
 
-    <form action="/charge/exchange_rate" method="POST" role="form" th:object="${exchangeRate}">
+    <form action="/charge/exchange_rate" method="POST" role="form" th:object="${exchangeRateForm}">
 
         <div class="form-group" th:classappend="${#fields.hasErrors('value')} ? 'has-error'">
             <label class="sr-only" for="value">Value</label>
@@ -22,7 +24,6 @@
         <button type="submit" class="btn btn-success btn-block" name="apply" value="Apply">
             <span th:text="#{apply}">Apply</span>
         </button>
-        <span th:if="${done}" class="glyphicon glyphicon-ok"/>
         <br/>
         <span th:errors="*{value}">error</span>
     </form>

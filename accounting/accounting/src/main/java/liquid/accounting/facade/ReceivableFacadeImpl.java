@@ -5,10 +5,10 @@ import liquid.accounting.model.Earning;
 import liquid.accounting.model.ReceivableSummary;
 import liquid.accounting.service.ExchangeRateService;
 import liquid.accounting.service.InternalReceivableSummaryService;
-import liquid.order.domain.OrderEntity;
-import liquid.util.DateUtil;
 import liquid.core.model.EnhancedPageImpl;
 import liquid.model.SearchBarForm;
+import liquid.order.domain.OrderEntity;
+import liquid.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -76,7 +76,7 @@ public class ReceivableFacadeImpl implements ReceivableFacade {
     public Earning calculateEarning(Long orderId) {
         Earning earning = new Earning();
 
-        BigDecimal exchangeRate = exchangeRateService.getExchangeRate();
+        BigDecimal exchangeRate = exchangeRateService.getExchangeRate().getValue();
 
         ReceivableSummaryEntity receivableSummaryEntity = receivableSummaryService.findByOrderId(orderId);
 
