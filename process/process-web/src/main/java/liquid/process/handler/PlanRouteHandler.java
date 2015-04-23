@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created by Tao Ma on 4/5/15.
- * FIXME - Remove this class till the old processes are finished.
+ * FIXME - Will delete it after GA.
  */
 @Deprecated
 @Component

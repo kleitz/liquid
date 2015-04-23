@@ -5,6 +5,10 @@ import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.ServiceProviderService;
 import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
+import liquid.process.domain.Task;
+import liquid.process.handler.DefinitionKey;
+import liquid.process.service.BusinessKey;
+import liquid.process.service.TaskService;
 import liquid.transport.domain.*;
 import liquid.transport.model.Leg;
 import liquid.transport.model.RailTransport;
@@ -53,6 +57,9 @@ public class ShipmentController {
 
     @Autowired
     private RailContainerRepository railContainerRepository;
+
+    @Autowired
+    private TaskService taskService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String list(@RequestParam(defaultValue = "0", required = false) int number, Model model) {
@@ -180,7 +187,20 @@ public class ShipmentController {
         legEntity.setShipment(shipmentEntity);
         legService.save(legEntity);
 
-        return "redirect:/task/" + shipmentEntity.getTaskId();
+        String taskId = shipmentEntity.getTaskId();
+        if (null == taskId) {
+            OrderEntity order = shipmentEntity.getOrder();
+            Task task = taskService.getTask(DefinitionKey.planShipment, BusinessKey.encode(order.getId(), order.getOrderNo()));
+            if (null == task) {
+                // FIXME - Will delete it after GA.
+                task = taskService.getTask(DefinitionKey.planRoute, BusinessKey.encode(order.getId(), order.getOrderNo()));
+            }
+            if (null != task) {
+                taskId = task.getId();
+            }
+        }
+
+        return "redirect:/task/" + taskId;
     }
 
     private Long computeDefaultDstLocId(List<Location> locationEntities) {

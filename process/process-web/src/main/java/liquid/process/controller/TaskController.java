@@ -125,7 +125,7 @@ public class TaskController extends AbstractTaskController {
         try {
             taskService.claim(taskId, SecurityContext.getInstance().getUsername());
         } catch (ActivitiTaskAlreadyClaimedException e) {
-            // FIXME
+            // FIXME - Unify i18n.
             model.addAttribute("message", "task.claimed.by.someone.else");
             return "error/error";
         }

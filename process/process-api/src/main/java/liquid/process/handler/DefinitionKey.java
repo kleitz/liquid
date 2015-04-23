@@ -6,14 +6,14 @@ package liquid.process.handler;
 public interface DefinitionKey {
     String feedDistyPrice = "feedDistyPrice";
     String planShipment = "planShipment";
-    String planRoute = "planRoute"; // FIXME - Remove this after the old processes are completed.
+    String planRoute = "planRoute"; // FIXME - Will delete it after GA.
     String bookingShippingSpace = "bookingShippingSpace";
     // FIXME - We can't create the controller for this task.
     String allocateContainers = "allocateContainers";
     String feedContainerNo = "feedContainerNo";
     String sendLoadingOnYard = "sendLoadingOnYard";
     String sendTruck = "sendTruck";
-    // FIXME - Remove this after the process has been finished.
+    // FIXME - Will delete it after GA.
     @Deprecated
     String sendLoadingByTruck = "sendLoadingByTruck";
     // FIXME - We can't move the pages of this task into the specific folder.

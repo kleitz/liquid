@@ -8,6 +8,7 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public class BaseTaskEntity extends BaseUpdateEntity {
+    // FIXME - Remove this, we can use TaskService.getTask(definitionKey, businessKey) to get one and use cache for performance.
     @Column(name = "TASK_ID")
     private String taskId;
 

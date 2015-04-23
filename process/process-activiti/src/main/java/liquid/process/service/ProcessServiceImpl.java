@@ -29,7 +29,7 @@ public class ProcessServiceImpl implements ProcessService {
     public void startProcess(String uid, BusinessKey businessKey, Map<String, Object> variableMap) {
         RuntimeService runtimeService = processEngine.getRuntimeService();
 
-        //FIXME
+        //FIXME - Need to consider auto-deployment solution.
 //        RepositoryService repositoryService = processEngine.getRepositoryService();
 //        repositoryService.createDeployment().addClasspathResource("processes/liquid.poc.bpmn20.xml").deploy();
 

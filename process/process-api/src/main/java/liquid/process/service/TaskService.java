@@ -13,6 +13,8 @@ import java.util.Map;
 public interface TaskService {
     Task getTask(String taskId);
 
+    Task getTask(String definitionKey, BusinessKey businessKey);
+
     void claim(String taskId, String uid);
 
     void complete(String taskId) throws NotCompletedException;

@@ -59,6 +59,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public Task getTask(String definitionKey, BusinessKey businessKey) {
+        org.activiti.engine.TaskService taskService = processEngine.getTaskService();
+        org.activiti.engine.task.Task activitiTask = taskService.createTaskQuery().taskDefinitionKey(definitionKey).processInstanceBusinessKey(businessKey.getText()).singleResult();
+        if (null == activitiTask) return null;
+        return toTask(activitiTask);
+    }
+
+    @Override
     public void claim(String taskId, String uid) {
         org.activiti.engine.TaskService taskService = processEngine.getTaskService();
         taskService.claim(taskId, uid);
@@ -177,7 +185,7 @@ public class TaskServiceImpl implements TaskService {
         switch (task.getDefinitionKey()) {
             case "feedDistyPrice":
                 return "/dp?t=" + task.getId();
-            case "planRoute": // FIXME - Should remove this after the old processes are finished.
+            case "planRoute": // FIXME - Will delete it after GA.
                 return "/task/" + task.getId() + "/planning";
             case "allocateContainers":
             case "feedContainerNo":
