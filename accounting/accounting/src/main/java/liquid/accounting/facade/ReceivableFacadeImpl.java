@@ -6,7 +6,7 @@ import liquid.accounting.model.ReceivableSummary;
 import liquid.accounting.service.ExchangeRateService;
 import liquid.accounting.service.InternalReceivableSummaryService;
 import liquid.core.model.EnhancedPageImpl;
-import liquid.model.SearchBarForm;
+import liquid.core.model.SearchBarForm;
 import liquid.order.domain.OrderEntity;
 import liquid.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;

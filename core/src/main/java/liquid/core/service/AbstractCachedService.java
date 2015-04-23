@@ -1,4 +1,4 @@
-package liquid.service;
+package liquid.core.service;
 
 import liquid.core.domain.BaseUpdateEntity;
 import org.springframework.data.repository.CrudRepository;

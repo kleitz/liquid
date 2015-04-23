@@ -2,7 +2,7 @@ package liquid.order.service;
 
 import liquid.core.domain.BaseUpdateEntity;
 import liquid.operation.service.SequenceService;
-import liquid.service.AbstractService;
+import liquid.core.service.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 

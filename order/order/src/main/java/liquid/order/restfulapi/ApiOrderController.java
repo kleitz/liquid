@@ -4,7 +4,7 @@ import liquid.operation.domain.Customer;
 import liquid.operation.service.CustomerService;
 import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
-import liquid.model.SearchBarForm;
+import liquid.core.model.SearchBarForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

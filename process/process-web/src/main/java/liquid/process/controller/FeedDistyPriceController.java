@@ -7,7 +7,7 @@ import liquid.process.handler.DefinitionKey;
 import liquid.process.handler.TaskHandlerFactory;
 import liquid.process.model.Disty;
 import liquid.process.service.TaskService;
-import liquid.security.SecurityContext;
+import liquid.core.security.SecurityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

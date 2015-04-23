@@ -1,4 +1,4 @@
-package liquid.converter;
+package liquid.core.converter;
 
 /**
  * Created by Tao Ma on 4/2/15.

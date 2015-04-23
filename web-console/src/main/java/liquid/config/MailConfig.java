@@ -1,6 +1,6 @@
 package liquid.config;
 
-import liquid.service.MailNotificationService;
+import liquid.mail.service.MailNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

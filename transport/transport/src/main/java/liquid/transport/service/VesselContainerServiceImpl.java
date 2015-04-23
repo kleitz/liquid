@@ -1,6 +1,6 @@
 package liquid.transport.service;
 
-import liquid.service.AbstractService;
+import liquid.core.service.AbstractService;
 import liquid.transport.domain.VesselContainer;
 import liquid.transport.repository.VesselContainerRepository;
 import org.springframework.stereotype.Service;

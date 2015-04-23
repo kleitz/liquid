@@ -5,7 +5,7 @@ import liquid.operation.domain.ServiceProviderType;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.repository.ServiceProviderRepository;
 import liquid.operation.repository.ServiceProviderTypeRepository;
-import liquid.service.AbstractService;
+import liquid.core.service.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

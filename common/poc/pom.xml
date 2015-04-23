@@ -21,7 +21,7 @@
         <!-- liquid -->
         <dependency>
             <groupId>liquid</groupId>
-            <artifactId>liquid-core</artifactId>
+            <artifactId>liquid-mail</artifactId>
         </dependency>
 
         <!-- spring -->

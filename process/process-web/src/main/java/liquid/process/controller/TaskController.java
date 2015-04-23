@@ -16,7 +16,7 @@ import liquid.process.domain.TaskBar;
 import liquid.process.handler.TaskHandler;
 import liquid.process.handler.TaskHandlerFactory;
 import liquid.process.service.TaskService;
-import liquid.security.SecurityContext;
+import liquid.core.security.SecurityContext;
 import liquid.transport.service.RouteService;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.TruckService;

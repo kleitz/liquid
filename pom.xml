@@ -91,6 +91,12 @@
             </dependency>
             <dependency>
                 <groupId>liquid</groupId>
+                <artifactId>liquid-mail</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>liquid</groupId>
                 <artifactId>liquid-core</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>

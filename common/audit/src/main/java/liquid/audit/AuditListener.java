@@ -1,6 +1,6 @@
 package liquid.audit;
 
-import liquid.security.SecurityContext;
+import liquid.core.security.SecurityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

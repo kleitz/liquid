@@ -1,7 +1,7 @@
 package liquid.operation.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import liquid.converter.Text;
+import liquid.core.converter.Text;
 import liquid.core.domain.StatefulEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;

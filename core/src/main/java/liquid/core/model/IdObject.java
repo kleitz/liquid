@@ -1,4 +1,4 @@
-package liquid.model;
+package liquid.core.model;
 
 /**
  * Created by redbrick9 on 6/10/14.

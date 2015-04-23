@@ -1,6 +1,6 @@
 package liquid.transport.service;
 
-import liquid.service.AbstractService;
+import liquid.core.service.AbstractService;
 import liquid.transport.domain.RailContainer;
 import liquid.transport.repository.RailContainerRepository;
 import org.springframework.data.domain.Page;

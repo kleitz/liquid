@@ -1,4 +1,4 @@
-package liquid.model;
+package liquid.operation.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 

@@ -1,6 +1,6 @@
 package liquid.transport.service;
 
-import liquid.service.AbstractService;
+import liquid.core.service.AbstractService;
 import liquid.transport.domain.SpaceBookingEntity;
 import liquid.transport.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,7 +2,7 @@ package liquid.operation.service;
 
 import liquid.operation.domain.Goods;
 import liquid.operation.repository.GoodsRepository;
-import liquid.service.AbstractCachedService;
+import liquid.core.service.AbstractCachedService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

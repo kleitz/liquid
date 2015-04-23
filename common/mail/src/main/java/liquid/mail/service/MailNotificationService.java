@@ -1,4 +1,4 @@
-package liquid.service;
+package liquid.mail.service;
 
 import liquid.util.StringUtil;
 import org.slf4j.Logger;

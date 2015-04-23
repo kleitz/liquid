@@ -14,7 +14,7 @@ import liquid.accounting.service.InternalChargeService;
 import liquid.container.domain.ContainerCap;
 import liquid.container.domain.ContainerType;
 import liquid.core.model.Alert;
-import liquid.model.SearchBarForm;
+import liquid.core.model.SearchBarForm;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceProviderService;

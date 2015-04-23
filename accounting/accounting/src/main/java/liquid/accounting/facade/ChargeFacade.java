@@ -9,7 +9,7 @@ import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.util.DateUtil;
 import liquid.core.model.EnhancedPageImpl;
-import liquid.model.SearchBarForm;
+import liquid.core.model.SearchBarForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

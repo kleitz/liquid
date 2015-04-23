@@ -1,7 +1,7 @@
 package liquid.operation.service;
 
 import liquid.operation.domain.ServiceSubtype;
-import liquid.service.CrudService;
+import liquid.core.service.CrudService;
 
 /**
  * Created by Tao Ma on 4/2/15.

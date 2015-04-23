@@ -2,7 +2,7 @@ package liquid.accounting.service;
 
 import liquid.accounting.domain.ExchangeRate;
 import liquid.accounting.repository.ExchangeRateRepository;
-import liquid.service.AbstractCachedService;
+import liquid.core.service.AbstractCachedService;
 import org.springframework.stereotype.Service;
 
 /**

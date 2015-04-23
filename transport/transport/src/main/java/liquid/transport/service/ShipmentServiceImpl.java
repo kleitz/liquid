@@ -1,7 +1,7 @@
 package liquid.transport.service;
 
 import liquid.accounting.service.PurchaseService;
-import liquid.service.AbstractService;
+import liquid.core.service.AbstractService;
 import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.repository.ShipmentRepository;

@@ -1,7 +1,7 @@
-package liquid.validation.constraints;
+package liquid.core.validation.constraints;
 
-import liquid.util.DatePattern;
-import liquid.validation.validator.DateFormatValidator;
+
+import liquid.core.validation.validator.ContainerQtyValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -14,19 +14,19 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * User: tao
- * Date: 10/17/13
- * Time: 11:45 PM
+ * Date: 10/15/13
+ * Time: 7:12 PM
  */
 @Documented
-@Constraint(validatedBy = DateFormatValidator.class)
+@Constraint(validatedBy = ContainerQtyValidator.class)
 @Target(FIELD)
 @Retention(RUNTIME)
-public @interface DateFormat {
-    String message() default "{liquid.validation.constraints.DateFormat.message}";
+public @interface ContainerQtyMax {
+    String message() default "{liquid.core.validation.constraints.ContainerQtyMax.message}";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 
-    DatePattern value();
+    String value();
 }

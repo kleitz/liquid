@@ -13,7 +13,7 @@ import liquid.order.model.TransportedContainer;
 import liquid.order.model.ValueAddedOrder;
 import liquid.order.repository.ReceivingContainerRepository;
 import liquid.order.service.ReceivingOrderServiceImpl;
-import liquid.security.SecurityContext;
+import liquid.core.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

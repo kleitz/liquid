@@ -2,7 +2,7 @@ package liquid.accounting.service;
 
 import liquid.accounting.domain.TaxRate;
 import liquid.accounting.repository.TaxRateRepository;
-import liquid.service.AbstractService;
+import liquid.core.service.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

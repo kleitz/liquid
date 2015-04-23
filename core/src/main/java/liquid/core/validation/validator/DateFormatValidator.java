@@ -1,8 +1,8 @@
-package liquid.validation.validator;
+package liquid.core.validation.validator;
 
 import liquid.util.DatePattern;
 import liquid.util.DateUtil;
-import liquid.validation.constraints.DateFormat;
+import liquid.core.validation.constraints.DateFormat;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

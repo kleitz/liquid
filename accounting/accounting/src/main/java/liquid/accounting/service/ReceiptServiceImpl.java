@@ -2,7 +2,7 @@ package liquid.accounting.service;
 
 import liquid.accounting.domain.ReceiptEntity;
 import liquid.accounting.repository.ReceiptRepository;
-import liquid.service.AbstractService;
+import liquid.core.service.AbstractService;
 import org.springframework.stereotype.Service;
 
 /**

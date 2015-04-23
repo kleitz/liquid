@@ -1,6 +1,6 @@
 package liquid.audit;
 
-import liquid.security.SecurityContext;
+import liquid.core.security.SecurityContext;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

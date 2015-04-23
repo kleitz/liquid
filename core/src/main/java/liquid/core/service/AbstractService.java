@@ -1,7 +1,7 @@
-package liquid.service;
+package liquid.core.service;
 
 import liquid.core.domain.BaseUpdateEntity;
-import liquid.security.SecurityContext;
+import liquid.core.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;

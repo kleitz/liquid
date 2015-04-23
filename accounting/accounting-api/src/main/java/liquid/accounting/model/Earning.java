@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- *  
  * User: tao
  * Date: 10/25/13
  * Time: 11:39 PM
@@ -84,9 +83,8 @@ public class Earning implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder(super.toString());
-        sb.append("EarningDto{");
-        sb.append("salesPriceCny=").append(salesPriceCny);
+        final StringBuilder sb = new StringBuilder("{Class=Earning");
+        sb.append(", salesPriceCny=").append(salesPriceCny);
         sb.append(", salesPriceUsd=").append(salesPriceUsd);
         sb.append(", distyPrice=").append(distyPrice);
         sb.append(", grandTotal=").append(grandTotal);

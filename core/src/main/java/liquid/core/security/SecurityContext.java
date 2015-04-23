@@ -1,6 +1,6 @@
-package liquid.security;
+package liquid.core.security;
 
-import liquid.SystemError;
+import liquid.core.SystemError;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;

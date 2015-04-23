@@ -3,7 +3,7 @@ package liquid.operation.service;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.LocationType;
 import liquid.operation.repository.LocationRepository;
-import liquid.service.AbstractCachedService;
+import liquid.core.service.AbstractCachedService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

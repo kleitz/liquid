@@ -1,6 +1,6 @@
 package liquid.operation.converter;
 
-import liquid.converter.GenericFormatter;
+import liquid.core.converter.GenericFormatter;
 import liquid.operation.domain.ServiceProvider;
 import org.springframework.stereotype.Component;
 

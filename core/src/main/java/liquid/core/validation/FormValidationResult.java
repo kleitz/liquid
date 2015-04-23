@@ -1,4 +1,4 @@
-package liquid.validation;
+package liquid.core.validation;
 
 /**
  * Created by redbrick9 on 12/28/13.

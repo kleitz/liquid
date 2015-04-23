@@ -1,4 +1,4 @@
-package liquid.service;
+package liquid.core.service;
 
 import liquid.core.repository.PageRepository;
 import liquid.core.domain.BaseUpdateEntity;

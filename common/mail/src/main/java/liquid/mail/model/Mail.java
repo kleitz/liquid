@@ -1,9 +1,9 @@
-package liquid.model;
+package liquid.mail.model;
 
 /**
  * Created by redbrick9 on 2/18/14.
  */
-public class MailDto {
+public class Mail {
     private String mailTo;
     private String subject;
     private String content;

@@ -1,13 +1,12 @@
 package liquid.transport.model;
 
 import liquid.util.DatePattern;
-import liquid.validation.constraints.DateFormat;
+import liquid.core.validation.constraints.DateFormat;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 
 /**
- *  
  * User: tao
  * Date: 10/18/13
  * Time: 11:53 PM
@@ -91,9 +90,8 @@ public class Truck {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder(super.toString());
-        sb.append("TruckDto{");
-        sb.append("railContainerId=").append(railContainerId);
+        final StringBuilder sb = new StringBuilder("{Class=Truck");
+        sb.append(", railContainerId=").append(railContainerId);
         sb.append(", bicCode='").append(bicCode).append('\'');
         sb.append(", fleetId=").append(fleetId);
         sb.append(", trucker='").append(trucker).append('\'');

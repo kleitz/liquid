@@ -1,4 +1,4 @@
-package liquid.model;
+package liquid.core.model;
 
 import liquid.util.DateUtil;
 import org.hibernate.validator.constraints.NotEmpty;

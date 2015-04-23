@@ -26,7 +26,7 @@ public interface ShippingContainerService {
 
     void saveBargeContainer(long containerId, BargeContainer formBean);
 
-    Truck findTruckDto(long railContainerId);
+    Truck findTruck(long railContainerId);
 
     void saveTruck(Truck truck);
 

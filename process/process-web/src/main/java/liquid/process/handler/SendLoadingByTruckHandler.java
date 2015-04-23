@@ -1,7 +1,7 @@
 package liquid.process.handler;
 
 import liquid.process.domain.Task;
-import liquid.process.model.TruckingDto;
+import liquid.process.model.SendingTruckRole;
 import liquid.user.domain.Role;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -21,7 +21,7 @@ public class SendLoadingByTruckHandler extends AbstractTaskHandler {
 
     @Override
     public void init(Task task, Model model) {
-        TruckingDto trucking = new TruckingDto();
+        SendingTruckRole trucking = new SendingTruckRole();
         Object role = taskService.getVariable(task.getId(), "truckingRole");
         if (null != role) trucking.setRole(role.toString());
 

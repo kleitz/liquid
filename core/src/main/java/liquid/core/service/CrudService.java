@@ -1,4 +1,4 @@
-package liquid.service;
+package liquid.core.service;
 
 /**
  * Created by Tao Ma on 4/2/15.

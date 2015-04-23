@@ -3,7 +3,7 @@ package liquid.operation.controller;
 import liquid.core.controller.BaseController;
 import liquid.core.model.Alert;
 import liquid.core.model.AlertType;
-import liquid.model.LocationForm;
+import liquid.operation.model.LocationForm;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.LocationType;
 import liquid.operation.service.InternalLocationService;

@@ -7,7 +7,7 @@ import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.ServiceProviderService;
 import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
-import liquid.service.AbstractService;
+import liquid.core.service.AbstractService;
 import liquid.transport.domain.*;
 import liquid.transport.model.Truck;
 import liquid.transport.repository.*;
@@ -143,12 +143,12 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
         return rcRepository.save(rcList);
     }
 
-    public Truck findTruckDto(long railContainerId) {
+    public Truck findTruck(long railContainerId) {
         RailContainer railContainer = rcRepository.findOne(railContainerId);
-        return toTruckDto(railContainer);
+        return toTruck(railContainer);
     }
 
-    private Truck toTruckDto(RailContainer railContainer) {
+    private Truck toTruck(RailContainer railContainer) {
         Truck truck = new Truck();
         if (null != railContainer.getFleet())
             truck.setFleetId(railContainer.getFleet().getId());

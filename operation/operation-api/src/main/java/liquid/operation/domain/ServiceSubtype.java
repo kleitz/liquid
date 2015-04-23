@@ -1,6 +1,6 @@
 package liquid.operation.domain;
 
-import liquid.converter.Text;
+import liquid.core.converter.Text;
 import liquid.core.domain.BaseUpdateEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;

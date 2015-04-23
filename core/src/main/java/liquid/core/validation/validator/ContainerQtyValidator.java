@@ -1,6 +1,6 @@
-package liquid.validation.validator;
+package liquid.core.validation.validator;
 
-import liquid.validation.constraints.ContainerQtyMax;
+import liquid.core.validation.constraints.ContainerQtyMax;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

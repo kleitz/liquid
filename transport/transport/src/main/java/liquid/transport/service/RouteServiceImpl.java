@@ -1,6 +1,6 @@
 package liquid.transport.service;
 
-import liquid.service.AbstractService;
+import liquid.core.service.AbstractService;
 import liquid.transport.domain.PathEntity;
 import liquid.transport.domain.RouteEntity;
 import liquid.transport.repository.RouteRepository;

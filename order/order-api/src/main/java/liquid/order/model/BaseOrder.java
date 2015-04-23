@@ -1,6 +1,6 @@
 package liquid.order.model;
 
-import liquid.model.IdObject;
+import liquid.core.model.IdObject;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Min;

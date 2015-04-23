@@ -2,7 +2,7 @@ package liquid.transport.service;
 
 import liquid.order.domain.OrderEntity;
 import liquid.order.service.OrderService;
-import liquid.service.AbstractService;
+import liquid.core.service.AbstractService;
 import liquid.transport.domain.DeliveryContainerEntity;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.domain.ShippingContainerEntity;

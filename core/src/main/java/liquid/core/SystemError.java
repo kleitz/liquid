@@ -1,4 +1,4 @@
-package liquid;
+package liquid.core;
 
 /**
  * System error, and base class for all the error.

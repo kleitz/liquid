@@ -1,8 +1,8 @@
 package liquid.poc.controller;
 
-import liquid.model.MailDto;
+import liquid.mail.model.Mail;
+import liquid.mail.service.MailNotificationService;
 import liquid.poc.service.PocService;
-import liquid.service.MailNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +30,7 @@ public class PocController {
     }
 
     @RequestMapping(value = "/mail", method = RequestMethod.POST)
-    public String sendMail(MailDto mailDto) {
+    public String sendMail(Mail mailDto) {
         mailNotificationService.send(mailDto.getMailTo(), mailDto.getSubject(), mailDto.getContent());
         return "common/poc/mail";
     }

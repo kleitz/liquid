@@ -18,5 +18,6 @@
         <module>poc</module>
         <module>excel</module>
         <module>pinyin4j</module>
+        <module>mail</module>
     </modules>
 </project>

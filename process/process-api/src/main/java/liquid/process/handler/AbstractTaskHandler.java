@@ -1,7 +1,7 @@
 package liquid.process.handler;
 
 import liquid.process.service.TaskService;
-import liquid.security.SecurityContext;
+import liquid.core.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;

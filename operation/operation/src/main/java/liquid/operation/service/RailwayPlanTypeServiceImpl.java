@@ -2,7 +2,7 @@ package liquid.operation.service;
 
 import liquid.operation.domain.RailPlanTypeEntity;
 import liquid.operation.repository.RailPlanTypeRepository;
-import liquid.service.AbstractCachedService;
+import liquid.core.service.AbstractCachedService;
 import org.springframework.stereotype.Service;
 
 /**

@@ -1,7 +1,7 @@
 package liquid.operation.service;
 
 import liquid.operation.domain.ServiceProvider;
-import liquid.service.CrudService;
+import liquid.core.service.CrudService;
 
 import java.util.List;
 
