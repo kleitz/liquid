@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  
  * User: tao
  * Date: 10/6/13
  * Time: 11:40 AM
@@ -14,7 +13,6 @@ public enum GroupType {
     MARKETING("marketing", "role.marketing"),
     OPERATING("operating", "role.operating"),
     CONTAINER("container", "role.container"),
-    FIELD("field", "role.field"),
     COMMERCE("commerce", "role.commerce"),
     ADMIN("admin", "role.admin");
 

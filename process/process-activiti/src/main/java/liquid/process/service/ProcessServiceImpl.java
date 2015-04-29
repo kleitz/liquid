@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +24,9 @@ import java.util.Map;
 public class ProcessServiceImpl implements ProcessService {
     private static final Logger logger = LoggerFactory.getLogger(ProcessServiceImpl.class);
 
+    private String processDefinitionKey = "shipping";
+    private String definitionClasspath = "processes/liquid.shipping.bpmn20.xml";
+
     @Autowired
     private ProcessEngine processEngine;
 
@@ -33,20 +34,11 @@ public class ProcessServiceImpl implements ProcessService {
     public void startProcess(String uid, BusinessKey businessKey, Map<String, Object> variableMap) {
         RuntimeService runtimeService = processEngine.getRuntimeService();
 
-        //FIXME - Need to consider auto-deployment solution.
-//        RepositoryService repositoryService = processEngine.getRepositoryService();
-//        repositoryService.createDeployment().addClasspathResource("processes/liquid.poc.bpmn20.xml").deploy();
-        try {
-            deployProcess();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+        deployProcess();
 
         variableMap.put("employeeName", uid);
         variableMap.put("endTime", DateUtil.stringOf(Calendar.getInstance().getTime(), DatePattern.UNTIL_SECOND));
-        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("liquidPoc", businessKey.getText(), variableMap);
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey.getText(), variableMap);
         runtimeService.addUserIdentityLink(processInstance.getId(), uid, IdentityLinkType.STARTER);
 
         // FIXME email notification.
@@ -56,12 +48,7 @@ public class ProcessServiceImpl implements ProcessService {
 //                account.getEmail());
     }
 
-    private void deployProcess() throws IOException, NoSuchAlgorithmException {
-        String processDefinitionKey = "liquidPoc";
-        String definitionClasspath = "processes/liquid.consignment.1.bpmn20.xml";
-//        String processDefinitionKey = "liquid_consignment";
-//        String definitionClasspath = "processes/liquid.consignment.1.bpmn20.xml";
-
+    private void deployProcess() {
         RepositoryService repositoryService = processEngine.getRepositoryService();
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().
                 processDefinitionKey(processDefinitionKey).latestVersion().singleResult();

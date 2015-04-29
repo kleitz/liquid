@@ -44,7 +44,7 @@
                     <li sec:authorize="hasAnyRole('ROLE_ADMIN')">
                         <a href="/account" th:text="#{account}">User</a>
                     </li>
-                    <li sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_CONTAINER', 'ROLE_FIELD', 'ROLE_COMMERCE')">
+                    <li sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_CONTAINER', 'ROLE_COMMERCE')">
                         <a href="/task" th:text="#{task}">Task</a>
                     </li>
                     <li class="dropdown" sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_CONTAINER')">
@@ -117,12 +117,12 @@
                             <li><a href="/railway_plan_type" th:text="#{railway.plan.type}">Railway Plan Type</a></li>
                         </ul>
                     </li>
-                    <li sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_CONTAINER', 'ROLE_FIELD', 'ROLE_COMMERCE')">
+                    <li sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_CONTAINER', 'ROLE_COMMERCE')">
                         <a href="/diagram" th:text="#{diagram}">Diagram</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_CONTAINER', 'ROLE_FIELD', 'ROLE_COMMERCE')">
+                    <li class="dropdown" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_CONTAINER', 'ROLE_COMMERCE')">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="glyphicon glyphicon-user"></i>&nbsp;
                             <span sec:authentication="name">Logged User Name</span>
@@ -132,7 +132,6 @@
                             <span sec:authorize="hasRole('ROLE_MARKETING')" th:text="#{role.marketing}"></span>
                             <span sec:authorize="hasRole('ROLE_OPERATING')" th:text="#{role.operating}"></span>
                             <span sec:authorize="hasRole('ROLE_CONTAINER')" th:text="#{role.container}"></span>
-                            <span sec:authorize="hasRole('ROLE_FIELD')" th:text="#{role.field}"></span>
                             <span sec:authorize="hasRole('ROLE_COMMERCE')" th:text="#{role.commerce}"></span>
                             ]
                             <b class="caret" />
@@ -145,7 +144,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_CONTAINER', 'ROLE_FIELD', 'ROLE_COMMERCE')">
+                    <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_CONTAINER', 'ROLE_COMMERCE')">
                         <a href="/logout" th:text="#{logout}">Logout</a>
                     </li>
                     <li><a href="/account/register" th:text="#{register}">Register</a></li>

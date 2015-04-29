@@ -1,7 +1,6 @@
 package liquid.user.domain;
 
 /**
- *  
  * User: tao
  * Date: 10/23/13
  * Time: 12:21 AM
@@ -12,7 +11,6 @@ public enum Role {
     MARKETING("MARKETING", "role.marketing"),
     OPERATING("OPERATING", "role.operating"),
     CONTAINER("CONTAINER", "role.container"),
-    FIELD("FIELD", "role.field"),
     COMMERCE("COMMERCE", "role.commerce");
 
     private final String value;

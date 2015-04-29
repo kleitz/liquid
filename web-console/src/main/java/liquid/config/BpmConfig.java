@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  
  * User: tao
  * Date: 9/22/13
  * Time: 9:37 PM
@@ -57,9 +56,9 @@ public class BpmConfig {
         processEngineConfiguration.setTransactionManager(bpmTransactionManager());
         processEngineConfiguration.setDatabaseSchemaUpdate("true");
 
-        Resource[] resources = new Resource[1];
-        ClassPathResource classPathResource = new ClassPathResource("processes/liquid.poc.bpmn20.xml");
-        resources[0] = classPathResource;
+        Resource[] resources = new Resource[2];
+        resources[0] = new ClassPathResource("processes/liquid.poc.bpmn20.xml");
+        resources[1] = new ClassPathResource("processes/liquid.shipping.bpmn20.xml");
         processEngineConfiguration.setDeploymentResources(resources);
         processEngineConfiguration.setHistory("audit");
         processEngineConfiguration.setJobExecutorActivate(false);
