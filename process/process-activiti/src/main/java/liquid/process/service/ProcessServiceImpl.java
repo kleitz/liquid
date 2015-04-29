@@ -5,14 +5,16 @@ import liquid.util.DateUtil;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
-import org.activiti.engine.repository.Deployment;
-import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.IdentityLinkType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,8 @@ import java.util.Map;
  */
 @Service
 public class ProcessServiceImpl implements ProcessService {
+    private static final Logger logger = LoggerFactory.getLogger(ProcessServiceImpl.class);
+
     @Autowired
     private ProcessEngine processEngine;
 
@@ -32,6 +36,13 @@ public class ProcessServiceImpl implements ProcessService {
         //FIXME - Need to consider auto-deployment solution.
 //        RepositoryService repositoryService = processEngine.getRepositoryService();
 //        repositoryService.createDeployment().addClasspathResource("processes/liquid.poc.bpmn20.xml").deploy();
+        try {
+            deployProcess();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
 
         variableMap.put("employeeName", uid);
         variableMap.put("endTime", DateUtil.stringOf(Calendar.getInstance().getTime(), DatePattern.UNTIL_SECOND));
@@ -45,11 +56,18 @@ public class ProcessServiceImpl implements ProcessService {
 //                account.getEmail());
     }
 
-    private void deployProcess(String definitionClasspath) {
-        RepositoryService repositoryService = processEngine.getRepositoryService();
-        Deployment deployment = repositoryService.createDeployment().addClasspathResource(definitionClasspath).deploy();
-        DeploymentBuilder deploymentBuilder = repositoryService.createDeployment();
+    private void deployProcess() throws IOException, NoSuchAlgorithmException {
+        String processDefinitionKey = "liquidPoc";
+        String definitionClasspath = "processes/liquid.consignment.1.bpmn20.xml";
+//        String processDefinitionKey = "liquid_consignment";
+//        String definitionClasspath = "processes/liquid.consignment.1.bpmn20.xml";
 
+        RepositoryService repositoryService = processEngine.getRepositoryService();
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().
+                processDefinitionKey(processDefinitionKey).latestVersion().singleResult();
+        // If there are something changed in definition file located definitionClasspath, activiti will auto-deploy it.
+        if (null == processDefinition)
+            repositoryService.createDeployment().addClasspathResource(definitionClasspath).deploy();
     }
 
     @Override

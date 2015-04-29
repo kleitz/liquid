@@ -4,12 +4,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 /**
- *  
  * User: tao
  * Date: 10/12/13
  * Time: 9:43 PM
  */
 public class StringUtil {
+    final private static char[] hexArray = "0123456789ABCDEF".toCharArray();
+
     private StringUtil() {}
 
     public static boolean valuable(String value) {
@@ -40,5 +41,15 @@ public class StringUtil {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static String encodeHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for (int j = 0; j < bytes.length; j++) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars);
     }
 }

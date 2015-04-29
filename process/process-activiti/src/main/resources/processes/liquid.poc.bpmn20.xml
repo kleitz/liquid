@@ -4,6 +4,7 @@
     <participant id="pool_liquid" name="发货订单" processRef="liquidPoc"></participant>
   </collaboration>
   <process id="liquidPoc" name="Liquid POC" isExecutable="true">
+    <documentation>Consignment</documentation>
     <extensionElements>
       <activiti:executionListener event="end" delegateExpression="${processEndHandler}"></activiti:executionListener>
     </extensionElements>
