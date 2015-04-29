@@ -3,13 +3,13 @@ package liquid.accounting.facade;
 import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.model.Charge;
 import liquid.accounting.service.InternalChargeService;
+import liquid.core.model.EnhancedPageImpl;
+import liquid.core.model.SearchBarForm;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.util.DateUtil;
-import liquid.core.model.EnhancedPageImpl;
-import liquid.core.model.SearchBarForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -62,6 +62,7 @@ public class ChargeFacade {
         }
         for (ChargeEntity entity : entityPage) {
             Charge charge = convert(entity);
+            charge.setOrder(entity.getOrder());
             chargeList.add(charge);
 
             sum.setContainerQuantity(sum.getContainerQuantity() + charge.getContainerQuantity());

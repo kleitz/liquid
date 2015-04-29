@@ -43,7 +43,7 @@ public class AccountingController {
     public String grossProfit(@Valid SearchBarForm searchBarForm,
                               BindingResult bindingResult, Model model) {
         model.addAttribute("tradeTypes", TradeType.values());
-        model.addAttribute("exchangeRate", exchangeRateService.getExchangeRate());
+        model.addAttribute("exchangeRate", exchangeRateService.getExchangeRate().getValue());
 
         model.addAttribute("contextPath", "/accounting/gross_profit" + SearchBarForm.toQueryStrings(searchBarForm));
 
@@ -66,7 +66,7 @@ public class AccountingController {
     public String summary(@Valid SearchBarForm searchBarForm,
                           BindingResult bindingResult, Model model) {
         model.addAttribute("tradeTypes", TradeType.values());
-        model.addAttribute("exchangeRate", exchangeRateService.getExchangeRate());
+        model.addAttribute("exchangeRate", exchangeRateService.getExchangeRate().getValue());
 
         model.addAttribute("contextPath", "/accounting/summary" + SearchBarForm.toQueryStrings(searchBarForm));
 
@@ -90,7 +90,7 @@ public class AccountingController {
     public String listReceivables(@Valid SearchBarForm searchBarForm,
                                   BindingResult bindingResult, Model model) {
         model.addAttribute("tradeTypes", TradeType.values());
-        model.addAttribute("exchangeRate", exchangeRateService.getExchangeRate());
+        model.addAttribute("exchangeRate", exchangeRateService.getExchangeRate().getValue());
 
         model.addAttribute("contextPath", "/accounting/receivable" + SearchBarForm.toQueryStrings(searchBarForm));
 
@@ -114,7 +114,7 @@ public class AccountingController {
     public String payable(@Valid SearchBarForm searchBarForm,
                           BindingResult bindingResult, Model model) {
         model.addAttribute("chargeWays", ChargeWay.values());
-        model.addAttribute("exchangeRate", exchangeRateService.getExchangeRate());
+        model.addAttribute("exchangeRate", exchangeRateService.getExchangeRate().getValue());
 
         model.addAttribute("contextPath", "/accounting/payable" + SearchBarForm.toQueryStrings(searchBarForm));
 

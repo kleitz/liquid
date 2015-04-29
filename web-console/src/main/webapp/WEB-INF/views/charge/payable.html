@@ -51,10 +51,10 @@
         <tbody>
         <tr th:each="charge : ${page.content}">
             <td th:text="${charge.id}">ID</td>
-            <td th:text="${charge.orderNo}">Order No.</td>
-            <td th:text="${charge.createdAt}"></td>
+            <td th:text="${charge.order.orderNo}">Order No.</td>
+            <td th:text="${charge.order.createdAt}"></td>
             <td></td>
-            <td class="text-right"><span th:text="${charge.containerQuantity}">Container Quantity</span></td>
+            <td class="text-right"><span th:text="${charge.order.containerQty}">Container Quantity</span></td>
             <td></td>
             <td th:text="${charge.serviceSubtypeId}">Type</td>
             <td th:text="${charge.serviceProviderName}">SP Name</td>
@@ -66,8 +66,8 @@
             <td class="text-right"><span th:text="${charge.currency} == 1 ? ${#numbers.formatDecimal(charge.totalPrice * exchangeRate, 0, 'COMMA', 2, 'POINT')} : ${#numbers.formatDecimal(charge.totalPrice, 0, 'COMMA', 2, 'POINT')}">Total Price</span></td>
             <td></td>
             <td>
-                <a th:if="${charge.status} == 0" th:href="'/payable/' + ${charge.order.id}"><i class="glyphicon glyphicon-credit-card text-success"/></a>
-                <span th:if="${charge.status} == 1"><i class="glyphicon glyphicon-check"/></span>
+                <a th:if="${charge.order.status} == 0" th:href="'/payable/' + ${charge.order.id}"><i class="glyphicon glyphicon-credit-card text-success"/></a>
+                <span th:if="${charge.order.status} == 1"><i class="glyphicon glyphicon-check"/></span>
             </td>
         </tr>
         <tr>
