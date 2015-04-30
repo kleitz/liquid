@@ -1,10 +1,7 @@
 package liquid.config;
 
 import liquid.interceptor.LoggingInterceptor;
-import liquid.operation.converter.LocationTypeFormatter;
-import liquid.operation.converter.ServiceProviderFormatter;
-import liquid.operation.converter.ServiceProviderTypeFormatter;
-import liquid.operation.converter.ToServiceSubtypeConverter;
+import liquid.operation.converter.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -64,6 +61,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private LocationTypeFormatter locationTypeFormatter;
 
+    @Autowired
+    private GoodsFormatter goodsFormatter;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
@@ -81,6 +81,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addFormatter(serviceProviderTypeFormatter);
         registry.addFormatter(serviceProviderFormatter);
         registry.addFormatter(locationTypeFormatter);
+        registry.addFormatter(goodsFormatter);
         registry.addConverter(toServiceSubtypeConverter);
     }
 

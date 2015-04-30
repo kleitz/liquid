@@ -1,11 +1,9 @@
 package liquid.order.domain;
 
 import liquid.core.domain.BaseIdEntity;
+import liquid.operation.domain.Goods;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -25,6 +23,10 @@ public class OrderRailEntity extends BaseIdEntity {
 
     @Column(name = "PROGRAM_NO")
     private String programNo;
+
+    @ManyToOne
+    @JoinColumn(name = "PLAN_GOODS_ID")
+    private Goods planGoods;
 
     @Column(name = "SOURCE_ID")
     private Long sourceId;
@@ -68,6 +70,14 @@ public class OrderRailEntity extends BaseIdEntity {
 
     public void setProgramNo(String programNo) {
         this.programNo = programNo;
+    }
+
+    public Goods getPlanGoods() {
+        return planGoods;
+    }
+
+    public void setPlanGoods(Goods planGoods) {
+        this.planGoods = planGoods;
     }
 
     public Long getSourceId() {

@@ -1,29 +1,25 @@
 package liquid.order.facade;
 
+import liquid.accounting.domain.Currency;
 import liquid.accounting.facade.ReceivableFacade;
 import liquid.accounting.model.ReceivableSummary;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
-import liquid.accounting.domain.Currency;
-import liquid.order.domain.LoadingType;
-import liquid.order.domain.TradeType;
+import liquid.core.security.SecurityContext;
+import liquid.core.validation.FormValidationResult;
 import liquid.operation.domain.Customer;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.domain.ServiceTypeEntity;
 import liquid.operation.service.*;
-import liquid.order.domain.OrderEntity;
-import liquid.order.domain.OrderRailEntity;
-import liquid.order.domain.ServiceItemEntity;
+import liquid.order.domain.*;
 import liquid.order.model.Order;
 import liquid.order.model.ServiceItem;
 import liquid.order.service.OrderService;
 import liquid.order.service.RailwayService;
 import liquid.process.service.BusinessKey;
 import liquid.process.service.ProcessService;
-import liquid.core.security.SecurityContext;
 import liquid.util.DateUtil;
-import liquid.core.validation.FormValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -339,6 +335,7 @@ public class OrderFacade {
             order.setRailwayPlanTypeId(railwayEntity.getPlanType());
             order.setRailwayPlanType(railwayPlanTypeService.find(railwayEntity.getPlanType()).getName());
             order.setProgramNo(railwayEntity.getProgramNo());
+            order.setPlanGoods(railwayEntity.getPlanGoods());
             if (null != railwayEntity.getSourceId()) {
                 order.setRailSourceId(railwayEntity.getSourceId());
                 order.setRailSource(locationService.find(railwayEntity.getSourceId()).getName());
@@ -372,6 +369,7 @@ public class OrderFacade {
         railwayEntity.setId(order.getRailwayId());
         railwayEntity.setPlanReportTime(DateUtil.dateOf(order.getPlanReportTime()));
         railwayEntity.setPlanType(order.getRailwayPlanTypeId());
+        railwayEntity.setPlanGoods(order.getPlanGoods());
         railwayEntity.setSourceId(order.getRailSourceId());
         railwayEntity.setDestinationId(order.getRailDestinationId());
         railwayEntity.setProgramNo(order.getProgramNo());
