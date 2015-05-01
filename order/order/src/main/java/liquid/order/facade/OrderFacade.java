@@ -101,7 +101,7 @@ public class OrderFacade {
         }
 
         OrderEntity orderEntity = convert(order);
-        OrderRailEntity railwayEntity = convertRailway(order);
+        OrderRail railwayEntity = convertRailway(order);
         railwayEntity.setOrder(orderEntity);
         orderEntity.setRailway(railwayEntity);
         orderEntity = orderService.save(orderEntity);
@@ -328,7 +328,7 @@ public class OrderFacade {
         order.setContainerQuantity(orderEntity.getContainerQty());
         order.setContainerAttribute(orderEntity.getContainerAttribute());
 
-        OrderRailEntity railwayEntity = orderEntity.getRailway();
+        OrderRail railwayEntity = orderEntity.getRailway();
         if (null != railwayEntity) {
             order.setRailwayId(railwayEntity.getId());
             order.setPlanReportTime(DateUtil.stringOf(railwayEntity.getPlanReportTime()));
@@ -364,8 +364,8 @@ public class OrderFacade {
         order.setStatus(orderEntity.getStatus());
     }
 
-    private OrderRailEntity convertRailway(Order order) {
-        OrderRailEntity railwayEntity = new OrderRailEntity();
+    private OrderRail convertRailway(Order order) {
+        OrderRail railwayEntity = new OrderRail();
         railwayEntity.setId(order.getRailwayId());
         railwayEntity.setPlanReportTime(DateUtil.dateOf(order.getPlanReportTime()));
         railwayEntity.setPlanType(order.getRailwayPlanTypeId());

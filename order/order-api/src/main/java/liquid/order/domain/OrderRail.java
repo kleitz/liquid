@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by redbrick9 on 8/22/14.
  */
 @Entity(name = "ORD_RAIL")
-public class OrderRailEntity extends BaseIdEntity {
+public class OrderRail extends BaseIdEntity {
     @OneToOne
     @JoinColumn(name = "ORDER_ID")
     private OrderEntity order;
