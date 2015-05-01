@@ -1,5 +1,6 @@
 package liquid.order.model;
 
+import liquid.operation.domain.Goods;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
@@ -27,6 +28,7 @@ public class Order extends BaseOrder {
     private String planReportTime;
     private Long railwayPlanTypeId;
     private String railwayPlanType;
+    private Goods planGoods;
     private String programNo;
     private Long railSourceId;
 
@@ -162,6 +164,14 @@ public class Order extends BaseOrder {
 
     public void setProgramNo(String programNo) {
         this.programNo = programNo;
+    }
+
+    public Goods getPlanGoods() {
+        return planGoods;
+    }
+
+    public void setPlanGoods(Goods planGoods) {
+        this.planGoods = planGoods;
     }
 
     public Long getRailSourceId() {

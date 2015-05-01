@@ -70,7 +70,7 @@ public class BaseOrder extends BaseUpdateEntity {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "order")
     @JoinColumn(name = "RAILWAY_ID")
-    private OrderRailEntity railway;
+    private OrderRail railway;
 
     @Column(precision = 19, scale = 4, name = "TOTAL_CNY")
     private BigDecimal totalCny = BigDecimal.ZERO;
@@ -222,11 +222,11 @@ public class BaseOrder extends BaseUpdateEntity {
         this.containerAttribute = containerAttribute;
     }
 
-    public OrderRailEntity getRailway() {
+    public OrderRail getRailway() {
         return railway;
     }
 
-    public void setRailway(OrderRailEntity railway) {
+    public void setRailway(OrderRail railway) {
         this.railway = railway;
     }
 

@@ -1,29 +1,25 @@
 package liquid.order.facade;
 
+import liquid.accounting.domain.Currency;
 import liquid.accounting.facade.ReceivableFacade;
 import liquid.accounting.model.ReceivableSummary;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
-import liquid.accounting.domain.Currency;
-import liquid.order.domain.LoadingType;
-import liquid.order.domain.TradeType;
+import liquid.core.security.SecurityContext;
+import liquid.core.validation.FormValidationResult;
 import liquid.operation.domain.Customer;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.domain.ServiceTypeEntity;
 import liquid.operation.service.*;
-import liquid.order.domain.OrderEntity;
-import liquid.order.domain.OrderRailEntity;
-import liquid.order.domain.ServiceItemEntity;
+import liquid.order.domain.*;
 import liquid.order.model.Order;
 import liquid.order.model.ServiceItem;
 import liquid.order.service.OrderService;
 import liquid.order.service.RailwayService;
 import liquid.process.service.BusinessKey;
 import liquid.process.service.ProcessService;
-import liquid.core.security.SecurityContext;
 import liquid.util.DateUtil;
-import liquid.core.validation.FormValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -105,7 +101,7 @@ public class OrderFacade {
         }
 
         OrderEntity orderEntity = convert(order);
-        OrderRailEntity railwayEntity = convertRailway(order);
+        OrderRail railwayEntity = convertRailway(order);
         railwayEntity.setOrder(orderEntity);
         orderEntity.setRailway(railwayEntity);
         orderEntity = orderService.save(orderEntity);
@@ -332,13 +328,14 @@ public class OrderFacade {
         order.setContainerQuantity(orderEntity.getContainerQty());
         order.setContainerAttribute(orderEntity.getContainerAttribute());
 
-        OrderRailEntity railwayEntity = orderEntity.getRailway();
+        OrderRail railwayEntity = orderEntity.getRailway();
         if (null != railwayEntity) {
             order.setRailwayId(railwayEntity.getId());
             order.setPlanReportTime(DateUtil.stringOf(railwayEntity.getPlanReportTime()));
             order.setRailwayPlanTypeId(railwayEntity.getPlanType());
             order.setRailwayPlanType(railwayPlanTypeService.find(railwayEntity.getPlanType()).getName());
             order.setProgramNo(railwayEntity.getProgramNo());
+            order.setPlanGoods(railwayEntity.getPlanGoods());
             if (null != railwayEntity.getSourceId()) {
                 order.setRailSourceId(railwayEntity.getSourceId());
                 order.setRailSource(locationService.find(railwayEntity.getSourceId()).getName());
@@ -367,11 +364,12 @@ public class OrderFacade {
         order.setStatus(orderEntity.getStatus());
     }
 
-    private OrderRailEntity convertRailway(Order order) {
-        OrderRailEntity railwayEntity = new OrderRailEntity();
+    private OrderRail convertRailway(Order order) {
+        OrderRail railwayEntity = new OrderRail();
         railwayEntity.setId(order.getRailwayId());
         railwayEntity.setPlanReportTime(DateUtil.dateOf(order.getPlanReportTime()));
         railwayEntity.setPlanType(order.getRailwayPlanTypeId());
+        railwayEntity.setPlanGoods(order.getPlanGoods());
         railwayEntity.setSourceId(order.getRailSourceId());
         railwayEntity.setDestinationId(order.getRailDestinationId());
         railwayEntity.setProgramNo(order.getProgramNo());

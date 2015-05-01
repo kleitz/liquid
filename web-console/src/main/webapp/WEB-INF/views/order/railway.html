@@ -25,6 +25,12 @@
             <span>:</span>
             <span th:text="${order.railwayPlanType}"></span>
         </div>
+
+        <div class="col-xs-3">
+            <label th:text="#{railway.goods}">Plan Goods:</label>
+            <span>:</span>
+            <span th:text="${order.planGoods.name}"></span>
+        </div>
     </div>
     
     <div class="row">   

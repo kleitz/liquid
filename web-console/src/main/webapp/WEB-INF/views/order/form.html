@@ -293,6 +293,22 @@
             </select>
         </div>
     </div> 
+
+    <div class="col-lg-3">
+        <div class="form-group">
+            <label th:text="#{railway.goods}">Cargo</label>
+            <!-- HACK - FO - Formatter Optimization - To avoid to look up a lot of times from database, we should not use th:field.
+                For detaled information, please refer to https://jira.spring.io/browse/SPR-12472
+            -->
+            <select id="planGoods" name="planGoods" class="form-control input-sm">
+                <option th:each="goods : ${cargos}"
+                        th:value="${goods.id}"
+                        th:text="${goods.name}"
+                        th:selected="${order.planGoods} ? ${goods.id == order.planGoods.id}">Cargo Name
+                </option>
+            </select>
+        </div>
+    </div>
 </div><!-- row -->
 
 <div class="row">
