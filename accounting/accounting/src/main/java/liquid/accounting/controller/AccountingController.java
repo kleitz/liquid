@@ -1,13 +1,16 @@
 package liquid.accounting.controller;
 
-import liquid.accounting.facade.ReceivableFacadeImpl;
-import liquid.accounting.model.ReceivableSummary;
-import liquid.order.domain.TradeType;
-import liquid.accounting.facade.ChargeFacade;
-import liquid.accounting.model.Charge;
 import liquid.accounting.domain.ChargeWay;
+import liquid.accounting.domain.ReceivableSummaryEntity;
+import liquid.accounting.facade.ChargeFacade;
+import liquid.accounting.facade.ReceivableFacadeImpl;
+import liquid.accounting.model.Charge;
+import liquid.accounting.model.ReceivableSummary;
 import liquid.accounting.service.ExchangeRateService;
+import liquid.accounting.service.InternalReceivableSummaryService;
+import liquid.core.domain.SumPage;
 import liquid.core.model.SearchBarForm;
+import liquid.order.domain.TradeType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,6 +41,9 @@ public class AccountingController {
 
     @Autowired
     private ChargeFacade chargeFacade;
+
+    @Autowired
+    private InternalReceivableSummaryService internalReceivableSummaryService;
 
     @RequestMapping(value = "/gross_profit", method = RequestMethod.GET)
     public String grossProfit(@Valid SearchBarForm searchBarForm,
@@ -80,9 +86,9 @@ public class AccountingController {
         model.addAttribute("searchBarForm", searchBarForm);
 
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
-        Page<ReceivableSummary> page = receivableFacade.findAll(searchBarForm, pageRequest);
+//        Page<ReceivableSummary> page = receivableFacade.findAll(searchBarForm, pageRequest);
+        SumPage<ReceivableSummaryEntity> page = internalReceivableSummaryService.findAll(searchBarForm, pageRequest);
         model.addAttribute("page", page);
-
         return "charge/summary";
     }
 

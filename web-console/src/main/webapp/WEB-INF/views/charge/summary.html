@@ -52,29 +52,29 @@
         <tbody>
         <tr th:each="receivable : ${page}">
             <td>
-                <a th:href="'/charge/order/' + ${receivable.orderId}"
-                   th:text="${receivable.orderNo}"/>
+                <a th:href="'/charge/order/' + ${receivable.order.id}"
+                   th:text="${receivable.order.orderNo}"/>
             </td>
             <td th:text="${receivable.createdAt}"></td>
-            <td th:text="${receivable.customerName}">Customer Name</td>
-            <td th:text="${receivable.origination}">Origin</td>
-            <td th:text="${receivable.destination}">Destination</td>
-            <td th:text="${receivable.railDestination}">Rail Destination</td>
-            <td th:text="${receivable.goodsName}"></td>
-            <td th:text="#{${tradeTypes[__${receivable.tradeType}__].i18nKey}}">Trade Type</td>
+            <td th:text="${receivable.order.customerId}">Customer Name</td>
+            <td th:text="${receivable.order.srcLocId}">Origin</td>
+            <td th:text="${receivable.order.dstLocId}">Destination</td>
+            <td>Rail Destination</td>
+            <td th:text="${receivable.order.goodsId}"></td>
+            <td th:text="#{${tradeTypes[__${receivable.order.tradeType}__].i18nKey}}">Trade Type</td>
             <td></td>
-            <td class="text-right"><span th:text="${receivable.containerQuantity}">Container Quantity</span></td>
+            <td class="text-right"><span th:text="${receivable.order.containerQty}">Container Quantity</span></td>
             <td></td>
             <td></td>
             <td class="text-right"><span th:text="${receivable.cny}">Receivable CNY</span></td>
             <td class="text-right"><span th:text="${receivable.usd}">Receivable USD</span></td>
             <td class="text-right"><span th:text="${receivable.cny + receivable.usd * exchangeRate}">Receivable SUM</span></td>
-            <td class="text-right"><span th:text="${receivable.distyCny}">Disty Price</span></td>
-            <td class="text-right"><span th:text="${receivable.distyUsd}">Disty Usd</span></td>
-            <td class="text-right"><span th:text="${receivable.grandTotal}">Grand Total</span></td>
-            <td class="text-right"><span th:text="${receivable.cny + receivable.usd * exchangeRate - receivable.grandTotal}">Gross Margin</span></td>
-            <td class="text-right"><span th:text="${receivable.cny + receivable.usd * exchangeRate - receivable.distyCny}">Sales Profit</span></td>
-            <td class="text-right"><span th:text="${receivable.distyCny - receivable.grandTotal}">Disty Profit</span></td>
+            <td class="text-right"><span th:text="${receivable.order.distyCny}">Disty Price</span></td>
+            <td class="text-right"><span th:text="${receivable.order.distyUsd}">Disty Usd</span></td>
+            <td class="text-right"><span th:text="${receivable.order.grandTotal}">Grand Total</span></td>
+            <td class="text-right"><span th:text="${receivable.cny + receivable.usd * exchangeRate - receivable.order.grandTotal}">Gross Margin</span></td>
+            <td class="text-right"><span th:text="${receivable.cny + receivable.usd * exchangeRate - receivable.order.distyCny}">Sales Profit</span></td>
+            <td class="text-right"><span th:text="${receivable.order.distyCny - receivable.order.grandTotal}">Disty Profit</span></td>
         </tr>
         <tr>
             <td><strong><span th:text="#{total}">Sum</span></strong></td>
@@ -86,18 +86,18 @@
             <td></td>
             <td></td>
             <td></td>
-            <td class="text-right"><span th:text="${page.sum.containerQuantity}">Container Quantity</span></td>
+            <td class="text-right"><span th:text="${page.sum.order.containerQty}">Container Quantity</span></td>
             <td></td>
             <td></td>
             <td class="text-right"><span th:text="${page.sum.cny}">Receivable CNY</span></td>
             <td class="text-right"><span th:text="${page.sum.usd}">Receivable USD</span></td>
             <td class="text-right"><span th:text="${page.sum.cny + page.sum.usd * exchangeRate}">Receivable SUM</span></td>
-            <td class="text-right"><span th:text="${page.sum.distyCny}">Disty Price</span></td>
-            <td class="text-right"><span th:text="${page.sum.distyUsd}">Disty USD</span></td>
-            <td class="text-right"><span th:text="${page.sum.grandTotal}">Grand Total</span></td>
-            <td class="text-right"><span th:text="${page.sum.cny + page.sum.usd * exchangeRate - page.sum.grandTotal}">Gross Margin</span></td>
-            <td class="text-right"><span th:text="${page.sum.cny + page.sum.usd * exchangeRate - page.sum.distyCny - page.sum.distyUsd * exchangeRate}">Sales Profit</span></td>
-            <td class="text-right"><span th:text="${page.sum.distyCny + page.sum.distyUsd * exchangeRate - page.sum.grandTotal}">Disty Profit</span></td>
+            <td class="text-right"><span th:text="${page.sum.order.distyCny}">Disty Price</span></td>
+            <td class="text-right"><span th:text="${page.sum.order.distyUsd}">Disty USD</span></td>
+            <td class="text-right"><span th:text="${page.sum.order.grandTotal}">Grand Total</span></td>
+            <td class="text-right"><span th:text="${page.sum.cny + page.sum.usd * exchangeRate - page.sum.order.grandTotal}">Gross Margin</span></td>
+            <td class="text-right"><span th:text="${page.sum.cny + page.sum.usd * exchangeRate - page.sum.order.distyCny - page.sum.order.distyUsd * exchangeRate}">Sales Profit</span></td>
+            <td class="text-right"><span th:text="${page.sum.order.distyCny + page.sum.order.distyUsd * exchangeRate - page.sum.order.grandTotal}">Disty Profit</span></td>
         </tr>
         </tbody>
     </table>
