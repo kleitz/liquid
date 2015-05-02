@@ -8,6 +8,7 @@ import liquid.accounting.service.InternalReceivableSummaryService;
 import liquid.core.model.EnhancedPageImpl;
 import liquid.core.model.SearchBarForm;
 import liquid.order.domain.OrderEntity;
+import liquid.order.facade.OrderFacade;
 import liquid.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,9 @@ public class ReceivableFacadeImpl implements ReceivableFacade {
     @Autowired
     private ExchangeRateService exchangeRateService;
 
+    @Autowired
+    private OrderFacade orderFacade;
+
     public Page<ReceivableSummary> findAll(SearchBarForm searchBar, Pageable pageable) {
         List<ReceivableSummary> receivableList = new ArrayList<>();
         Page<ReceivableSummaryEntity> entityPage = null;
@@ -45,7 +49,7 @@ public class ReceivableFacadeImpl implements ReceivableFacade {
         for (ReceivableSummaryEntity entity : entityPage) {
             ReceivableSummary receivable = convert(entity);
             // FIXME - convert receivable according to order fields.
-//            orderFacade.convert(entity.getOrder(), receivable);
+            orderFacade.convert(entity.getOrder(), receivable);
             receivableList.add(receivable);
 
             sum.setContainerQuantity(sum.getContainerQuantity() + receivable.getContainerQuantity());

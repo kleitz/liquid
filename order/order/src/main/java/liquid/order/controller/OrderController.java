@@ -16,23 +16,23 @@ import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
 import liquid.core.controller.BaseController;
 import liquid.core.model.SearchBarForm;
+import liquid.core.security.SecurityContext;
+import liquid.core.validation.FormValidationResult;
 import liquid.operation.domain.*;
 import liquid.operation.service.*;
 import liquid.order.domain.LoadingType;
 import liquid.order.domain.OrderEntity;
 import liquid.order.domain.OrderStatus;
 import liquid.order.domain.TradeType;
-import liquid.order.facade.OrderFacade;
+import liquid.order.facade.InternalOrderFacade;
 import liquid.order.model.Order;
 import liquid.order.model.ServiceItem;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
 import liquid.process.service.TaskService;
-import liquid.core.security.SecurityContext;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.service.ShipmentService;
 import liquid.util.DateUtil;
-import liquid.core.validation.FormValidationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,7 +93,7 @@ public class OrderController extends BaseController {
     private ServiceSubtypeService serviceSubtypeService;
 
     @Autowired
-    private OrderFacade orderFacade;
+    private InternalOrderFacade orderFacade;
 
     @Autowired
     private RailwayPlanTypeService railwayPlanTypeService;
