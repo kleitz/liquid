@@ -14,7 +14,7 @@ import java.util.Date;
 /**
  * Created by Tao Ma on 5/5/15.
  */
-//@Entity(name = "ACC_SALES_JOURNAL")
+@Entity(name = "ACC_SALES_JOURNAL")
 public class SalesJournal extends BaseIdEntity {
 
     @ManyToOne
