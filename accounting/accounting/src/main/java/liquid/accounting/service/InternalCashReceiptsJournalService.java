@@ -13,5 +13,7 @@ public interface InternalCashReceiptsJournalService {
 
     CashReceiptsJournal save(CashReceiptsJournal cashReceiptsJournal);
 
+    Iterable<CashReceiptsJournal> findAll(SearchBarForm searchBarForm);
+
     Page<CashReceiptsJournal> findAll(SearchBarForm searchBar, Pageable pageable);
 }

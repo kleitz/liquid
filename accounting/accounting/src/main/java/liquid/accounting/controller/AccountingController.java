@@ -1,13 +1,13 @@
 package liquid.accounting.controller;
 
-import liquid.accounting.facade.ReceivableFacadeImpl;
-import liquid.accounting.model.ReceivableSummary;
-import liquid.order.domain.TradeType;
-import liquid.accounting.facade.ChargeFacade;
-import liquid.accounting.model.Charge;
 import liquid.accounting.domain.ChargeWay;
+import liquid.accounting.facade.ChargeFacade;
+import liquid.accounting.facade.ReceivableFacadeImpl;
+import liquid.accounting.model.Charge;
+import liquid.accounting.model.ReceivableSummary;
 import liquid.accounting.service.ExchangeRateService;
 import liquid.core.model.SearchBarForm;
+import liquid.order.domain.TradeType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -108,6 +109,12 @@ public class AccountingController {
         model.addAttribute("page", page);
 
         return "charge/receivable";
+    }
+
+    @RequestMapping(value = "/receivable/journal", method = RequestMethod.GET, params = "orderId")
+    public String listReceivableJournalsByOrder(@RequestParam Long orderId, Model model) {
+        model.addAttribute("orderId", orderId);
+        return "accounting/receivable/journal";
     }
 
     @RequestMapping(value = "/payable", method = RequestMethod.GET)
