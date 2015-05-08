@@ -1,7 +1,8 @@
 package liquid.order.domain;
 
-import liquid.operation.domain.ServiceSubtype;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import liquid.core.domain.BaseIdEntity;
+import liquid.operation.domain.ServiceSubtype;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ public class ServiceItemEntity extends BaseIdEntity {
     @Column
     private String uuid;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
     private OrderEntity order;

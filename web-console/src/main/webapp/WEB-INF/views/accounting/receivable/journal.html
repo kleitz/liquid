@@ -12,23 +12,38 @@
     <div class="row">
         <div class="col-xs-1">
             <h3>Journal<span th:text="${orderId}" /></h3>
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#crjModal">
+  Launch demo modal
+</button>
         </div>  
     </div><!-- row -->
 </div><!-- /.container -->
 
 <hr />
 
-<div class="container-fluid">
-    <table>
-        <thead>
-            <tr>
-                <th>Order</th>
-                <th>Qty of Box</th>
-                <th>Paid Amt</th>
-            </tr>
-        </thead>
-        <tbody id="journals"></tbody>
-    </table>
+<div id="journals" class="container-fluid">
+</div>
+
+<div class="modal fade" id="crjModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+        <form id="crjForm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+            <input type="text" id="order" name="order">order</input>
+            <input type="text" id="qtyOfBox" name="qtyOfBox">qtyOfBox</input>
+            <input type="text" id="paidAmt" name="paidAmt">paidAmt</input>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+        </form> 
+  </div>
 </div>
 
 <!-- {!begin layout} -->
@@ -40,6 +55,21 @@
 <!-- {!end layout} -->
 
 <script type="text/jsx" src="/resources/js/accounting/receivable/journal.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Attach a submit handler to the form
+    $("#crjForm").submit(function(event) {
+        // Stop form from submitting normally
+        event.preventDefault();
+        $.post("/api/receivable/journal", $("#crjForm").serialize()).
+        done(function(data) {
+            console.log("ok");
+            $('#crjModal').modal('hide');
+        });
+    });
+});
+</script>
 
 </body>
 

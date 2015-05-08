@@ -9,7 +9,7 @@ var JournalRow = React.createClass({
     render: function() {
         return ( 
             <tr>
-                <td>{this.props.journal.order}</td>
+                <td>{this.props.journal.order.orderNo}</td>
                 <td>{this.props.journal.qtyOfBox}</td>
                 <td>{this.props.journal.paidAmt}</td>
             </tr>
@@ -18,18 +18,42 @@ var JournalRow = React.createClass({
 })
 
 var JournalsTableBody = React.createClass({
+    getInitialState: function() {
+        return {data: []};
+    },
+
+    componentDidMount: function() {
+        $.get(this.props.source, function(result) {
+            if (this.isMounted()) {
+                this.setState({
+                    data: result
+                });
+            }
+        }.bind(this));
+    },
+
     render: function() {
         var rows = [];
-        this.props.journals.forEach(function(journal) {
+        this.state.data.forEach(function(journal) {
             rows.push(<JournalRow journal={journal} />);
         }) 
         return (
-            <tbody>{rows}</tbody>
+            <table className="table table-striped table-hover table-condensed table-bordered table-16">
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Qty of Box</th>
+                        <th>Paid Amt</th>
+                    </tr>
+                </thead>
+  
+                <tbody>{rows}</tbody>
+            </table>
         );
     }
 })
 
 React.render(
-    <JournalsTableBody journals={JOURNALS} />,
+    <JournalsTableBody source="/api/receivable/journal?orderId=95" />,
     document.getElementById('journals')
 );

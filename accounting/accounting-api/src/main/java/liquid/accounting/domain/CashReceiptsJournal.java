@@ -125,4 +125,22 @@ public class CashReceiptsJournal extends BaseUpdateEntity {
     public void setInvoicedAt(Date invoicedAt) {
         this.invoicedAt = invoicedAt;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{Class=CashReceiptsJournal");
+        sb.append(", order=").append(order == null ? "" : order.getId());
+        sb.append(", qtyOfBox=").append(qtyOfBox);
+        sb.append(", paidAmt=").append(paidAmt);
+        sb.append(", settledAt=").append(settledAt);
+        sb.append(", status=").append(status);
+        sb.append(", receivedAt=").append(receivedAt);
+        sb.append(", receivedAmt=").append(receivedAmt);
+        sb.append(", invoiceNo='").append(invoiceNo).append('\'');
+        sb.append(", invoicedAmt=").append(invoicedAmt);
+        sb.append(", invoicedAt=").append(invoicedAt);
+        sb.append(", ").append(super.toString());
+        sb.append('}');
+        return sb.toString();
+    }
 }
