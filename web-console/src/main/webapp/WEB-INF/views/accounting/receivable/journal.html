@@ -19,7 +19,16 @@
 <hr />
 
 <div class="container-fluid">
-
+    <table>
+        <thead>
+            <tr>
+                <th>Order</th>
+                <th>Qty of Box</th>
+                <th>Paid Amt</th>
+            </tr>
+        </thead>
+        <tbody id="journals"></tbody>
+    </table>
 </div>
 
 <!-- {!begin layout} -->
@@ -29,6 +38,8 @@
 <!-- {!begin layout} -->
 <div th:replace="layout :: js" />
 <!-- {!end layout} -->
+
+<script type="text/jsx" src="/resources/js/accounting/receivable/journal.js"></script>
 
 </body>
 
