@@ -149,6 +149,15 @@ div#tc.container {
   font-size: 12px;
 }
 
+.title-bar {
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+
+.title-bar > div > span {
+  font-size: 24px;
+}
+
 .pagination {
   margin: 0px 10px;
 }
