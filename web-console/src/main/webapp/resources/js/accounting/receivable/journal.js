@@ -5,22 +5,6 @@ var JOURNALS = [
     {order: 'SA100051', qtyOfBox: '4', paidAmt: '1090.29'}
 ]
 
-
-var i18n = {
-  locales: ["zh"],
-  messages: {
-    crj_order: "CRJ Order"
-  }
-};
-
-var Container = React.createFactory(global.ContainerComponent);
-React.renderToString(
-  Container({
-    locales: i18n.locales,
-    messages: i18n.messages
-  })
-);
-
 var IntlMixin = ReactIntl.IntlMixin;
 var FormattedMessage = ReactIntl.FormattedMessage;
 
@@ -71,6 +55,6 @@ var JournalsTableBody = React.createClass({
 })
 
 React.render(
-    <JournalsTableBody source="/api/receivable/journal?orderId=95" />,
+    <JournalsTableBody source="/api/receivable/journal?orderId=95" {...i18n} />,
     document.getElementById('journals')
 );
