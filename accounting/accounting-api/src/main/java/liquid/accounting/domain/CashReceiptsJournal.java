@@ -13,7 +13,7 @@ import java.util.Date;
 /**
  * Created by Tao Ma on 5/6/15.
  */
-@Entity(name = "ACC_CACH_RECEIPTS_JOURNAL")
+@Entity(name = "ACC_CASH_RECEIPTS_JOURNAL")
 public class CashReceiptsJournal extends BaseUpdateEntity {
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
@@ -22,20 +22,20 @@ public class CashReceiptsJournal extends BaseUpdateEntity {
     @Column(name = "QTY_OF_BOX")
     private Integer qtyOfBox;
 
-    @Column(precision = 19, scale = 4, name = "PAID_AMT")
-    private BigDecimal paidAmt;
+    @Column(precision = 19, scale = 4, name = "REVENUE")
+    private BigDecimal revenue;
 
-    @Column(name = "SETTLED_AT")
-    private Date settledAt;
+    @Column(name = "RECOGNIZED_AT")
+    private Date recognizedAt;
 
     @Column(name = "STATUS")
     private Short status;
 
-    @Column(name = "RECEIVED_AT")
-    private Date receivedAt;
-
     @Column(precision = 19, scale = 4, name = "RECEIVED_AMT")
     private BigDecimal receivedAmt;
+
+    @Column(name = "RECEIVED_AT")
+    private Date receivedAt;
 
     @Column(name = "INVOICE_NO")
     private String invoiceNo;
@@ -62,20 +62,20 @@ public class CashReceiptsJournal extends BaseUpdateEntity {
         this.qtyOfBox = qtyOfBox;
     }
 
-    public BigDecimal getPaidAmt() {
-        return paidAmt;
+    public BigDecimal getRevenue() {
+        return revenue;
     }
 
-    public void setPaidAmt(BigDecimal paidAmt) {
-        this.paidAmt = paidAmt;
+    public void setRevenue(BigDecimal revenue) {
+        this.revenue = revenue;
     }
 
-    public Date getSettledAt() {
-        return settledAt;
+    public Date getRecognizedAt() {
+        return recognizedAt;
     }
 
-    public void setSettledAt(Date settledAt) {
-        this.settledAt = settledAt;
+    public void setRecognizedAt(Date recognizedAt) {
+        this.recognizedAt = recognizedAt;
     }
 
     public Short getStatus() {
@@ -86,20 +86,20 @@ public class CashReceiptsJournal extends BaseUpdateEntity {
         this.status = status;
     }
 
-    public Date getReceivedAt() {
-        return receivedAt;
-    }
-
-    public void setReceivedAt(Date receivedAt) {
-        this.receivedAt = receivedAt;
-    }
-
     public BigDecimal getReceivedAmt() {
         return receivedAmt;
     }
 
     public void setReceivedAmt(BigDecimal receivedAmt) {
         this.receivedAmt = receivedAmt;
+    }
+
+    public Date getReceivedAt() {
+        return receivedAt;
+    }
+
+    public void setReceivedAt(Date receivedAt) {
+        this.receivedAt = receivedAt;
     }
 
     public String getInvoiceNo() {
@@ -131,8 +131,8 @@ public class CashReceiptsJournal extends BaseUpdateEntity {
         final StringBuilder sb = new StringBuilder("{Class=CashReceiptsJournal");
         sb.append(", order=").append(order == null ? "" : order.getId());
         sb.append(", qtyOfBox=").append(qtyOfBox);
-        sb.append(", paidAmt=").append(paidAmt);
-        sb.append(", settledAt=").append(settledAt);
+        sb.append(", revenue=").append(revenue);
+        sb.append(", recognizedAt=").append(recognizedAt);
         sb.append(", status=").append(status);
         sb.append(", receivedAt=").append(receivedAt);
         sb.append(", receivedAmt=").append(receivedAmt);

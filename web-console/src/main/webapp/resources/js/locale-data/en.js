@@ -1,6 +1,8 @@
 var i18n = {
   locales: ["en"],
   messages: {
-    crj_order: "Order"
+    order: "Order",
+    qty_of_box: "Qty of Box",
+    revenue: "Revenue"
   }
 };
