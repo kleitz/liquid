@@ -9,6 +9,27 @@ var orderId = getParameterByName('orderId');
 var IntlMixin = ReactIntl.IntlMixin;
 var FormattedMessage = ReactIntl.FormattedMessage;
 
+var JournalModal = React.createClass({
+  render: function() {
+    return ('');
+  }
+})
+
+var JournalButton = React.createClass({
+  handleClick: function() {
+    console.log(this.props.journal)
+    $("#qtyOfBox").val(this.props.journal.qtyOfBox)
+  },
+
+  render: function() {
+    return (
+      <a href="#" data-toggle="modal" data-target="#crjModal" id={this.props.id} onClick={this.handleClick}>
+        <span className={"glyphicon glyphicon-" + this.props.icon + " text-muted"} aria-hidden="true"></span>
+      </a>
+    );
+  }
+})
+
 var JournalRow = React.createClass({
   render: function() {
     return ( 
@@ -23,11 +44,7 @@ var JournalRow = React.createClass({
         <td>{this.props.journal.invoiceNo}</td> 
         <td>{this.props.journal.invoicedAmt}</td> 
         <td>{moment(this.props.journal.invoicedAt).format('YYYY-MM-DD')}</td> 
-        <td>
-          <button type="button" class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#crjModal" id={"edit-" + this.props.index}>
-            <span>Edit</span> 
-          </button>
-        </td>
+        <td><JournalButton icon="edit" id={"edit-" + this.props.index} journal={this.props.journal} /></td>
       </tr>);
   }
 })
@@ -70,7 +87,7 @@ var JournalsTableBody = React.createClass({
             <th><FormattedMessage message={this.getIntlMessage('invoice_no')} /></th>
             <th><FormattedMessage message={this.getIntlMessage('invoiced_amt')} /></th>
             <th><FormattedMessage message={this.getIntlMessage('invoiced_at')} /></th>
-            <th></th>
+            <th><JournalButton icon="plus" /></th>
           </tr>
         </thead>
 

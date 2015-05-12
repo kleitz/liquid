@@ -13,11 +13,7 @@
     <div class="col-xs-6">
       <span th:text="#{settlement}" />
     </div>
-    <div class="col-xs-6">     
-      <button type="button" class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#crjModal">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
-      </button>
-    </div>
+    <div class="col-xs-6"></div>
   </div><!-- row -->
 </div><!-- /.container -->
 
@@ -159,6 +155,11 @@ $(document).ready(function() {
     $('#recognizedAt').val(moment().format('YYYY-MM-DD HH:mm'));
     $('#receivedAt').val(moment().format('YYYY-MM-DD HH:mm'));
     $('#invoicedAt').val(moment().format('YYYY-MM-DD HH:mm'));
+  });
+
+  
+  $('#crjModal').on('hidden.bs.modal', function(e) {
+    $('#qtyOfBox').val('');
   });
 
   $('#recognizedAtPicker').dtPicker();

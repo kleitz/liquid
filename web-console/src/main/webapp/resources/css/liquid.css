@@ -83,6 +83,10 @@ tr, td {
   font-size: 12px;
 }
 
+th > a {
+  font-size: 12px;
+}
+
 /* table which contains the forms and inputs */
 table#f > tbody > tr > td {
   margin: 0; 
