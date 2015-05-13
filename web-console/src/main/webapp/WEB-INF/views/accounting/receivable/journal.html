@@ -21,109 +21,6 @@
 
 <div id="journals" class="container-fluid"></div>
 
-<div class="modal fade" id="crjModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form id="crjForm">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel"><span th:text="#{settlement}" /></h4>
-        </div> 
-  
-        <div class="modal-body">
-            <!-- revenue recognition -->
-            <div class="row">
-              <div class="col-xs-6">
-                <div class="form-group">
-                  <label for="order" class="control-label">Order</label>
-                  <input type="text" class="form-control" id="order" name="order"></input>
-                </div>
-              </div>
-              <div class="col-xs-6">
-                <div class="form-group">
-                  <label for="qtyOfBox" class="control-label">Qty of Box</label>
-                  <input type="text" class="form-control" id="qtyOfBox" name="qtyOfBox"></input>
-                </div>
-              </div>
-            </div><!-- row -->
-            <div class="row">
-              <div class="col-xs-6">
-                <div class="form-group">
-                  <label for="revenue" class="control-label">Revenue</label>
-                  <input type="text" class="form-control" id="revenue" name="revenue"></input>
-                </div>
-              </div>
-              <div class="col-xs-6">
-                <div class="form-group">
-                  <label for="recognizedAt" class="control-label">Recognized At</label>
-                  <div class="input-group input-group-sm date" id="recognizedAtPicker">
-                    <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control" id="recognizedAt" name="recognizedAt" />
-                    <span class="input-group-addon">
-                      <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                  </div>        
-                </div>
-              </div>
-            </div><!-- row -->
-            <!-- cash receipt -->
-            <div class="row">
-              <div class="col-xs-6">
-                <div class="form-group">
-                  <label for="receivedAmt" class="control-label">Received Amt</label>
-                  <input type="text" class="form-control" id="receivedAmt" name="receivedAmt"></input>
-                </div>
-              </div>
-              <div class="col-xs-6">
-                <div class="form-group">
-                  <label for="receivedAt" class="control-label">Received At</label>
-                  <div class="input-group input-group-sm date" id="receivedAtPicker">
-                    <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control" id="receivedAt" name="receivedAt" />
-                    <span class="input-group-addon">
-                      <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                  </div>        
-                </div>
-               </div>
-            </div><!-- row -->
-            <!-- invoice -->
-            <div class="row">
-              <div class="col-xs-6">
-                <div class="form-group">
-                  <label for="invoiceNo" class="control-label">Invoice #</label>
-                  <input type="text" class="form-control" id="invoiceNo" name="invoiceNo"></input>
-                </div>
-              </div>
-            </div><!-- row -->
-            <div class="row">
-              <div class="col-xs-6">
-                <div class="form-group">
-                  <label for="invoicedAmt" class="control-label">Invoiced Amt</label>
-                  <input type="text" class="form-control" id="invoicedAmt" name="invoicedAmt"></input>
-                </div>
-              </div>
-              <div class="col-xs-6">
-                <div class="form-group">
-                  <label for="invoicedAt" class="control-label">Invoiced At</label>
-                  <div class="input-group input-group-sm date" id="invoicedAtPicker">
-                    <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control" id="invoicedAt" name="invoicedAt" />
-                    <span class="input-group-addon"> 
-                      <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                  </div>        
-                </div>
-              </div>
-            </div><!-- row -->
-        </div>
-  
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal"><span th:text="#{modal.close}" /></button>
-          <button type="submit" class="btn btn-primary"><span th:text="#{settlement}" /></button>
-        </div>
-      </form> 
-    </div>
-  </div>
-</div>
-
 <!-- {!begin layout} -->
 <div th:include="layout :: footer"></div>
 <!-- {!end layout} -->
@@ -162,9 +59,6 @@ $(document).ready(function() {
     $('#qtyOfBox').val('');
   });
 
-  $('#recognizedAtPicker').dtPicker();
-  $('#receivedAtPicker').dtPicker();
-  $('#invoicedAtPicker').dtPicker();
 });
 </script>
 
