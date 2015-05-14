@@ -34,7 +34,7 @@ public class ReceivableRestController {
 
     @RequestMapping(value = "/journal", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public void addReceivableJournals(@RequestBody Crj cashReceiptsJournal) {
+    public void addReceivableJournals(@RequestBody CashReceiptsJournal cashReceiptsJournal) {
         logger.debug("CashReceiptsJournal: {}", cashReceiptsJournal);
 //        cashReceiptsJournalService.save(cashReceiptsJournal);
     }

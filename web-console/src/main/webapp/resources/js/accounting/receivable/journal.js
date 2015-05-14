@@ -123,9 +123,9 @@ var ModalForm = React.createClass({
         $('#crudModal').modal('hide')
         React.unmountComponentAtNode(document.getElementById('crudTable'))
         React.render(
-          <HostsTable />,
+          <CrudTable source={'/api/receivable/journal?orderId=' + orderId} {...i18n} />,
           document.getElementById('crudTable')
-        )   
+        )
       });
     });
   },
@@ -181,6 +181,11 @@ var AddButton = React.createClass({
 
   handleClick: function() {
     $('#crudModalTitle').text(this.getIntlMessage('add') + ' ' + this.getIntlMessage(modalTitle))
+    var orderId = getParameterByName('orderId');  
+    $('#order').val(orderId); 
+    $('#recognizedAt').val(moment().format('YYYY-MM-DD HH:mm'));
+    $('#receivedAt').val(moment().format('YYYY-MM-DD HH:mm'));
+    $('#invoicedAt').val(moment().format('YYYY-MM-DD HH:mm'));
   },
 
   render: function() {

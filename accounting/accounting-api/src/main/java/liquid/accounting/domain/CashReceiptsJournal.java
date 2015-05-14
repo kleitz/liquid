@@ -1,5 +1,8 @@
 package liquid.accounting.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import liquid.accounting.deserializer.OrderDeserializer;
 import liquid.core.domain.BaseUpdateEntity;
 import liquid.order.domain.OrderEntity;
 
@@ -16,6 +19,7 @@ import java.util.Date;
  */
 @Entity(name = "ACC_CASH_RECEIPTS_JOURNAL")
 public class CashReceiptsJournal extends BaseUpdateEntity implements Serializable {
+    @JsonDeserialize(using = OrderDeserializer.class)
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
     private OrderEntity order;
@@ -26,6 +30,7 @@ public class CashReceiptsJournal extends BaseUpdateEntity implements Serializabl
     @Column(precision = 19, scale = 4, name = "REVENUE")
     private BigDecimal revenue;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     @Column(name = "RECOGNIZED_AT")
     private Date recognizedAt;
 
@@ -35,6 +40,7 @@ public class CashReceiptsJournal extends BaseUpdateEntity implements Serializabl
     @Column(precision = 19, scale = 4, name = "RECEIVED_AMT")
     private BigDecimal receivedAmt;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     @Column(name = "RECEIVED_AT")
     private Date receivedAt;
 
@@ -44,6 +50,7 @@ public class CashReceiptsJournal extends BaseUpdateEntity implements Serializabl
     @Column(precision = 19, scale = 4, name = "INVOICED_AMT")
     private BigDecimal invoicedAmt;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     @Column(name = "INVOICED_AT")
     private Date invoicedAt;
 
