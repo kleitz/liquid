@@ -19,7 +19,7 @@
 
 <hr />
 
-<div id="journals" class="container-fluid"></div>
+<div id="crudTable" class="container-fluid"></div>
 
 <!-- {!begin layout} -->
 <div th:include="layout :: footer"></div>
@@ -53,12 +53,6 @@ $(document).ready(function() {
     $('#receivedAt').val(moment().format('YYYY-MM-DD HH:mm'));
     $('#invoicedAt').val(moment().format('YYYY-MM-DD HH:mm'));
   });
-
-  
-  $('#crjModal').on('hidden.bs.modal', function(e) {
-    $('#qtyOfBox').val('');
-  });
-
 });
 </script>
 

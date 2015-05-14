@@ -17,6 +17,23 @@ var modalTitle = 'crj'
 /* Global variables */
 var orderId = getParameterByName('orderId');  
 
+$.fn.serializeObject = function()
+{
+   var o = {};
+   var a = this.serializeArray();
+   $.each(a, function() {
+       if (o[this.name]) {
+           if (!o[this.name].push) {
+               o[this.name] = [o[this.name]];
+           }
+           o[this.name].push(this.value || '');
+       } else {
+           o[this.name] = this.value || '';
+       }
+   });
+   return o;
+};
+
 var IntlMixin = ReactIntl.IntlMixin;
 var FormattedMessage = ReactIntl.FormattedMessage;
 
@@ -87,6 +104,32 @@ var FieldRow = React.createClass({
 var ModalForm = React.createClass({
   mixins: [IntlMixin],
 
+  componentDidMount: function() {
+    // Attach a submit handler to the form
+    $("#crudForm").submit(function(event) {
+      // Stop form from submitting normally
+      event.preventDefault();
+      var data = JSON.stringify($('#crudForm').serializeObject());
+      console.log(data)
+      $.ajax({
+        type: "POST",
+        url: "/api/receivable/journal",
+        contentType: "application/json",
+        data: data,
+        dataType: "text"
+      }). 
+      done(function(data) {
+        console.log(data)
+        $('#crudModal').modal('hide')
+        React.unmountComponentAtNode(document.getElementById('crudTable'))
+        React.render(
+          <HostsTable />,
+          document.getElementById('crudTable')
+        )   
+      });
+    });
+  },
+
   render: function() {    
     var width = 2
     var rows = []
@@ -110,28 +153,45 @@ var ModalForm = React.createClass({
     }
     
     return (
-      <div className="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="hostModalLabel" aria-hidden="true">
+      <div className="modal fade" id="crudModal" tabindex="-1" role="dialog" aria-labelledby="hostModalLabel" aria-hidden="true">
         <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 className="modal-title" id="modalTitle"></h4>
+          <form id="crudForm">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 className="modal-title" id="crudModalTitle"></h4>
+              </div>
+              <div className="modal-body">
+                {rows}
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-default" data-dismiss="modal"><FormattedMessage message={this.getIntlMessage('close')} /></button>
+                <button type="submit" className="btn btn-success"><FormattedMessage message={this.getIntlMessage('save')} /></button>
+              </div>
             </div>
-            <div className="modal-body">
-              {rows}
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-default" data-dismiss="modal"><FormattedMessage message={this.getIntlMessage('close')} /></button>
-              <button type="button" className="btn btn-success"><FormattedMessage message={this.getIntlMessage('save')} /></button>
-            </div>
-          </div>
+          </form>
         </div>
       </div>    
     ); 
   } 
 })
 
-// Update or Create
+var AddButton = React.createClass({
+  mixins: [IntlMixin],
+
+  handleClick: function() {
+    $('#crudModalTitle').text(this.getIntlMessage('add') + ' ' + this.getIntlMessage(modalTitle))
+  },
+
+  render: function() {
+    return (
+      <a href="#" data-toggle="modal" data-target="#crudModal" onClick={this.handleClick}>
+        <span className="glyphicon glyphicon-plus text-muted" aria-hidden="true"></span>
+      </a>
+    );
+  }
+})
+
 var UpdateButton = React.createClass({
   mixins: [IntlMixin],
 
@@ -142,23 +202,13 @@ var UpdateButton = React.createClass({
       fields.forEach(function(field) {
         $('#' + field.name).val(component.props.row[field.name]); 
       })
-
-    var message = 'add'
-    if (this.props.type == 'update') {
-      message = 'update' 
-    }
-    $('#modalTitle').text(this.getIntlMessage(message) + this.getIntlMessage(modalTitle))    
+    $('#crudModalTitle').text(this.getIntlMessage('update') + ' ' + this.getIntlMessage(modalTitle))
   },
 
   render: function() {
-    var icon = 'plus';
-    if (this.props.type == 'update') {
-      icon = 'edit'
-    }
-    
     return (
-      <a href="#" data-toggle="modal" data-target="#modalForm" id={this.props.id} onClick={this.handleClick}>
-        <span className={"glyphicon glyphicon-" + icon + " text-muted"} aria-hidden="true"></span>
+      <a href="#" data-toggle="modal" data-target="#crudModal" id={this.props.id} onClick={this.handleClick}>
+        <span className={"glyphicon glyphicon-edit text-muted"} aria-hidden="true"></span>
       </a>
     );
   }
@@ -217,7 +267,7 @@ var CrudRow = React.createClass({
           cells.push(<td key={key}>{component.props.row[field.name]}</td>)
       } 
     })
-    cells.push(<td key='plus'><UpdateButton type="update" row={this.props.row} /></td>)  
+    cells.push(<td key='plus'><UpdateButton row={this.props.row} /></td>)  
     /*cells.push(<td key='minus'><DeleteButton host={this.props.host} /></td>)*/     
     
     return ( 
@@ -241,6 +291,12 @@ var CrudTable = React.createClass({
         });
       }
     }.bind(this));
+
+    $('#crudModal').on('hidden.bs.modal', function (e) {
+      fields.forEach(function(field) {
+        $('#' + field.name).val(''); 
+      })
+    })    
   },
 
   render: function() {
@@ -251,7 +307,7 @@ var CrudTable = React.createClass({
     fields.forEach(function(field) {
       heads.push(<th key={field.name}><FormattedMessage message={component.getIntlMessage(field.name)} /></th>)
     })
-    heads.push(<th key='plus'><UpdateButton type='add' /></th>)
+    heads.push(<th key='plus'><AddButton /></th>)
 
     var rows = [];
     this.state.data.forEach(function(row, index) {
@@ -277,5 +333,5 @@ var CrudTable = React.createClass({
 
 React.render(
   <CrudTable source={'/api/receivable/journal?orderId=' + orderId} {...i18n} />,
-  document.getElementById('journals')
+  document.getElementById('crudTable')
 );

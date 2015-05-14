@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -14,7 +15,7 @@ import java.util.Date;
  * Created by Tao Ma on 5/6/15.
  */
 @Entity(name = "ACC_CASH_RECEIPTS_JOURNAL")
-public class CashReceiptsJournal extends BaseUpdateEntity {
+public class CashReceiptsJournal extends BaseUpdateEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
     private OrderEntity order;
