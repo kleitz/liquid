@@ -1,8 +1,9 @@
 /*
   CrudTable configuration 
 */
-var fields = [
-  {name: 'order', type: 'descendant', path: 'orderNo'},
+var FIELDS = [
+  {name: 'id', type: 'hidden'},
+  {name: 'order', type: 'hidden', value: 'descendant', pattern: 'id'},
   {name: 'qtyOfBox'},
   {name: 'revenue'},
   {name: 'recognizedAt', type: 'date', pattern: 'YYYY-MM-DD'},
@@ -12,6 +13,20 @@ var fields = [
   {name: 'invoicedAmt'},
   {name: 'invoicedAt', type: 'date', pattern: 'YYYY-MM-DD'}
 ]
+
+var COLUMNS = [
+  {name: 'id', type: 'hidden'},
+  {name: 'order', type: 'descendant', pattern: 'orderNo'},
+  {name: 'qtyOfBox'},
+  {name: 'revenue'},
+  {name: 'recognizedAt', type: 'date', pattern: 'YYYY-MM-DD'},
+  {name: 'receivedAmt'},
+  {name: 'receivedAt', type: 'date', pattern: 'YYYY-MM-DD'},
+  {name: 'invoiceNo'},
+  {name: 'invoicedAmt'},
+  {name: 'invoicedAt', type: 'date', pattern: 'YYYY-MM-DD'}
+]
+
 var modalTitle = 'crj'
 
 /* Global variables */
@@ -86,6 +101,11 @@ var FieldRow = React.createClass({
             </div>
           ) 
           break;
+        case 'hidden':
+          columns.push(
+            <input type="hidden" id={field.name} name={field.name} />
+          )
+          break;
         default:
           columns.push(
             <div className={"col-xs-" + component.props.width}>
@@ -133,25 +153,20 @@ var ModalForm = React.createClass({
   render: function() {    
     var width = 2
     var rows = []
-    var quotient = Math.floor(fields.length / width) 
-    var remainder = fields.length % width 
-
-    for (var i = 0; i < quotient; i++) {
-      var columns = []
-      for (var j = 0; j < width; j++) {
-        columns.push(fields[i * width + j])
-      } 
-      rows.push(<FieldRow columns={columns} width={12 / width} />)
-    }
-
-    if (remainder > 0) {
-      var columns = []
-      for (var j = 0; j < remainder; j++) {
-        columns.push(fields[quotient * width + j])
-      } 
-      rows.push(<FieldRow columns={columns} width={12 / width} />)
-    }
     
+    var counter = 0
+    var columns = []
+    for(var i = 0; i < FIELDS.length; i++) {
+      columns.push(FIELDS[i])
+      if(FIELDS[i].type != 'hidden')
+        counter++
+      if(counter == width || i == FIELDS.length - 1) {
+        rows.push(<FieldRow columns={columns} width={12 / width} />)
+        columns = []
+        counter = 0
+      }
+   }
+
     return (
       <div className="modal fade" id="crudModal" tabindex="-1" role="dialog" aria-labelledby="hostModalLabel" aria-hidden="true">
         <div className="modal-dialog">
@@ -180,7 +195,7 @@ var AddButton = React.createClass({
   mixins: [IntlMixin],
 
   handleClick: function() {
-    $('#crudModalTitle').text(this.getIntlMessage('add') + ' ' + this.getIntlMessage(modalTitle))
+    $('#crudModalTitle').text(this.getIntlMessage('add') + this.getIntlMessage(modalTitle))
     var orderId = getParameterByName('orderId');  
     $('#order').val(orderId); 
     $('#recognizedAt').val(moment().format('YYYY-MM-DD HH:mm'));
@@ -204,10 +219,15 @@ var UpdateButton = React.createClass({
     var component = this
     
     if(this.props.row)
-      fields.forEach(function(field) {
-        $('#' + field.name).val(component.props.row[field.name]); 
+      FIELDS.forEach(function(field) {
+        if(field.value === undefined)
+          $('#' + field.name).val(component.props.row[field.name]); 
+        else {
+          if(field.value == 'descendant')
+            $('#' + field.name).val(component.props.row[field.name][field.pattern]); 
+        }
       })
-    $('#crudModalTitle').text(this.getIntlMessage('update') + ' ' + this.getIntlMessage(modalTitle))
+    $('#crudModalTitle').text(this.getIntlMessage('update') + this.getIntlMessage(modalTitle))
   },
 
   render: function() {
@@ -226,7 +246,7 @@ var DescendantCell = React.createClass({
       while(descendantProps.length && (obj = obj[descendantProps.shift()]));
       return obj;
     } 
-    var value = getDescendantProperty(this.props.value, this.props.path)
+    var value = getDescendantProperty(this.props.value, this.props.pattern)
     return (
       <td key={this.props.key}><span>{value}</span></td>
     );
@@ -249,27 +269,29 @@ var IconCell = React.createClass({
   }
 })
 
-var CrudRow = React.createClass({
+var TableRow = React.createClass({
   render: function() {
     var component = this
 
     var cells = []
-    cells.push(<td key='index'>{this.props.index}</td>)  
-    fields.forEach(function(field) {
-      var key = field.name
-      switch (field.type) {
+    cells.push(<td key='index'>{this.props.index + 1}</td>)  
+    COLUMNS.forEach(function(column) {
+      var key = column.name
+      switch (column.type) {
         case 'date':
-          cells.push(<DateCell key={key} value={component.props.row[field.name]} pattern={field.pattern} />) 
+          cells.push(<DateCell key={key} value={component.props.row[column.name]} pattern={column.pattern} />) 
           break;
         case 'descendant':
-          cells.push(<DescendantCell key={key} value={component.props.row[field.name]} path={field.path} />) 
+          cells.push(<DescendantCell key={key} value={component.props.row[column.name]} pattern={column.pattern} />) 
           break;
         case 'icon':
-          var color = field.color[component.props.row[field.name]]
-          cells.push(<IconCell key={key} icon={field.icon} color={color} />) 
+          var color = column.color[component.props.row[column.name]]
+          cells.push(<IconCell key={key} icon={column.icon} color={color} />) 
+          break;
+        case 'hidden':
           break;
         default:
-          cells.push(<td key={key}>{component.props.row[field.name]}</td>)
+          cells.push(<td key={key}>{component.props.row[column.name]}</td>)
       } 
     })
     cells.push(<td key='plus'><UpdateButton row={this.props.row} /></td>)  
@@ -298,8 +320,8 @@ var CrudTable = React.createClass({
     }.bind(this));
 
     $('#crudModal').on('hidden.bs.modal', function (e) {
-      fields.forEach(function(field) {
-        $('#' + field.name).val(''); 
+      COLUMNS.forEach(function(column) {
+        $('#' + column.name).val(''); 
       })
     })    
   },
@@ -309,14 +331,15 @@ var CrudTable = React.createClass({
 
     var heads = []
     heads.push(<th key='#'>#</th>)
-    fields.forEach(function(field) {
-      heads.push(<th key={field.name}><FormattedMessage message={component.getIntlMessage(field.name)} /></th>)
+    COLUMNS.forEach(function(column) {
+      if(column.type != 'hidden')
+        heads.push(<th key={column.name}><FormattedMessage message={component.getIntlMessage(column.name)} /></th>)
     })
     heads.push(<th key='plus'><AddButton /></th>)
 
     var rows = [];
     this.state.data.forEach(function(row, index) {
-      rows.push(<CrudRow key={index} row={row} index={index} />);
+      rows.push(<TableRow key={index} row={row} index={index} />);
     }) 
 
     // FIXME - sum all crj. 

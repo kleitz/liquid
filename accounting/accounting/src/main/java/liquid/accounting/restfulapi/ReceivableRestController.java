@@ -36,6 +36,6 @@ public class ReceivableRestController {
     @ResponseBody
     public void addReceivableJournals(@RequestBody CashReceiptsJournal cashReceiptsJournal) {
         logger.debug("CashReceiptsJournal: {}", cashReceiptsJournal);
-//        cashReceiptsJournalService.save(cashReceiptsJournal);
+        cashReceiptsJournalService.save(cashReceiptsJournal);
     }
 }
