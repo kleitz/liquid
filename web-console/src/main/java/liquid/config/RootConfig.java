@@ -31,7 +31,7 @@ import java.util.Map;
         "liquid.purchase.service", "liquid.purchase.facade",
         "liquid.accounting.facade", "liquid.accounting.service",
         "liquid.container.facade", "liquid.container.service",
-        "liquid.order.facade", "liquid.order.service",
+        "liquid.order.facade", "liquid.order.service", "liquid.order.converter",
         "liquid.transport.facade", "liquid.transport.service",
         "liquid.poc.service"})
 @EnableAspectJAutoProxy

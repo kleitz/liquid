@@ -54,7 +54,10 @@
             <tbody>
             <tr th:each="receivable : ${page}">
                 <td>
+                    <!--
                     <a th:href="'/order/' + ${receivable.orderId} + '/receivable'"><i class="glyphicon glyphicon-briefcase text-success"/></a>
+                    -->
+                    <a th:href="'/accounting/receivable/journal?orderId=' + ${receivable.orderId}"><i class="glyphicon glyphicon-briefcase text-success"/></a>
                     &nbsp;
                     <a th:href="'/charge/order/' + ${receivable.id}" th:text="${receivable.orderNo}"/>
                 </td>

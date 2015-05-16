@@ -1,5 +1,6 @@
 package liquid.order.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import liquid.core.domain.BaseIdEntity;
 import liquid.operation.domain.Goods;
 
@@ -11,6 +12,7 @@ import java.util.Date;
  */
 @Entity(name = "ORD_RAIL")
 public class OrderRail extends BaseIdEntity {
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "ORDER_ID")
     private OrderEntity order;
