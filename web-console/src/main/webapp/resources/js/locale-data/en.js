@@ -14,6 +14,12 @@ var i18n = {
     receivedAt: "Received At",
     invoiceNo: "Invoice #",
     invoicedAmt: "Invoiced Amt",
-    invoicedAt: "Invoiced At"
+    invoicedAt: "Invoiced At",
+    revenueSum: "Revenue Sum",
+    notReceivedRevenue: "Not Received Revenue",
+    receivedSum: "Received Sum",
+    notReceivedSum: "Not Received Sum",
+    invoicedSum: "Invoiced Sum",
+    notInvoicedSum: "Not Invoiced Sum"
   }
 };

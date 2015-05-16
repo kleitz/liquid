@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Tao Ma on 5/8/15.
  */
@@ -31,9 +33,9 @@ public class CashReceiptsJournalServiceImpl implements InternalCashReceiptsJourn
     @Override
     public CashReceiptsJournal save(CashReceiptsJournal cashReceiptsJournal) {
         ReceivableSummaryEntity receivableSummary = receivableSummaryService.findByOrderId(cashReceiptsJournal.getOrder().getId());
-        receivableSummary.setCny(receivableSummary.getCny().add(cashReceiptsJournal.getInvoicedAmt()));
-        receivableSummary.setPaidCny(receivableSummary.getPaidCny() + cashReceiptsJournal.getReceivedAmt().longValue());
-        receivableSummary.setInvoicedCny(receivableSummary.getInvoicedCny() + cashReceiptsJournal.getInvoicedAmt().longValue());
+        receivableSummary.setCny(receivableSummary.getCny().add(cashReceiptsJournal.getInvoicedAmt() == null ? BigDecimal.ZERO : cashReceiptsJournal.getInvoicedAmt()));
+        receivableSummary.setPaidCny(receivableSummary.getPaidCny() + (cashReceiptsJournal.getReceivedAmt() == null ? 0L : cashReceiptsJournal.getReceivedAmt().longValue()));
+        receivableSummary.setInvoicedCny(receivableSummary.getInvoicedCny() + (cashReceiptsJournal.getInvoicedAmt() == null ? 0L : cashReceiptsJournal.getInvoicedAmt().longValue()));
         receivableSummaryService.save(receivableSummary);
         return cashReceiptsJournalRepository.save(cashReceiptsJournal);
     }

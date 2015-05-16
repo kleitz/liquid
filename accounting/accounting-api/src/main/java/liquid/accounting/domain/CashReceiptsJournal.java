@@ -48,7 +48,7 @@ public class CashReceiptsJournal extends BaseUpdateEntity implements Serializabl
     private String invoiceNo;
 
     @Column(precision = 19, scale = 4, name = "INVOICED_AMT")
-    private BigDecimal invoicedAmt;
+    private BigDecimal invoicedAmt = BigDecimal.ZERO;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     @Column(name = "INVOICED_AT")

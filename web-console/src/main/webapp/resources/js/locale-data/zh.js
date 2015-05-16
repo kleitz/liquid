@@ -14,6 +14,12 @@ var i18n = {
     receivedAt: "收款日期",
     invoiceNo: "发票号码",
     invoicedAmt: "开票金额",
-    invoicedAt: "开票时间"
+    invoicedAt: "开票时间",
+    revenueSum: "结算合计",
+    notReceivedRevenue: "结算未收款",
+    receivedSum: "已收到款金额",
+    notReceivedSum: "未收到款金额",
+    invoicedSum: "已开票金额",
+    notInvoicedSum: "未开票金额"
   }
 };
