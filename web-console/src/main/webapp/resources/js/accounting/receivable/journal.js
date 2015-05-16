@@ -295,8 +295,69 @@ var TableRow = React.createClass({
       } 
     })
     cells.push(<td key='plus'><UpdateButton row={this.props.row} /></td>)  
-    /*cells.push(<td key='minus'><DeleteButton host={this.props.host} /></td>)*/     
     
+    return ( 
+      <tr>{cells}</tr>
+    );
+  }
+})
+
+var SumRow = React.createClass({
+  mixins: [IntlMixin],
+  
+  render: function() {
+    var revenueSum = 0
+    var receivedSum = 0
+    var invoicedSum = 0
+    this.props.data.forEach(function(row) {
+      revenueSum += row['revenue']
+      receivedSum += row['receivedAmt']
+      invoicedSum += row['invoicedAmt']
+    })
+    var cells = []
+    cells.push(<td></td>)
+    cells.push(<td></td>)
+    cells.push(<td><b><FormattedMessage message={this.getIntlMessage('revenue')} /></b></td>)
+    cells.push(<td><b>{parseFloat(revenueSum).toFixed(2)}</b></td>)
+    cells.push(<td><b><FormattedMessage message={this.getIntlMessage('receivedAmt')} /></b></td>)
+    cells.push(<td><b>{parseFloat(receivedSum).toFixed(2)}</b></td>)
+    cells.push(<td></td>)
+    cells.push(<td><b><FormattedMessage message={this.getIntlMessage('invoicedAmt')} /></b></td>)
+    cells.push(<td><b>{parseFloat(invoicedSum).toFixed(2)}</b></td>)
+    cells.push(<td></td>)
+    cells.push(<td></td>)
+
+    return ( 
+      <tr>{cells}</tr>
+    );
+  }
+})
+
+var DeductionRow = React.createClass({
+  mixins: [IntlMixin],
+  
+  render: function() {
+    var revenueSum = 0
+    var receivedSum = 0
+    var invoicedSum = 0
+    this.props.data.forEach(function(row) {
+      revenueSum += row['revenue']
+      receivedSum += row['receivedAmt']
+      invoicedSum += row['invoicedAmt']
+    })
+    var cells = []
+    cells.push(<td></td>)
+    cells.push(<td></td>)
+    cells.push(<td><b><FormattedMessage message={this.getIntlMessage('revenue')} /></b></td>)
+    cells.push(<td><b>{parseFloat(invoicedSum - receivedSum).toFixed(2)}</b></td>)
+    cells.push(<td><b><FormattedMessage message={this.getIntlMessage('receivedAmt')} /></b></td>)
+    cells.push(<td><b>{parseFloat(invoicedSum - receivedSum).toFixed(2)}</b></td>)
+    cells.push(<td></td>)
+    cells.push(<td><b><FormattedMessage message={this.getIntlMessage('invoicedAmt')} /></b></td>)
+    cells.push(<td><b>{parseFloat(revenueSum - invoicedSum).toFixed(2)}</b></td>)
+    cells.push(<td></td>)
+    cells.push(<td></td>)
+
     return ( 
       <tr>{cells}</tr>
     );
@@ -341,6 +402,9 @@ var CrudTable = React.createClass({
     this.state.data.forEach(function(row, index) {
       rows.push(<TableRow key={index} row={row} index={index} />);
     }) 
+  
+    rows.push(<SumRow data={this.state.data} />);
+    rows.push(<DeductionRow data={this.state.data} />);
 
     // FIXME - sum all crj. 
     // rows.push(<JournalRow journal={...} />);
