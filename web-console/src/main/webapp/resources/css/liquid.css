@@ -83,6 +83,10 @@ tr, td {
   font-size: 12px;
 }
 
+th > a {
+  font-size: 12px;
+}
+
 /* table which contains the forms and inputs */
 table#f > tbody > tr > td {
   margin: 0; 
@@ -147,6 +151,15 @@ div#tc.container {
   padding-right: 30px;
   padding-left: 30px;
   font-size: 12px;
+}
+
+.title-bar {
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+
+.title-bar > div > span {
+  font-size: 24px;
 }
 
 .pagination {

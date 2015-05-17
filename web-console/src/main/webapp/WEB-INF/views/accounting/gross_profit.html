@@ -59,8 +59,8 @@
             <td th:text="${receivable.goodsName}"></td>
             <td th:text="#{${tradeTypes[__${receivable.tradeType}__].i18nKey}}">Trade Type</td>
             <td class="text-right"><span th:text="${receivable.containerQuantity}">Container Quantity</span></td>
-            <td class="text-right"><span th:text="${receivable.cny + receivable.usd * exchangeRate}">Receivable SUM</span></td>
-            <td class="text-right"><span th:text="${receivable.grandTotal}">Grand Total</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(receivable.cny + receivable.usd * exchangeRate, 0, 'COMMA', 2, 'POINT')}">Receivable SUM</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(receivable.grandTotal, 0, 'COMMA', 2, 'POINT')}">Grand Total</span></td>
             <td class="text-right"><span th:text="${#numbers.formatDecimal((receivable.cny + receivable.usd * exchangeRate) * 0.985, 0, 'COMMA', 2, 'POINT')}">AGI</span></td>
             <td class="text-right"><span th:text="${#numbers.formatDecimal((receivable.cny + receivable.usd * exchangeRate) * 0.985 - receivable.grandTotal, 0, 'COMMA', 2, 'POINT')}">Gross Profit</span></td>
             <td class="text-right"><span th:text="${#numbers.formatDecimal(((receivable.cny + receivable.usd * exchangeRate) * 0.985 - receivable.grandTotal) * 0.2, 0, 'COMMA', 2, 'POINT')}">Marketing Gross Profit</span></td>
@@ -76,8 +76,8 @@
             <td></td>
             <td></td>
             <td class="text-right"><span th:text="${page.sum.containerQuantity}">Container Quantity</span></td>
-            <td class="text-right"><span th:text="${page.sum.cny + page.sum.usd * exchangeRate}">Receivable SUM</span></td>
-            <td class="text-right"><span th:text="${page.sum.grandTotal}">Grand Total</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(page.sum.cny + page.sum.usd * exchangeRate, 0, 'COMMA', 2, 'POINT')}">Receivable SUM</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(page.sum.grandTotal, 0, 'COMMA', 2, 'POINT')}">Grand Total</span></td>
             <td class="text-right"><span th:text="${#numbers.formatDecimal((page.sum.cny + page.sum.usd * exchangeRate) * 0.985, 0, 'COMMA', 2, 'POINT')}">AGI</span></td>
             <td class="text-right"><span th:text="${#numbers.formatDecimal((page.sum.cny + page.sum.usd * exchangeRate) * 0.985 - page.sum.grandTotal, 0, 'COMMA', 2, 'POINT')}">Gross Profit</span></td>
             <td class="text-right"><span th:text="${#numbers.formatDecimal(((page.sum.cny + page.sum.usd * exchangeRate) * 0.985 - page.sum.grandTotal) * 0.2, 0, 'COMMA', 2, 'POINT')}">Marketing Gross Profit</span></td>

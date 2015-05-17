@@ -85,7 +85,7 @@ public class BaseOrder extends BaseUpdateEntity {
     private BigDecimal distyUsd = BigDecimal.ZERO;
 
     @Column(precision = 19, scale = 4, name = "GRAND_TOTAL")
-    private BigDecimal grandTotal = new BigDecimal("0");
+    private BigDecimal grandTotal = BigDecimal.ZERO;
 
     @Column(name = "CREATE_ROLE")
     private String createRole;

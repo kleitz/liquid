@@ -12,6 +12,7 @@ import java.util.Date;
 
 /**
  * Created by redbrick9 on 8/28/14.
+ * SalesLedger
  */
 @Entity(name = "ACT_RECEIVABLE_SUMMARY")
 public class ReceivableSummaryEntity extends BaseUpdateEntity {

@@ -1,0 +1,61 @@
+<!DOCTYPE html> 
+<html>
+
+<head th:replace="layout :: head" />
+
+<body>
+<!-- {!begin layout} -->
+<div th:include="layout :: header"></div>
+<!-- {!end layout} -->
+
+<div class="container-fluid">
+  <div class="row title-bar">
+    <div class="col-xs-6">
+      <span th:text="#{settlement}" />
+    </div>
+    <div class="col-xs-6"></div>
+  </div><!-- row -->
+</div><!-- /.container -->
+
+<hr />
+
+<div id="crudTable" class="container-fluid"></div>
+
+<!-- {!begin layout} -->
+<div th:include="layout :: footer"></div>
+<!-- {!end layout} -->
+
+<!-- {!begin layout} -->
+<div th:replace="layout :: js" />
+<!-- {!end layout} -->
+
+<script type="text/jsx" src="/resources/js/accounting/receivable/journal.js"></script>
+
+<script>
+$(document).ready(function() {
+  // Attach a submit handler to the form
+  $("#crjForm").submit(function(event) {
+    // Stop form from submitting normally
+    event.preventDefault();
+    $.post("/api/receivable/journal", $("#crjForm").serialize()).
+    done(function(data) {
+      console.log("ok");
+      $('#crjModal').modal('hide');
+    });
+  });
+
+  $('#crjModal').on('show.bs.modal', function(e) {
+    // FIXME - with the given index to get the journal to fill in the form.
+    console.log(e.relatedTarget);
+    var orderId = getParameterByName('orderId');  
+    $('#order').val(orderId); 
+    $('#recognizedAt').val(moment().format('YYYY-MM-DD HH:mm'));
+    $('#receivedAt').val(moment().format('YYYY-MM-DD HH:mm'));
+    $('#invoicedAt').val(moment().format('YYYY-MM-DD HH:mm'));
+  });
+});
+</script>
+
+</body>
+
+</html>

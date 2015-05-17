@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html>
-
-<head th:replace="layout :: head" />
+<html> <head th:replace="layout :: head" />
 
 <body>
 <!-- {!begin layout} -->
@@ -66,6 +64,7 @@
             <td class="text-right"><span th:text="${receivable.order.containerQty}">Container Quantity</span></td>
             <td></td>
             <td></td>
+<<<<<<< HEAD
             <td class="text-right"><span th:text="${receivable.cny}">Receivable CNY</span></td>
             <td class="text-right"><span th:text="${receivable.usd}">Receivable USD</span></td>
             <td class="text-right"><span th:text="${receivable.cny + receivable.usd * exchangeRate}">Receivable SUM</span></td>
@@ -75,6 +74,17 @@
             <td class="text-right"><span th:text="${receivable.cny + receivable.usd * exchangeRate - receivable.order.grandTotal}">Gross Margin</span></td>
             <td class="text-right"><span th:text="${receivable.cny + receivable.usd * exchangeRate - receivable.order.distyCny}">Sales Profit</span></td>
             <td class="text-right"><span th:text="${receivable.order.distyCny - receivable.order.grandTotal}">Disty Profit</span></td>
+=======
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(receivable.cny, 0, 'COMMA', 2, 'POINT')}">Receivable CNY</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(receivable.usd, 0, 'COMMA', 2, 'POINT')}">Receivable USD</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(receivable.cny + receivable.usd * exchangeRate, 0, 'COMMA', 2, 'POINT')}">Receivable SUM</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(receivable.distyCny, 0, 'COMMA', 2, 'POINT')}">Disty Price</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(receivable.distyUsd, 0, 'COMMA', 2, 'POINT')}">Disty Usd</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(receivable.grandTotal, 0, 'COMMA', 2, 'POINT')}">Grand Total</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(receivable.cny + receivable.usd * exchangeRate - receivable.grandTotal, 0, 'COMMA', 2, 'POINT')}">Gross Margin</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(receivable.cny + receivable.usd * exchangeRate - receivable.distyCny, 0, 'COMMA', 2, 'POINT')}">Sales Profit</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(receivable.distyCny - receivable.grandTotal, 0, 'COMMA', 2, 'POINT')}">Disty Profit</span></td>
+>>>>>>> develop
         </tr>
         <tr>
             <td><strong><span th:text="#{total}">Sum</span></strong></td>
@@ -89,6 +99,7 @@
             <td class="text-right"><span th:text="${page.sum.order.containerQty}">Container Quantity</span></td>
             <td></td>
             <td></td>
+<<<<<<< HEAD
             <td class="text-right"><span th:text="${page.sum.cny}">Receivable CNY</span></td>
             <td class="text-right"><span th:text="${page.sum.usd}">Receivable USD</span></td>
             <td class="text-right"><span th:text="${page.sum.cny + page.sum.usd * exchangeRate}">Receivable SUM</span></td>
@@ -98,6 +109,17 @@
             <td class="text-right"><span th:text="${page.sum.cny + page.sum.usd * exchangeRate - page.sum.order.grandTotal}">Gross Margin</span></td>
             <td class="text-right"><span th:text="${page.sum.cny + page.sum.usd * exchangeRate - page.sum.order.distyCny - page.sum.order.distyUsd * exchangeRate}">Sales Profit</span></td>
             <td class="text-right"><span th:text="${page.sum.order.distyCny + page.sum.order.distyUsd * exchangeRate - page.sum.order.grandTotal}">Disty Profit</span></td>
+=======
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(page.sum.cny, 0, 'COMMA', 2, 'POINT')}">Receivable CNY</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(page.sum.usd, 0, 'COMMA', 2, 'POINT')}">Receivable USD</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(page.sum.cny + page.sum.usd * exchangeRate, 0, 'COMMA', 2, 'POINT')}">Receivable SUM</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(page.sum.distyCny, 0, 'COMMA', 2, 'POINT')}">Disty Price</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(page.sum.distyUsd, 0, 'COMMA', 2, 'POINT')}">Disty USD</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(page.sum.grandTotal, 0, 'COMMA', 2, 'POINT')}">Grand Total</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(page.sum.cny + page.sum.usd * exchangeRate - page.sum.grandTotal, 0, 'COMMA', 2, 'POINT')}">Gross Margin</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(page.sum.cny + page.sum.usd * exchangeRate - page.sum.distyCny - page.sum.distyUsd * exchangeRate, 0, 'COMMA', 2, 'POINT')}">Sales Profit</span></td>
+            <td class="text-right"><span th:text="${#numbers.formatDecimal(page.sum.distyCny + page.sum.distyUsd * exchangeRate - page.sum.grandTotal, 0, 'COMMA', 2, 'POINT')}">Disty Profit</span></td>
+>>>>>>> develop
         </tr>
         </tbody>
     </table>

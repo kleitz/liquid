@@ -1,12 +1,13 @@
 package liquid.order.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- *  
  * User: tao
  * Date: 9/28/13
  * Time: 2:59 PM
@@ -46,6 +47,7 @@ public class OrderEntity extends BaseOrder {
     @Column(name = "HAS_DELIVERY")
     private boolean hasDelivery;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "order")
     private List<ServiceItemEntity> serviceItems = new ArrayList<>();
 

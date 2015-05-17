@@ -34,7 +34,7 @@ import java.util.*;
  * Created by redbrick9 on 5/28/14.
  */
 @Service
-public class OrderFacade {
+public class OrderFacadeImpl implements InternalOrderFacade {
     @Autowired
     private Environment env;
 

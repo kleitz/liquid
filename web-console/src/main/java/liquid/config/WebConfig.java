@@ -2,6 +2,7 @@ package liquid.config;
 
 import liquid.interceptor.LoggingInterceptor;
 import liquid.operation.converter.*;
+import liquid.order.converter.OrderFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -45,6 +46,7 @@ import java.util.Locale;
         "liquid.process.controller",
         "liquid.transport.controller",
         "liquid.accounting.controller",
+        "liquid.accounting.restfulapi",
         "liquid.poc.controller",
         "liquid.poc.restfulapi"
 })
@@ -64,6 +66,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private GoodsFormatter goodsFormatter;
 
+    @Autowired
+    private OrderFormatter orderFormatter;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
@@ -82,6 +87,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addFormatter(serviceProviderFormatter);
         registry.addFormatter(locationTypeFormatter);
         registry.addFormatter(goodsFormatter);
+        registry.addFormatter(orderFormatter);
         registry.addConverter(toServiceSubtypeConverter);
     }
 
