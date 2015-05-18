@@ -224,7 +224,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         orderEntity.setConsignee(order.getConsignee());
         orderEntity.setConsigneePhone(order.getConsigneePhone());
         orderEntity.setConsigneeAddress(order.getConsigneeAddress());
-        orderEntity.setGoodsId(order.getGoodsId());
+        orderEntity.setGoods(order.getGoods());
         orderEntity.setGoodsWeight(order.getGoodsWeight());
         orderEntity.setGoodsDimension(order.getGoodsDimension());
         orderEntity.setLoadingType(order.getLoadingType());
@@ -307,8 +307,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         order.setConsignee(orderEntity.getConsignee());
         order.setConsigneePhone(orderEntity.getConsigneePhone());
         order.setConsigneeAddress(orderEntity.getConsigneeAddress());
-        order.setGoodsId(orderEntity.getGoodsId());
-        order.setGoodsName(goodsService.find(orderEntity.getGoodsId()).getName());
+        order.setGoods(orderEntity.getGoods());
         order.setGoodsWeight(orderEntity.getGoodsWeight());
         order.setGoodsDimension(orderEntity.getGoodsDimension());
         order.setLoadingType(orderEntity.getLoadingType());

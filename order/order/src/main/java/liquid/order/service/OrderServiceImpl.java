@@ -24,7 +24,6 @@ import java.util.List;
 import static org.springframework.data.jpa.domain.Specifications.where;
 
 /**
- *  
  * User: tao
  * Date: 9/29/13
  * Time: 8:03 PM
@@ -71,7 +70,6 @@ public class OrderServiceImpl extends AbstractBaseOrderService<OrderEntity, Orde
     public OrderEntity find(Long id) {
         OrderEntity order = repository.findOne(id);
         order.setContainerSubtypeId(order.getContainerSubtypeId());
-        order.setGoodsId(order.getGoodsId());
         // Initialize one to many children
         order.getServiceItems().size();
         return order;

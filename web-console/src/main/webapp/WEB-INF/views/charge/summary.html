@@ -58,7 +58,7 @@
             <td th:text="${receivable.order.srcLocId}">Origin</td>
             <td th:text="${receivable.order.dstLocId}">Destination</td>
             <td>Rail Destination</td>
-            <td th:text="${receivable.order.goodsId}"></td>
+            <td th:text="${receivable.order.goods.name}"></td>
             <td th:text="#{${tradeTypes[__${receivable.order.tradeType}__].i18nKey}}">Trade Type</td>
             <td></td>
             <td class="text-right"><span th:text="${receivable.order.containerQty}">Container Quantity</span></td>

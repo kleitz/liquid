@@ -111,7 +111,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label th:text="#{goods}">Cargo</label>
-                        <select th:field="*{goodsId}" class="form-control" disabled="disabled">
+                        <select th:field="*{goods}" class="form-control" disabled="disabled">
                             <option th:each="goods : ${cargos}"
                                     th:value="${goods.id}"
                                     th:text="${goods.name}">Cargo Name

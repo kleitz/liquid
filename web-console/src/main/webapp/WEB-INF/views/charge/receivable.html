@@ -70,7 +70,7 @@
                 <td th:text="${receivable.origination}">Origin</td>
                 <td th:text="${receivable.destination}">Destination</td>
                 <td th:text="${receivable.railDestination}">Rail Destination</td>
-                <td th:text="${receivable.goodsName}"></td>
+                <td th:text="${receivable.goods.name}"></td>
                 <td th:text="#{${tradeTypes[__${receivable.tradeType}__].i18nKey}}">Trade Type</td>
                 <td></td>
                 <td class="text-right"><span th:text="${receivable.containerQuantity}">Container Quantity</span></td>

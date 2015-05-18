@@ -2,6 +2,7 @@ package liquid.order.domain;
 
 import liquid.core.domain.BaseUpdateEntity;
 import liquid.operation.domain.Customer;
+import liquid.operation.domain.Goods;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -39,8 +40,9 @@ public class BaseOrder extends BaseUpdateEntity {
     @Column(name = "CONSIGNEE_ADDR")
     private String consigneeAddress;
 
-    @Column(name = "GOODS_ID")
-    private Long goodsId;
+    @ManyToOne
+    @JoinColumn(name = "GOODS_ID")
+    private Goods goods;
 
     /**
      * unit kilogram
@@ -159,12 +161,12 @@ public class BaseOrder extends BaseUpdateEntity {
         this.consigneeAddress = consigneeAddress;
     }
 
-    public Long getGoodsId() {
-        return goodsId;
+    public Goods getGoods() {
+        return goods;
     }
 
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
+    public void setGoods(Goods goods) {
+        this.goods = goods;
     }
 
     public int getGoodsWeight() {

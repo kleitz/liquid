@@ -2,6 +2,7 @@ package liquid.order.model;
 
 import liquid.core.model.IdObject;
 import liquid.operation.domain.Customer;
+import liquid.operation.domain.Goods;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Min;
@@ -36,8 +37,8 @@ public class BaseOrder extends IdObject {
     private String consignee;
     private String consigneePhone;
     private String consigneeAddress;
-    private Long goodsId;
-    private String goodsName;
+    private Goods goods;
+
     @Min(1)
     @NotNull
     private Integer goodsWeight;
@@ -152,20 +153,12 @@ public class BaseOrder extends IdObject {
         this.consigneeAddress = consigneeAddress;
     }
 
-    public Long getGoodsId() {
-        return goodsId;
+    public Goods getGoods() {
+        return goods;
     }
 
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
-    }
-
-    public String getGoodsName() {
-        return goodsName;
-    }
-
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
+    public void setGoods(Goods goods) {
+        this.goods = goods;
     }
 
     public Integer getGoodsWeight() {
@@ -310,8 +303,7 @@ public class BaseOrder extends IdObject {
         sb.append(", consignee='").append(consignee).append('\'');
         sb.append(", consigneePhone='").append(consigneePhone).append('\'');
         sb.append(", consigneeAddress='").append(consigneeAddress).append('\'');
-        sb.append(", goodsId=").append(goodsId);
-        sb.append(", goodsName='").append(goodsName).append('\'');
+        sb.append(", goods=").append(goods);
         sb.append(", goodsWeight=").append(goodsWeight);
         sb.append(", goodsDimension='").append(goodsDimension).append('\'');
         sb.append(", containerType=").append(containerType);

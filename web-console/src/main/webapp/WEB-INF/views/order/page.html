@@ -73,7 +73,7 @@
             <td th:text="${order.serviceType}">Service Type</td>
             <td th:text="${order.origination}">Origin</td>
             <td th:text="${order.destination}">Destination</td>
-            <td th:text="${order.goodsName}">Cargo Name</td>
+            <td th:text="${order.goods.name}">Cargo Name</td>
             <td th:text="${order.goodsWeight}">Cargo Weight</td>
             <td th:text="#{${tradeTypes[__${order.tradeType}__].i18nKey}}">Trade Type</td>
             <td th:text="#{${loadingTypes[__${order.loadingType}__].i18nKey}}">Loading Type</td>
