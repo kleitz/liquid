@@ -65,7 +65,7 @@
                 <td>
                     <a th:href="'/order/' + ${receivable.orderId} + '/receivable'"><i class="glyphicon glyphicon-briefcase text-success"/></a>
                     &nbsp;
-                    <span th:text="${receivable.customerName}" />
+                    <span th:text="${receivable.customer.name}" />
                 </td>
                 <td th:text="${receivable.origination}">Origin</td>
                 <td th:text="${receivable.destination}">Destination</td>
