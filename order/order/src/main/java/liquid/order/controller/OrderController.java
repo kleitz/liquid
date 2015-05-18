@@ -52,7 +52,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  
  * User: tao
  * Date: 9/28/13
  * Time: 2:38 PM
@@ -264,15 +263,16 @@ public class OrderController extends BaseController {
             return "order/form";
         }
 
-        FormValidationResult result = orderFacade.validateCustomer(order.getCustomerId(), order.getCustomerName());
-        if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "customerName", order.getCustomerName(), order.getCustomerName());
-        } else {
-            order.setCustomerId(result.getId());
-            order.setCustomerName(result.getName());
-        }
+        // FIXME - Need a new way to validate customer.
+//        FormValidationResult result = orderFacade.validateCustomer(order.getCustomerId(), order.getCustomerName());
+//        if (!result.isSuccessful()) {
+//            addFieldError(bindingResult, "order", "customerName", order.getCustomerName(), order.getCustomerName());
+//        } else {
+//            order.setCustomerId(result.getId());
+//            order.setCustomerName(result.getName());
+//        }
 
-        result = orderFacade.validateLocation(order.getOriginId(), order.getOrigination());
+        FormValidationResult result = orderFacade.validateLocation(order.getOriginId(), order.getOrigination());
         if (!result.isSuccessful()) {
             addFieldError(bindingResult, "order", "origination", order.getOrigination(), order.getOrigination());
         } else {
@@ -321,15 +321,16 @@ public class OrderController extends BaseController {
             return "order/form";
         }
 
-        FormValidationResult result = orderFacade.validateCustomer(order.getCustomerId(), order.getCustomerName());
-        if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "customerName", order.getCustomerName(), order.getCustomerName());
-        } else {
-            order.setCustomerId(result.getId());
-            order.setCustomerName(result.getName());
-        }
+        // FIXME - Need a new way to validate customer.
+//        FormValidationResult result = orderFacade.validateCustomer(order.getCustomerId(), order.getCustomerName());
+//        if (!result.isSuccessful()) {
+//            addFieldError(bindingResult, "order", "customerName", order.getCustomerName(), order.getCustomerName());
+//        } else {
+//            order.setCustomerId(result.getId());
+//            order.setCustomerName(result.getName());
+//        }
 
-        result = orderFacade.validateLocation(order.getOriginId(), order.getOrigination());
+        FormValidationResult result = orderFacade.validateLocation(order.getOriginId(), order.getOrigination());
         if (!result.isSuccessful()) {
             addFieldError(bindingResult, "order", "origination", order.getOrigination(), order.getOrigination());
         } else {
@@ -475,8 +476,8 @@ public class OrderController extends BaseController {
         Invoice invoice = new Invoice();
         invoice.setOrderId(orderId);
         invoice.setIssuedAt(DateUtil.dayStrOf());
-        invoice.setBuyerId(order.getCustomerId());
-        invoice.setBuyerName(customerService.find(order.getCustomerId()).getName());
+        invoice.setBuyerId(order.getCustomer().getId());
+        invoice.setBuyerName(order.getCustomer().getName());
         invoice.setExpectedPaymentAt(DateUtil.dayStrOf());
         model.addAttribute("invoice", invoice);
         return "invoice/form";

@@ -23,7 +23,7 @@
                     <input type="text" class="form-control input-sm" th:field="*{text}" th:placeholder="#{customer.name} + #{or} + #{order.no}" />
                     
                     <span class="input-group-btn">                    
-                        <button type="submit" name="search" class="btn btn-primary"><i class="glyphicon glyphicon-search" /></button>
+                        <button type="submit" name="search" class="btn btn-primary"><span class="glyphicon glyphicon-search" /></button>
                     </span>
                 </div>
             </form>
@@ -63,13 +63,13 @@
         <tbody>
         <tr th:each="order : ${page.content}">
             <td>
-                <i th:if="${order.status} == 1" class="glyphicon glyphicon-floppy-disk" />
-                <i th:if="${order.status} == 2" class="glyphicon glyphicon-forward" />
-                <i th:if="${order.status} == 8" class="glyphicon glyphicon-flag" />
+                <span th:if="${order.status} == 1" class="glyphicon glyphicon-floppy-disk" />
+                <span th:if="${order.status} == 2" class="glyphicon glyphicon-forward" />
+                <span th:if="${order.status} == 8" class="glyphicon glyphicon-flag" />
                 &nbsp;
                 <a href="/order/id?action=edit" th:href="'/order/' + ${order.id}" th:text="${order.orderNo}"/>
             </td>
-            <td th:text="${order.customerName}">Customer Name</td>
+            <td th:text="${order.customer.name}">Customer Name</td>
             <td th:text="${order.serviceType}">Service Type</td>
             <td th:text="${order.origination}">Origin</td>
             <td th:text="${order.destination}">Destination</td>

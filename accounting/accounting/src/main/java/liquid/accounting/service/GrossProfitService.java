@@ -3,6 +3,7 @@ package liquid.accounting.service;
 import liquid.accounting.domain.GrossProfitEntity;
 import liquid.accounting.domain.GrossProfitEntity_;
 import liquid.accounting.repository.GrossProfitRepository;
+import liquid.operation.domain.Customer_;
 import liquid.order.domain.OrderEntity_;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -53,7 +54,7 @@ public class GrossProfitService {
             Specification<GrossProfitEntity> customerIdSpec = new Specification<GrossProfitEntity>() {
                 @Override
                 public Predicate toPredicate(Root<GrossProfitEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                    return cb.equal(root.get(GrossProfitEntity_.order).get(OrderEntity_.customerId), customerId);
+                    return cb.equal(root.get(GrossProfitEntity_.order).get(OrderEntity_.customer).get(Customer_.id), customerId);
                 }
             };
             specifications = specifications.and(customerIdSpec);

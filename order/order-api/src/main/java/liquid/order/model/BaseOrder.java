@@ -1,6 +1,7 @@
 package liquid.order.model;
 
 import liquid.core.model.IdObject;
+import liquid.operation.domain.Customer;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Min;
@@ -14,11 +15,13 @@ public class BaseOrder extends IdObject {
     private String orderNo;
     private Long serviceTypeId;
     private String serviceType;
-    private Long customerId;
-
+    //    private Long customerId;
+//
+//    @NotNull
+//    @NotEmpty
+//    private String customerName;
     @NotNull
-    @NotEmpty
-    private String customerName;
+    private Customer customer;
 
     private Long originId;
 
@@ -85,20 +88,12 @@ public class BaseOrder extends IdObject {
         this.serviceType = serviceType;
     }
 
-    public Long getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Long getOriginId() {
@@ -307,8 +302,7 @@ public class BaseOrder extends IdObject {
         sb.append(", orderNo='").append(orderNo).append('\'');
         sb.append(", serviceTypeId=").append(serviceTypeId);
         sb.append(", serviceType='").append(serviceType).append('\'');
-        sb.append(", customerId=").append(customerId);
-        sb.append(", customerName='").append(customerName).append('\'');
+        sb.append(", customer=").append(customer);
         sb.append(", originId=").append(originId);
         sb.append(", origination='").append(origination).append('\'');
         sb.append(", destinationId=").append(destinationId);

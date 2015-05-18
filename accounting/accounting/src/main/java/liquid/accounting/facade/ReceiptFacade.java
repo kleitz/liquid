@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Tao Ma on 1/8/15.
  */
 @Service
-public class ReceiptFacade implements InternalReceiptService{
+public class ReceiptFacade implements InternalReceiptService {
     @Autowired
     private ReceiptServiceImpl receiptService;
 
@@ -63,7 +63,7 @@ public class ReceiptFacade implements InternalReceiptService{
         ReceiptEntity receiptEntity = new ReceiptEntity();
         receiptEntity.setId(receipt.getId());
         receiptEntity.setOrder(orderEntity);
-        receiptEntity.setPayerId(orderEntity.getCustomerId());
+        receiptEntity.setPayerId(orderEntity.getCustomer().getId());
         receiptEntity.setCny(receipt.getCny());
         receiptEntity.setUsd(receipt.getUsd());
         receiptEntity.setIssuedAt(DateUtil.dayOf(receipt.getIssuedAt()));
@@ -79,7 +79,7 @@ public class ReceiptFacade implements InternalReceiptService{
         ReceiptEntity receiptEntity = new ReceiptEntity();
         receiptEntity.setId(receipt.getId());
         receiptEntity.setOrder(orderEntity);
-        receiptEntity.setPayerId(orderEntity.getCustomerId());
+        receiptEntity.setPayerId(orderEntity.getCustomer().getId());
         receiptEntity.setCny(receipt.getCny());
         receiptEntity.setUsd(receipt.getUsd());
         receiptEntity.setIssuedAt(DateUtil.dayOf(receipt.getIssuedAt()));

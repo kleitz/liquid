@@ -8,6 +8,7 @@ import liquid.accounting.repository.ReceivableSummaryRepository;
 import liquid.core.domain.SumPage;
 import liquid.core.model.SearchBarForm;
 import liquid.core.service.AbstractService;
+import liquid.operation.domain.Customer_;
 import liquid.order.domain.OrderEntity;
 import liquid.order.domain.OrderEntity_;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,7 +124,7 @@ public class ReceivableSummaryServiceImpl extends AbstractService<ReceivableSumm
             Specification<ReceivableSummaryEntity> customerIdSpec = new Specification<ReceivableSummaryEntity>() {
                 @Override
                 public Predicate toPredicate(Root<ReceivableSummaryEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                    return cb.equal(root.get(ReceivableSummaryEntity_.order).get(OrderEntity_.customerId), customerId);
+                    return cb.equal(root.get(ReceivableSummaryEntity_.order).get(OrderEntity_.customer).get(Customer_.id), customerId);
                 }
             };
             specifications = specifications.and(customerIdSpec);
@@ -156,7 +157,7 @@ public class ReceivableSummaryServiceImpl extends AbstractService<ReceivableSumm
                 Specification<ReceivableSummaryEntity> customerIdSpec = new Specification<ReceivableSummaryEntity>() {
                     @Override
                     public Predicate toPredicate(Root<ReceivableSummaryEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                        return cb.equal(root.get(ReceivableSummaryEntity_.order).get(OrderEntity_.customerId), searchBarForm.getId());
+                        return cb.equal(root.get(ReceivableSummaryEntity_.order).get(OrderEntity_.customer).get(Customer_.id), searchBarForm.getId());
                     }
                 };
                 specifications = specifications.and(customerIdSpec);

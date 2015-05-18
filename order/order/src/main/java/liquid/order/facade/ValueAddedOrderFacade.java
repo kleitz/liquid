@@ -2,6 +2,7 @@ package liquid.order.facade;
 
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
+import liquid.core.security.SecurityContext;
 import liquid.operation.domain.ServiceTypeEntity;
 import liquid.operation.service.CustomerService;
 import liquid.operation.service.GoodsService;
@@ -13,7 +14,6 @@ import liquid.order.model.TransportedContainer;
 import liquid.order.model.ValueAddedOrder;
 import liquid.order.repository.ReceivingContainerRepository;
 import liquid.order.service.ReceivingOrderServiceImpl;
-import liquid.core.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -71,8 +71,7 @@ public class ValueAddedOrderFacade {
         ValueAddedOrder order = new ValueAddedOrder();
         order.setId(orderEntity.getId());
         order.setOrderNo(orderEntity.getOrderNo());
-        order.setCustomerId(orderEntity.getCustomerId());
-        order.setCustomerName(customerService.find(orderEntity.getCustomerId()).getName());
+        order.setCustomer(orderEntity.getCustomer());
         order.setConsignee(orderEntity.getConsignee());
         order.setConsigneePhone(orderEntity.getConsigneePhone());
         order.setConsigneeAddress(orderEntity.getConsigneeAddress());
@@ -132,7 +131,7 @@ public class ValueAddedOrderFacade {
         orderEntity.setId(order.getId());
         orderEntity.setOrderNo(order.getOrderNo());
         orderEntity.setServiceTypeId(order.getServiceTypeId());
-        orderEntity.setCustomerId(order.getCustomerId());
+        orderEntity.setCustomer(order.getCustomer());
         orderEntity.setConsignee(order.getConsignee());
         orderEntity.setConsigneePhone(order.getConsigneePhone());
         orderEntity.setConsigneeAddress(order.getConsigneeAddress());

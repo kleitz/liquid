@@ -216,7 +216,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         orderEntity.setId(order.getId());
         orderEntity.setOrderNo(order.getOrderNo());
         orderEntity.setServiceTypeId(order.getServiceTypeId());
-        orderEntity.setCustomerId(order.getCustomerId());
+        orderEntity.setCustomer(order.getCustomer());
         orderEntity.setTradeType(order.getTradeType());
         orderEntity.setVerificationSheetSn(order.getVerificationSheetSn());
         orderEntity.setSrcLocId(order.getOriginId());
@@ -296,8 +296,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         order.setOrderNo(orderEntity.getOrderNo());
         order.setServiceTypeId(orderEntity.getServiceTypeId());
         order.setServiceType(serviceTypeService.find(orderEntity.getServiceTypeId()).getName());
-        order.setCustomerId(orderEntity.getCustomerId());
-        order.setCustomerName(customerService.find(orderEntity.getCustomerId()).getName());
+        order.setCustomer(orderEntity.getCustomer());
         order.setTradeType(orderEntity.getTradeType());
         order.setTradeTypeName(TradeType.valueOf(orderEntity.getTradeType()).getI18nKey());
         order.setVerificationSheetSn(orderEntity.getVerificationSheetSn());

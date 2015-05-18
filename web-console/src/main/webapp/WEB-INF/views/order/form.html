@@ -34,14 +34,14 @@
         </div>
     </div>
 
-    <input type="hidden" th:field="*{customerId}"/>
+    <!--input type="hidden" th:field="*{customer}"/-->
 
     <div class="col-lg-6">
-        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('customerName')} ? 'has-error'">
+        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('customer')} ? 'has-error'">
             <label th:text="#{customer} + ' *'">Customer</label><br/>
-            <input type="text" th:field="*{customerName}" class="form-control input-sm" placeholder="customer name"
+            <input type="text" th:field="*{customer}" class="form-control input-sm" placeholder="customer name"
                    th:placeholder="#{customer.name}"/>
-            <span class="text-danger" th:errors="*{customerName}">error</span>
+            <span class="text-danger" th:errors="*{customer}">error</span>
         </div>
     </div>
     
@@ -460,7 +460,7 @@
 /*<![CDATA[*/
     $(document).ready(function() {
         var customers = initCustomerAc();
-        $('#customerName').acWithTemplate(customers, 'name', 'customerId', '<p><strong>{{name}}</strong> – {{code}}</p>');
+        $('#customer').acWithTemplateAndName(customers, 'name', '<p><strong>{{name}}</strong> – {{code}}</p>');
 
         var locations = initAllLocationsAc();
         $('#origination').acWithTemplate(locations, 'name', 'originId', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');

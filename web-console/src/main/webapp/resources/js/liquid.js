@@ -64,6 +64,18 @@ $.fn.extend({
             $('#' + hiddenId).val(datum.id);
         });
     },
+    acWithTemplateAndName: function(dataset, displayKey, template) {    
+        this.typeahead(null, {
+          name: this.attr('id'),
+          displayKey: displayKey,
+          source: dataset.ttAdapter(),
+          templates: {
+            suggestion: Handlebars.compile(template)
+          }
+        }).on('typeahead:selected', function (obj, datum) {
+            $('#' + name).val(datum[displayKey]);
+        });
+    },
     dtPicker: function() {
         this.datetimepicker({
             language: 'zh-cn'

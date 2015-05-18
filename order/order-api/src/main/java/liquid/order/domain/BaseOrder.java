@@ -1,13 +1,13 @@
 package liquid.order.domain;
 
 import liquid.core.domain.BaseUpdateEntity;
+import liquid.operation.domain.Customer;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 
 /**
- *  
  * User: tao
  * Date: 10/14/13
  * Time: 8:34 PM
@@ -20,8 +20,9 @@ public class BaseOrder extends BaseUpdateEntity {
     @Column(name = "ORDER_NO")
     private String orderNo;
 
-    @Column(name = "CUSTOMER_ID")
-    private long customerId;
+    @ManyToOne
+    @JoinColumn(name = "CUSTOMER_ID")
+    private Customer customer;
 
     @Column(name = "SRC_LOC_ID")
     private Long srcLocId;
@@ -110,12 +111,12 @@ public class BaseOrder extends BaseUpdateEntity {
         this.orderNo = orderNo;
     }
 
-    public long getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(long customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Long getSrcLocId() {
