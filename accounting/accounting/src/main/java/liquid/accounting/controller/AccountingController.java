@@ -44,7 +44,7 @@ public class AccountingController {
     private ChargeFacade chargeFacade;
 
     @Autowired
-    private InternalReceivableSummaryService internalReceivableSummaryService;
+    private InternalReceivableSummaryService receivableSummaryService;
 
     @RequestMapping(value = "/gross_profit", method = RequestMethod.GET)
     public String grossProfit(@Valid SearchBarForm searchBarForm,
@@ -88,7 +88,7 @@ public class AccountingController {
 
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
 //        Page<ReceivableSummary> page = receivableFacade.findAll(searchBarForm, pageRequest);
-        SumPage<ReceivableSummaryEntity> page = internalReceivableSummaryService.findAll(searchBarForm, pageRequest);
+        SumPage<ReceivableSummaryEntity> page = receivableSummaryService.findAll(searchBarForm, pageRequest);
         model.addAttribute("page", page);
         return "charge/summary";
     }
