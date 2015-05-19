@@ -81,11 +81,11 @@
                     </div>
                 </div>
 
-                <input type="hidden" th:field="*{destinationId}"/>
                 <div class="col-xs-3">
                     <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('destination')} ? 'has-error'">
                         <label th:text="#{destination} + ' *'">Destination</label>
-                        <input type="text" th:field="*{destination}" class="form-control input-sm" th:placeholder="#{destination}"/>
+                        <input type="text" id="destinationName" name="destinationName" class="form-control input-sm" th:placeholder="#{destination}"/>
+                        <input type="hidden" th:field="*{destinationId}"/>
                         <span class="text-danger" th:errors="*{destination}">error</span>      
                     </div>
                 </div>
@@ -260,7 +260,7 @@
 
         var locations = initAllLocationsAc();
         $('#sourceName').acWithTemplate(locations, 'name', 'source', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
-        $('#destination').acWithTemplate(locations, 'name', 'destinationId', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
+        $('#destinationName').acWithTemplate(locations, 'name', 'destination', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
 
         
         if($('input[name=containerType]:checked', '#orderForm').val() == 0) {

@@ -71,14 +71,13 @@ public class OrderFacadeImpl implements InternalOrderFacade {
     public Order initOrder() {
         Order order = new Order();
         order.setSource(locationService.find(Long.valueOf(env.getProperty("default.origin.id"))));
-        order.setDestinationId(Long.valueOf(env.getProperty("default.destination.id")));
-        order.setDestination(locationService.find(Long.valueOf(env.getProperty("default.destination.id"))).getName());
+        order.setDestination(locationService.find(Long.valueOf(env.getProperty("default.destination.id"))));
         order.setLoadingEstimatedTime(DateUtil.stringOf(new Date()));
 
         order.setRailSourceId(order.getSource().getId());
         order.setRailSource(order.getSource().getName());
-        order.setRailDestinationId(order.getDestinationId());
-        order.setRailDestination(order.getDestination());
+        order.setRailDestinationId(order.getDestination().getId());
+        order.setRailDestination(order.getDestination().getName());
         order.setPlanReportTime(DateUtil.stringOf(new Date()));
 
         List<ServiceItem> serviceItemList = new ArrayList<>();
@@ -219,7 +218,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         orderEntity.setTradeType(order.getTradeType());
         orderEntity.setVerificationSheetSn(order.getVerificationSheetSn());
         orderEntity.setSource(order.getSource());
-        orderEntity.setDstLocId(order.getDestinationId());
+        orderEntity.setDestination(order.getDestination());
         orderEntity.setConsignee(order.getConsignee());
         orderEntity.setConsigneePhone(order.getConsigneePhone());
         orderEntity.setConsigneeAddress(order.getConsigneeAddress());
@@ -300,8 +299,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         order.setTradeTypeName(TradeType.valueOf(orderEntity.getTradeType()).getI18nKey());
         order.setVerificationSheetSn(orderEntity.getVerificationSheetSn());
         order.setSource(orderEntity.getSource());
-        order.setDestinationId(orderEntity.getDstLocId());
-        order.setDestination(locationService.find(orderEntity.getDstLocId()).getName());
+        order.setDestination(orderEntity.getDestination());
         order.setConsignee(orderEntity.getConsignee());
         order.setConsigneePhone(orderEntity.getConsigneePhone());
         order.setConsigneeAddress(orderEntity.getConsigneeAddress());

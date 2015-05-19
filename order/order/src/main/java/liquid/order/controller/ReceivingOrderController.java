@@ -177,10 +177,13 @@ public class ReceivingOrderController extends BaseController {
         logger.debug("order: {}", order);
         String sourceName = request.getParameter("sourceName");
         logger.debug("sourceName: {}", sourceName);
+        String destinationName = request.getParameter("destinationName");
+        logger.debug("destinationName: {}", destinationName);
         order.setStatus(OrderStatus.SAVED.getValue());
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("sourceName", sourceName);
+            model.addAttribute("destinationName", destinationName);
             return "recv_order/form";
         } else {
             valueAddedOrderFacade.save(order);
@@ -194,9 +197,12 @@ public class ReceivingOrderController extends BaseController {
         logger.debug("order: {}", order);
         String sourceName = request.getParameter("sourceName");
         logger.debug("sourceName: {}", sourceName);
+        String destinationName = request.getParameter("destinationName");
+        logger.debug("destinationName: {}", destinationName);
         order.setStatus(OrderStatus.SUBMITTED.getValue());
         if (bindingResult.hasErrors()) {
             model.addAttribute("sourceName", sourceName);
+            model.addAttribute("destinationName", destinationName);
             return "recv_order/form";
         } else {
             valueAddedOrderFacade.submit(order);

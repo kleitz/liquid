@@ -66,11 +66,11 @@
         </div>
     </div>
 
-    <input type="hidden" th:field="*{destinationId}"/>
     <div class="col-lg-6">
         <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('destination')} ? 'has-error'">
             <label th:text="#{destination} + ' *'">Destination</label>
-            <input type="text" th:field="*{destination}" class="form-control input-sm" th:placeholder="#{destination}"/>
+            <input type="text" class="form-control input-sm" th:placeholder="#{destination}" id="destinationName" name="destinationName" th:value="${destinationName}/>
+            <input type="hidden" th:field="*{destinationId}"/>
             <span class="text-danger" th:errors="*{destination}">error</span>      
         </div>
     </div>
@@ -451,7 +451,7 @@
 
         var locations = initAllLocationsAc();
         $('#sourceName').acWithTemplate(locations, 'name', 'source', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
-        $('#destination').acWithTemplate(locations, 'name', 'destinationId', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
+        $('#destinationName').acWithTemplate(locations, 'name', 'destination', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
 
         var stations = initLocationsAc(2);
         $('#railSource').autoComplete(stations, 'railSourceId');

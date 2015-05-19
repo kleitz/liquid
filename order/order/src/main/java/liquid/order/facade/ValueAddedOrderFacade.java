@@ -76,8 +76,7 @@ public class ValueAddedOrderFacade {
         order.setConsigneePhone(orderEntity.getConsigneePhone());
         order.setConsigneeAddress(orderEntity.getConsigneeAddress());
         order.setSource(orderEntity.getSource());
-        order.setDestinationId(orderEntity.getDstLocId());
-        order.setDestination(locationService.find(orderEntity.getDstLocId()).getName());
+        order.setDestination(orderEntity.getDestination());
         order.setGoods(orderEntity.getGoods());
         order.setGoodsWeight(orderEntity.getGoodsWeight());
         order.setGoodsDimension(orderEntity.getGoodsDimension());
@@ -134,7 +133,7 @@ public class ValueAddedOrderFacade {
         orderEntity.setConsigneePhone(order.getConsigneePhone());
         orderEntity.setConsigneeAddress(order.getConsigneeAddress());
         orderEntity.setSource(order.getSource());
-        orderEntity.setDstLocId(order.getDestinationId());
+        orderEntity.setDestination(order.getDestination());
         orderEntity.setGoods(order.getGoods());
         orderEntity.setGoodsWeight(order.getGoodsWeight());
         orderEntity.setTotalCny(order.getCnyTotal());

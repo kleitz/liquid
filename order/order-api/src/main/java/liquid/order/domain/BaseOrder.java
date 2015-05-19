@@ -31,7 +31,7 @@ public class BaseOrder extends BaseUpdateEntity {
     private Location source;
 
     @Column(name = "DST_LOC_ID")
-    private Long dstLocId;
+    private Location destination;
 
     @Column(name = "CONSIGNEE")
     private String consignee;
@@ -131,12 +131,12 @@ public class BaseOrder extends BaseUpdateEntity {
         this.source = source;
     }
 
-    public Long getDstLocId() {
-        return dstLocId;
+    public Location getDestination() {
+        return destination;
     }
 
-    public void setDstLocId(Long dstLocId) {
-        this.dstLocId = dstLocId;
+    public void setDestination(Location destination) {
+        this.destination = destination;
     }
 
     public String getConsignee() {

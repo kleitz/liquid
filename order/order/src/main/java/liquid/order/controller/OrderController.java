@@ -239,6 +239,7 @@ public class OrderController extends BaseController {
 
         model.addAttribute("order", order);
         model.addAttribute("sourceName", order.getSource().getName());
+        model.addAttribute("destinationName", order.getDestination().getName());
         return "order/form";
     }
 
@@ -262,8 +263,11 @@ public class OrderController extends BaseController {
         logger.debug("order: {}", order);
         String sourceName = request.getParameter("sourceName");
         logger.debug("sourceName: {}", sourceName);
+        String destinationName = request.getParameter("destinationName");
+        logger.debug("destinationName: {}", destinationName);
         if (bindingResult.hasErrors()) {
             model.addAttribute("sourceName", order.getSource().getName());
+            model.addAttribute("destinationName", order.getDestination().getName());
             return "order/form";
         }
 
@@ -282,12 +286,10 @@ public class OrderController extends BaseController {
             addFieldError(bindingResult, "order", "source", order.getSource(), sourceName);
         }
 
-        result = orderFacade.validateLocation(order.getDestinationId(), order.getDestination());
+        result = orderFacade.validateLocation(order.getDestination().getId(), destinationName);
         if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "destination", order.getDestination(), order.getDestination());
-        } else {
-            order.setDestinationId(result.getId());
-            order.setDestination(result.getName());
+            order.getDestination().setName(destinationName);
+            addFieldError(bindingResult, "order", "destination", order.getDestination(), destinationName);
         }
 
         result = orderFacade.validateLocation(order.getRailSourceId(), order.getRailSource(), LocationType.STATION);
@@ -322,8 +324,11 @@ public class OrderController extends BaseController {
         logger.debug("order: {}", order);
         String sourceName = request.getParameter("sourceName");
         logger.debug("sourceName: {}", sourceName);
+        String destinationName = request.getParameter("destinationName");
+        logger.debug("destinationName: {}", destinationName);
         if (bindingResult.hasErrors()) {
             model.addAttribute("sourceName", order.getSource().getName());
+            model.addAttribute("destinationName", order.getDestination().getName());
             return "order/form";
         }
 
@@ -338,15 +343,12 @@ public class OrderController extends BaseController {
 
         FormValidationResult result = orderFacade.validateLocation(order.getSource().getId(), sourceName);
         if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "source", sourceName, sourceName);
+            addFieldError(bindingResult, "order", "source", order.getSource(), sourceName);
         }
 
-        result = orderFacade.validateLocation(order.getDestinationId(), order.getDestination());
+        result = orderFacade.validateLocation(order.getDestination().getId(), destinationName);
         if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "destination", order.getDestination(), order.getDestination());
-        } else {
-            order.setDestinationId(result.getId());
-            order.setDestination(result.getName());
+            addFieldError(bindingResult, "order", "destination", order.getDestination(), destinationName);
         }
 
         result = orderFacade.validateLocation(order.getRailSourceId(), order.getRailSource(), LocationType.STATION);
@@ -367,6 +369,7 @@ public class OrderController extends BaseController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("sourceName", order.getSource().getName());
+            model.addAttribute("destinationName", order.getDestination().getName());
             return "order/form";
         }
 
@@ -394,6 +397,7 @@ public class OrderController extends BaseController {
 
         model.addAttribute("order", order);
         model.addAttribute("sourceName", order.getSource().getName());
+        model.addAttribute("destinationName", order.getDestination().getName());
         return "order/form";
     }
 
@@ -406,6 +410,7 @@ public class OrderController extends BaseController {
 
         model.addAttribute("order", order);
         model.addAttribute("sourceName", order.getSource().getName());
+        model.addAttribute("destinationName", order.getDestination().getName());
         return "order/form";
     }
 
