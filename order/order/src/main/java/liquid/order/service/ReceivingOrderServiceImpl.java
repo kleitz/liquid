@@ -1,9 +1,9 @@
 package liquid.order.service;
 
+import liquid.operation.domain.Location;
 import liquid.order.domain.ReceivingOrderEntity;
 import liquid.order.repository.ReceivingContainerRepository;
 import liquid.order.repository.ReceivingOrderRepository;
-import liquid.operation.domain.Location;
 import liquid.util.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- *  
  * User: tao
  * Date: 10/13/13
  * Time: 4:57 PM
@@ -35,7 +34,7 @@ public class ReceivingOrderServiceImpl extends AbstractBaseOrderService<Receivin
     public ReceivingOrderEntity newOrder(List<Location> locationEntities) {
         ReceivingOrderEntity order = new ReceivingOrderEntity();
         Location second = CollectionUtil.tryToGet2ndElement(locationEntities);
-        order.setSrcLocId(second.getId());
+        order.setSource(second);
         return order;
     }
 

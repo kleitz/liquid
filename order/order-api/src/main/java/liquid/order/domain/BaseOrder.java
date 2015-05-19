@@ -3,6 +3,7 @@ package liquid.order.domain;
 import liquid.core.domain.BaseUpdateEntity;
 import liquid.operation.domain.Customer;
 import liquid.operation.domain.Goods;
+import liquid.operation.domain.Location;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -25,8 +26,9 @@ public class BaseOrder extends BaseUpdateEntity {
     @JoinColumn(name = "CUSTOMER_ID")
     private Customer customer;
 
-    @Column(name = "SRC_LOC_ID")
-    private Long srcLocId;
+    @ManyToOne
+    @JoinColumn(name = "SRC_LOC_ID")
+    private Location source;
 
     @Column(name = "DST_LOC_ID")
     private Long dstLocId;
@@ -121,12 +123,12 @@ public class BaseOrder extends BaseUpdateEntity {
         this.customer = customer;
     }
 
-    public Long getSrcLocId() {
-        return srcLocId;
+    public Location getSource() {
+        return source;
     }
 
-    public void setSrcLocId(Long srcLocId) {
-        this.srcLocId = srcLocId;
+    public void setSource(Location source) {
+        this.source = source;
     }
 
     public Long getDstLocId() {

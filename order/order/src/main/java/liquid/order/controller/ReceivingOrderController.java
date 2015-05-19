@@ -4,11 +4,9 @@ import liquid.container.domain.ContainerCap;
 import liquid.container.domain.ContainerSubtypeEntity;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
-import liquid.operation.domain.ServiceTypeEntity;
-import liquid.operation.domain.Customer;
-import liquid.operation.domain.Goods;
-import liquid.operation.domain.Location;
-import liquid.operation.domain.LocationType;
+import liquid.core.controller.BaseController;
+import liquid.core.model.SearchBarForm;
+import liquid.operation.domain.*;
 import liquid.operation.service.CustomerService;
 import liquid.operation.service.GoodsService;
 import liquid.operation.service.LocationService;
@@ -19,8 +17,6 @@ import liquid.order.facade.ValueAddedOrderFacade;
 import liquid.order.model.TransportedContainer;
 import liquid.order.model.ValueAddedOrder;
 import liquid.order.service.ReceivingOrderServiceImpl;
-import liquid.core.controller.BaseController;
-import liquid.core.model.SearchBarForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  
  * User: tao
  * Date: 10/13/13
  * Time: 4:33 PM
@@ -178,11 +173,14 @@ public class ReceivingOrderController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, params = "save")
     public String save(@Valid @ModelAttribute("order") ValueAddedOrder order,
-                       BindingResult bindingResult) {
+                       BindingResult bindingResult, Model model, HttpServletRequest request) {
         logger.debug("order: {}", order);
+        String sourceName = request.getParameter("sourceName");
+        logger.debug("sourceName: {}", sourceName);
         order.setStatus(OrderStatus.SAVED.getValue());
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("sourceName", sourceName);
             return "recv_order/form";
         } else {
             valueAddedOrderFacade.save(order);
@@ -192,10 +190,13 @@ public class ReceivingOrderController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST, params = "submit")
     public String submit(@Valid @ModelAttribute("order") ValueAddedOrder order,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult, Model model, HttpServletRequest request) {
         logger.debug("order: {}", order);
+        String sourceName = request.getParameter("sourceName");
+        logger.debug("sourceName: {}", sourceName);
         order.setStatus(OrderStatus.SUBMITTED.getValue());
         if (bindingResult.hasErrors()) {
+            model.addAttribute("sourceName", sourceName);
             return "recv_order/form";
         } else {
             valueAddedOrderFacade.submit(order);

@@ -68,7 +68,7 @@ public class PlanShipmentHandler extends AbstractTaskHandler {
         model.addAttribute("shipment", shipment);
         model.addAttribute("containerTotality", order.getContainerQty());
 
-        List<RouteEntity> routes = routeService.find(order.getSrcLocId(), order.getDstLocId());
+        List<RouteEntity> routes = routeService.find(order.getSource().getId(), order.getDstLocId());
         routes.add(RouteEntity.newInstance(RouteEntity.class, 0L));
         model.addAttribute("routes", routes);
 

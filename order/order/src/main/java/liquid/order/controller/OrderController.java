@@ -238,6 +238,7 @@ public class OrderController extends BaseController {
         Order order = orderFacade.initOrder();
 
         model.addAttribute("order", order);
+        model.addAttribute("sourceName", order.getSource().getName());
         return "order/form";
     }
 
@@ -257,9 +258,12 @@ public class OrderController extends BaseController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-    public String save(@Valid @ModelAttribute Order order, BindingResult bindingResult, Model model) {
+    public String save(@Valid @ModelAttribute Order order, BindingResult bindingResult, Model model, HttpServletRequest request) {
         logger.debug("order: {}", order);
+        String sourceName = request.getParameter("sourceName");
+        logger.debug("sourceName: {}", sourceName);
         if (bindingResult.hasErrors()) {
+            model.addAttribute("sourceName", order.getSource().getName());
             return "order/form";
         }
 
@@ -272,12 +276,10 @@ public class OrderController extends BaseController {
 //            order.setCustomerName(result.getName());
 //        }
 
-        FormValidationResult result = orderFacade.validateLocation(order.getOriginId(), order.getOrigination());
+        FormValidationResult result = orderFacade.validateLocation(order.getSource().getId(), sourceName);
         if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "origination", order.getOrigination(), order.getOrigination());
-        } else {
-            order.setOriginId(result.getId());
-            order.setOrigination(result.getName());
+            order.getSource().setName(sourceName);
+            addFieldError(bindingResult, "order", "source", order.getSource(), sourceName);
         }
 
         result = orderFacade.validateLocation(order.getDestinationId(), order.getDestination());
@@ -305,6 +307,7 @@ public class OrderController extends BaseController {
         }
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("sourceName", order.getSource().getName());
             return "order/form";
         }
 
@@ -315,9 +318,12 @@ public class OrderController extends BaseController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "submit")
     public String submit(@Valid @ModelAttribute Order order,
-                         BindingResult bindingResult, Model model) {
+                         BindingResult bindingResult, Model model, HttpServletRequest request) {
         logger.debug("order: {}", order);
+        String sourceName = request.getParameter("sourceName");
+        logger.debug("sourceName: {}", sourceName);
         if (bindingResult.hasErrors()) {
+            model.addAttribute("sourceName", order.getSource().getName());
             return "order/form";
         }
 
@@ -330,12 +336,9 @@ public class OrderController extends BaseController {
 //            order.setCustomerName(result.getName());
 //        }
 
-        FormValidationResult result = orderFacade.validateLocation(order.getOriginId(), order.getOrigination());
+        FormValidationResult result = orderFacade.validateLocation(order.getSource().getId(), sourceName);
         if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "origination", order.getOrigination(), order.getOrigination());
-        } else {
-            order.setOriginId(result.getId());
-            order.setOrigination(result.getName());
+            addFieldError(bindingResult, "order", "source", sourceName, sourceName);
         }
 
         result = orderFacade.validateLocation(order.getDestinationId(), order.getDestination());
@@ -363,6 +366,7 @@ public class OrderController extends BaseController {
         }
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("sourceName", order.getSource().getName());
             return "order/form";
         }
 
@@ -389,6 +393,7 @@ public class OrderController extends BaseController {
         order.setServiceItems(serviceItemList);
 
         model.addAttribute("order", order);
+        model.addAttribute("sourceName", order.getSource().getName());
         return "order/form";
     }
 
@@ -400,6 +405,7 @@ public class OrderController extends BaseController {
         logger.debug("order: {}", order);
 
         model.addAttribute("order", order);
+        model.addAttribute("sourceName", order.getSource().getName());
         return "order/form";
     }
 

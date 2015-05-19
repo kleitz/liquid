@@ -3,6 +3,7 @@ package liquid.order.model;
 import liquid.core.model.IdObject;
 import liquid.operation.domain.Customer;
 import liquid.operation.domain.Goods;
+import liquid.operation.domain.Location;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Min;
@@ -24,11 +25,8 @@ public class BaseOrder extends IdObject {
     @NotNull
     private Customer customer;
 
-    private Long originId;
-
     @NotNull
-    @NotEmpty
-    private String origination;
+    private Location source;
     private Long destinationId;
 
     @NotNull
@@ -97,20 +95,12 @@ public class BaseOrder extends IdObject {
         this.customer = customer;
     }
 
-    public Long getOriginId() {
-        return originId;
+    public Location getSource() {
+        return source;
     }
 
-    public void setOriginId(Long originId) {
-        this.originId = originId;
-    }
-
-    public String getOrigination() {
-        return origination;
-    }
-
-    public void setOrigination(String origination) {
-        this.origination = origination;
+    public void setSource(Location source) {
+        this.source = source;
     }
 
     public Long getDestinationId() {
@@ -296,8 +286,7 @@ public class BaseOrder extends IdObject {
         sb.append(", serviceTypeId=").append(serviceTypeId);
         sb.append(", serviceType='").append(serviceType).append('\'');
         sb.append(", customer=").append(customer);
-        sb.append(", originId=").append(originId);
-        sb.append(", origination='").append(origination).append('\'');
+        sb.append(", source=").append(source);
         sb.append(", destinationId=").append(destinationId);
         sb.append(", destination='").append(destination).append('\'');
         sb.append(", consignee='").append(consignee).append('\'');

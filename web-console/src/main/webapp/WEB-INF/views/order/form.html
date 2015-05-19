@@ -57,12 +57,12 @@
 </div>
 
 <div class="row">
-    <input type="hidden" th:field="*{originId}"/>
     <div class="col-lg-6">
-        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('origination')} ? 'has-error'">
+        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('source')} ? 'has-error'">
             <label th:text="#{origination} + ' *'">Origin</label>
-            <input type="text" th:field="*{origination}" class="form-control input-sm" th:placeholder="#{origination}"/>
-            <span class="text-danger" th:errors="*{origination}">error</span>            
+            <input type="text" class="form-control input-sm" th:placeholder="#{origination}" id="sourceName" name="sourceName" th:value="${sourceName}" />
+            <input type="hidden" th:field="*{source}"/>
+            <span class="text-danger" th:errors="*{source}">error</span>            
         </div>
     </div>
 
@@ -74,19 +74,6 @@
             <span class="text-danger" th:errors="*{destination}">error</span>      
         </div>
     </div>
-
-    <!--
-    <div class="col-lg-3">
-        <div class="form-group">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" th:field="*{hasDelivery}"/>
-                    <strong th:text="#{has.delivery}">hasDelivery</strong>
-                </label>
-            </div>
-        </div>
-    </div>
-    -->
 </div>
 
 <div class="row">
@@ -463,7 +450,7 @@
         $('#customer').acWithTemplateAndName(customers, 'name', '<p><strong>{{name}}</strong> – {{code}}</p>');
 
         var locations = initAllLocationsAc();
-        $('#origination').acWithTemplate(locations, 'name', 'originId', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
+        $('#sourceName').acWithTemplate(locations, 'name', 'source', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
         $('#destination').acWithTemplate(locations, 'name', 'destinationId', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
 
         var stations = initLocationsAc(2);
