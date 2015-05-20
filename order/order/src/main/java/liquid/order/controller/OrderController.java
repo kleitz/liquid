@@ -11,7 +11,7 @@ import liquid.accounting.service.InvoiceService;
 import liquid.accounting.service.ReceiptService;
 import liquid.accounting.service.SettlementService;
 import liquid.container.domain.ContainerCap;
-import liquid.container.domain.ContainerSubtypeEntity;
+import liquid.container.domain.ContainerSubtype;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
 import liquid.core.controller.BaseController;
@@ -138,12 +138,12 @@ public class OrderController extends BaseController {
     }
 
     @ModelAttribute("railContainerSubtypes")
-    public Iterable<ContainerSubtypeEntity> populateRailContainerSubtypes() {
+    public Iterable<ContainerSubtype> populateRailContainerSubtypes() {
         return containerSubtypeService.findByContainerType(ContainerType.RAIL);
     }
 
     @ModelAttribute("selfContainerSubtypes")
-    public Iterable<ContainerSubtypeEntity> populateOwnContainerSubtypes() {
+    public Iterable<ContainerSubtype> populateOwnContainerSubtypes() {
         return containerSubtypeService.findByContainerType(ContainerType.SELF);
     }
 

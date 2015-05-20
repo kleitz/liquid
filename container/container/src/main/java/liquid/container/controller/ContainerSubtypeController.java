@@ -1,6 +1,6 @@
 package liquid.container.controller;
 
-import liquid.container.domain.ContainerSubtypeEntity;
+import liquid.container.domain.ContainerSubtype;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.InternalContainerSubtypeService;
 import org.slf4j.Logger;
@@ -41,19 +41,19 @@ public class ContainerSubtypeController {
 
     @RequestMapping(value = "/form", method = RequestMethod.GET)
     public String initForm(Model model) {
-        model.addAttribute("containerSubtype", new ContainerSubtypeEntity());
+        model.addAttribute("containerSubtype", new ContainerSubtype());
         return "data_dict/container_subtype_form";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String initEdit(@PathVariable Long id, Model model) {
-        ContainerSubtypeEntity containerSubtype = containerSubtypeService.find(id);
+        ContainerSubtype containerSubtype = containerSubtypeService.find(id);
         model.addAttribute("containerSubtype", containerSubtype);
         return "data_dict/container_subtype_form";
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String create(@Valid @ModelAttribute("containerSubtype") ContainerSubtypeEntity containerSubtypeEntity,
+    public String create(@Valid @ModelAttribute("containerSubtype") ContainerSubtype containerSubtypeEntity,
                          BindingResult bindingResult) {
         logger.debug("containerSubtype: {}", containerSubtypeEntity);
 

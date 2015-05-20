@@ -231,10 +231,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         orderEntity.setLoadingPhone(order.getLoadingPhone());
         orderEntity.setLoadingEt(DateUtil.dateOf(order.getLoadingEstimatedTime()));
         orderEntity.setContainerType(order.getContainerType());
-        if (order.getContainerType() == ContainerType.RAIL.getType())
-            orderEntity.setContainerSubtypeId(order.getRailContainerSubtypeId());
-        else
-            orderEntity.setContainerSubtypeId(order.getSelfContainerSubtypeId());
+        orderEntity.setContainerSubtype(order.getContainerSubtype());
         orderEntity.setContainerQty(order.getContainerQuantity());
         orderEntity.setContainerAttribute(order.getContainerAttribute());
 
@@ -314,11 +311,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         order.setLoadingEstimatedTime(DateUtil.stringOf(orderEntity.getLoadingEt()));
         order.setContainerType(orderEntity.getContainerType());
         order.setContainerTypeName(ContainerType.valueOf(orderEntity.getContainerType()).getI18nKey());
-        if (order.getContainerType() == ContainerType.RAIL.getType())
-            order.setRailContainerSubtypeId(orderEntity.getContainerSubtypeId());
-        else
-            order.setSelfContainerSubtypeId(orderEntity.getContainerSubtypeId());
-        order.setContainerSubtype(containerSubtypeService.find(orderEntity.getContainerSubtypeId()).getName());
+        order.setContainerSubtype(orderEntity.getContainerSubtype());
         order.setContainerQuantity(orderEntity.getContainerQty());
         order.setContainerAttribute(orderEntity.getContainerAttribute());
 

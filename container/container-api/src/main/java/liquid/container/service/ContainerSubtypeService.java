@@ -1,13 +1,15 @@
 package liquid.container.service;
 
-import liquid.container.domain.ContainerSubtypeEntity;
+import liquid.container.domain.ContainerSubtype;
 import liquid.container.domain.ContainerType;
 
 /**
  * Created by Tao Ma on 4/9/15.
  */
 public interface ContainerSubtypeService {
-    ContainerSubtypeEntity find(Long id);
+    Iterable<ContainerSubtype> findAll();
 
-    Iterable<ContainerSubtypeEntity> findByContainerType(ContainerType containerType);
+    ContainerSubtype find(Long id);
+
+    Iterable<ContainerSubtype> findByContainerType(ContainerType containerType);
 }

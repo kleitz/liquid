@@ -196,27 +196,11 @@
         </div>
     </div>    
     
-    <div id="ownContainerSubtypeSec" class="col-lg-3">
+    <div class="col-lg-3">           
         <div class="form-group">
             <label th:text="#{container.subtype}">Container Subtype</label>
-            <select th:field="*{selfContainerSubtypeId}" class="form-control input-sm">
-                <option th:each="containerSubtype : ${selfContainerSubtypes}"
-                        th:value="${containerSubtype.id}"
-                        th:text="${containerSubtype.name}">Container Subtype Name
-                </option>
-            </select>
-        </div>
-    </div>
-    
-   <div id="railContainerSubtypeSec" class="col-lg-3">
-        <div class="form-group">
-            <label th:text="#{container.subtype}">Container Subtype</label>
-            <select th:field="*{railContainerSubtypeId}" class="form-control input-sm">
-                <option th:each="containerSubtype : ${railContainerSubtypes}"
-                        th:value="${containerSubtype.id}"
-                        th:text="${containerSubtype.name}">Container Subtype Name
-                </option>
-            </select>
+            <input type="hidden" id="_containerSubtype" th:value="*{containerSubtype.id}" />
+            <select class="form-control input-sm" id="containerSubtype" name="containerSubtype"></select>
         </div>
     </div>
     
@@ -446,6 +430,46 @@
 <script>
 /*<![CDATA[*/
     $(document).ready(function() {
+
+        var boxSubtypeSet = {
+          rail: [],
+          self: []
+        }
+        var boxSubtype = $('#_containerSubtype').val()
+        var dataset = [
+          {id:1, containerType:0,code:"T1",name:"20“GP",    state:0},
+          {id:2, containerType:0,code:"T2",name:"20“HQ",    state:0},
+          {id:3, containerType:0,code:"T3",name:"40”GP",    state:0},
+          {id:4, containerType:0,code:"T4",name:"40”HQ",    state:0},
+          {id:5, containerType:0,code:"T5",name:"20“宽体",  state:0},
+          {id:6, containerType:2,code:"Z1",name:"20“GP阳都",state:0},
+          {id:7, containerType:2,code:"Z2",name:"20“GP海运",state:0},
+          {id:8, containerType:2,code:"Z3",name:"20“HQ阳都",state:0},
+          {id:9, containerType:2,code:"Z4",name:"20“HQ海运",state:0},
+          {id:10,containerType:2,code:"Z5",name:"40”GP海运",state:0},
+          {id:11,containerType:2,code:"Z6",name:"40”HQ海运",state:0},
+          {id:12,containerType:2,code:"Z7",name:"40`RH海运",state:0}
+        ] 
+
+        function cluster(data) {
+          for (var i = 0; i < data.length; i++) { 
+            if (data[i].containerType == 0) 
+              boxSubtypeSet.rail.push(data[i])
+            else if (data[i].containerType == 2) 
+              boxSubtypeSet.self.push(data[i]) 
+            else
+              continue
+          }
+        }
+    
+        cluster(dataset)
+
+        $.ajax({
+          url: "/api/container-subtype"
+        }).done(function(data) {
+          console.log(data) 
+        });
+
         var customers = initCustomerAc();
         $('#customer').acWithTemplateAndName(customers, 'name', '<p><strong>{{name}}</strong> – {{code}}</p>');
 
@@ -481,23 +505,43 @@
         });
         
         if($('input[name=containerType]:checked', '#orderForm').val() == 0) {
-            $("#ownContainerSubtypeSec").hide();
-            $("#railContainerSubtypeSec").show();
+            $("#containerSubtype").find("option").remove().end()
+            for(var i = 0; i < boxSubtypeSet.rail.length; i++) {
+              $("#containerSubtype").append($("<option></option>")
+                .attr("value", boxSubtypeSet.rail[i].id)
+                .text(boxSubtypeSet.rail[i].name))
+            }
+            $("#containerSubtype").val(boxSubtype)
         }
         else {
-            $("#ownContainerSubtypeSec").show();
-            $("#railContainerSubtypeSec").hide();           
+            $("#containerSubtype").find("option").remove().end()
+            for(var i = 0; i < boxSubtypeSet.self.length; i++) {
+              $("#containerSubtype").append($("<option></option>")
+                .attr("value", boxSubtypeSet.self[i].id)
+                .text(boxSubtypeSet.self[i].name))
+            }
+            $("#containerSubtype").val(boxSubtype)
         }
         
         $("input[name$='containerType']").click(function() {
             var value = $(this).val();
             if(value == 0) {
-                $("#ownContainerSubtypeSec").hide();
-                $("#railContainerSubtypeSec").show();
+                $("#containerSubtype").find("option").remove().end()
+                for(var i = 0; i < boxSubtypeSet.rail.length; i++) {
+                  $("#containerSubtype").append($("<option></option>")
+                    .attr("value", boxSubtypeSet.rail[i].id)
+                    .text(boxSubtypeSet.rail[i].name))
+                }
+                $("#containerSubtype").val(boxSubtype)
             }
             else {
-                $("#ownContainerSubtypeSec").show();
-                $("#railContainerSubtypeSec").hide();
+                $("#containerSubtype").find("option").remove().end()
+                for(var i = 0; i < boxSubtypeSet.self.length; i++) {
+                  $("#containerSubtype").append($("<option></option>")
+                    .attr("value", boxSubtypeSet.self[i].id)
+                    .text(boxSubtypeSet.self[i].name))
+                }
+                $("#containerSubtype").val(boxSubtype)
             }
         });
              

@@ -69,7 +69,6 @@ public class OrderServiceImpl extends AbstractBaseOrderService<OrderEntity, Orde
     @Transactional(value = "transactionManager")
     public OrderEntity find(Long id) {
         OrderEntity order = repository.findOne(id);
-        order.setContainerSubtypeId(order.getContainerSubtypeId());
         // Initialize one to many children
         order.getServiceItems().size();
         return order;

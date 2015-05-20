@@ -1,6 +1,6 @@
 package liquid.container.service;
 
-import liquid.container.domain.ContainerSubtypeEntity;
+import liquid.container.domain.ContainerSubtype;
 import liquid.container.domain.ContainerType;
 import liquid.container.repository.ContainerSubtypeRepository;
 import liquid.core.service.AbstractCachedService;
@@ -10,18 +10,18 @@ import org.springframework.stereotype.Service;
  * Created by redbrick9 on 5/4/14.
  */
 @Service
-public class ContainerSubtypeServiceImpl extends AbstractCachedService<ContainerSubtypeEntity, ContainerSubtypeRepository>
+public class ContainerSubtypeServiceImpl extends AbstractCachedService<ContainerSubtype, ContainerSubtypeRepository>
         implements InternalContainerSubtypeService {
     @Override
-    public void doSaveBefore(ContainerSubtypeEntity entity) { }
+    public void doSaveBefore(ContainerSubtype entity) { }
 
     @Override
-    public Iterable<ContainerSubtypeEntity> findEnabled() {
+    public Iterable<ContainerSubtype> findEnabled() {
         return repository.findByState(0);
     }
 
     @Override
-    public Iterable<ContainerSubtypeEntity> findByContainerType(ContainerType containerType) {
+    public Iterable<ContainerSubtype> findByContainerType(ContainerType containerType) {
         return repository.findByContainerType(containerType.getType());
     }
 }

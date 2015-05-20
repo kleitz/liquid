@@ -1,5 +1,6 @@
 package liquid.order.model;
 
+import liquid.container.domain.ContainerSubtype;
 import liquid.core.model.IdObject;
 import liquid.operation.domain.Customer;
 import liquid.operation.domain.Goods;
@@ -41,9 +42,8 @@ public class BaseOrder extends IdObject {
 
     private Integer containerType = 0;
     private String containerTypeName;
-    private Long railContainerSubtypeId;
-    private Long selfContainerSubtypeId;
-    private String containerSubtype;
+    private ContainerSubtype containerSubtype;
+
     @NotNull
     @Min(1)
     private Integer containerQuantity = 0;
@@ -172,27 +172,11 @@ public class BaseOrder extends IdObject {
         this.containerTypeName = containerTypeName;
     }
 
-    public Long getRailContainerSubtypeId() {
-        return railContainerSubtypeId;
-    }
-
-    public void setRailContainerSubtypeId(Long railContainerSubtypeId) {
-        this.railContainerSubtypeId = railContainerSubtypeId;
-    }
-
-    public Long getSelfContainerSubtypeId() {
-        return selfContainerSubtypeId;
-    }
-
-    public void setSelfContainerSubtypeId(Long selfContainerSubtypeId) {
-        this.selfContainerSubtypeId = selfContainerSubtypeId;
-    }
-
-    public String getContainerSubtype() {
+    public ContainerSubtype getContainerSubtype() {
         return containerSubtype;
     }
 
-    public void setContainerSubtype(String containerSubtype) {
+    public void setContainerSubtype(ContainerSubtype containerSubtype) {
         this.containerSubtype = containerSubtype;
     }
 
@@ -285,8 +269,7 @@ public class BaseOrder extends IdObject {
         sb.append(", goodsDimension='").append(goodsDimension).append('\'');
         sb.append(", containerType=").append(containerType);
         sb.append(", containerTypeName='").append(containerTypeName).append('\'');
-        sb.append(", railContainerSubtypeId=").append(railContainerSubtypeId);
-        sb.append(", selfContainerSubtypeId=").append(selfContainerSubtypeId);
+        sb.append(", containerSubytype='").append(containerSubtype).append('\'');
         sb.append(", containerSubtype='").append(containerSubtype).append('\'');
         sb.append(", containerQuantity=").append(containerQuantity);
         sb.append(", containerAttribute='").append(containerAttribute).append('\'');

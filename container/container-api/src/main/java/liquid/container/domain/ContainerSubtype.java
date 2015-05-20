@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
  * Created by redbrick9 on 5/4/14.
  */
 @Entity(name = "OPS_CONTAINER_SUBTYPE")
-public class ContainerSubtypeEntity extends BaseUpdateEntity {
+public class ContainerSubtype extends BaseUpdateEntity {
     @Column(name = "CONTAINER_TYPE")
     private int containerType;
 

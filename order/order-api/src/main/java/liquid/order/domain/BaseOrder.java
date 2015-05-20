@@ -1,5 +1,6 @@
 package liquid.order.domain;
 
+import liquid.container.domain.ContainerSubtype;
 import liquid.core.domain.BaseUpdateEntity;
 import liquid.operation.domain.Customer;
 import liquid.operation.domain.Goods;
@@ -61,8 +62,9 @@ public class BaseOrder extends BaseUpdateEntity {
     private int containerType;
 
     // The following three filed are used for list order
-    @Column(name = "CONTAINER_SUBTYPE_ID")
-    private Long containerSubtypeId;
+    @ManyToOne
+    @JoinColumn(name = "CONTAINER_SUBTYPE_ID")
+    private ContainerSubtype containerSubtype;
 
     @Column(name = "CONTAINER_CAP")
     private int containerCap;
@@ -196,12 +198,12 @@ public class BaseOrder extends BaseUpdateEntity {
         this.containerType = containerType;
     }
 
-    public Long getContainerSubtypeId() {
-        return containerSubtypeId;
+    public ContainerSubtype getContainerSubtype() {
+        return containerSubtype;
     }
 
-    public void setContainerSubtypeId(Long containerSubtypeId) {
-        this.containerSubtypeId = containerSubtypeId;
+    public void setContainerSubtype(ContainerSubtype containerSubtype) {
+        this.containerSubtype = containerSubtype;
     }
 
     public int getContainerCap() {

@@ -82,7 +82,7 @@ public class ValueAddedOrderFacade {
         order.setGoodsDimension(orderEntity.getGoodsDimension());
         order.setContainerType(orderEntity.getContainerType());
         order.setContainerTypeName(ContainerType.valueOf(orderEntity.getContainerType()).getI18nKey());
-        order.setContainerSubtype(containerSubtypeService.find(orderEntity.getContainerSubtypeId()).getName());
+        order.setContainerSubtype(orderEntity.getContainerSubtype());
         order.setContainerQuantity(orderEntity.getContainerQty());
         order.setContainerAttribute(orderEntity.getContainerAttribute());
         order.setCnyTotal(orderEntity.getTotalCny());
@@ -140,10 +140,7 @@ public class ValueAddedOrderFacade {
         orderEntity.setContainerType(order.getContainerType());
         orderEntity.setContainerQty(order.getContainerQuantity());
         orderEntity.setContainerType(order.getContainerType());
-        if (order.getContainerType() == ContainerType.RAIL.getType())
-            orderEntity.setContainerSubtypeId(order.getRailContainerSubtypeId());
-        else
-            orderEntity.setContainerSubtypeId(order.getSelfContainerSubtypeId());
+        orderEntity.setContainerSubtype(order.getContainerSubtype());
         orderEntity.setCreateRole(order.getRole());
         orderEntity.setStatus(order.getStatus());
         return orderEntity;

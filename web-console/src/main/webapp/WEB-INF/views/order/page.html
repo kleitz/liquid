@@ -78,7 +78,7 @@
             <td th:text="#{${tradeTypes[__${order.tradeType}__].i18nKey}}">Trade Type</td>
             <td th:text="#{${loadingTypes[__${order.loadingType}__].i18nKey}}">Loading Type</td>
             <td th:text="#{${containerTypeMap[order.containerType]}}">Container Type</td>
-            <td th:text="${order.containerSubtype}">Container Subtype</td>
+            <td th:text="${order.containerSubtype.name}">Container Subtype</td>
             <td th:text="${order.containerQuantity}">Container Quantity</td>
 
             <td><span th:text="${#numbers.formatDecimal(order.cnyTotal, 0, 'COMMA', 2, 'POINT')}">CNY Price</span></td>
