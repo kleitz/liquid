@@ -107,7 +107,7 @@ public class OrderController extends BaseController {
     private SettlementService settlementService;
 
     @ModelAttribute("serviceTypes")
-    public Iterable<ServiceTypeEntity> populateServiceTypes() {
+    public Iterable<ServiceType> populateServiceTypes() {
         return serviceTypeService.findAll();
     }
 

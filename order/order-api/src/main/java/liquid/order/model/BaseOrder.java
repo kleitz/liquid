@@ -5,6 +5,7 @@ import liquid.core.model.IdObject;
 import liquid.operation.domain.Customer;
 import liquid.operation.domain.Goods;
 import liquid.operation.domain.Location;
+import liquid.operation.domain.ServiceType;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -15,8 +16,7 @@ import java.math.BigDecimal;
  */
 public class BaseOrder extends IdObject {
     private String orderNo;
-    private Long serviceTypeId;
-    private String serviceType;
+    private ServiceType serviceType;
     //    private Long customerId;
 //
 //    @NotNull
@@ -68,19 +68,11 @@ public class BaseOrder extends IdObject {
         this.orderNo = orderNo;
     }
 
-    public Long getServiceTypeId() {
-        return serviceTypeId;
-    }
-
-    public void setServiceTypeId(Long serviceTypeId) {
-        this.serviceTypeId = serviceTypeId;
-    }
-
-    public String getServiceType() {
+    public ServiceType getServiceType() {
         return serviceType;
     }
 
-    public void setServiceType(String serviceType) {
+    public void setServiceType(ServiceType serviceType) {
         this.serviceType = serviceType;
     }
 
@@ -256,7 +248,6 @@ public class BaseOrder extends IdObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder("{Class=BaseOrder");
         sb.append(", orderNo='").append(orderNo).append('\'');
-        sb.append(", serviceTypeId=").append(serviceTypeId);
         sb.append(", serviceType='").append(serviceType).append('\'');
         sb.append(", customer=").append(customer);
         sb.append(", source=").append(source);

@@ -67,7 +67,7 @@ public class ReceivingOrderController extends BaseController {
     private ContainerSubtypeService containerSubtypeService;
 
     @ModelAttribute("serviceTypes")
-    public Iterable<ServiceTypeEntity> populateServiceTypes() {
+    public Iterable<ServiceType> populateServiceTypes() {
         return serviceTypeService.findAll();
     }
 
@@ -137,7 +137,8 @@ public class ReceivingOrderController extends BaseController {
         List<Location> locationEntities = locationService.findByTypeId(LocationType.CITY);
 
         ValueAddedOrder order = new ValueAddedOrder();
-        order.setServiceTypeId(7L);
+
+        order.setServiceType(serviceTypeService.find(7L));
         List<TransportedContainer> containers = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             containers.add(new TransportedContainer());

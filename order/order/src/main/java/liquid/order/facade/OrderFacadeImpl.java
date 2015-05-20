@@ -10,7 +10,6 @@ import liquid.core.validation.FormValidationResult;
 import liquid.operation.domain.Customer;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.ServiceSubtype;
-import liquid.operation.domain.ServiceTypeEntity;
 import liquid.operation.service.*;
 import liquid.order.domain.*;
 import liquid.order.model.Order;
@@ -121,9 +120,9 @@ public class OrderFacadeImpl implements InternalOrderFacade {
     public OrderEntity submit(Order order) {
         // set role
         order.setRole(SecurityContext.getInstance().getRole());
-        ServiceTypeEntity serviceType = serviceTypeService.find(order.getServiceTypeId());
+
         // compute order no.
-        order.setOrderNo(orderService.computeOrderNo(order.getRole(), serviceType.getCode()));
+        order.setOrderNo(orderService.computeOrderNo(order.getRole(), order.getServiceType().getCode()));
         OrderEntity orderEntity = save(order);
 
         boolean hasDelivery = false;
@@ -213,7 +212,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setId(order.getId());
         orderEntity.setOrderNo(order.getOrderNo());
-        orderEntity.setServiceTypeId(order.getServiceTypeId());
+        orderEntity.setServiceType(order.getServiceType());
         orderEntity.setCustomer(order.getCustomer());
         orderEntity.setTradeType(order.getTradeType());
         orderEntity.setVerificationSheetSn(order.getVerificationSheetSn());
@@ -289,8 +288,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
     public void convert(OrderEntity orderEntity, Order order) {
         order.setId(orderEntity.getId());
         order.setOrderNo(orderEntity.getOrderNo());
-        order.setServiceTypeId(orderEntity.getServiceTypeId());
-        order.setServiceType(serviceTypeService.find(orderEntity.getServiceTypeId()).getName());
+        order.setServiceType(orderEntity.getServiceType());
         order.setCustomer(orderEntity.getCustomer());
         order.setTradeType(orderEntity.getTradeType());
         order.setTradeTypeName(TradeType.valueOf(orderEntity.getTradeType()).getI18nKey());

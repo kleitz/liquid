@@ -5,6 +5,7 @@ import liquid.core.domain.BaseUpdateEntity;
 import liquid.operation.domain.Customer;
 import liquid.operation.domain.Goods;
 import liquid.operation.domain.Location;
+import liquid.operation.domain.ServiceType;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -17,8 +18,9 @@ import java.math.BigDecimal;
  */
 @MappedSuperclass
 public class BaseOrder extends BaseUpdateEntity {
+    @ManyToOne
     @Column(name = "SERVICE_TYPE_ID")
-    private Long serviceTypeId;
+    private ServiceType serviceType;
 
     @Column(name = "ORDER_NO")
     private String orderNo;
@@ -102,12 +104,12 @@ public class BaseOrder extends BaseUpdateEntity {
     @Column(name = "STATUS")
     private int status;
 
-    public Long getServiceTypeId() {
-        return serviceTypeId;
+    public ServiceType getServiceType() {
+        return serviceType;
     }
 
-    public void setServiceTypeId(Long serviceTypeId) {
-        this.serviceTypeId = serviceTypeId;
+    public void setServiceType(ServiceType serviceType) {
+        this.serviceType = serviceType;
     }
 
     public String getOrderNo() {

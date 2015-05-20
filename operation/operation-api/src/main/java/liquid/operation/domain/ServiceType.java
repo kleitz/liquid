@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 // FIXME BundledService
 @Entity(name = "OPS_SERVICE_TYPE")
-public class ServiceTypeEntity extends BaseUpdateEntity {
+public class ServiceType extends BaseUpdateEntity {
     @NotNull
     @NotEmpty
     @Column(name = "CODE")
@@ -26,7 +26,7 @@ public class ServiceTypeEntity extends BaseUpdateEntity {
     @Column(name = "STATE")
     private int state;
 
-    public ServiceTypeEntity() { }
+    public ServiceType() { }
 
     public String getCode() {
         return code;

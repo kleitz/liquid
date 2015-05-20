@@ -3,7 +3,6 @@ package liquid.order.facade;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
 import liquid.core.security.SecurityContext;
-import liquid.operation.domain.ServiceTypeEntity;
 import liquid.operation.service.CustomerService;
 import liquid.operation.service.GoodsService;
 import liquid.operation.service.LocationService;
@@ -117,8 +116,7 @@ public class ValueAddedOrderFacade {
 
     public ReceivingOrderEntity submit(ValueAddedOrder order) {
         order.setRole(SecurityContext.getInstance().getRole());
-        ServiceTypeEntity serviceType = serviceTypeService.find(order.getServiceTypeId());
-        order.setOrderNo(receivingOrderService.computeOrderNo(order.getRole(), serviceType.getCode()));
+        order.setOrderNo(receivingOrderService.computeOrderNo(order.getRole(), order.getServiceType().getCode()));
         ReceivingOrderEntity entity = save(order);
         return entity;
     }
@@ -127,7 +125,7 @@ public class ValueAddedOrderFacade {
         ReceivingOrderEntity orderEntity = new ReceivingOrderEntity();
         orderEntity.setId(order.getId());
         orderEntity.setOrderNo(order.getOrderNo());
-        orderEntity.setServiceTypeId(order.getServiceTypeId());
+        orderEntity.setServiceType(order.getServiceType());
         orderEntity.setCustomer(order.getCustomer());
         orderEntity.setConsignee(order.getConsignee());
         orderEntity.setConsigneePhone(order.getConsigneePhone());

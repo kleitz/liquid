@@ -1,16 +1,16 @@
 package liquid.operation.service;
 
-import liquid.operation.domain.ServiceTypeEntity;
+import liquid.operation.domain.ServiceType;
 
 /**
  * Created by Tao Ma on 4/9/15.
  */
 public interface ServiceTypeService {
-    Iterable<ServiceTypeEntity> findAll();
+    Iterable<ServiceType> findAll();
 
-    ServiceTypeEntity find(Long id);
+    ServiceType find(Long id);
 
-    Iterable<ServiceTypeEntity> findEnabled();
+    Iterable<ServiceType> findEnabled();
 
-    ServiceTypeEntity save(ServiceTypeEntity serviceTypeEntity);
+    ServiceType save(ServiceType serviceTypeEntity);
 }

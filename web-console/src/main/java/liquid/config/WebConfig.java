@@ -79,6 +79,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private ContainerSubtypeFormatter containerSubtypeFormatter;
 
+    @Autowired
+    private ServiceTypeFormatter serviceTypeFormatter;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
@@ -101,6 +104,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addFormatter(orderFormatter);
         registry.addFormatter(customerFormatter);
         registry.addFormatter(containerSubtypeFormatter);
+        registry.addFormatter(serviceTypeFormatter);
         registry.addConverter(toServiceSubtypeConverter);
     }
 
