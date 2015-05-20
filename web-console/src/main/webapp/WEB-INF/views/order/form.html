@@ -199,7 +199,7 @@
     <div class="col-lg-3">           
         <div class="form-group">
             <label th:text="#{container.subtype}">Container Subtype</label>
-            <input type="hidden" id="_containerSubtype" th:value="*{containerSubtype.id}" />
+            <input type="hidden" id="_containerSubtype" th:value="*{containerSubtype} ? *{containerSubtype.id} : '' " />
             <select class="form-control input-sm" id="containerSubtype" name="containerSubtype"></select>
         </div>
     </div>
@@ -461,14 +461,45 @@
               continue
           }
         }
-    
-        cluster(dataset)
+
+        function initContainerSubtypeSelect(value) {
+          if( value == 0) {
+            $("#containerSubtype").find("option").remove().end()
+            var flag = false
+            for(var i = 0; i < boxSubtypeSet.rail.length; i++) {
+              $("#containerSubtype").append($("<option></option>")
+                .attr("value", boxSubtypeSet.rail[i].id)
+                .text(boxSubtypeSet.rail[i].name))
+              if(boxSubtype == boxSubtypeSet.rail[i].id)
+                flag = true
+            }
+            if (flag)
+              $("#containerSubtype").val(boxSubtype)
+          }
+          else {
+            $("#containerSubtype").find("option").remove().end()
+            var flag = false
+            for(var i = 0; i < boxSubtypeSet.self.length; i++) {
+              $("#containerSubtype").append($("<option></option>")
+                .attr("value", boxSubtypeSet.self[i].id)
+                .text(boxSubtypeSet.self[i].name))
+              if(boxSubtype == boxSubtypeSet.rail[i].id)
+                flag = true
+            }
+            if (flag)
+              $("#containerSubtype").val(boxSubtype)
+          }
+        }
 
         $.ajax({
           url: "/api/container-subtype"
         }).done(function(data) {
           console.log(data) 
-        });
+          cluster(data)
+          console.log(boxSubtypeSet)
+          var value = $('input[name=containerType]:checked', '#orderForm').val()
+          initContainerSubtypeSelect(value)
+       });
 
         var customers = initCustomerAc();
         $('#customer').acWithTemplateAndName(customers, 'name', '<p><strong>{{name}}</strong> – {{code}}</p>');
@@ -504,45 +535,10 @@
             }
         });
         
-        if($('input[name=containerType]:checked', '#orderForm').val() == 0) {
-            $("#containerSubtype").find("option").remove().end()
-            for(var i = 0; i < boxSubtypeSet.rail.length; i++) {
-              $("#containerSubtype").append($("<option></option>")
-                .attr("value", boxSubtypeSet.rail[i].id)
-                .text(boxSubtypeSet.rail[i].name))
-            }
-            $("#containerSubtype").val(boxSubtype)
-        }
-        else {
-            $("#containerSubtype").find("option").remove().end()
-            for(var i = 0; i < boxSubtypeSet.self.length; i++) {
-              $("#containerSubtype").append($("<option></option>")
-                .attr("value", boxSubtypeSet.self[i].id)
-                .text(boxSubtypeSet.self[i].name))
-            }
-            $("#containerSubtype").val(boxSubtype)
-        }
-        
+       
         $("input[name$='containerType']").click(function() {
             var value = $(this).val();
-            if(value == 0) {
-                $("#containerSubtype").find("option").remove().end()
-                for(var i = 0; i < boxSubtypeSet.rail.length; i++) {
-                  $("#containerSubtype").append($("<option></option>")
-                    .attr("value", boxSubtypeSet.rail[i].id)
-                    .text(boxSubtypeSet.rail[i].name))
-                }
-                $("#containerSubtype").val(boxSubtype)
-            }
-            else {
-                $("#containerSubtype").find("option").remove().end()
-                for(var i = 0; i < boxSubtypeSet.self.length; i++) {
-                  $("#containerSubtype").append($("<option></option>")
-                    .attr("value", boxSubtypeSet.self[i].id)
-                    .text(boxSubtypeSet.self[i].name))
-                }
-                $("#containerSubtype").val(boxSubtype)
-            }
+            initContainerSubtypeSelect(value)
         });
              
         caculateTotal();     
