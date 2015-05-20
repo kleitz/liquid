@@ -310,6 +310,7 @@ public class OrderController extends BaseController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("sourceName", order.getSource().getName());
+            model.addAttribute("destinationName", order.getDestination().getName());
             return "order/form";
         }
 

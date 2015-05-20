@@ -30,7 +30,8 @@ public class BaseOrder extends BaseUpdateEntity {
     @JoinColumn(name = "SRC_LOC_ID")
     private Location source;
 
-    @Column(name = "DST_LOC_ID")
+    @ManyToOne
+    @JoinColumn(name = "DST_LOC_ID")
     private Location destination;
 
     @Column(name = "CONSIGNEE")
