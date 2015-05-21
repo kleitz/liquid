@@ -20,10 +20,7 @@ import liquid.core.security.SecurityContext;
 import liquid.core.validation.FormValidationResult;
 import liquid.operation.domain.*;
 import liquid.operation.service.*;
-import liquid.order.domain.LoadingType;
-import liquid.order.domain.OrderEntity;
-import liquid.order.domain.OrderStatus;
-import liquid.order.domain.TradeType;
+import liquid.order.domain.*;
 import liquid.order.facade.InternalOrderFacade;
 import liquid.order.model.Order;
 import liquid.order.model.ServiceItem;
@@ -36,6 +33,7 @@ import liquid.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -48,6 +46,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -60,6 +59,9 @@ import java.util.Map;
 @RequestMapping("/order")
 public class OrderController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+
+    @Autowired
+    private Environment env;
 
     @Autowired
     private OrderService orderService;
@@ -235,13 +237,29 @@ public class OrderController extends BaseController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String initCreationForm(Model model) {
-        Order order = orderFacade.initOrder();
+        OrderEntity order = new OrderEntity();
+        order.setSource(locationService.find(Long.valueOf(env.getProperty("default.origin.id"))));
+        order.setDestination(locationService.find(Long.valueOf(env.getProperty("default.destination.id"))));
+        order.setLoadingEt(new Date());
+
+        OrderRail orderRail = new OrderRail();
+        orderRail.setSource(order.getSource());
+        orderRail.setDestination(order.getDestination());
+        orderRail.setPlanReportTime(new Date());
+        order.setRailway(orderRail);
+
+        List<ServiceItemEntity> serviceItemList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            ServiceItemEntity serviceItem = new ServiceItemEntity();
+            serviceItemList.add(serviceItem);
+        }
+        order.setServiceItems(serviceItemList);
 
         model.addAttribute("order", order);
         model.addAttribute("sourceName", order.getSource().getName());
         model.addAttribute("destinationName", order.getDestination().getName());
-        model.addAttribute("railSourceName", order.getRailSource().getName());
-        model.addAttribute("railDestinationName", order.getRailDestination().getName());
+        model.addAttribute("railSourceName", orderRail.getSource().getName());
+        model.addAttribute("railDestinationName", orderRail.getDestination().getName());
         return "order/form";
     }
 
