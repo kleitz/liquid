@@ -70,7 +70,7 @@
                 <a href="/order/id?action=edit" th:href="'/order/' + ${order.id}" th:text="${order.orderNo}"/>
             </td>
             <td th:text="${order.customer.name}">Customer Name</td>
-            <td th:text="${order.serviceType}">Service Type</td>
+            <td th:text="${order.serviceType.name}">Service Type</td>
             <td th:text="${order.source.name}">Origin</td>
             <td th:text="${order.destination}">Destination</td>
             <td th:text="${order.goods.name}">Cargo Name</td>

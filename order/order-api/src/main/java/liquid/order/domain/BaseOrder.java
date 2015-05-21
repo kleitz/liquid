@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @MappedSuperclass
 public class BaseOrder extends BaseUpdateEntity {
     @ManyToOne
-    @Column(name = "SERVICE_TYPE_ID")
+    @JoinColumn(name = "SERVICE_TYPE_ID")
     private ServiceType serviceType;
 
     @Column(name = "ORDER_NO")

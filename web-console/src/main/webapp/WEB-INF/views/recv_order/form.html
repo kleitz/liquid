@@ -23,7 +23,7 @@
                 <div class="col-xs-3">
                     <div class="form-group">
                         <label th:text="#{service.type}">Service Type</label>
-                        <select th:field="*{serviceTypeId}" class="form-control input-sm">
+                        <select th:field="*{serviceType}" class="form-control input-sm">
                             <option th:each="serviceType : ${serviceTypes}"
                                     th:value="${serviceType.id}"
                                     th:text="'(' + ${serviceType.code} + ')' + ${serviceType.name}">Service Type Name
