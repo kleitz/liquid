@@ -73,10 +73,8 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         order.setDestination(locationService.find(Long.valueOf(env.getProperty("default.destination.id"))));
         order.setLoadingEstimatedTime(DateUtil.stringOf(new Date()));
 
-        order.setRailSourceId(order.getSource().getId());
-        order.setRailSource(order.getSource().getName());
-        order.setRailDestinationId(order.getDestination().getId());
-        order.setRailDestination(order.getDestination().getName());
+        order.setRailSource(order.getSource());
+        order.setRailDestination(order.getDestination());
         order.setPlanReportTime(DateUtil.stringOf(new Date()));
 
         List<ServiceItem> serviceItemList = new ArrayList<>();
@@ -320,14 +318,8 @@ public class OrderFacadeImpl implements InternalOrderFacade {
             order.setRailPlanType(railwayEntity.getPlanType());
             order.setProgramNo(railwayEntity.getProgramNo());
             order.setPlanGoods(railwayEntity.getPlanGoods());
-            if (null != railwayEntity.getSourceId()) {
-                order.setRailSourceId(railwayEntity.getSourceId());
-                order.setRailSource(locationService.find(railwayEntity.getSourceId()).getName());
-            }
-            if (null != railwayEntity.getDestinationId()) {
-                order.setRailDestinationId(railwayEntity.getDestinationId());
-                order.setRailDestination(locationService.find(railwayEntity.getDestinationId()).getName());
-            }
+            order.setRailSource(railwayEntity.getSource());
+            order.setRailDestination(railwayEntity.getDestination());
             order.setComment(railwayEntity.getComment());
             order.setSameDay(railwayEntity.getSameDay());
         } else {
@@ -354,8 +346,8 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         railwayEntity.setPlanReportTime(DateUtil.dateOf(order.getPlanReportTime()));
         railwayEntity.setPlanType(order.getRailPlanType());
         railwayEntity.setPlanGoods(order.getPlanGoods());
-        railwayEntity.setSourceId(order.getRailSourceId());
-        railwayEntity.setDestinationId(order.getRailDestinationId());
+        railwayEntity.setSource(order.getRailSource());
+        railwayEntity.setDestination(order.getRailDestination());
         railwayEntity.setProgramNo(order.getProgramNo());
         railwayEntity.setComment(order.getComment());
         railwayEntity.setSameDay(order.getSameDay());

@@ -283,22 +283,20 @@
 </div><!-- row -->
 
 <div class="row">
-    <input type="hidden" th:field="*{railSourceId}"/>
     <div class="col-lg-6">
         <div class="form-group" th:classappend="${#fields.hasErrors('railSource')} ? 'has-error'">
             <label th:text="#{railway.source.station} + ' *'">Origin</label>
-            <input type="text" th:field="*{railSource}" class="form-control input-sm" th:placeholder="#{origination}"/>
+            <input type="text" class="form-control input-sm" th:placeholder="#{origination}" id="railSourceName" name="railSourceName" th:value="${railSourceName}" />
+            <input type="hidden" th:field="*{railSource}"/>
             <span class="text-danger" th:errors="*{railSource}">error</span>            
         </div>
     </div>
 
-    <input type="hidden" th:field="*{railDestinationId}"/>
     <div class="col-lg-6">
         <div class="form-group" th:classappend="${#fields.hasErrors('railDestination')} ? 'has-error'">
             <label th:text="#{railway.destination.station} + ' *'">Destination</label>
-            <div>
-            <input type="text" th:field="*{railDestination}" class="form-control input-sm" th:placeholder="#{destination}"/>
-            </div>
+            <input type="text" class="form-control input-sm" th:placeholder="#{destination}" id="railDestinationName" name="railDestinationName" th:value="${railDestinationName}"/>
+            <input type="hidden" th:field="*{railDestination}"/>
             <span class="text-danger" th:errors="*{railDestination}">error</span>      
         </div>
     </div>
@@ -495,8 +493,8 @@
         $('#destinationName').acWithTemplate(locations, 'name', 'destination', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
 
         var stations = initLocationsAc(2);
-        $('#railSource').autoComplete(stations, 'railSourceId');
-        $('#railDestination').autoComplete(stations, 'railDestinationId');                           
+        $('#railSourceName').autoComplete(stations, 'railSource');
+        $('#railDestinationName').autoComplete(stations, 'railDestination');                           
 
         if($('input[name=loadingType]:checked', '#orderForm').val() == 0) {
             $("#loadingAddressSec").hide();

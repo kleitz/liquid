@@ -240,6 +240,8 @@ public class OrderController extends BaseController {
         model.addAttribute("order", order);
         model.addAttribute("sourceName", order.getSource().getName());
         model.addAttribute("destinationName", order.getDestination().getName());
+        model.addAttribute("railSourceName", order.getRailSource().getName());
+        model.addAttribute("railDestinationName", order.getRailDestination().getName());
         return "order/form";
     }
 
@@ -265,9 +267,16 @@ public class OrderController extends BaseController {
         logger.debug("sourceName: {}", sourceName);
         String destinationName = request.getParameter("destinationName");
         logger.debug("destinationName: {}", destinationName);
+        String railSourceName = request.getParameter("railSourceName");
+        logger.debug("railSourceName: {}", railSourceName);
+        String railDestinationName = request.getParameter("railDestinationName");
+        logger.debug("railDestinationName: {}", railDestinationName);
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("sourceName", order.getSource().getName());
             model.addAttribute("destinationName", order.getDestination().getName());
+            model.addAttribute("railSourceName", order.getRailSource().getName());
+            model.addAttribute("railDestinationName", order.getRailDestination().getName());
             return "order/form";
         }
 
@@ -292,20 +301,16 @@ public class OrderController extends BaseController {
             addFieldError(bindingResult, "order", "destination", order.getDestination(), destinationName);
         }
 
-        result = orderFacade.validateLocation(order.getRailSourceId(), order.getRailSource(), LocationType.STATION);
+        result = orderFacade.validateLocation(order.getRailSource().getId(), railSourceName, LocationType.STATION);
         if (!result.isSuccessful()) {
+            order.getRailSource().setName(railSourceName);
             addFieldError(bindingResult, "order", "railSource", order.getRailSource(), order.getRailSource());
-        } else {
-            order.setRailSourceId(result.getId());
-            order.setRailSource(result.getName());
         }
 
-        result = orderFacade.validateLocation(order.getRailDestinationId(), order.getRailDestination(), LocationType.STATION);
+        result = orderFacade.validateLocation(order.getRailDestination().getId(), railDestinationName, LocationType.STATION);
         if (!result.isSuccessful()) {
+            order.getRailDestination().setName(railDestinationName);
             addFieldError(bindingResult, "order", "railDestination", order.getRailDestination(), order.getRailDestination());
-        } else {
-            order.setRailDestinationId(result.getId());
-            order.setRailDestination(result.getName());
         }
 
         if (bindingResult.hasErrors()) {
@@ -327,9 +332,15 @@ public class OrderController extends BaseController {
         logger.debug("sourceName: {}", sourceName);
         String destinationName = request.getParameter("destinationName");
         logger.debug("destinationName: {}", destinationName);
+        String railSourceName = request.getParameter("railSourceName");
+        logger.debug("railSourceName: {}", railSourceName);
+        String railDestinationName = request.getParameter("railDestinationName");
+        logger.debug("railDestinationName: {}", railDestinationName);
         if (bindingResult.hasErrors()) {
             model.addAttribute("sourceName", order.getSource().getName());
             model.addAttribute("destinationName", order.getDestination().getName());
+            model.addAttribute("railSourceName", order.getRailSource().getName());
+            model.addAttribute("railDestinationName", order.getRailDestination().getName());
             return "order/form";
         }
 
@@ -352,20 +363,16 @@ public class OrderController extends BaseController {
             addFieldError(bindingResult, "order", "destination", order.getDestination(), destinationName);
         }
 
-        result = orderFacade.validateLocation(order.getRailSourceId(), order.getRailSource(), LocationType.STATION);
+        result = orderFacade.validateLocation(order.getRailSource().getId(), railSourceName, LocationType.STATION);
         if (!result.isSuccessful()) {
+            order.getRailSource().setName(railSourceName);
             addFieldError(bindingResult, "order", "railSource", order.getRailSource(), order.getRailSource());
-        } else {
-            order.setRailSourceId(result.getId());
-            order.setRailSource(result.getName());
         }
 
-        result = orderFacade.validateLocation(order.getRailDestinationId(), order.getRailDestination(), LocationType.STATION);
+        result = orderFacade.validateLocation(order.getRailDestination().getId(), railDestinationName, LocationType.STATION);
         if (!result.isSuccessful()) {
+            order.getRailDestination().setName(railDestinationName);
             addFieldError(bindingResult, "order", "railDestination", order.getRailDestination(), order.getRailDestination());
-        } else {
-            order.setRailDestinationId(result.getId());
-            order.setRailDestination(result.getName());
         }
 
         if (bindingResult.hasErrors()) {
@@ -399,6 +406,9 @@ public class OrderController extends BaseController {
         model.addAttribute("order", order);
         model.addAttribute("sourceName", order.getSource().getName());
         model.addAttribute("destinationName", order.getDestination().getName());
+        model.addAttribute("railSourceName", order.getRailSource().getName());
+        model.addAttribute("railDestinationName", order.getRailDestination().getName());
+
         return "order/form";
     }
 
@@ -412,6 +422,8 @@ public class OrderController extends BaseController {
         model.addAttribute("order", order);
         model.addAttribute("sourceName", order.getSource().getName());
         model.addAttribute("destinationName", order.getDestination().getName());
+        model.addAttribute("railSourceName", order.getRailSource().getName());
+        model.addAttribute("railDestinationName", order.getRailDestination().getName());
         return "order/form";
     }
 
