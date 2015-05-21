@@ -80,6 +80,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     private ContainerSubtypeFormatter containerSubtypeFormatter;
 
     @Autowired
+    private RailPlanTypeFormatter railPlanTypeFormatter;
+
+    @Autowired
     private ServiceTypeFormatter serviceTypeFormatter;
 
     @Override
@@ -105,6 +108,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addFormatter(customerFormatter);
         registry.addFormatter(containerSubtypeFormatter);
         registry.addFormatter(serviceTypeFormatter);
+        registry.addFormatter(railPlanTypeFormatter);
         registry.addConverter(toServiceSubtypeConverter);
     }
 

@@ -156,7 +156,7 @@ public class OrderController extends BaseController {
     public Iterable<ServiceSubtype> populateServiceSubtyes() {return serviceSubtypeService.findEnabled(); }
 
     @ModelAttribute("railwayPlanTypes")
-    public Iterable<RailPlanTypeEntity> populateRailwayPlanTypes() {
+    public Iterable<RailPlanType> populateRailwayPlanTypes() {
         return railwayPlanTypeService.findAll();
     }
 

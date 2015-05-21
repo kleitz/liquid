@@ -317,8 +317,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         if (null != railwayEntity) {
             order.setRailwayId(railwayEntity.getId());
             order.setPlanReportTime(DateUtil.stringOf(railwayEntity.getPlanReportTime()));
-            order.setRailwayPlanTypeId(railwayEntity.getPlanType());
-            order.setRailwayPlanType(railwayPlanTypeService.find(railwayEntity.getPlanType()).getName());
+            order.setRailPlanType(railwayEntity.getPlanType());
             order.setProgramNo(railwayEntity.getProgramNo());
             order.setPlanGoods(railwayEntity.getPlanGoods());
             if (null != railwayEntity.getSourceId()) {
@@ -353,7 +352,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         OrderRail railwayEntity = new OrderRail();
         railwayEntity.setId(order.getRailwayId());
         railwayEntity.setPlanReportTime(DateUtil.dateOf(order.getPlanReportTime()));
-        railwayEntity.setPlanType(order.getRailwayPlanTypeId());
+        railwayEntity.setPlanType(order.getRailPlanType());
         railwayEntity.setPlanGoods(order.getPlanGoods());
         railwayEntity.setSourceId(order.getRailSourceId());
         railwayEntity.setDestinationId(order.getRailDestinationId());

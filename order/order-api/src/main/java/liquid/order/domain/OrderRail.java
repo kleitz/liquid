@@ -3,6 +3,7 @@ package liquid.order.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import liquid.core.domain.BaseIdEntity;
 import liquid.operation.domain.Goods;
+import liquid.operation.domain.RailPlanType;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -20,8 +21,9 @@ public class OrderRail extends BaseIdEntity {
     @Column(name = "PLAN_REPORT_TIME")
     private Date planReportTime;
 
-    @Column(name = "PLAN_TYPE")
-    private Long planType;
+    @ManyToOne
+    @JoinColumn(name = "PLAN_TYPE")
+    private RailPlanType planType;
 
     @Column(name = "PROGRAM_NO")
     private String programNo;
@@ -58,11 +60,11 @@ public class OrderRail extends BaseIdEntity {
         this.planReportTime = planReportTime;
     }
 
-    public Long getPlanType() {
+    public RailPlanType getPlanType() {
         return planType;
     }
 
-    public void setPlanType(Long planType) {
+    public void setPlanType(RailPlanType planType) {
         this.planType = planType;
     }
 

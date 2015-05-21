@@ -1,14 +1,14 @@
 package liquid.operation.service;
 
-import liquid.operation.domain.RailPlanTypeEntity;
+import liquid.operation.domain.RailPlanType;
 
 /**
  * Created by Tao Ma on 4/9/15.
  */
 public interface RailwayPlanTypeService {
-    Iterable<RailPlanTypeEntity> findAll();
+    Iterable<RailPlanType> findAll();
 
-    RailPlanTypeEntity find(Long id);
+    RailPlanType find(Long id);
 
-    RailPlanTypeEntity save(RailPlanTypeEntity railPlanTypeEntity);
+    RailPlanType save(RailPlanType railPlanTypeEntity);
 }
