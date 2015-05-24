@@ -23,9 +23,10 @@ import liquid.operation.service.*;
 import liquid.order.domain.*;
 import liquid.order.facade.InternalOrderFacade;
 import liquid.order.model.Order;
-import liquid.order.model.ServiceItem;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
+import liquid.process.service.BusinessKey;
+import liquid.process.service.ProcessService;
 import liquid.process.service.TaskService;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.service.ShipmentService;
@@ -45,10 +46,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * User: tao
@@ -107,6 +105,9 @@ public class OrderController extends BaseController {
 
     @Autowired
     private SettlementService settlementService;
+
+    @Autowired
+    private ProcessService processService;
 
     @ModelAttribute("serviceTypes")
     public Iterable<ServiceType> populateServiceTypes() {
@@ -264,22 +265,29 @@ public class OrderController extends BaseController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "addServiceItem")
-    public String addServiceItem(@ModelAttribute Order order) {
+    public String addServiceItem(@ModelAttribute(value = "order") OrderEntity order, Model model) {
         logger.debug("order: {}", order);
-        order.getServiceItems().add(new ServiceItem());
-
+        order.getServiceItems().add(new ServiceItemEntity());
+        model.addAttribute("sourceName", order.getSource().getName());
+        model.addAttribute("destinationName", order.getDestination().getName());
+        model.addAttribute("railSourceName", order.getRailway().getSource().getName());
+        model.addAttribute("railDestinationName", order.getRailway().getDestination().getName());
         return "order/form";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "removeServiceItem")
-    public String removeRow(@ModelAttribute Order order, HttpServletRequest request) {
+    public String removeRow(@ModelAttribute(value = "order") OrderEntity order, Model model, HttpServletRequest request) {
         final Integer rowId = Integer.valueOf(request.getParameter("removeServiceItem"));
         order.getServiceItems().remove(rowId.intValue());
+        model.addAttribute("sourceName", order.getSource().getName());
+        model.addAttribute("destinationName", order.getDestination().getName());
+        model.addAttribute("railSourceName", order.getRailway().getSource().getName());
+        model.addAttribute("railDestinationName", order.getRailway().getDestination().getName());
         return "order/form";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-    public String save(@Valid @ModelAttribute Order order, BindingResult bindingResult, Model model, HttpServletRequest request) {
+    public String save(@Valid @ModelAttribute(value = "order") OrderEntity order, BindingResult bindingResult, Model model, HttpServletRequest request) {
         logger.debug("order: {}", order);
         String sourceName = request.getParameter("sourceName");
         logger.debug("sourceName: {}", sourceName);
@@ -293,8 +301,8 @@ public class OrderController extends BaseController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("sourceName", order.getSource().getName());
             model.addAttribute("destinationName", order.getDestination().getName());
-            model.addAttribute("railSourceName", order.getRailSource().getName());
-            model.addAttribute("railDestinationName", order.getRailDestination().getName());
+            model.addAttribute("railSourceName", order.getRailway().getSource().getName());
+            model.addAttribute("railDestinationName", order.getRailway().getDestination().getName());
             return "order/form";
         }
 
@@ -319,16 +327,16 @@ public class OrderController extends BaseController {
             addFieldError(bindingResult, "order", "destination", order.getDestination(), destinationName);
         }
 
-        result = orderFacade.validateLocation(order.getRailSource().getId(), railSourceName, LocationType.STATION);
+        result = orderFacade.validateLocation(order.getRailway().getSource().getId(), railSourceName, LocationType.STATION);
         if (!result.isSuccessful()) {
-            order.getRailSource().setName(railSourceName);
-            addFieldError(bindingResult, "order", "railSource", order.getRailSource(), order.getRailSource());
+            order.getRailway().getSource().setName(railSourceName);
+            addFieldError(bindingResult, "order", "railSource", order.getRailway().getSource(), order.getRailway().getSource());
         }
 
-        result = orderFacade.validateLocation(order.getRailDestination().getId(), railDestinationName, LocationType.STATION);
+        result = orderFacade.validateLocation(order.getRailway().getDestination().getId(), railDestinationName, LocationType.STATION);
         if (!result.isSuccessful()) {
-            order.getRailDestination().setName(railDestinationName);
-            addFieldError(bindingResult, "order", "railDestination", order.getRailDestination(), order.getRailDestination());
+            order.getRailway().getDestination().setName(railDestinationName);
+            addFieldError(bindingResult, "order", "railDestination", order.getRailway().getDestination(), order.getRailway().getDestination());
         }
 
         if (bindingResult.hasErrors()) {
@@ -338,12 +346,12 @@ public class OrderController extends BaseController {
         }
 
         order.setStatus(OrderStatus.SAVED.getValue());
-        orderFacade.save(order);
+        orderService.saveOrder(order);
         return "redirect:/order?number=0";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "submit")
-    public String submit(@Valid @ModelAttribute Order order,
+    public String submit(@Valid @ModelAttribute(value = "order") OrderEntity order,
                          BindingResult bindingResult, Model model, HttpServletRequest request) {
         logger.debug("order: {}", order);
         String sourceName = request.getParameter("sourceName");
@@ -357,8 +365,8 @@ public class OrderController extends BaseController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("sourceName", order.getSource().getName());
             model.addAttribute("destinationName", order.getDestination().getName());
-            model.addAttribute("railSourceName", order.getRailSource().getName());
-            model.addAttribute("railDestinationName", order.getRailDestination().getName());
+            model.addAttribute("railSourceName", order.getRailway().getSource());
+            model.addAttribute("railDestinationName", order.getRailway().getDestination());
             return "order/form";
         }
 
@@ -381,16 +389,16 @@ public class OrderController extends BaseController {
             addFieldError(bindingResult, "order", "destination", order.getDestination(), destinationName);
         }
 
-        result = orderFacade.validateLocation(order.getRailSource().getId(), railSourceName, LocationType.STATION);
+        result = orderFacade.validateLocation(order.getRailway().getSource().getId(), railSourceName, LocationType.STATION);
         if (!result.isSuccessful()) {
-            order.getRailSource().setName(railSourceName);
-            addFieldError(bindingResult, "order", "railSource", order.getRailSource(), order.getRailSource());
+            order.getRailway().getSource().setName(railSourceName);
+            addFieldError(bindingResult, "order", "railSource", order.getRailway().getSource(), order.getRailway().getSource());
         }
 
-        result = orderFacade.validateLocation(order.getRailDestination().getId(), railDestinationName, LocationType.STATION);
+        result = orderFacade.validateLocation(order.getRailway().getDestination().getId(), railDestinationName, LocationType.STATION);
         if (!result.isSuccessful()) {
-            order.getRailDestination().setName(railDestinationName);
-            addFieldError(bindingResult, "order", "railDestination", order.getRailDestination(), order.getRailDestination());
+            order.getRailway().getDestination().setName(railDestinationName);
+            addFieldError(bindingResult, "order", "railDestination", order.getRailway().getDestination(), order.getRailway().getDestination());
         }
 
         if (bindingResult.hasErrors()) {
@@ -400,23 +408,38 @@ public class OrderController extends BaseController {
         }
 
         order.setStatus(OrderStatus.SUBMITTED.getValue());
-        orderFacade.submit(order);
+        order = orderService.submitOrder(order);
+
+        boolean hasDelivery = false;
+        List<ServiceItemEntity> serviceItems = order.getServiceItems();
+        for (ServiceItemEntity serviceItem : serviceItems) {
+            if (serviceItem.getServiceSubtype().getId() == Long.valueOf(env.getProperty("service.subtype.delivery.id"))) {
+                hasDelivery = true;
+                break;
+            }
+        }
+        Map<String, Object> variableMap = new HashMap<>();
+        variableMap.put("loadingType", order.getLoadingType());
+        variableMap.put("hasDelivery", hasDelivery);
+        variableMap.put("orderOwner", order.getUpdatedBy());
+        variableMap.put("tradeType", order.getTradeType());
+        processService.startProcess(order.getUpdatedBy(), BusinessKey.encode(order.getId(), order.getOrderNo()), variableMap);
 
         return "redirect:/order?number=0";
     }
 
     @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
-    public String initEdit(@PathVariable long id, Model model) {
+    public String initEdit(@PathVariable Long id, Model model) {
         logger.debug("id: {}", id);
 
-        Order order = orderFacade.find(id);
+        OrderEntity order = orderService.find(id);
         logger.debug("order: {}", order);
 
-        List<ServiceItem> serviceItemList = order.getServiceItems();
+        List<ServiceItemEntity> serviceItemList = order.getServiceItems();
         if (null == serviceItemList) serviceItemList = new ArrayList<>();
         if (serviceItemList.size() < 5) {
             for (int i = serviceItemList.size(); i < 5; i++) {
-                serviceItemList.add(new ServiceItem());
+                serviceItemList.add(new ServiceItemEntity());
             }
         }
         order.setServiceItems(serviceItemList);
@@ -424,24 +447,32 @@ public class OrderController extends BaseController {
         model.addAttribute("order", order);
         model.addAttribute("sourceName", order.getSource().getName());
         model.addAttribute("destinationName", order.getDestination().getName());
-        model.addAttribute("railSourceName", order.getRailSource().getName());
-        model.addAttribute("railDestinationName", order.getRailDestination().getName());
+        model.addAttribute("railSourceName", order.getRailway().getSource().getName());
+        model.addAttribute("railDestinationName", order.getRailway().getDestination().getName());
 
         return "order/form";
     }
 
     @RequestMapping(value = "/{id}/duplicate", method = RequestMethod.GET)
-    public String initDuplicate(@PathVariable long id, Model model) {
+    public String initDuplicate(@PathVariable Long id, Model model) {
         logger.debug("id: {}", id);
 
-        Order order = orderFacade.duplicate(id);
+        OrderEntity order = orderService.find(id);
+        order.setId(null);
+        order.getRailway().setId(null);
+        order.setOrderNo(null);
+
+        List<ServiceItemEntity> serviceItems = order.getServiceItems();
+        for (ServiceItemEntity serviceItem : serviceItems) {
+            serviceItem.setId(null);
+        }
         logger.debug("order: {}", order);
 
         model.addAttribute("order", order);
         model.addAttribute("sourceName", order.getSource().getName());
         model.addAttribute("destinationName", order.getDestination().getName());
-        model.addAttribute("railSourceName", order.getRailSource().getName());
-        model.addAttribute("railDestinationName", order.getRailDestination().getName());
+        model.addAttribute("railSourceName", order.getRailway().getSource().getName());
+        model.addAttribute("railDestinationName", order.getRailway().getDestination().getName());
         return "order/form";
     }
 

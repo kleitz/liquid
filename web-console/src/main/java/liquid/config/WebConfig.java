@@ -59,7 +59,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     private ServiceProviderFormatter serviceProviderFormatter;
 
     @Autowired
-    private ToServiceSubtypeConverter toServiceSubtypeConverter;
+    private ServiceSubtypeFormatter serviceSubtypeFormatter;
 
     @Autowired
     private LocationTypeFormatter locationTypeFormatter;
@@ -109,7 +109,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addFormatter(containerSubtypeFormatter);
         registry.addFormatter(serviceTypeFormatter);
         registry.addFormatter(railPlanTypeFormatter);
-        registry.addConverter(toServiceSubtypeConverter);
+        registry.addFormatter(serviceSubtypeFormatter);
     }
 
     @Bean

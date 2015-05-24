@@ -28,4 +28,8 @@ public interface OrderService {
     Page<OrderEntity> findByCustomerId(Long customerId, String createdBy, Pageable pageable);
 
     Page<OrderEntity> findByOrderNoLike(String orderNo, Pageable pageable);
+
+    OrderEntity saveOrder(OrderEntity order);
+
+    OrderEntity submitOrder(OrderEntity order);
 }

@@ -31,7 +31,7 @@ public class ServiceItemEntity extends BaseIdEntity {
     private Integer currency;
 
     @Column(name = "QUOTATION")
-    private long quotation;
+    private Long quotation;
 
     @Column(name = "COMMENT")
     private String comment;
@@ -89,11 +89,11 @@ public class ServiceItemEntity extends BaseIdEntity {
         this.currency = currency;
     }
 
-    public long getQuotation() {
+    public Long getQuotation() {
         return quotation;
     }
 
-    public void setQuotation(long quotation) {
+    public void setQuotation(Long quotation) {
         this.quotation = quotation;
     }
 

@@ -349,7 +349,7 @@
     <tr th:each="serviceItem, rowStat : *{serviceItems}">
         <td>
             <input type="hidden" th:field="*{serviceItems[__${rowStat.index}__].id}" />
-            <select class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].id}">
+            <select class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].serviceSubtype}">
                 <option th:each="serviceSubtype : ${serviceSubtypes}" th:value="${serviceSubtype.id}" th:text="${serviceSubtype.name}">Service Subtype</option>
             </select>
         </td>
@@ -546,8 +546,8 @@
                 }
             });
             
-            $('#usdTotal').val(usd);
-            $('#cnyTotal').val(cny);
+            $('#totalUsd').val(usd);
+            $('#totalCny').val(cny);
         }
         
         $(".tt-hint").addClass("form-control"); 

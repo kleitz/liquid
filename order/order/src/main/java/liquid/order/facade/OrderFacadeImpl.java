@@ -67,25 +67,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
     @Autowired
     private ReceivableFacade receivableFacade;
 
-    public Order initOrder() {
-        Order order = new Order();
-        order.setSource(locationService.find(Long.valueOf(env.getProperty("default.origin.id"))));
-        order.setDestination(locationService.find(Long.valueOf(env.getProperty("default.destination.id"))));
-        order.setLoadingEstimatedTime(DateUtil.stringOf(new Date()));
-
-        order.setRailSource(order.getSource());
-        order.setRailDestination(order.getDestination());
-        order.setPlanReportTime(DateUtil.stringOf(new Date()));
-
-        List<ServiceItem> serviceItemList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            ServiceItem serviceItem = new ServiceItem();
-            serviceItemList.add(serviceItem);
-        }
-        order.setServiceItems(serviceItemList);
-        return order;
-    }
-
+    // FIXME - REMOVE
     @Transactional("transactionManager")
     public OrderEntity save(Order order) {
         List<ServiceItem> serviceItemList = order.getServiceItems();
@@ -115,6 +97,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         return orderEntity;
     }
 
+    // FIXME - REMOVE
     public OrderEntity submit(Order order) {
         // set role
         order.setRole(SecurityContext.getInstance().getRole());
@@ -191,6 +174,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         return new PageImpl<Order>(orders, pageable, page.getTotalElements());
     }
 
+    // FIXME - REMOVE
     public Order duplicate(long id) {
         OrderEntity orderEntity = orderService.find(id);
         Order order = convert(orderEntity);
