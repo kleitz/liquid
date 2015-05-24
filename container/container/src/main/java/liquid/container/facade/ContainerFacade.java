@@ -1,7 +1,7 @@
 package liquid.container.facade;
 
 import liquid.container.domain.ContainerEntity;
-import liquid.container.domain.ContainerSubtypeEntity;
+import liquid.container.domain.ContainerSubtype;
 import liquid.container.model.Container;
 import liquid.container.model.Containers;
 import liquid.container.service.InternalContainerService;
@@ -34,7 +34,7 @@ public class ContainerFacade {
             containerEntity.setBicCode(container.getBicCode());
             containerEntity.setOwner(ServiceProvider.newInstance(ServiceProvider.class, container.getOwnerId()));
             containerEntity.setYard(Location.newInstance(Location.class, container.getYardId()));
-            containerEntity.setSubtype(ContainerSubtypeEntity.newInstance(ContainerSubtypeEntity.class, container.getSubtypeId()));
+            containerEntity.setSubtype(ContainerSubtype.newInstance(ContainerSubtype.class, container.getSubtypeId()));
             containerEntity.setStatus(0);
             entities.add(containerEntity);
         }

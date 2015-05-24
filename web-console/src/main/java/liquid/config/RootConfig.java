@@ -30,7 +30,7 @@ import java.util.Map;
         "liquid.process.service", "liquid.process.handler",
         "liquid.purchase.service", "liquid.purchase.facade",
         "liquid.accounting.facade", "liquid.accounting.service",
-        "liquid.container.facade", "liquid.container.service",
+        "liquid.container.facade", "liquid.container.service", "liquid.container.converter",
         "liquid.order.facade", "liquid.order.service", "liquid.order.converter",
         "liquid.transport.facade", "liquid.transport.service",
         "liquid.poc.service"})

@@ -1,5 +1,6 @@
 package liquid.config;
 
+import liquid.container.converter.ContainerSubtypeFormatter;
 import liquid.interceptor.LoggingInterceptor;
 import liquid.operation.converter.*;
 import liquid.order.converter.OrderFormatter;
@@ -58,7 +59,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     private ServiceProviderFormatter serviceProviderFormatter;
 
     @Autowired
-    private ToServiceSubtypeConverter toServiceSubtypeConverter;
+    private ServiceSubtypeFormatter serviceSubtypeFormatter;
 
     @Autowired
     private LocationTypeFormatter locationTypeFormatter;
@@ -68,6 +69,21 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private OrderFormatter orderFormatter;
+
+    @Autowired
+    private CustomerFormatter customerFormatter;
+
+    @Autowired
+    private LocationFormatter locationFormatter;
+
+    @Autowired
+    private ContainerSubtypeFormatter containerSubtypeFormatter;
+
+    @Autowired
+    private RailPlanTypeFormatter railPlanTypeFormatter;
+
+    @Autowired
+    private ServiceTypeFormatter serviceTypeFormatter;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -86,9 +102,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addFormatter(serviceProviderTypeFormatter);
         registry.addFormatter(serviceProviderFormatter);
         registry.addFormatter(locationTypeFormatter);
+        registry.addFormatter(locationFormatter);
         registry.addFormatter(goodsFormatter);
         registry.addFormatter(orderFormatter);
-        registry.addConverter(toServiceSubtypeConverter);
+        registry.addFormatter(customerFormatter);
+        registry.addFormatter(containerSubtypeFormatter);
+        registry.addFormatter(serviceTypeFormatter);
+        registry.addFormatter(railPlanTypeFormatter);
+        registry.addFormatter(serviceSubtypeFormatter);
     }
 
     @Bean

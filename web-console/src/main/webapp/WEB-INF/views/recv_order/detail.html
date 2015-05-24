@@ -40,9 +40,9 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label th:text="#{customer}">Customer</label>
-                        <select th:field="*{customerId}" class="form-control" disabled="disabled">
+                        <select th:field="*{customer}" class="form-control" disabled="disabled">
                             <option th:each="customer : ${customers}"
-                                    th:value="${customer.id}"
+                                    th:value="${customer.name}"
                                     th:text="${customer.name}">Customer Name
                             </option>
                         </select>
@@ -85,7 +85,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label th:text="#{origination} + ' *'">Origin</label>
-                        <select th:field="*{origination}" class="form-control" disabled="disabled">
+                        <select th:field="*{source}" class="form-control" disabled="disabled">
                             <option th:each="location : ${locations}"
                                     th:value="${location.id}"
                                     th:text="${location.name}">Location Name
@@ -111,7 +111,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label th:text="#{goods}">Cargo</label>
-                        <select th:field="*{goodsId}" class="form-control" disabled="disabled">
+                        <select th:field="*{goods}" class="form-control" disabled="disabled">
                             <option th:each="goods : ${cargos}"
                                     th:value="${goods.id}"
                                     th:text="${goods.name}">Cargo Name

@@ -1,7 +1,11 @@
 package liquid.order.model;
 
+import liquid.container.domain.ContainerSubtype;
 import liquid.core.model.IdObject;
-import org.hibernate.validator.constraints.NotEmpty;
+import liquid.operation.domain.Customer;
+import liquid.operation.domain.Goods;
+import liquid.operation.domain.Location;
+import liquid.operation.domain.ServiceType;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -12,29 +16,25 @@ import java.math.BigDecimal;
  */
 public class BaseOrder extends IdObject {
     private String orderNo;
-    private Long serviceTypeId;
-    private String serviceType;
-    private Long customerId;
+    private ServiceType serviceType;
+    //    private Long customerId;
+//
+//    @NotNull
+//    @NotEmpty
+//    private String customerName;
+    @NotNull
+    private Customer customer;
 
     @NotNull
-    @NotEmpty
-    private String customerName;
-
-    private Long originId;
+    private Location source;
 
     @NotNull
-    @NotEmpty
-    private String origination;
-    private Long destinationId;
-
-    @NotNull
-    @NotEmpty
-    private String destination;
+    private Location destination;
     private String consignee;
     private String consigneePhone;
     private String consigneeAddress;
-    private Long goodsId;
-    private String goodsName;
+    private Goods goods;
+
     @Min(1)
     @NotNull
     private Integer goodsWeight;
@@ -42,9 +42,8 @@ public class BaseOrder extends IdObject {
 
     private Integer containerType = 0;
     private String containerTypeName;
-    private Long railContainerSubtypeId;
-    private Long selfContainerSubtypeId;
-    private String containerSubtype;
+    private ContainerSubtype containerSubtype;
+
     @NotNull
     @Min(1)
     private Integer containerQuantity = 0;
@@ -69,67 +68,35 @@ public class BaseOrder extends IdObject {
         this.orderNo = orderNo;
     }
 
-    public Long getServiceTypeId() {
-        return serviceTypeId;
-    }
-
-    public void setServiceTypeId(Long serviceTypeId) {
-        this.serviceTypeId = serviceTypeId;
-    }
-
-    public String getServiceType() {
+    public ServiceType getServiceType() {
         return serviceType;
     }
 
-    public void setServiceType(String serviceType) {
+    public void setServiceType(ServiceType serviceType) {
         this.serviceType = serviceType;
     }
 
-    public Long getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public Location getSource() {
+        return source;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setSource(Location source) {
+        this.source = source;
     }
 
-    public Long getOriginId() {
-        return originId;
-    }
-
-    public void setOriginId(Long originId) {
-        this.originId = originId;
-    }
-
-    public String getOrigination() {
-        return origination;
-    }
-
-    public void setOrigination(String origination) {
-        this.origination = origination;
-    }
-
-    public Long getDestinationId() {
-        return destinationId;
-    }
-
-    public void setDestinationId(Long destinationId) {
-        this.destinationId = destinationId;
-    }
-
-    public String getDestination() {
+    public Location getDestination() {
         return destination;
     }
 
-    public void setDestination(String destination) {
+    public void setDestination(Location destination) {
         this.destination = destination;
     }
 
@@ -157,20 +124,12 @@ public class BaseOrder extends IdObject {
         this.consigneeAddress = consigneeAddress;
     }
 
-    public Long getGoodsId() {
-        return goodsId;
+    public Goods getGoods() {
+        return goods;
     }
 
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
-    }
-
-    public String getGoodsName() {
-        return goodsName;
-    }
-
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
+    public void setGoods(Goods goods) {
+        this.goods = goods;
     }
 
     public Integer getGoodsWeight() {
@@ -205,27 +164,11 @@ public class BaseOrder extends IdObject {
         this.containerTypeName = containerTypeName;
     }
 
-    public Long getRailContainerSubtypeId() {
-        return railContainerSubtypeId;
-    }
-
-    public void setRailContainerSubtypeId(Long railContainerSubtypeId) {
-        this.railContainerSubtypeId = railContainerSubtypeId;
-    }
-
-    public Long getSelfContainerSubtypeId() {
-        return selfContainerSubtypeId;
-    }
-
-    public void setSelfContainerSubtypeId(Long selfContainerSubtypeId) {
-        this.selfContainerSubtypeId = selfContainerSubtypeId;
-    }
-
-    public String getContainerSubtype() {
+    public ContainerSubtype getContainerSubtype() {
         return containerSubtype;
     }
 
-    public void setContainerSubtype(String containerSubtype) {
+    public void setContainerSubtype(ContainerSubtype containerSubtype) {
         this.containerSubtype = containerSubtype;
     }
 
@@ -305,25 +248,19 @@ public class BaseOrder extends IdObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder("{Class=BaseOrder");
         sb.append(", orderNo='").append(orderNo).append('\'');
-        sb.append(", serviceTypeId=").append(serviceTypeId);
         sb.append(", serviceType='").append(serviceType).append('\'');
-        sb.append(", customerId=").append(customerId);
-        sb.append(", customerName='").append(customerName).append('\'');
-        sb.append(", originId=").append(originId);
-        sb.append(", origination='").append(origination).append('\'');
-        sb.append(", destinationId=").append(destinationId);
+        sb.append(", customer=").append(customer);
+        sb.append(", source=").append(source);
         sb.append(", destination='").append(destination).append('\'');
         sb.append(", consignee='").append(consignee).append('\'');
         sb.append(", consigneePhone='").append(consigneePhone).append('\'');
         sb.append(", consigneeAddress='").append(consigneeAddress).append('\'');
-        sb.append(", goodsId=").append(goodsId);
-        sb.append(", goodsName='").append(goodsName).append('\'');
+        sb.append(", goods=").append(goods);
         sb.append(", goodsWeight=").append(goodsWeight);
         sb.append(", goodsDimension='").append(goodsDimension).append('\'');
         sb.append(", containerType=").append(containerType);
         sb.append(", containerTypeName='").append(containerTypeName).append('\'');
-        sb.append(", railContainerSubtypeId=").append(railContainerSubtypeId);
-        sb.append(", selfContainerSubtypeId=").append(selfContainerSubtypeId);
+        sb.append(", containerSubytype='").append(containerSubtype).append('\'');
         sb.append(", containerSubtype='").append(containerSubtype).append('\'');
         sb.append(", containerQuantity=").append(containerQuantity);
         sb.append(", containerAttribute='").append(containerAttribute).append('\'');

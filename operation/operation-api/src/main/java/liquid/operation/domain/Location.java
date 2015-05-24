@@ -7,7 +7,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 /**
- *  
  * User: tao
  * Date: 10/5/13
  * Time: 10:33 AM
@@ -50,5 +49,10 @@ public class Location extends BaseUpdateEntity {
 
     public void setQueryName(String queryName) {
         this.queryName = queryName;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

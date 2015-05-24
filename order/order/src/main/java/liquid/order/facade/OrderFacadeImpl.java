@@ -10,7 +10,6 @@ import liquid.core.validation.FormValidationResult;
 import liquid.operation.domain.Customer;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.ServiceSubtype;
-import liquid.operation.domain.ServiceTypeEntity;
 import liquid.operation.service.*;
 import liquid.order.domain.*;
 import liquid.order.model.Order;
@@ -68,29 +67,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
     @Autowired
     private ReceivableFacade receivableFacade;
 
-    public Order initOrder() {
-        Order order = new Order();
-        order.setOriginId(Long.valueOf(env.getProperty("default.origin.id")));
-        order.setOrigination(locationService.find(Long.valueOf(env.getProperty("default.origin.id"))).getName());
-        order.setDestinationId(Long.valueOf(env.getProperty("default.destination.id")));
-        order.setDestination(locationService.find(Long.valueOf(env.getProperty("default.destination.id"))).getName());
-        order.setLoadingEstimatedTime(DateUtil.stringOf(new Date()));
-
-        order.setRailSourceId(order.getOriginId());
-        order.setRailSource(order.getOrigination());
-        order.setRailDestinationId(order.getDestinationId());
-        order.setRailDestination(order.getDestination());
-        order.setPlanReportTime(DateUtil.stringOf(new Date()));
-
-        List<ServiceItem> serviceItemList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            ServiceItem serviceItem = new ServiceItem();
-            serviceItemList.add(serviceItem);
-        }
-        order.setServiceItems(serviceItemList);
-        return order;
-    }
-
+    // FIXME - REMOVE
     @Transactional("transactionManager")
     public OrderEntity save(Order order) {
         List<ServiceItem> serviceItemList = order.getServiceItems();
@@ -120,12 +97,13 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         return orderEntity;
     }
 
+    // FIXME - REMOVE
     public OrderEntity submit(Order order) {
         // set role
         order.setRole(SecurityContext.getInstance().getRole());
-        ServiceTypeEntity serviceType = serviceTypeService.find(order.getServiceTypeId());
+
         // compute order no.
-        order.setOrderNo(orderService.computeOrderNo(order.getRole(), serviceType.getCode()));
+        order.setOrderNo(orderService.computeOrderNo(order.getRole(), order.getServiceType().getCode()));
         OrderEntity orderEntity = save(order);
 
         boolean hasDelivery = false;
@@ -196,6 +174,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         return new PageImpl<Order>(orders, pageable, page.getTotalElements());
     }
 
+    // FIXME - REMOVE
     public Order duplicate(long id) {
         OrderEntity orderEntity = orderService.find(id);
         Order order = convert(orderEntity);
@@ -215,16 +194,16 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setId(order.getId());
         orderEntity.setOrderNo(order.getOrderNo());
-        orderEntity.setServiceTypeId(order.getServiceTypeId());
-        orderEntity.setCustomerId(order.getCustomerId());
+        orderEntity.setServiceType(order.getServiceType());
+        orderEntity.setCustomer(order.getCustomer());
         orderEntity.setTradeType(order.getTradeType());
         orderEntity.setVerificationSheetSn(order.getVerificationSheetSn());
-        orderEntity.setSrcLocId(order.getOriginId());
-        orderEntity.setDstLocId(order.getDestinationId());
+        orderEntity.setSource(order.getSource());
+        orderEntity.setDestination(order.getDestination());
         orderEntity.setConsignee(order.getConsignee());
         orderEntity.setConsigneePhone(order.getConsigneePhone());
         orderEntity.setConsigneeAddress(order.getConsigneeAddress());
-        orderEntity.setGoodsId(order.getGoodsId());
+        orderEntity.setGoods(order.getGoods());
         orderEntity.setGoodsWeight(order.getGoodsWeight());
         orderEntity.setGoodsDimension(order.getGoodsDimension());
         orderEntity.setLoadingType(order.getLoadingType());
@@ -233,10 +212,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         orderEntity.setLoadingPhone(order.getLoadingPhone());
         orderEntity.setLoadingEt(DateUtil.dateOf(order.getLoadingEstimatedTime()));
         orderEntity.setContainerType(order.getContainerType());
-        if (order.getContainerType() == ContainerType.RAIL.getType())
-            orderEntity.setContainerSubtypeId(order.getRailContainerSubtypeId());
-        else
-            orderEntity.setContainerSubtypeId(order.getSelfContainerSubtypeId());
+        orderEntity.setContainerSubtype(order.getContainerSubtype());
         orderEntity.setContainerQty(order.getContainerQuantity());
         orderEntity.setContainerAttribute(order.getContainerAttribute());
 
@@ -294,22 +270,17 @@ public class OrderFacadeImpl implements InternalOrderFacade {
     public void convert(OrderEntity orderEntity, Order order) {
         order.setId(orderEntity.getId());
         order.setOrderNo(orderEntity.getOrderNo());
-        order.setServiceTypeId(orderEntity.getServiceTypeId());
-        order.setServiceType(serviceTypeService.find(orderEntity.getServiceTypeId()).getName());
-        order.setCustomerId(orderEntity.getCustomerId());
-        order.setCustomerName(customerService.find(orderEntity.getCustomerId()).getName());
+        order.setServiceType(orderEntity.getServiceType());
+        order.setCustomer(orderEntity.getCustomer());
         order.setTradeType(orderEntity.getTradeType());
         order.setTradeTypeName(TradeType.valueOf(orderEntity.getTradeType()).getI18nKey());
         order.setVerificationSheetSn(orderEntity.getVerificationSheetSn());
-        order.setOriginId(orderEntity.getSrcLocId());
-        order.setOrigination(locationService.find(orderEntity.getSrcLocId()).getName());
-        order.setDestinationId(orderEntity.getDstLocId());
-        order.setDestination(locationService.find(orderEntity.getDstLocId()).getName());
+        order.setSource(orderEntity.getSource());
+        order.setDestination(orderEntity.getDestination());
         order.setConsignee(orderEntity.getConsignee());
         order.setConsigneePhone(orderEntity.getConsigneePhone());
         order.setConsigneeAddress(orderEntity.getConsigneeAddress());
-        order.setGoodsId(orderEntity.getGoodsId());
-        order.setGoodsName(goodsService.find(orderEntity.getGoodsId()).getName());
+        order.setGoods(orderEntity.getGoods());
         order.setGoodsWeight(orderEntity.getGoodsWeight());
         order.setGoodsDimension(orderEntity.getGoodsDimension());
         order.setLoadingType(orderEntity.getLoadingType());
@@ -320,11 +291,7 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         order.setLoadingEstimatedTime(DateUtil.stringOf(orderEntity.getLoadingEt()));
         order.setContainerType(orderEntity.getContainerType());
         order.setContainerTypeName(ContainerType.valueOf(orderEntity.getContainerType()).getI18nKey());
-        if (order.getContainerType() == ContainerType.RAIL.getType())
-            order.setRailContainerSubtypeId(orderEntity.getContainerSubtypeId());
-        else
-            order.setSelfContainerSubtypeId(orderEntity.getContainerSubtypeId());
-        order.setContainerSubtype(containerSubtypeService.find(orderEntity.getContainerSubtypeId()).getName());
+        order.setContainerSubtype(orderEntity.getContainerSubtype());
         order.setContainerQuantity(orderEntity.getContainerQty());
         order.setContainerAttribute(orderEntity.getContainerAttribute());
 
@@ -332,18 +299,11 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         if (null != railwayEntity) {
             order.setRailwayId(railwayEntity.getId());
             order.setPlanReportTime(DateUtil.stringOf(railwayEntity.getPlanReportTime()));
-            order.setRailwayPlanTypeId(railwayEntity.getPlanType());
-            order.setRailwayPlanType(railwayPlanTypeService.find(railwayEntity.getPlanType()).getName());
+            order.setRailPlanType(railwayEntity.getPlanType());
             order.setProgramNo(railwayEntity.getProgramNo());
             order.setPlanGoods(railwayEntity.getPlanGoods());
-            if (null != railwayEntity.getSourceId()) {
-                order.setRailSourceId(railwayEntity.getSourceId());
-                order.setRailSource(locationService.find(railwayEntity.getSourceId()).getName());
-            }
-            if (null != railwayEntity.getDestinationId()) {
-                order.setRailDestinationId(railwayEntity.getDestinationId());
-                order.setRailDestination(locationService.find(railwayEntity.getDestinationId()).getName());
-            }
+            order.setRailSource(railwayEntity.getSource());
+            order.setRailDestination(railwayEntity.getDestination());
             order.setComment(railwayEntity.getComment());
             order.setSameDay(railwayEntity.getSameDay());
         } else {
@@ -368,10 +328,10 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         OrderRail railwayEntity = new OrderRail();
         railwayEntity.setId(order.getRailwayId());
         railwayEntity.setPlanReportTime(DateUtil.dateOf(order.getPlanReportTime()));
-        railwayEntity.setPlanType(order.getRailwayPlanTypeId());
+        railwayEntity.setPlanType(order.getRailPlanType());
         railwayEntity.setPlanGoods(order.getPlanGoods());
-        railwayEntity.setSourceId(order.getRailSourceId());
-        railwayEntity.setDestinationId(order.getRailDestinationId());
+        railwayEntity.setSource(order.getRailSource());
+        railwayEntity.setDestination(order.getRailDestination());
         railwayEntity.setProgramNo(order.getProgramNo());
         railwayEntity.setComment(order.getComment());
         railwayEntity.setSameDay(order.getSameDay());

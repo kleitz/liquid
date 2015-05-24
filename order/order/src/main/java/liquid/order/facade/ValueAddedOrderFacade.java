@@ -2,7 +2,7 @@ package liquid.order.facade;
 
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
-import liquid.operation.domain.ServiceTypeEntity;
+import liquid.core.security.SecurityContext;
 import liquid.operation.service.CustomerService;
 import liquid.operation.service.GoodsService;
 import liquid.operation.service.LocationService;
@@ -13,7 +13,6 @@ import liquid.order.model.TransportedContainer;
 import liquid.order.model.ValueAddedOrder;
 import liquid.order.repository.ReceivingContainerRepository;
 import liquid.order.service.ReceivingOrderServiceImpl;
-import liquid.core.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -71,22 +70,18 @@ public class ValueAddedOrderFacade {
         ValueAddedOrder order = new ValueAddedOrder();
         order.setId(orderEntity.getId());
         order.setOrderNo(orderEntity.getOrderNo());
-        order.setCustomerId(orderEntity.getCustomerId());
-        order.setCustomerName(customerService.find(orderEntity.getCustomerId()).getName());
+        order.setCustomer(orderEntity.getCustomer());
         order.setConsignee(orderEntity.getConsignee());
         order.setConsigneePhone(orderEntity.getConsigneePhone());
         order.setConsigneeAddress(orderEntity.getConsigneeAddress());
-        order.setOriginId(orderEntity.getSrcLocId());
-        order.setOrigination(locationService.find(orderEntity.getSrcLocId()).getName());
-        order.setDestinationId(orderEntity.getDstLocId());
-        order.setDestination(locationService.find(orderEntity.getDstLocId()).getName());
-        order.setGoodsId(orderEntity.getGoodsId());
-        order.setGoodsName(goodsService.find(orderEntity.getGoodsId()).getName());
+        order.setSource(orderEntity.getSource());
+        order.setDestination(orderEntity.getDestination());
+        order.setGoods(orderEntity.getGoods());
         order.setGoodsWeight(orderEntity.getGoodsWeight());
         order.setGoodsDimension(orderEntity.getGoodsDimension());
         order.setContainerType(orderEntity.getContainerType());
         order.setContainerTypeName(ContainerType.valueOf(orderEntity.getContainerType()).getI18nKey());
-        order.setContainerSubtype(containerSubtypeService.find(orderEntity.getContainerSubtypeId()).getName());
+        order.setContainerSubtype(orderEntity.getContainerSubtype());
         order.setContainerQuantity(orderEntity.getContainerQty());
         order.setContainerAttribute(orderEntity.getContainerAttribute());
         order.setCnyTotal(orderEntity.getTotalCny());
@@ -121,8 +116,7 @@ public class ValueAddedOrderFacade {
 
     public ReceivingOrderEntity submit(ValueAddedOrder order) {
         order.setRole(SecurityContext.getInstance().getRole());
-        ServiceTypeEntity serviceType = serviceTypeService.find(order.getServiceTypeId());
-        order.setOrderNo(receivingOrderService.computeOrderNo(order.getRole(), serviceType.getCode()));
+        order.setOrderNo(receivingOrderService.computeOrderNo(order.getRole(), order.getServiceType().getCode()));
         ReceivingOrderEntity entity = save(order);
         return entity;
     }
@@ -131,23 +125,20 @@ public class ValueAddedOrderFacade {
         ReceivingOrderEntity orderEntity = new ReceivingOrderEntity();
         orderEntity.setId(order.getId());
         orderEntity.setOrderNo(order.getOrderNo());
-        orderEntity.setServiceTypeId(order.getServiceTypeId());
-        orderEntity.setCustomerId(order.getCustomerId());
+        orderEntity.setServiceType(order.getServiceType());
+        orderEntity.setCustomer(order.getCustomer());
         orderEntity.setConsignee(order.getConsignee());
         orderEntity.setConsigneePhone(order.getConsigneePhone());
         orderEntity.setConsigneeAddress(order.getConsigneeAddress());
-        orderEntity.setSrcLocId(order.getOriginId());
-        orderEntity.setDstLocId(order.getDestinationId());
-        orderEntity.setGoodsId(order.getGoodsId());
+        orderEntity.setSource(order.getSource());
+        orderEntity.setDestination(order.getDestination());
+        orderEntity.setGoods(order.getGoods());
         orderEntity.setGoodsWeight(order.getGoodsWeight());
         orderEntity.setTotalCny(order.getCnyTotal());
         orderEntity.setContainerType(order.getContainerType());
         orderEntity.setContainerQty(order.getContainerQuantity());
         orderEntity.setContainerType(order.getContainerType());
-        if (order.getContainerType() == ContainerType.RAIL.getType())
-            orderEntity.setContainerSubtypeId(order.getRailContainerSubtypeId());
-        else
-            orderEntity.setContainerSubtypeId(order.getSelfContainerSubtypeId());
+        orderEntity.setContainerSubtype(order.getContainerSubtype());
         orderEntity.setCreateRole(order.getRole());
         orderEntity.setStatus(order.getStatus());
         return orderEntity;

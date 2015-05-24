@@ -23,7 +23,7 @@
                 <div class="col-xs-3">
                     <div class="form-group">
                         <label th:text="#{service.type}">Service Type</label>
-                        <select th:field="*{serviceTypeId}" class="form-control input-sm">
+                        <select th:field="*{serviceType}" class="form-control input-sm">
                             <option th:each="serviceType : ${serviceTypes}"
                                     th:value="${serviceType.id}"
                                     th:text="'(' + ${serviceType.code} + ')' + ${serviceType.name}">Service Type Name
@@ -32,14 +32,12 @@
                     </div>
                 </div>
 
-                <input type="hidden" th:field="*{customerId}"/>
-
                 <div class="col-xs-6">
-                    <div class="form-group" th:classappend="${#fields.hasErrors('customerName')} ? 'has-error'">
+                    <div class="form-group" th:classappend="${#fields.hasErrors('customer')} ? 'has-error'">
                         <label th:text="#{customer}">Customer</label><br/>
-                        <input type="text" th:field="*{customerName}" class="typeahead form-control input-sm" placeholder="customer name"
+                        <input type="text" th:field="*{customer}" class="typeahead form-control input-sm" placeholder="customer name"
                                th:placeholder="#{customer.name}"/>
-                        <span th:errors="*{customerName}">error</span>
+                        <span th:errors="*{customer}">error</span>
                     </div>
                 </div>
             </div>
@@ -74,20 +72,20 @@
             </div>
 
             <div class="row">
-                <input type="hidden" th:field="*{originId}"/>
                 <div class="col-xs-3">
-                    <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('origination')} ? 'has-error'">
+                    <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('source')} ? 'has-error'">
                         <label th:text="#{origination} + ' *'">Origin</label>
-                        <input type="text" th:field="*{origination}" class="form-control input-sm" th:placeholder="#{origination}"/>
-                        <span class="text-danger" th:errors="*{origination}">error</span>            
+                        <input type="text" id="sourceName" name="sourceName" class="form-control input-sm" th:placeholder="#{origination}"/>
+                        <input type="hidden" th:field="*{source}"/>
+                        <span class="text-danger" th:errors="*{source}">error</span>            
                     </div>
                 </div>
 
-                <input type="hidden" th:field="*{destinationId}"/>
                 <div class="col-xs-3">
                     <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('destination')} ? 'has-error'">
                         <label th:text="#{destination} + ' *'">Destination</label>
-                        <input type="text" th:field="*{destination}" class="form-control input-sm" th:placeholder="#{destination}"/>
+                        <input type="text" id="destinationName" name="destinationName" class="form-control input-sm" th:placeholder="#{destination}"/>
+                        <input type="hidden" th:field="*{destinationId}"/>
                         <span class="text-danger" th:errors="*{destination}">error</span>      
                     </div>
                 </div>
@@ -95,7 +93,7 @@
                 <div class="col-xs-3">
                     <div class="form-group">
                         <label th:text="#{goods}">Cargo</label>
-                        <select th:field="*{goodsId}" class="form-control input-sm">
+                        <select th:field="*{goods}" class="form-control input-sm">
                             <option th:each="goods : ${cargos}"
                                     th:value="${goods.id}"
                                     th:text="${goods.name}">Cargo Name
@@ -258,11 +256,11 @@
         });
         
         var customers = initCustomerAc();
-        $('#customerName').acWithTemplate(customers, 'name', 'customerId', '<p><strong>{{name}}</strong> – {{code}}</p>');
+        $('#customer').acWithTemplateAndName(customers, 'name', '<p><strong>{{name}}</strong> – {{code}}</p>');
 
         var locations = initAllLocationsAc();
-        $('#origination').acWithTemplate(locations, 'name', 'originId', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
-        $('#destination').acWithTemplate(locations, 'name', 'destinationId', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
+        $('#sourceName').acWithTemplate(locations, 'name', 'source', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
+        $('#destinationName').acWithTemplate(locations, 'name', 'destination', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
 
         
         if($('input[name=containerType]:checked', '#orderForm').val() == 0) {

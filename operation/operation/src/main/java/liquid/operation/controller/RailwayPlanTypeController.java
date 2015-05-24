@@ -1,6 +1,6 @@
 package liquid.operation.controller;
 
-import liquid.operation.domain.RailPlanTypeEntity;
+import liquid.operation.domain.RailPlanType;
 import liquid.operation.service.RailwayPlanTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ public class RailwayPlanTypeController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model) {
-        Iterable<RailPlanTypeEntity> railwayPlanTypes = railwayPlanTypeService.findAll();
+        Iterable<RailPlanType> railwayPlanTypes = railwayPlanTypeService.findAll();
 
         model.addAttribute("railwayPlanTypes", railwayPlanTypes);
         return ROOT_DIR + "list";
@@ -35,7 +35,7 @@ public class RailwayPlanTypeController {
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String initNew(Model model) {
-        model.addAttribute("railwayPlanType", new RailPlanTypeEntity());
+        model.addAttribute("railwayPlanType", new RailPlanType());
         return ROOT_DIR + "form";
     }
 
@@ -48,7 +48,7 @@ public class RailwayPlanTypeController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String create(@ModelAttribute("railwayPlanType") RailPlanTypeEntity railwayPlanType) {
+    public String create(@ModelAttribute("railwayPlanType") RailPlanType railwayPlanType) {
         logger.debug("RailwayPlanTypeEntity: {}", railwayPlanType);
 
         railwayPlanTypeService.save(railwayPlanType);

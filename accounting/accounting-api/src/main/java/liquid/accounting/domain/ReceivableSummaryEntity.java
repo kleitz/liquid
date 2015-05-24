@@ -1,7 +1,7 @@
 package liquid.accounting.domain;
 
-import liquid.order.domain.OrderEntity;
 import liquid.core.domain.BaseUpdateEntity;
+import liquid.order.domain.OrderEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,21 +21,21 @@ public class ReceivableSummaryEntity extends BaseUpdateEntity {
     private OrderEntity order;
 
     @Column(precision = 19, scale = 4, name = "CNY")
-    private BigDecimal cny;
+    private BigDecimal cny = BigDecimal.ZERO;
 
     @Column(precision = 19, scale = 4, name = "USD")
-    private BigDecimal usd;
+    private BigDecimal usd = BigDecimal.ZERO;
 
     @Column(name = "PREPAID_TIME")
     private Date prepaidTime;
 
     @Deprecated
     @Column(name = "REM_BAL_CNY")
-    private Long remainingBalanceCny;
+    private Long remainingBalanceCny = 0L;
 
     @Deprecated
     @Column(name = "REM_BAL_USD")
-    private Long remainingBalanceUsd;
+    private Long remainingBalanceUsd = 0L;
 
     @Column(name = "PAID_CNY")
     private Long paidCny = 0L;

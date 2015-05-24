@@ -9,7 +9,6 @@ import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.ShipmentEntity;
-import liquid.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,11 +53,11 @@ public class ChargeFacade {
 
         Page<ChargeEntity> entityPage = null;
         if ("sp".equals(searchBar.getType())) {
-            entityPage = chargeService.findAll(DateUtil.dayOf(searchBar.getStartDate()), DateUtil.dayOf(searchBar.getEndDate()), null, searchBar.getId(), pageable);
+            entityPage = chargeService.findAll(searchBar.getStartDate(), searchBar.getEndDate(), null, searchBar.getId(), pageable);
         } else if ("order".equals(searchBar.getType())) {
-            entityPage = chargeService.findAll(DateUtil.dayOf(searchBar.getStartDate()), DateUtil.dayOf(searchBar.getEndDate()), searchBar.getId(), null, pageable);
+            entityPage = chargeService.findAll(searchBar.getStartDate(), searchBar.getEndDate(), searchBar.getId(), null, pageable);
         } else {
-            entityPage = chargeService.findAll(DateUtil.dayOf(searchBar.getStartDate()), DateUtil.dayOf(searchBar.getEndDate()), null, null, pageable);
+            entityPage = chargeService.findAll(searchBar.getStartDate(), searchBar.getEndDate(), null, null, pageable);
         }
         for (ChargeEntity entity : entityPage) {
             Charge charge = convert(entity);

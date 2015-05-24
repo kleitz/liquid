@@ -1,7 +1,6 @@
 package liquid.order.facade;
 
 import liquid.core.validation.FormValidationResult;
-import liquid.order.domain.OrderEntity;
 import liquid.order.model.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,17 +19,9 @@ public interface InternalOrderFacade extends OrderFacade {
 
     Page<Order> findAll(final String orderNo, final String customerName, final String username, final Pageable pageable);
 
-    Order initOrder();
-
     FormValidationResult validateCustomer(Long id, String name);
 
     FormValidationResult validateLocation(Long id, String name);
 
     FormValidationResult validateLocation(Long id, String name, Byte typeId);
-
-    OrderEntity save(Order order);
-
-    OrderEntity submit(Order order);
-
-    Order duplicate(long id);
 }

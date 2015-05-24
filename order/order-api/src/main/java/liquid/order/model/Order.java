@@ -1,7 +1,8 @@
 package liquid.order.model;
 
 import liquid.operation.domain.Goods;
-import org.hibernate.validator.constraints.NotEmpty;
+import liquid.operation.domain.Location;
+import liquid.operation.domain.RailPlanType;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -26,20 +27,16 @@ public class Order extends BaseOrder {
 
     private Long railwayId;
     private String planReportTime;
-    private Long railwayPlanTypeId;
-    private String railwayPlanType;
+    private RailPlanType railPlanType;
     private Goods planGoods;
     private String programNo;
-    private Long railSourceId;
 
     @NotNull
-    @NotEmpty
-    private String railSource;
-    private Long railDestinationId;
+    private Location railSource;
 
     @NotNull
-    @NotEmpty
-    private String railDestination;
+    private Location railDestination;
+
     private String comment;
     private Boolean sameDay;
 
@@ -142,20 +139,12 @@ public class Order extends BaseOrder {
         this.planReportTime = planReportTime;
     }
 
-    public Long getRailwayPlanTypeId() {
-        return railwayPlanTypeId;
+    public RailPlanType getRailPlanType() {
+        return railPlanType;
     }
 
-    public void setRailwayPlanTypeId(Long railwayPlanTypeId) {
-        this.railwayPlanTypeId = railwayPlanTypeId;
-    }
-
-    public String getRailwayPlanType() {
-        return railwayPlanType;
-    }
-
-    public void setRailwayPlanType(String railwayPlanType) {
-        this.railwayPlanType = railwayPlanType;
+    public void setRailPlanType(RailPlanType railPlanType) {
+        this.railPlanType = railPlanType;
     }
 
     public String getProgramNo() {
@@ -174,35 +163,19 @@ public class Order extends BaseOrder {
         this.planGoods = planGoods;
     }
 
-    public Long getRailSourceId() {
-        return railSourceId;
-    }
-
-    public void setRailSourceId(Long railSourceId) {
-        this.railSourceId = railSourceId;
-    }
-
-    public String getRailSource() {
+    public Location getRailSource() {
         return railSource;
     }
 
-    public void setRailSource(String railSource) {
+    public void setRailSource(Location railSource) {
         this.railSource = railSource;
     }
 
-    public Long getRailDestinationId() {
-        return railDestinationId;
-    }
-
-    public void setRailDestinationId(Long railDestinationId) {
-        this.railDestinationId = railDestinationId;
-    }
-
-    public String getRailDestination() {
+    public Location getRailDestination() {
         return railDestination;
     }
 
-    public void setRailDestination(String railDestination) {
+    public void setRailDestination(Location railDestination) {
         this.railDestination = railDestination;
     }
 
@@ -268,12 +241,9 @@ public class Order extends BaseOrder {
         sb.append(", loadingEstimatedTime='").append(loadingEstimatedTime).append('\'');
         sb.append(", railwayId=").append(railwayId);
         sb.append(", planReportTime='").append(planReportTime).append('\'');
-        sb.append(", railwayPlanTypeId=").append(railwayPlanTypeId);
-        sb.append(", railwayPlanType='").append(railwayPlanType).append('\'');
+        sb.append(", railPlanType='").append(railPlanType).append('\'');
         sb.append(", programNo='").append(programNo).append('\'');
-        sb.append(", railSourceId=").append(railSourceId);
         sb.append(", railSource='").append(railSource).append('\'');
-        sb.append(", railDestinationId=").append(railDestinationId);
         sb.append(", railDestination='").append(railDestination).append('\'');
         sb.append(", comment='").append(comment).append('\'');
         sb.append(", sameDay=").append(sameDay);

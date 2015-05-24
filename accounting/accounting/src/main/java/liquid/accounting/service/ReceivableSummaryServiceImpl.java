@@ -5,8 +5,12 @@ import liquid.accounting.domain.AccountingType;
 import liquid.accounting.domain.ReceivableSummaryEntity;
 import liquid.accounting.domain.ReceivableSummaryEntity_;
 import liquid.accounting.repository.ReceivableSummaryRepository;
-import liquid.order.domain.OrderEntity_;
+import liquid.core.domain.SumPage;
+import liquid.core.model.SearchBarForm;
 import liquid.core.service.AbstractService;
+import liquid.operation.domain.Customer_;
+import liquid.order.domain.OrderEntity;
+import liquid.order.domain.OrderEntity_;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -120,11 +124,70 @@ public class ReceivableSummaryServiceImpl extends AbstractService<ReceivableSumm
             Specification<ReceivableSummaryEntity> customerIdSpec = new Specification<ReceivableSummaryEntity>() {
                 @Override
                 public Predicate toPredicate(Root<ReceivableSummaryEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                    return cb.equal(root.get(ReceivableSummaryEntity_.order).get(OrderEntity_.customerId), customerId);
+                    return cb.equal(root.get(ReceivableSummaryEntity_.order).get(OrderEntity_.customer).get(Customer_.id), customerId);
                 }
             };
             specifications = specifications.and(customerIdSpec);
         }
         return repository.findAll(specifications, pageable);
+    }
+
+    @Override
+    public SumPage<ReceivableSummaryEntity> findAll(final SearchBarForm searchBarForm, final Pageable pageable) {
+        Specification<ReceivableSummaryEntity> dateRangeSpec = new Specification<ReceivableSummaryEntity>() {
+            @Override
+            public Predicate toPredicate(Root<ReceivableSummaryEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                return cb.between(root.get(ReceivableSummaryEntity_.createdAt), searchBarForm.getStartDate(), searchBarForm.getEndDate());
+            }
+        };
+        Specifications<ReceivableSummaryEntity> specifications = Specifications.where(dateRangeSpec);
+
+        if ("order".equals(searchBarForm.getType())) {
+            if (null != searchBarForm.getId()) {
+                Specification<ReceivableSummaryEntity> orderIdSpec = new Specification<ReceivableSummaryEntity>() {
+                    @Override
+                    public Predicate toPredicate(Root<ReceivableSummaryEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                        return cb.equal(root.get(ReceivableSummaryEntity_.order).get(OrderEntity_.id), searchBarForm.getId());
+                    }
+                };
+                specifications = specifications.and(orderIdSpec);
+            }
+        } else if ("customer".equals(searchBarForm.getType())) {
+            if (null != searchBarForm.getId()) {
+                Specification<ReceivableSummaryEntity> customerIdSpec = new Specification<ReceivableSummaryEntity>() {
+                    @Override
+                    public Predicate toPredicate(Root<ReceivableSummaryEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                        return cb.equal(root.get(ReceivableSummaryEntity_.order).get(OrderEntity_.customer).get(Customer_.id), searchBarForm.getId());
+                    }
+                };
+                specifications = specifications.and(customerIdSpec);
+            }
+        }
+        Page<ReceivableSummaryEntity> page = repository.findAll(specifications, pageable);
+        return appendSum(page, pageable);
+    }
+
+    private SumPage<ReceivableSummaryEntity> appendSum(Page<ReceivableSummaryEntity> page, Pageable pageable) {
+        ReceivableSummaryEntity sum = new ReceivableSummaryEntity();
+        OrderEntity order = new OrderEntity();
+        sum.setOrder(order);
+        for (ReceivableSummaryEntity entity : page) {
+            sum.getOrder().setContainerQty(sum.getOrder().getContainerQty() + entity.getOrder().getContainerQty());
+            sum.setCny(sum.getCny().add(entity.getCny()));
+            sum.setUsd(sum.getUsd().add(entity.getUsd()));
+            sum.setRemainingBalanceCny(sum.getRemainingBalanceCny() + entity.getRemainingBalanceCny());
+            sum.setRemainingBalanceUsd(sum.getRemainingBalanceUsd() + entity.getRemainingBalanceUsd());
+            sum.setPaidCny(sum.getPaidCny() + entity.getPaidCny());
+            sum.setPaidUsd(sum.getPaidUsd() + entity.getPaidUsd());
+            sum.setInvoicedCny(sum.getInvoicedCny() + entity.getInvoicedCny());
+            sum.setInvoicedUsd(sum.getInvoicedUsd() + entity.getInvoicedUsd());
+
+            sum.getOrder().setDistyCny(sum.getOrder().getDistyCny().add(entity.getOrder().getDistyCny()));
+            sum.getOrder().setDistyUsd(sum.getOrder().getDistyUsd().add(entity.getOrder().getDistyUsd()));
+
+            sum.getOrder().setGrandTotal(sum.getOrder().getGrandTotal().add(entity.getOrder().getGrandTotal()));
+        }
+
+        return new SumPage<ReceivableSummaryEntity>(page, sum, pageable);
     }
 }

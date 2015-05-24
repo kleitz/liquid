@@ -9,7 +9,7 @@ import javax.persistence.Entity;
  * Created by redbrick9 on 8/23/14.
  */
 @Entity(name = "OPS_RAIL_PLAN_TYPE")
-public class RailPlanTypeEntity extends BaseUpdateEntity {
+public class RailPlanType extends BaseUpdateEntity {
     @Column(name = "NAME")
     private String name;
 

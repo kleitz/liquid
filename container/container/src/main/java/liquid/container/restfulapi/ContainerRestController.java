@@ -18,8 +18,8 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/api/container")
-public class ApiContainerController {
-    private static final Logger logger = LoggerFactory.getLogger(ApiContainerController.class);
+public class ContainerRestController {
+    private static final Logger logger = LoggerFactory.getLogger(ContainerRestController.class);
 
     @Autowired
     private ContainerFacade containerFacade;

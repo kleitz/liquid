@@ -25,7 +25,7 @@
     <div class="col-lg-3">
         <div class="form-group form-group-sm">
             <label th:text="#{service.type}">Service Type</label>
-            <select th:field="*{serviceTypeId}" class="form-control input-sm">
+            <select th:field="*{serviceType}" class="form-control input-sm">
                 <option th:each="serviceType : ${serviceTypes}"
                         th:value="${serviceType.id}"
                         th:text="'(' + ${serviceType.code} + ')' + ${serviceType.name}">Service Type Name
@@ -34,14 +34,14 @@
         </div>
     </div>
 
-    <input type="hidden" th:field="*{customerId}"/>
+    <!--input type="hidden" th:field="*{customer}"/-->
 
     <div class="col-lg-6">
-        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('customerName')} ? 'has-error'">
+        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('customer')} ? 'has-error'">
             <label th:text="#{customer} + ' *'">Customer</label><br/>
-            <input type="text" th:field="*{customerName}" class="form-control input-sm" placeholder="customer name"
+            <input type="text" th:field="*{customer}" class="form-control input-sm" placeholder="customer name"
                    th:placeholder="#{customer.name}"/>
-            <span class="text-danger" th:errors="*{customerName}">error</span>
+            <span class="text-danger" th:errors="*{customer}">error</span>
         </div>
     </div>
     
@@ -57,36 +57,23 @@
 </div>
 
 <div class="row">
-    <input type="hidden" th:field="*{originId}"/>
     <div class="col-lg-6">
-        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('origination')} ? 'has-error'">
+        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('source')} ? 'has-error'">
             <label th:text="#{origination} + ' *'">Origin</label>
-            <input type="text" th:field="*{origination}" class="form-control input-sm" th:placeholder="#{origination}"/>
-            <span class="text-danger" th:errors="*{origination}">error</span>            
+            <input type="text" class="form-control input-sm" th:placeholder="#{origination}" id="sourceName" name="sourceName" th:value="${sourceName}" />
+            <input type="hidden" th:field="*{source}"/>
+            <span class="text-danger" th:errors="*{source}">error</span>            
         </div>
     </div>
 
-    <input type="hidden" th:field="*{destinationId}"/>
     <div class="col-lg-6">
         <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('destination')} ? 'has-error'">
             <label th:text="#{destination} + ' *'">Destination</label>
-            <input type="text" th:field="*{destination}" class="form-control input-sm" th:placeholder="#{destination}"/>
+            <input type="text" class="form-control input-sm" th:placeholder="#{destination}" id="destinationName" name="destinationName" th:value="${destinationName} "/>
+            <input type="hidden" th:field="*{destination}" />
             <span class="text-danger" th:errors="*{destination}">error</span>      
         </div>
     </div>
-
-    <!--
-    <div class="col-lg-3">
-        <div class="form-group">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" th:field="*{hasDelivery}"/>
-                    <strong th:text="#{has.delivery}">hasDelivery</strong>
-                </label>
-            </div>
-        </div>
-    </div>
-    -->
 </div>
 
 <div class="row">
@@ -122,7 +109,7 @@
     <div class="col-lg-3">
         <div class="form-group">
             <label th:text="#{goods}">Cargo</label>
-            <select th:field="*{goodsId}" class="form-control input-sm">
+            <select th:field="*{goods}" class="form-control input-sm">
                 <option th:each="goods : ${cargos}"
                         th:value="${goods.id}"
                         th:text="${goods.name}">Cargo Name
@@ -171,11 +158,11 @@
     </div>
 
     <div id="loadingEtSec" class="col-lg-3">
-        <div class="form-group" th:classappend="${#fields.hasErrors('loadingEstimatedTime')} ? 'has-error'">
+        <div class="form-group" th:classappend="${#fields.hasErrors('loadingEt')} ? 'has-error'">
             <label th:text="#{loading.et}">Loading ET</label>
-            <input type="text" th:field="*{loadingEstimatedTime}" class="form-control input-sm"/>
+            <input type="text" th:field="*{loadingEt}" class="form-control input-sm"/>
 
-            <span class="text-danger" th:errors="*{loadingEstimatedTime}">error</span>
+            <span class="text-danger" th:errors="*{loadingEt}">error</span>
         </div>
     </div>
 
@@ -209,36 +196,20 @@
         </div>
     </div>    
     
-    <div id="ownContainerSubtypeSec" class="col-lg-3">
+    <div class="col-lg-3">           
         <div class="form-group">
             <label th:text="#{container.subtype}">Container Subtype</label>
-            <select th:field="*{selfContainerSubtypeId}" class="form-control input-sm">
-                <option th:each="containerSubtype : ${selfContainerSubtypes}"
-                        th:value="${containerSubtype.id}"
-                        th:text="${containerSubtype.name}">Container Subtype Name
-                </option>
-            </select>
-        </div>
-    </div>
-    
-   <div id="railContainerSubtypeSec" class="col-lg-3">
-        <div class="form-group">
-            <label th:text="#{container.subtype}">Container Subtype</label>
-            <select th:field="*{railContainerSubtypeId}" class="form-control input-sm">
-                <option th:each="containerSubtype : ${railContainerSubtypes}"
-                        th:value="${containerSubtype.id}"
-                        th:text="${containerSubtype.name}">Container Subtype Name
-                </option>
-            </select>
+            <input type="hidden" id="_containerSubtype" th:value="*{containerSubtype} ? *{containerSubtype.id} : '' " />
+            <select class="form-control input-sm" id="containerSubtype" name="containerSubtype"></select>
         </div>
     </div>
     
     <div class="col-lg-3">
-        <div class="form-group" th:classappend="${#fields.hasErrors('containerQuantity')} ? 'has-error'">
+        <div class="form-group" th:classappend="${#fields.hasErrors('containerQty')} ? 'has-error'">
             <label th:text="#{container.quantity} + ' *'">Container Quantity</label>
-            <input type="text" th:field="*{containerQuantity}" class="form-control input-sm"/>
+            <input type="text" th:field="*{containerQty}" class="form-control input-sm"/>
 
-            <span class="text-danger" th:errors="*{containerQuantity}">error</span>
+            <span class="text-danger" th:errors="*{containerQty}">error</span>
         </div>
     </div>
     
@@ -259,13 +230,13 @@
 <div class="panel-body">
 
 <div class="row">
-    <input type="hidden" th:field="*{railwayId}"/>
+    <input type="hidden" th:field="*{railway.id}"/>
     <div class="col-lg-3">
-        <div class="form-group" th:classappend="${#fields.hasErrors('planReportTime')} ? 'has-error'">
+        <div class="form-group" th:classappend="${#fields.hasErrors('railway.planReportTime')} ? 'has-error'">
             <label th:text="#{railway.plan.report.time} + ' *'">Railway Plan Report Date</label>
             
             <div class='input-group input-group-sm date' id='planReportTimePicker'>
-                <input type='text' data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{planReportTime}" />
+                <input type='text' data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{railway.planReportTime}" />
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -274,18 +245,18 @@
     </div>
     
     <div class="col-lg-3">
-        <div class="form-group" th:classappend="${#fields.hasErrors('programNo')} ? 'has-error'">
+        <div class="form-group" th:classappend="${#fields.hasErrors('railway.programNo')} ? 'has-error'">
             <label th:text="#{railway.program.no}">>Railay Program No.</label>
-            <input type="text" th:field="*{programNo}" class="form-control input-sm"/>
+            <input type="text" th:field="*{railway.programNo}" class="form-control input-sm"/>
 
-            <span class="text-danger" th:errors="*{programNo}">error</span>
+            <span class="text-danger" th:errors="*{railway.programNo}">error</span>
         </div>
     </div>    
 
     <div class="col-lg-3">
         <div class="form-group">
             <label th:text="#{railway.plan.type}"></label>
-            <select th:field="*{railwayPlanTypeId}" class="form-control input-sm">
+            <select th:field="*{railway.planType}" class="form-control input-sm">
                 <option th:each="railwayPlanType : ${railwayPlanTypes}"
                         th:value="${railwayPlanType.id}"
                         th:text="${railwayPlanType.name}">Railway Plan Type Name
@@ -300,11 +271,11 @@
             <!-- HACK - FO - Formatter Optimization - To avoid to look up a lot of times from database, we should not use th:field.
                 For detaled information, please refer to https://jira.spring.io/browse/SPR-12472
             -->
-            <select id="planGoods" name="planGoods" class="form-control input-sm">
+            <select id="railway.planGoods" name="railway.planGoods" class="form-control input-sm">
                 <option th:each="goods : ${cargos}"
                         th:value="${goods.id}"
                         th:text="${goods.name}"
-                        th:selected="${order.planGoods} ? ${goods.id == order.planGoods.id}">Cargo Name
+                        th:selected="${order.railway.planGoods} ? ${goods.id == order.railway.planGoods.id}">Cargo Name
                 </option>
             </select>
         </div>
@@ -312,34 +283,32 @@
 </div><!-- row -->
 
 <div class="row">
-    <input type="hidden" th:field="*{railSourceId}"/>
     <div class="col-lg-6">
-        <div class="form-group" th:classappend="${#fields.hasErrors('railSource')} ? 'has-error'">
+        <div class="form-group" th:classappend="${#fields.hasErrors('railway.source')} ? 'has-error'">
             <label th:text="#{railway.source.station} + ' *'">Origin</label>
-            <input type="text" th:field="*{railSource}" class="form-control input-sm" th:placeholder="#{origination}"/>
-            <span class="text-danger" th:errors="*{railSource}">error</span>            
+            <input type="text" class="form-control input-sm" th:placeholder="#{origination}" id="railSourceName" name="railSourceName" th:value="${railSourceName}" />
+            <input type="hidden" th:field="*{railway.source}"/>
+            <span class="text-danger" th:errors="*{railway.source}">error</span>            
         </div>
     </div>
 
-    <input type="hidden" th:field="*{railDestinationId}"/>
     <div class="col-lg-6">
-        <div class="form-group" th:classappend="${#fields.hasErrors('railDestination')} ? 'has-error'">
+        <div class="form-group" th:classappend="${#fields.hasErrors('railway.destination')} ? 'has-error'">
             <label th:text="#{railway.destination.station} + ' *'">Destination</label>
-            <div>
-            <input type="text" th:field="*{railDestination}" class="form-control input-sm" th:placeholder="#{destination}"/>
-            </div>
-            <span class="text-danger" th:errors="*{railDestination}">error</span>      
+            <input type="text" class="form-control input-sm" th:placeholder="#{destination}" id="railDestinationName" name="railDestinationName" th:value="${railDestinationName}"/>
+            <input type="hidden" th:field="*{railway.destination}"/>
+            <span class="text-danger" th:errors="*{railway.destination}">error</span>      
         </div>
     </div>
 </div><!-- row -->
 
 <div class="row">
     <div class="col-lg-6">
-        <div class="form-group" th:classappend="${#fields.hasErrors('comment')} ? 'has-error'">
+        <div class="form-group" th:classappend="${#fields.hasErrors('railway.comment')} ? 'has-error'">
             <label th:text="#{comment}">Comment</label>
-            <input type="text" th:field="*{comment}" class="form-control input-sm"/>
+            <input type="text" th:field="*{railway.comment}" class="form-control input-sm"/>
 
-            <span class="text-danger" th:errors="*{comment}">error</span>
+            <span class="text-danger" th:errors="*{railway.comment}">error</span>
         </div>
     </div>    
     
@@ -348,7 +317,7 @@
             <label>&nbsp;</label><br />
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" th:field="*{sameDay}"/>
+                    <input type="checkbox" th:field="*{railway.sameDay}"/>
                     <strong class="text-danger" th:text="#{railway.same.day}">Same Day</strong>
                 </label>                
             </div>
@@ -380,7 +349,7 @@
     <tr th:each="serviceItem, rowStat : *{serviceItems}">
         <td>
             <input type="hidden" th:field="*{serviceItems[__${rowStat.index}__].id}" />
-            <select class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].serviceSubtypeId}">
+            <select class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].serviceSubtype}">
                 <option th:each="serviceSubtype : ${serviceSubtypes}" th:value="${serviceSubtype.id}" th:text="${serviceSubtype.name}">Service Subtype</option>
             </select>
         </td>
@@ -412,17 +381,17 @@
     <li class="list-group-item">
         <div class="row">
             <div class="col-lg-3">
-                <div class="form-group" th:classappend="${#fields.hasErrors('usdTotal')} ? 'has-error'">
+                <div class="form-group" th:classappend="${#fields.hasErrors('totalUsd')} ? 'has-error'">
                     <label th:text="#{usd.total} + ' *'">USD Total</label>
-                    <input type="text" th:field="*{usdTotal}" class="form-control input-sm" readonly="readonly"/>
-                    <span class="text-danger" th:errors="*{usdTotal}">error</span>
+                    <input type="text" th:field="*{totalUsd}" class="form-control input-sm" readonly="readonly"/>
+                    <span class="text-danger" th:errors="*{totalUsd}">error</span>
                 </div>
             </div>
             <div class="col-lg-3">
-                <div class="form-group" th:classappend="${#fields.hasErrors('cnyTotal')} ? 'has-error'">
+                <div class="form-group" th:classappend="${#fields.hasErrors('totalCny')} ? 'has-error'">
                     <label th:text="#{cny.total} + ' *'">CNY Total</label>
-                    <input type="text" th:field="*{cnyTotal}" class="form-control input-sm" readonly="readonly"/>
-                    <span class="text-danger" th:errors="*{cnyTotal}">error</span>
+                    <input type="text" th:field="*{totalCny}" class="form-control input-sm" readonly="readonly"/>
+                    <span class="text-danger" th:errors="*{totalCny}">error</span>
                 </div>
             </div>
             <div class="col-lg-3">
@@ -459,16 +428,73 @@
 <script>
 /*<![CDATA[*/
     $(document).ready(function() {
+
+        var boxSubtypeSet = {
+          rail: [],
+          self: []
+        }
+        var boxSubtype = $('#_containerSubtype').val()
+
+        function cluster(data) {
+          for (var i = 0; i < data.length; i++) { 
+            if (data[i].containerType == 0) 
+              boxSubtypeSet.rail.push(data[i])
+            else if (data[i].containerType == 2) 
+              boxSubtypeSet.self.push(data[i]) 
+            else
+              continue
+          }
+        }
+
+        function initContainerSubtypeSelect(value) {
+          if( value == 0) {
+            $("#containerSubtype").find("option").remove().end()
+            var flag = false
+            for(var i = 0; i < boxSubtypeSet.rail.length; i++) {
+              $("#containerSubtype").append($("<option></option>")
+                .attr("value", boxSubtypeSet.rail[i].id)
+                .text(boxSubtypeSet.rail[i].name))
+              if(boxSubtype == boxSubtypeSet.rail[i].id)
+                flag = true
+            }
+            if (flag)
+              $("#containerSubtype").val(boxSubtype)
+          }
+          else {
+            $("#containerSubtype").find("option").remove().end()
+            var flag = false
+            for(var i = 0; i < boxSubtypeSet.self.length; i++) {
+              $("#containerSubtype").append($("<option></option>")
+                .attr("value", boxSubtypeSet.self[i].id)
+                .text(boxSubtypeSet.self[i].name))
+              if(boxSubtype == boxSubtypeSet.rail[i].id)
+                flag = true
+            }
+            if (flag)
+              $("#containerSubtype").val(boxSubtype)
+          }
+        }
+
+        $.ajax({
+          url: "/api/container-subtype"
+        }).done(function(data) {
+          console.log(data) 
+          cluster(data)
+          console.log(boxSubtypeSet)
+          var value = $('input[name=containerType]:checked', '#orderForm').val()
+          initContainerSubtypeSelect(value)
+       });
+
         var customers = initCustomerAc();
-        $('#customerName').acWithTemplate(customers, 'name', 'customerId', '<p><strong>{{name}}</strong> – {{code}}</p>');
+        $('#customer').acWithTemplateAndName(customers, 'name', '<p><strong>{{name}}</strong> – {{code}}</p>');
 
         var locations = initAllLocationsAc();
-        $('#origination').acWithTemplate(locations, 'name', 'originId', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
-        $('#destination').acWithTemplate(locations, 'name', 'destinationId', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
+        $('#sourceName').acWithTemplate(locations, 'name', 'source', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
+        $('#destinationName').acWithTemplate(locations, 'name', 'destination', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
 
         var stations = initLocationsAc(2);
-        $('#railSource').autoComplete(stations, 'railSourceId');
-        $('#railDestination').autoComplete(stations, 'railDestinationId');                           
+        $('#railSourceName').autoComplete(stations, 'railSource');
+        $('#railDestinationName').autoComplete(stations, 'railDestination');                           
 
         if($('input[name=loadingType]:checked', '#orderForm').val() == 0) {
             $("#loadingAddressSec").hide();
@@ -493,25 +519,10 @@
             }
         });
         
-        if($('input[name=containerType]:checked', '#orderForm').val() == 0) {
-            $("#ownContainerSubtypeSec").hide();
-            $("#railContainerSubtypeSec").show();
-        }
-        else {
-            $("#ownContainerSubtypeSec").show();
-            $("#railContainerSubtypeSec").hide();           
-        }
-        
+       
         $("input[name$='containerType']").click(function() {
             var value = $(this).val();
-            if(value == 0) {
-                $("#ownContainerSubtypeSec").hide();
-                $("#railContainerSubtypeSec").show();
-            }
-            else {
-                $("#ownContainerSubtypeSec").show();
-                $("#railContainerSubtypeSec").hide();
-            }
+            initContainerSubtypeSelect(value)
         });
              
         caculateTotal();     
@@ -535,8 +546,8 @@
                 }
             });
             
-            $('#usdTotal').val(usd);
-            $('#cnyTotal').val(cny);
+            $('#totalUsd').val(usd);
+            $('#totalCny').val(cny);
         }
         
         $(".tt-hint").addClass("form-control"); 

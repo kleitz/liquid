@@ -1,11 +1,9 @@
 package liquid.core.model;
 
-import liquid.util.DateUtil;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by mat on 10/18/14.
@@ -32,12 +30,10 @@ public class SearchBarForm {
     private String text;
 
     @NotNull
-    @NotEmpty
-    private String startDate;
+    private Date startDate;
 
     @NotNull
-    @NotEmpty
-    private String endDate;
+    private Date endDate;
 
     /**
      * The number of page.
@@ -47,9 +43,9 @@ public class SearchBarForm {
     public SearchBarForm() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), 1, 0, 0, 0);
-        startDate = DateUtil.dayStrOf(calendar.getTime());
+        startDate = calendar.getTime();
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, 0, 0, 0, 0);
-        endDate = DateUtil.dayStrOf(calendar.getTime());
+        endDate = calendar.getTime();
     }
 
     @Deprecated
@@ -96,19 +92,19 @@ public class SearchBarForm {
         this.text = text;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 

@@ -38,11 +38,11 @@ public class ReceivableFacadeImpl implements ReceivableFacade {
         List<ReceivableSummary> receivableList = new ArrayList<>();
         Page<ReceivableSummaryEntity> entityPage = null;
         if ("customer".equals(searchBar.getType())) {
-            entityPage = receivableSummaryService.findAll(DateUtil.dayOf(searchBar.getStartDate()), DateUtil.dayOf(searchBar.getEndDate()), null, searchBar.getId(), pageable);
+            entityPage = receivableSummaryService.findAll(searchBar.getStartDate(), searchBar.getEndDate(), null, searchBar.getId(), pageable);
         } else if ("order".equals(searchBar.getType())) {
-            entityPage = receivableSummaryService.findAll(DateUtil.dayOf(searchBar.getStartDate()), DateUtil.dayOf(searchBar.getEndDate()), searchBar.getId(), null, pageable);
+            entityPage = receivableSummaryService.findAll(searchBar.getStartDate(), searchBar.getEndDate(), searchBar.getId(), null, pageable);
         } else {
-            entityPage = receivableSummaryService.findAll(DateUtil.dayOf(searchBar.getStartDate()), DateUtil.dayOf(searchBar.getEndDate()), null, null, pageable);
+            entityPage = receivableSummaryService.findAll(searchBar.getStartDate(), searchBar.getEndDate(), null, null, pageable);
         }
 
         ReceivableSummary sum = new ReceivableSummary();

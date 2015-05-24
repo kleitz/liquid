@@ -13,7 +13,8 @@ public abstract class BaseController {
 
     public void addFieldError(BindingResult result, String objectName, String fieldName, Object rejectedValue,
                               Object... arguments) {
-        FieldError filedError = new FieldError(objectName, fieldName, rejectedValue, false, null, null, "");
+        FieldError filedError = new FieldError(objectName, fieldName, rejectedValue, false,
+                new String[]{objectName + "." + fieldName}, new String[]{String.valueOf(rejectedValue)}, "");
         result.addError(filedError);
     }
 }

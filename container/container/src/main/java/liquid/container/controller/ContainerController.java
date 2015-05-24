@@ -93,7 +93,7 @@ public class ContainerController extends BaseController {
     }
 
     @ModelAttribute("containerSubtypes")
-    public Iterable<ContainerSubtypeEntity> populateContainerSubtypes() {
+    public Iterable<ContainerSubtype> populateContainerSubtypes() {
         return containerSubtypeService.findByContainerType(ContainerType.SELF);
     }
 
@@ -111,7 +111,7 @@ public class ContainerController extends BaseController {
                        @RequestParam(required = false) String bicCode) {
 
         // container subtypes
-        Iterable<ContainerSubtypeEntity> subtypes = containerSubtypeService.findByContainerType(ContainerType.SELF);
+        Iterable<ContainerSubtype> subtypes = containerSubtypeService.findByContainerType(ContainerType.SELF);
 
         // Owner list
         List<ServiceProvider> owners = serviceItemService.findContainerOwners();
@@ -159,7 +159,7 @@ public class ContainerController extends BaseController {
         model.addAttribute("contextPath", "/container?subtypeId=" + subtypeId + "&ownerId=" + ownerId + "&yardId=" + yardId + "&");
 
         // container subtypes
-        Iterable<ContainerSubtypeEntity> subtypes = containerSubtypeService.findByContainerType(ContainerType.SELF);
+        Iterable<ContainerSubtype> subtypes = containerSubtypeService.findByContainerType(ContainerType.SELF);
 
         // Owner list
         List<ServiceProvider> owners = serviceItemService.findContainerOwners();

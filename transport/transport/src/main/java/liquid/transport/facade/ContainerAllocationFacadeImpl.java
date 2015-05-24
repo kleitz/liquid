@@ -57,7 +57,7 @@ public class ContainerAllocationFacadeImpl implements ContainerAllocationFacade 
         List<ShipmentContainerAllocation> shipmentContainerAllocations = new ArrayList<>();
 
         int type = order.getContainerType();
-        String subtypeName = containerSubtypeService.find(order.getContainerSubtypeId()).getName();
+        String subtypeName = order.getContainerSubtype().getName();
 
         Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(order.getId());
         for (ShipmentEntity shipment : shipmentSet) {

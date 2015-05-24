@@ -53,10 +53,10 @@
             <td>
                 <a th:href="'/order/' + ${receivable.orderId} + '/receivable'"><i class="glyphicon glyphicon-briefcase text-success"/></a>
                     &nbsp;
-                <span th:text="${receivable.customerName}">Customer Name</span>
+                <span th:text="${receivable.customer.name}">Customer Name</span>
             </td>
             <td><span th:text="${receivable.createdBy}">Sales</span></td>
-            <td th:text="${receivable.goodsName}"></td>
+            <td th:text="${receivable.goods.name}"></td>
             <td th:text="#{${tradeTypes[__${receivable.tradeType}__].i18nKey}}">Trade Type</td>
             <td class="text-right"><span th:text="${receivable.containerQuantity}">Container Quantity</span></td>
             <td class="text-right"><span th:text="${#numbers.formatDecimal(receivable.cny + receivable.usd * exchangeRate, 0, 'COMMA', 2, 'POINT')}">Receivable SUM</span></td>

@@ -1,12 +1,17 @@
 package liquid.order.service;
 
+import liquid.accounting.domain.ReceivableSummaryEntity;
+import liquid.accounting.service.ReceivableSummaryService;
+import liquid.core.security.SecurityContext;
 import liquid.order.domain.OrderEntity;
 import liquid.order.domain.OrderEntity_;
 import liquid.order.domain.OrderStatus;
+import liquid.order.domain.ServiceItemEntity;
 import liquid.order.repository.OrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,12 +24,12 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.springframework.data.jpa.domain.Specifications.where;
 
 /**
- *  
  * User: tao
  * Date: 9/29/13
  * Time: 8:03 PM
@@ -34,17 +39,16 @@ public class OrderServiceImpl extends AbstractBaseOrderService<OrderEntity, Orde
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Autowired
+    private Environment env;
+
+    @Autowired
     private ServiceItemServiceImpl serviceItemService;
 
+    @Autowired
+    private ReceivableSummaryService receivableSummaryService;
+
     @Transactional("transactionManager")
-    public void doSaveBefore(OrderEntity order) {
-        if (null != order.getId()) {
-            OrderEntity oldOrder = find(order.getId());
-            oldOrder.getServiceItems().removeAll(order.getServiceItems());
-            if (oldOrder.getServiceItems().size() > 0)
-                serviceItemService.delete(oldOrder.getServiceItems());
-        }
-    }
+    public void doSaveBefore(OrderEntity order) { }
 
     @Transactional(value = "transactionManager")
     public OrderEntity complete(Long orderId) {
@@ -70,8 +74,6 @@ public class OrderServiceImpl extends AbstractBaseOrderService<OrderEntity, Orde
     @Transactional(value = "transactionManager")
     public OrderEntity find(Long id) {
         OrderEntity order = repository.findOne(id);
-        order.setContainerSubtypeId(order.getContainerSubtypeId());
-        order.setGoodsId(order.getGoodsId());
         // Initialize one to many children
         order.getServiceItems().size();
         return order;
@@ -135,6 +137,44 @@ public class OrderServiceImpl extends AbstractBaseOrderService<OrderEntity, Orde
 
     public Page<OrderEntity> findByOrderNoLike(String orderNo, Pageable pageable) {
         return repository.findByOrderNoLike("%" + orderNo + "%", pageable);
+    }
+
+    @Transactional(value = "transactionManager")
+    @Override
+    public OrderEntity saveOrder(OrderEntity order) {
+        List<ServiceItemEntity> serviceItemList = order.getServiceItems();
+        Iterator<ServiceItemEntity> serviceItemIterator = serviceItemList.iterator();
+        while (serviceItemIterator.hasNext()) {
+            ServiceItemEntity serviceItem = serviceItemIterator.next();
+            if (serviceItem.getQuotation() == null) serviceItemIterator.remove();
+            else serviceItem.setOrder(order);
+        }
+        order.getRailway().setOrder(order);
+
+        order = save(order);
+
+        ReceivableSummaryEntity receivableSummary = new ReceivableSummaryEntity();
+        receivableSummary.setCny(order.getTotalCny());
+        receivableSummary.setUsd(order.getTotalUsd());
+        receivableSummary.setOrder(order);
+        order.setId(order.getId());
+        // TODO: workaround
+        receivableSummary.setId(null);
+        receivableSummaryService.save(receivableSummary);
+
+        return order;
+    }
+
+    @Override
+    public OrderEntity submitOrder(OrderEntity order) {
+        // set role
+        order.setCreateRole(SecurityContext.getInstance().getRole());
+
+        // compute order no.
+        order.setOrderNo(computeOrderNo(order.getCreateRole(), order.getServiceType().getCode()));
+        OrderEntity orderEntity = saveOrder(order);
+
+        return orderEntity;
     }
 
     public Iterable<OrderEntity> findByOrderNoLike(String orderNo) {

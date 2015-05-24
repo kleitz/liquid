@@ -11,7 +11,7 @@ import liquid.accounting.service.InvoiceService;
 import liquid.accounting.service.ReceiptService;
 import liquid.accounting.service.SettlementService;
 import liquid.container.domain.ContainerCap;
-import liquid.container.domain.ContainerSubtypeEntity;
+import liquid.container.domain.ContainerSubtype;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
 import liquid.core.controller.BaseController;
@@ -20,15 +20,13 @@ import liquid.core.security.SecurityContext;
 import liquid.core.validation.FormValidationResult;
 import liquid.operation.domain.*;
 import liquid.operation.service.*;
-import liquid.order.domain.LoadingType;
-import liquid.order.domain.OrderEntity;
-import liquid.order.domain.OrderStatus;
-import liquid.order.domain.TradeType;
+import liquid.order.domain.*;
 import liquid.order.facade.InternalOrderFacade;
 import liquid.order.model.Order;
-import liquid.order.model.ServiceItem;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
+import liquid.process.service.BusinessKey;
+import liquid.process.service.ProcessService;
 import liquid.process.service.TaskService;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.service.ShipmentService;
@@ -36,6 +34,7 @@ import liquid.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -47,12 +46,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
- *  
  * User: tao
  * Date: 9/28/13
  * Time: 2:38 PM
@@ -61,6 +57,9 @@ import java.util.Map;
 @RequestMapping("/order")
 public class OrderController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+
+    @Autowired
+    private Environment env;
 
     @Autowired
     private OrderService orderService;
@@ -107,8 +106,11 @@ public class OrderController extends BaseController {
     @Autowired
     private SettlementService settlementService;
 
+    @Autowired
+    private ProcessService processService;
+
     @ModelAttribute("serviceTypes")
-    public Iterable<ServiceTypeEntity> populateServiceTypes() {
+    public Iterable<ServiceType> populateServiceTypes() {
         return serviceTypeService.findAll();
     }
 
@@ -139,12 +141,12 @@ public class OrderController extends BaseController {
     }
 
     @ModelAttribute("railContainerSubtypes")
-    public Iterable<ContainerSubtypeEntity> populateRailContainerSubtypes() {
+    public Iterable<ContainerSubtype> populateRailContainerSubtypes() {
         return containerSubtypeService.findByContainerType(ContainerType.RAIL);
     }
 
     @ModelAttribute("selfContainerSubtypes")
-    public Iterable<ContainerSubtypeEntity> populateOwnContainerSubtypes() {
+    public Iterable<ContainerSubtype> populateOwnContainerSubtypes() {
         return containerSubtypeService.findByContainerType(ContainerType.SELF);
     }
 
@@ -157,7 +159,7 @@ public class OrderController extends BaseController {
     public Iterable<ServiceSubtype> populateServiceSubtyes() {return serviceSubtypeService.findEnabled(); }
 
     @ModelAttribute("railwayPlanTypes")
-    public Iterable<RailPlanTypeEntity> populateRailwayPlanTypes() {
+    public Iterable<RailPlanType> populateRailwayPlanTypes() {
         return railwayPlanTypeService.findAll();
     }
 
@@ -236,169 +238,241 @@ public class OrderController extends BaseController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String initCreationForm(Model model) {
-        Order order = orderFacade.initOrder();
+        OrderEntity order = new OrderEntity();
+        order.setSource(locationService.find(Long.valueOf(env.getProperty("default.origin.id"))));
+        order.setDestination(locationService.find(Long.valueOf(env.getProperty("default.destination.id"))));
+        order.setLoadingEt(new Date());
+
+        OrderRail orderRail = new OrderRail();
+        orderRail.setSource(order.getSource());
+        orderRail.setDestination(order.getDestination());
+        orderRail.setPlanReportTime(new Date());
+        order.setRailway(orderRail);
+
+        List<ServiceItemEntity> serviceItemList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            ServiceItemEntity serviceItem = new ServiceItemEntity();
+            serviceItemList.add(serviceItem);
+        }
+        order.setServiceItems(serviceItemList);
 
         model.addAttribute("order", order);
+        model.addAttribute("sourceName", order.getSource().getName());
+        model.addAttribute("destinationName", order.getDestination().getName());
+        model.addAttribute("railSourceName", orderRail.getSource().getName());
+        model.addAttribute("railDestinationName", orderRail.getDestination().getName());
         return "order/form";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "addServiceItem")
-    public String addServiceItem(@ModelAttribute Order order) {
+    public String addServiceItem(@ModelAttribute(value = "order") OrderEntity order, Model model) {
         logger.debug("order: {}", order);
-        order.getServiceItems().add(new ServiceItem());
-
+        order.getServiceItems().add(new ServiceItemEntity());
+        model.addAttribute("sourceName", order.getSource().getName());
+        model.addAttribute("destinationName", order.getDestination().getName());
+        model.addAttribute("railSourceName", order.getRailway().getSource().getName());
+        model.addAttribute("railDestinationName", order.getRailway().getDestination().getName());
         return "order/form";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "removeServiceItem")
-    public String removeRow(@ModelAttribute Order order, HttpServletRequest request) {
+    public String removeRow(@ModelAttribute(value = "order") OrderEntity order, Model model, HttpServletRequest request) {
         final Integer rowId = Integer.valueOf(request.getParameter("removeServiceItem"));
         order.getServiceItems().remove(rowId.intValue());
+        model.addAttribute("sourceName", order.getSource().getName());
+        model.addAttribute("destinationName", order.getDestination().getName());
+        model.addAttribute("railSourceName", order.getRailway().getSource().getName());
+        model.addAttribute("railDestinationName", order.getRailway().getDestination().getName());
         return "order/form";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-    public String save(@Valid @ModelAttribute Order order, BindingResult bindingResult, Model model) {
+    public String save(@Valid @ModelAttribute(value = "order") OrderEntity order, BindingResult bindingResult, Model model, HttpServletRequest request) {
         logger.debug("order: {}", order);
+        String sourceName = request.getParameter("sourceName");
+        logger.debug("sourceName: {}", sourceName);
+        String destinationName = request.getParameter("destinationName");
+        logger.debug("destinationName: {}", destinationName);
+        String railSourceName = request.getParameter("railSourceName");
+        logger.debug("railSourceName: {}", railSourceName);
+        String railDestinationName = request.getParameter("railDestinationName");
+        logger.debug("railDestinationName: {}", railDestinationName);
+
         if (bindingResult.hasErrors()) {
+            model.addAttribute("sourceName", order.getSource().getName());
+            model.addAttribute("destinationName", order.getDestination().getName());
+            model.addAttribute("railSourceName", order.getRailway().getSource().getName());
+            model.addAttribute("railDestinationName", order.getRailway().getDestination().getName());
             return "order/form";
         }
 
-        FormValidationResult result = orderFacade.validateCustomer(order.getCustomerId(), order.getCustomerName());
+        // FIXME - Need a new way to validate customer.
+//        FormValidationResult result = orderFacade.validateCustomer(order.getCustomerId(), order.getCustomerName());
+//        if (!result.isSuccessful()) {
+//            addFieldError(bindingResult, "order", "customerName", order.getCustomerName(), order.getCustomerName());
+//        } else {
+//            order.setCustomerId(result.getId());
+//            order.setCustomerName(result.getName());
+//        }
+
+        FormValidationResult result = orderFacade.validateLocation(order.getSource().getId(), sourceName);
         if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "customerName", order.getCustomerName(), order.getCustomerName());
-        } else {
-            order.setCustomerId(result.getId());
-            order.setCustomerName(result.getName());
+            order.getSource().setName(sourceName);
+            addFieldError(bindingResult, "order", "source", order.getSource(), sourceName);
         }
 
-        result = orderFacade.validateLocation(order.getOriginId(), order.getOrigination());
+        result = orderFacade.validateLocation(order.getDestination().getId(), destinationName);
         if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "origination", order.getOrigination(), order.getOrigination());
-        } else {
-            order.setOriginId(result.getId());
-            order.setOrigination(result.getName());
+            order.getDestination().setName(destinationName);
+            addFieldError(bindingResult, "order", "destination", order.getDestination(), destinationName);
         }
 
-        result = orderFacade.validateLocation(order.getDestinationId(), order.getDestination());
+        result = orderFacade.validateLocation(order.getRailway().getSource().getId(), railSourceName, LocationType.STATION);
         if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "destination", order.getDestination(), order.getDestination());
-        } else {
-            order.setDestinationId(result.getId());
-            order.setDestination(result.getName());
+            order.getRailway().getSource().setName(railSourceName);
+            addFieldError(bindingResult, "order", "railSource", order.getRailway().getSource(), order.getRailway().getSource());
         }
 
-        result = orderFacade.validateLocation(order.getRailSourceId(), order.getRailSource(), LocationType.STATION);
+        result = orderFacade.validateLocation(order.getRailway().getDestination().getId(), railDestinationName, LocationType.STATION);
         if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "railSource", order.getRailSource(), order.getRailSource());
-        } else {
-            order.setRailSourceId(result.getId());
-            order.setRailSource(result.getName());
-        }
-
-        result = orderFacade.validateLocation(order.getRailDestinationId(), order.getRailDestination(), LocationType.STATION);
-        if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "railDestination", order.getRailDestination(), order.getRailDestination());
-        } else {
-            order.setRailDestinationId(result.getId());
-            order.setRailDestination(result.getName());
+            order.getRailway().getDestination().setName(railDestinationName);
+            addFieldError(bindingResult, "order", "railDestination", order.getRailway().getDestination(), order.getRailway().getDestination());
         }
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("sourceName", order.getSource().getName());
+            model.addAttribute("destinationName", order.getDestination().getName());
             return "order/form";
         }
 
         order.setStatus(OrderStatus.SAVED.getValue());
-        orderFacade.save(order);
+        orderService.saveOrder(order);
         return "redirect:/order?number=0";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "submit")
-    public String submit(@Valid @ModelAttribute Order order,
-                         BindingResult bindingResult, Model model) {
+    public String submit(@Valid @ModelAttribute(value = "order") OrderEntity order,
+                         BindingResult bindingResult, Model model, HttpServletRequest request) {
         logger.debug("order: {}", order);
+        String sourceName = request.getParameter("sourceName");
+        logger.debug("sourceName: {}", sourceName);
+        String destinationName = request.getParameter("destinationName");
+        logger.debug("destinationName: {}", destinationName);
+        String railSourceName = request.getParameter("railSourceName");
+        logger.debug("railSourceName: {}", railSourceName);
+        String railDestinationName = request.getParameter("railDestinationName");
+        logger.debug("railDestinationName: {}", railDestinationName);
         if (bindingResult.hasErrors()) {
+            model.addAttribute("sourceName", order.getSource().getName());
+            model.addAttribute("destinationName", order.getDestination().getName());
+            model.addAttribute("railSourceName", order.getRailway().getSource());
+            model.addAttribute("railDestinationName", order.getRailway().getDestination());
             return "order/form";
         }
 
-        FormValidationResult result = orderFacade.validateCustomer(order.getCustomerId(), order.getCustomerName());
+        // FIXME - Need a new way to validate customer.
+//        FormValidationResult result = orderFacade.validateCustomer(order.getCustomerId(), order.getCustomerName());
+//        if (!result.isSuccessful()) {
+//            addFieldError(bindingResult, "order", "customerName", order.getCustomerName(), order.getCustomerName());
+//        } else {
+//            order.setCustomerId(result.getId());
+//            order.setCustomerName(result.getName());
+//        }
+
+        FormValidationResult result = orderFacade.validateLocation(order.getSource().getId(), sourceName);
         if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "customerName", order.getCustomerName(), order.getCustomerName());
-        } else {
-            order.setCustomerId(result.getId());
-            order.setCustomerName(result.getName());
+            addFieldError(bindingResult, "order", "source", order.getSource(), sourceName);
         }
 
-        result = orderFacade.validateLocation(order.getOriginId(), order.getOrigination());
+        result = orderFacade.validateLocation(order.getDestination().getId(), destinationName);
         if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "origination", order.getOrigination(), order.getOrigination());
-        } else {
-            order.setOriginId(result.getId());
-            order.setOrigination(result.getName());
+            addFieldError(bindingResult, "order", "destination", order.getDestination(), destinationName);
         }
 
-        result = orderFacade.validateLocation(order.getDestinationId(), order.getDestination());
+        result = orderFacade.validateLocation(order.getRailway().getSource().getId(), railSourceName, LocationType.STATION);
         if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "destination", order.getDestination(), order.getDestination());
-        } else {
-            order.setDestinationId(result.getId());
-            order.setDestination(result.getName());
+            order.getRailway().getSource().setName(railSourceName);
+            addFieldError(bindingResult, "order", "railSource", order.getRailway().getSource(), order.getRailway().getSource());
         }
 
-        result = orderFacade.validateLocation(order.getRailSourceId(), order.getRailSource(), LocationType.STATION);
+        result = orderFacade.validateLocation(order.getRailway().getDestination().getId(), railDestinationName, LocationType.STATION);
         if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "railSource", order.getRailSource(), order.getRailSource());
-        } else {
-            order.setRailSourceId(result.getId());
-            order.setRailSource(result.getName());
-        }
-
-        result = orderFacade.validateLocation(order.getRailDestinationId(), order.getRailDestination(), LocationType.STATION);
-        if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "railDestination", order.getRailDestination(), order.getRailDestination());
-        } else {
-            order.setRailDestinationId(result.getId());
-            order.setRailDestination(result.getName());
+            order.getRailway().getDestination().setName(railDestinationName);
+            addFieldError(bindingResult, "order", "railDestination", order.getRailway().getDestination(), order.getRailway().getDestination());
         }
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("sourceName", order.getSource().getName());
+            model.addAttribute("destinationName", order.getDestination().getName());
             return "order/form";
         }
 
         order.setStatus(OrderStatus.SUBMITTED.getValue());
-        orderFacade.submit(order);
+        order = orderService.submitOrder(order);
+
+        boolean hasDelivery = false;
+        List<ServiceItemEntity> serviceItems = order.getServiceItems();
+        for (ServiceItemEntity serviceItem : serviceItems) {
+            if (serviceItem.getServiceSubtype().getId() == Long.valueOf(env.getProperty("service.subtype.delivery.id"))) {
+                hasDelivery = true;
+                break;
+            }
+        }
+        Map<String, Object> variableMap = new HashMap<>();
+        variableMap.put("loadingType", order.getLoadingType());
+        variableMap.put("hasDelivery", hasDelivery);
+        variableMap.put("orderOwner", order.getUpdatedBy());
+        variableMap.put("tradeType", order.getTradeType());
+        processService.startProcess(order.getUpdatedBy(), BusinessKey.encode(order.getId(), order.getOrderNo()), variableMap);
 
         return "redirect:/order?number=0";
     }
 
     @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
-    public String initEdit(@PathVariable long id, Model model) {
+    public String initEdit(@PathVariable Long id, Model model) {
         logger.debug("id: {}", id);
 
-        Order order = orderFacade.find(id);
+        OrderEntity order = orderService.find(id);
         logger.debug("order: {}", order);
 
-        List<ServiceItem> serviceItemList = order.getServiceItems();
+        List<ServiceItemEntity> serviceItemList = order.getServiceItems();
         if (null == serviceItemList) serviceItemList = new ArrayList<>();
         if (serviceItemList.size() < 5) {
             for (int i = serviceItemList.size(); i < 5; i++) {
-                serviceItemList.add(new ServiceItem());
+                serviceItemList.add(new ServiceItemEntity());
             }
         }
         order.setServiceItems(serviceItemList);
 
         model.addAttribute("order", order);
+        model.addAttribute("sourceName", order.getSource().getName());
+        model.addAttribute("destinationName", order.getDestination().getName());
+        model.addAttribute("railSourceName", order.getRailway().getSource().getName());
+        model.addAttribute("railDestinationName", order.getRailway().getDestination().getName());
+
         return "order/form";
     }
 
     @RequestMapping(value = "/{id}/duplicate", method = RequestMethod.GET)
-    public String initDuplicate(@PathVariable long id, Model model) {
+    public String initDuplicate(@PathVariable Long id, Model model) {
         logger.debug("id: {}", id);
 
-        Order order = orderFacade.duplicate(id);
+        OrderEntity order = orderService.find(id);
+        order.setId(null);
+        order.getRailway().setId(null);
+        order.setOrderNo(null);
+
+        List<ServiceItemEntity> serviceItems = order.getServiceItems();
+        for (ServiceItemEntity serviceItem : serviceItems) {
+            serviceItem.setId(null);
+        }
         logger.debug("order: {}", order);
 
         model.addAttribute("order", order);
+        model.addAttribute("sourceName", order.getSource().getName());
+        model.addAttribute("destinationName", order.getDestination().getName());
+        model.addAttribute("railSourceName", order.getRailway().getSource().getName());
+        model.addAttribute("railDestinationName", order.getRailway().getDestination().getName());
         return "order/form";
     }
 
@@ -475,8 +549,8 @@ public class OrderController extends BaseController {
         Invoice invoice = new Invoice();
         invoice.setOrderId(orderId);
         invoice.setIssuedAt(DateUtil.dayStrOf());
-        invoice.setBuyerId(order.getCustomerId());
-        invoice.setBuyerName(customerService.find(order.getCustomerId()).getName());
+        invoice.setBuyerId(order.getCustomer().getId());
+        invoice.setBuyerName(order.getCustomer().getName());
         invoice.setExpectedPaymentAt(DateUtil.dayStrOf());
         model.addAttribute("invoice", invoice);
         return "invoice/form";

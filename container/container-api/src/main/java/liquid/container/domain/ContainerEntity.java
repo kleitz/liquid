@@ -31,7 +31,7 @@ public class ContainerEntity extends BaseUpdateEntity {
 
     @ManyToOne
     @JoinColumn(name = "SUBTYPE_ID")
-    private ContainerSubtypeEntity subtype;
+    private ContainerSubtype subtype;
 
     @ManyToOne
     @JoinColumn(name = "YARD_ID")
@@ -93,11 +93,11 @@ public class ContainerEntity extends BaseUpdateEntity {
         this.status = status;
     }
 
-    public ContainerSubtypeEntity getSubtype() {
+    public ContainerSubtype getSubtype() {
         return subtype;
     }
 
-    public void setSubtype(ContainerSubtypeEntity subtype) {
+    public void setSubtype(ContainerSubtype subtype) {
         this.subtype = subtype;
     }
 

@@ -3,6 +3,8 @@ package liquid.order.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import liquid.core.domain.BaseIdEntity;
 import liquid.operation.domain.Goods;
+import liquid.operation.domain.Location;
+import liquid.operation.domain.RailPlanType;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -20,8 +22,9 @@ public class OrderRail extends BaseIdEntity {
     @Column(name = "PLAN_REPORT_TIME")
     private Date planReportTime;
 
-    @Column(name = "PLAN_TYPE")
-    private Long planType;
+    @ManyToOne
+    @JoinColumn(name = "PLAN_TYPE")
+    private RailPlanType planType;
 
     @Column(name = "PROGRAM_NO")
     private String programNo;
@@ -30,11 +33,13 @@ public class OrderRail extends BaseIdEntity {
     @JoinColumn(name = "PLAN_GOODS_ID")
     private Goods planGoods;
 
-    @Column(name = "SOURCE_ID")
-    private Long sourceId;
+    @ManyToOne
+    @JoinColumn(name = "SOURCE_ID")
+    private Location source;
 
-    @Column(name = "DESTINATION_ID")
-    private Long destinationId;
+    @ManyToOne
+    @JoinColumn(name = "DESTINATION_ID")
+    private Location destination;
 
     @Column(name = "COMMENT")
     private String comment;
@@ -58,11 +63,11 @@ public class OrderRail extends BaseIdEntity {
         this.planReportTime = planReportTime;
     }
 
-    public Long getPlanType() {
+    public RailPlanType getPlanType() {
         return planType;
     }
 
-    public void setPlanType(Long planType) {
+    public void setPlanType(RailPlanType planType) {
         this.planType = planType;
     }
 
@@ -82,20 +87,20 @@ public class OrderRail extends BaseIdEntity {
         this.planGoods = planGoods;
     }
 
-    public Long getSourceId() {
-        return sourceId;
+    public Location getSource() {
+        return source;
     }
 
-    public void setSourceId(Long sourceId) {
-        this.sourceId = sourceId;
+    public void setSource(Location source) {
+        this.source = source;
     }
 
-    public Long getDestinationId() {
-        return destinationId;
+    public Location getDestination() {
+        return destination;
     }
 
-    public void setDestinationId(Long destinationId) {
-        this.destinationId = destinationId;
+    public void setDestination(Location destination) {
+        this.destination = destination;
     }
 
     public String getComment() {
@@ -112,5 +117,22 @@ public class OrderRail extends BaseIdEntity {
 
     public void setSameDay(Boolean sameDay) {
         this.sameDay = sameDay;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{Class=OrderRail");
+        sb.append(", order=").append(order);
+        sb.append(", planReportTime=").append(planReportTime);
+        sb.append(", planType=").append(planType);
+        sb.append(", programNo='").append(programNo).append('\'');
+        sb.append(", planGoods=").append(planGoods);
+        sb.append(", source=").append(source);
+        sb.append(", destination=").append(destination);
+        sb.append(", comment='").append(comment).append('\'');
+        sb.append(", sameDay=").append(sameDay);
+        sb.append(", ").append(super.toString());
+        sb.append('}');
+        return sb.toString();
     }
 }

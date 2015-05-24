@@ -1,33 +1,41 @@
 package liquid.order.domain;
 
+import liquid.container.domain.ContainerSubtype;
 import liquid.core.domain.BaseUpdateEntity;
+import liquid.operation.domain.Customer;
+import liquid.operation.domain.Goods;
+import liquid.operation.domain.Location;
+import liquid.operation.domain.ServiceType;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 
 /**
- *  
  * User: tao
  * Date: 10/14/13
  * Time: 8:34 PM
  */
 @MappedSuperclass
 public class BaseOrder extends BaseUpdateEntity {
-    @Column(name = "SERVICE_TYPE_ID")
-    private Long serviceTypeId;
+    @ManyToOne
+    @JoinColumn(name = "SERVICE_TYPE_ID")
+    private ServiceType serviceType;
 
     @Column(name = "ORDER_NO")
     private String orderNo;
 
-    @Column(name = "CUSTOMER_ID")
-    private long customerId;
+    @ManyToOne
+    @JoinColumn(name = "CUSTOMER_ID")
+    private Customer customer;
 
-    @Column(name = "SRC_LOC_ID")
-    private Long srcLocId;
+    @ManyToOne
+    @JoinColumn(name = "SRC_LOC_ID")
+    private Location source;
 
-    @Column(name = "DST_LOC_ID")
-    private Long dstLocId;
+    @ManyToOne
+    @JoinColumn(name = "DST_LOC_ID")
+    private Location destination;
 
     @Column(name = "CONSIGNEE")
     private String consignee;
@@ -38,8 +46,9 @@ public class BaseOrder extends BaseUpdateEntity {
     @Column(name = "CONSIGNEE_ADDR")
     private String consigneeAddress;
 
-    @Column(name = "GOODS_ID")
-    private Long goodsId;
+    @ManyToOne
+    @JoinColumn(name = "GOODS_ID")
+    private Goods goods;
 
     /**
      * unit kilogram
@@ -55,8 +64,9 @@ public class BaseOrder extends BaseUpdateEntity {
     private int containerType;
 
     // The following three filed are used for list order
-    @Column(name = "CONTAINER_SUBTYPE_ID")
-    private Long containerSubtypeId;
+    @ManyToOne
+    @JoinColumn(name = "CONTAINER_SUBTYPE_ID")
+    private ContainerSubtype containerSubtype;
 
     @Column(name = "CONTAINER_CAP")
     private int containerCap;
@@ -85,7 +95,7 @@ public class BaseOrder extends BaseUpdateEntity {
     private BigDecimal distyUsd = BigDecimal.ZERO;
 
     @Column(precision = 19, scale = 4, name = "GRAND_TOTAL")
-    private BigDecimal grandTotal = new BigDecimal("0");
+    private BigDecimal grandTotal = BigDecimal.ZERO;
 
     @Column(name = "CREATE_ROLE")
     private String createRole;
@@ -94,12 +104,12 @@ public class BaseOrder extends BaseUpdateEntity {
     @Column(name = "STATUS")
     private int status;
 
-    public Long getServiceTypeId() {
-        return serviceTypeId;
+    public ServiceType getServiceType() {
+        return serviceType;
     }
 
-    public void setServiceTypeId(Long serviceTypeId) {
-        this.serviceTypeId = serviceTypeId;
+    public void setServiceType(ServiceType serviceType) {
+        this.serviceType = serviceType;
     }
 
     public String getOrderNo() {
@@ -110,28 +120,28 @@ public class BaseOrder extends BaseUpdateEntity {
         this.orderNo = orderNo;
     }
 
-    public long getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(long customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public Long getSrcLocId() {
-        return srcLocId;
+    public Location getSource() {
+        return source;
     }
 
-    public void setSrcLocId(Long srcLocId) {
-        this.srcLocId = srcLocId;
+    public void setSource(Location source) {
+        this.source = source;
     }
 
-    public Long getDstLocId() {
-        return dstLocId;
+    public Location getDestination() {
+        return destination;
     }
 
-    public void setDstLocId(Long dstLocId) {
-        this.dstLocId = dstLocId;
+    public void setDestination(Location destination) {
+        this.destination = destination;
     }
 
     public String getConsignee() {
@@ -158,12 +168,12 @@ public class BaseOrder extends BaseUpdateEntity {
         this.consigneeAddress = consigneeAddress;
     }
 
-    public Long getGoodsId() {
-        return goodsId;
+    public Goods getGoods() {
+        return goods;
     }
 
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
+    public void setGoods(Goods goods) {
+        this.goods = goods;
     }
 
     public int getGoodsWeight() {
@@ -190,12 +200,12 @@ public class BaseOrder extends BaseUpdateEntity {
         this.containerType = containerType;
     }
 
-    public Long getContainerSubtypeId() {
-        return containerSubtypeId;
+    public ContainerSubtype getContainerSubtype() {
+        return containerSubtype;
     }
 
-    public void setContainerSubtypeId(Long containerSubtypeId) {
-        this.containerSubtypeId = containerSubtypeId;
+    public void setContainerSubtype(ContainerSubtype containerSubtype) {
+        this.containerSubtype = containerSubtype;
     }
 
     public int getContainerCap() {

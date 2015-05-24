@@ -1,4 +1,4 @@
-package liquid.container.domain;
+package liquid.operation.domain;
 
 import liquid.core.domain.BaseUpdateEntity;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -8,13 +8,11 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by redbrick9 on 5/4/14.
+ * Created by redbrick9 on 4/26/14.
  */
-@Entity(name = "OPS_CONTAINER_SUBTYPE")
-public class ContainerSubtypeEntity extends BaseUpdateEntity {
-    @Column(name = "CONTAINER_TYPE")
-    private int containerType;
-
+// FIXME BundledService
+@Entity(name = "OPS_SERVICE_TYPE")
+public class ServiceType extends BaseUpdateEntity {
     @NotNull
     @NotEmpty
     @Column(name = "CODE")
@@ -28,13 +26,7 @@ public class ContainerSubtypeEntity extends BaseUpdateEntity {
     @Column(name = "STATE")
     private int state;
 
-    public int getContainerType() {
-        return containerType;
-    }
-
-    public void setContainerType(int containerType) {
-        this.containerType = containerType;
-    }
+    public ServiceType() { }
 
     public String getCode() {
         return code;
@@ -62,9 +54,8 @@ public class ContainerSubtypeEntity extends BaseUpdateEntity {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ContainerSubtype{");
-        sb.append("containerType=").append(containerType);
-        sb.append(", code='").append(code).append('\'');
+        final StringBuilder sb = new StringBuilder("ServiceType{");
+        sb.append("code='").append(code).append('\'');
         sb.append(", name='").append(name).append('\'');
         sb.append(", state=").append(state);
         sb.append('}');

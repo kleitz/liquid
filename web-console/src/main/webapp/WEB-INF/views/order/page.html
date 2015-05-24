@@ -23,7 +23,7 @@
                     <input type="text" class="form-control input-sm" th:field="*{text}" th:placeholder="#{customer.name} + #{or} + #{order.no}" />
                     
                     <span class="input-group-btn">                    
-                        <button type="submit" name="search" class="btn btn-primary"><i class="glyphicon glyphicon-search" /></button>
+                        <button type="submit" name="search" class="btn btn-primary"><span class="glyphicon glyphicon-search" /></button>
                     </span>
                 </div>
             </form>
@@ -63,22 +63,22 @@
         <tbody>
         <tr th:each="order : ${page.content}">
             <td>
-                <i th:if="${order.status} == 1" class="glyphicon glyphicon-floppy-disk" />
-                <i th:if="${order.status} == 2" class="glyphicon glyphicon-forward" />
-                <i th:if="${order.status} == 8" class="glyphicon glyphicon-flag" />
+                <span th:if="${order.status} == 1" class="glyphicon glyphicon-floppy-disk" />
+                <span th:if="${order.status} == 2" class="glyphicon glyphicon-forward" />
+                <span th:if="${order.status} == 8" class="glyphicon glyphicon-flag" />
                 &nbsp;
                 <a href="/order/id?action=edit" th:href="'/order/' + ${order.id}" th:text="${order.orderNo}"/>
             </td>
-            <td th:text="${order.customerName}">Customer Name</td>
-            <td th:text="${order.serviceType}">Service Type</td>
-            <td th:text="${order.origination}">Origin</td>
+            <td th:text="${order.customer.name}">Customer Name</td>
+            <td th:text="${order.serviceType.name}">Service Type</td>
+            <td th:text="${order.source.name}">Origin</td>
             <td th:text="${order.destination}">Destination</td>
-            <td th:text="${order.goodsName}">Cargo Name</td>
+            <td th:text="${order.goods.name}">Cargo Name</td>
             <td th:text="${order.goodsWeight}">Cargo Weight</td>
             <td th:text="#{${tradeTypes[__${order.tradeType}__].i18nKey}}">Trade Type</td>
             <td th:text="#{${loadingTypes[__${order.loadingType}__].i18nKey}}">Loading Type</td>
             <td th:text="#{${containerTypeMap[order.containerType]}}">Container Type</td>
-            <td th:text="${order.containerSubtype}">Container Subtype</td>
+            <td th:text="${order.containerSubtype.name}">Container Subtype</td>
             <td th:text="${order.containerQuantity}">Container Quantity</td>
 
             <td><span th:text="${#numbers.formatDecimal(order.cnyTotal, 0, 'COMMA', 2, 'POINT')}">CNY Price</span></td>

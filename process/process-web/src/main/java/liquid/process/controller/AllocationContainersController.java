@@ -1,7 +1,7 @@
 package liquid.process.controller;
 
 import liquid.container.domain.ContainerEntity;
-import liquid.container.domain.ContainerSubtypeEntity;
+import liquid.container.domain.ContainerSubtype;
 import liquid.container.domain.ContainerType;
 import liquid.container.model.Container;
 import liquid.container.model.EnterContainerAllocForm;
@@ -138,11 +138,11 @@ public class AllocationContainersController extends BaseTaskController {
 
         ShipmentEntity shipmentEntity = shipmentService.find(shipmentId);
         ShipmentContainerAllocation shipmentContainerAllocation = containerAllocationFacade.getShipmentContainerAllocation(
-                ContainerType.RAIL.getType(), containerSubtypeService.find(shipmentEntity.getOrder().getContainerSubtypeId()).getName(), shipmentEntity);
+                ContainerType.RAIL.getType(), shipmentEntity.getOrder().getContainerSubtype().getName(), shipmentEntity);
         // For showing the allocated containers.
         model.addAttribute("shipmentContainerAllocation", shipmentContainerAllocation);
 
-        Iterable<ContainerSubtypeEntity> subtypes = containerSubtypeService.findByContainerType(ContainerType.RAIL);
+        Iterable<ContainerSubtype> subtypes = containerSubtypeService.findByContainerType(ContainerType.RAIL);
         EnterContainerAllocForm containers = new EnterContainerAllocForm();
         containers.setShipmentId(shipmentId);
 
@@ -189,7 +189,7 @@ public class AllocationContainersController extends BaseTaskController {
         shipmentContainerAllocation.setShipment(shipmentEntity);
         shipmentContainerAllocation.setShipmentId(shipmentId);
         shipmentContainerAllocation.setType(shipmentEntity.getOrder().getContainerType());
-        List<ContainerAllocation> containerAllocations = containerAllocationFacade.computeSelfContainerAllocations(containerSubtypeService.find(shipmentEntity.getOrder().getContainerSubtypeId()).getName(), shipmentEntity);
+        List<ContainerAllocation> containerAllocations = containerAllocationFacade.computeSelfContainerAllocations(shipmentEntity.getOrder().getContainerSubtype().getName(), shipmentEntity);
         shipmentContainerAllocation.setContainerAllocations(containerAllocations);
         // For showing the allocated containers.
         model.addAttribute("shipmentContainerAllocation", shipmentContainerAllocation);
@@ -198,7 +198,7 @@ public class AllocationContainersController extends BaseTaskController {
 
         int size = 5;
         PageRequest pageRequest = new PageRequest(number, size, new Sort(Sort.Direction.DESC, "id"));
-        Page<ContainerEntity> page = containerService.findAll(shipmentEntity.getOrder().getContainerSubtypeId(),
+        Page<ContainerEntity> page = containerService.findAll(shipmentEntity.getOrder().getContainerSubtype().getId(),
                 ownerId, yardId, pageRequest);
         // Owner list
         List<ServiceProvider> owners = serviceItemService.findContainerOwners();
@@ -272,7 +272,7 @@ public class AllocationContainersController extends BaseTaskController {
         ShipmentEntity shipmentEntity = shipmentService.find(shipmentId);
         shipmentContainerAllocation.setShipment(shipmentEntity);
         shipmentContainerAllocation.setType(shipmentEntity.getOrder().getContainerType());
-        List<ContainerAllocation> containerAllocations = containerAllocationFacade.computeSelfContainerAllocations(containerSubtypeService.find(shipmentEntity.getOrder().getContainerSubtypeId()).getName(), shipmentEntity);
+        List<ContainerAllocation> containerAllocations = containerAllocationFacade.computeSelfContainerAllocations(shipmentEntity.getOrder().getContainerSubtype().getName(), shipmentEntity);
         shipmentContainerAllocation.setContainerAllocations(containerAllocations);
         // For showing the allocated containers.
         model.addAttribute("shipmentContainerAllocation", shipmentContainerAllocation);
@@ -310,7 +310,7 @@ public class AllocationContainersController extends BaseTaskController {
         ShipmentEntity shipmentEntity = shipmentService.find(shipmentId);
         shipmentContainerAllocation.setShipment(shipmentEntity);
         shipmentContainerAllocation.setType(shipmentEntity.getOrder().getContainerType());
-        List<ContainerAllocation> containerAllocations = containerAllocationFacade.computeSelfContainerAllocations(containerSubtypeService.find(shipmentEntity.getOrder().getContainerSubtypeId()).getName(), shipmentEntity);
+        List<ContainerAllocation> containerAllocations = containerAllocationFacade.computeSelfContainerAllocations(shipmentEntity.getOrder().getContainerSubtype().getName(), shipmentEntity);
         shipmentContainerAllocation.setContainerAllocations(containerAllocations);
         // For showing the allocated containers.
         model.addAttribute("shipmentContainerAllocation", shipmentContainerAllocation);
@@ -320,7 +320,7 @@ public class AllocationContainersController extends BaseTaskController {
         // Yard list
         List<Location> yards = locationService.findYards();
         // container subtypes
-        Iterable<ContainerSubtypeEntity> subtypes = containerSubtypeService.findByContainerType(ContainerType.SELF);
+        Iterable<ContainerSubtype> subtypes = containerSubtypeService.findByContainerType(ContainerType.SELF);
         EnterContainerAllocForm containers = new EnterContainerAllocForm();
         containers.setShipmentId(shipmentId);
         for (int i = 0; i < 5; i++) {
@@ -349,7 +349,7 @@ public class AllocationContainersController extends BaseTaskController {
             containerEntity.setBicCode(container.getBicCode());
             containerEntity.setOwner(ServiceProvider.newInstance(ServiceProvider.class, container.getOwnerId()));
             containerEntity.setYard(Location.newInstance(Location.class, container.getYardId()));
-            containerEntity.setSubtype(ContainerSubtypeEntity.newInstance(ContainerSubtypeEntity.class, container.getSubtypeId()));
+            containerEntity.setSubtype(ContainerSubtype.newInstance(ContainerSubtype.class, container.getSubtypeId()));
             containerEntity.setStatus(0);
             entities.add(containerEntity);
         }

@@ -76,7 +76,7 @@ public class ContainerServiceImpl implements InternalContainerService {
         if (containerSubtypeId > 0L) specifications = specifications.and(new Specification<ContainerEntity>() {
             @Override
             public Predicate toPredicate(Root<ContainerEntity> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-                return builder.equal(root.get(ContainerEntity_.subtype), ContainerSubtypeEntity.newInstance(ContainerSubtypeEntity.class, containerSubtypeId));
+                return builder.equal(root.get(ContainerEntity_.subtype), ContainerSubtype.newInstance(ContainerSubtype.class, containerSubtypeId));
             }
         });
 
@@ -157,7 +157,7 @@ public class ContainerServiceImpl implements InternalContainerService {
                                     break;
                             }
                             if (null == containerSubtypeId) break;
-                            entity.setSubtype(ContainerSubtypeEntity.newInstance(ContainerSubtypeEntity.class, containerSubtypeId));
+                            entity.setSubtype(ContainerSubtype.newInstance(ContainerSubtype.class, containerSubtypeId));
                             break;
                         case "D": // owner
                             if (null == value) break;

@@ -4,7 +4,7 @@
     <parent>
         <groupId>liquid</groupId>
         <artifactId>order</artifactId>
-        <version>2.1.58</version>
+        <version>2.1.59-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -26,6 +26,10 @@
         <dependency>
             <groupId>liquid</groupId>
             <artifactId>liquid-operation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>liquid</groupId>
+            <artifactId>liquid-container-api</artifactId>
         </dependency>
 
         <!-- spring -->
