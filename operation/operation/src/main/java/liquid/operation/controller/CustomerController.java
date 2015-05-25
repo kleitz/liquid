@@ -1,10 +1,11 @@
 package liquid.operation.controller;
 
+import liquid.core.controller.BaseController;
+import liquid.core.model.Pagination;
+import liquid.core.model.SearchBarForm;
 import liquid.operation.domain.Customer;
 import liquid.operation.service.InternalCustomerService;
 import liquid.pinyin4j.PinyinHelper;
-import liquid.core.controller.BaseController;
-import liquid.core.model.SearchBarForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
- *  
  * User: tao
  * Date: 9/24/13
  * Time: 11:26 PM
@@ -33,11 +34,12 @@ public class CustomerController extends BaseController {
     private InternalCustomerService customerService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String list(@RequestParam(defaultValue = "0", required = false) int number, Model model) {
-        PageRequest pageRequest = new PageRequest(number, size, new Sort(Sort.Direction.DESC, "id"));
+    public String list(Pagination pagination, Model model, HttpServletRequest request) {
+        PageRequest pageRequest = new PageRequest(pagination.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
         Page<Customer> page = customerService.findAll(pageRequest);
+
+        pagination.prepand(request.getRequestURI());
         model.addAttribute("page", page);
-        model.addAttribute("contextPath", "/customer?");
 
         SearchBarForm searchBarForm = new SearchBarForm();
         searchBarForm.setAction("/customer");

@@ -1,5 +1,6 @@
 package liquid.transport.controller;
 
+import liquid.core.model.Pagination;
 import liquid.operation.domain.Location;
 import liquid.transport.domain.PathEntity;
 import liquid.transport.domain.RouteEntity;
@@ -16,7 +17,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by Tao Ma on 11/27/14.
@@ -30,11 +32,11 @@ public class RouteController {
     private InternalRouteService routeService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String list(@RequestParam(defaultValue = "0", required = false) int number, Model model) {
-        PageRequest pageRequest = new PageRequest(number, size, new Sort(Sort.Direction.DESC, "id"));
+    public String list(Pagination pagination, Model model, HttpServletRequest request) {
+        PageRequest pageRequest = new PageRequest(pagination.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
         Page<RouteEntity> page = routeService.findAll(pageRequest);
+        pagination.prepand(request.getRequestURI());
         model.addAttribute("page", page);
-        model.addAttribute("contextPath", "/route?");
         return "route/list";
     }
 

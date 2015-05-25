@@ -286,20 +286,20 @@
 - contextPath: The context path except number, e.g. /order? or /order?type=abc&.
 - page:
 -->
-<div th:fragment="pagination_bar">
+<div th:fragment="pagination_bar(href)">
     <div class="text-center">
         <ul class="pagination pagination-sm">
             <li>
-                <a th:href="${searchBarForm.href} + 'number=0'">&laquo;</a>
+                <a th:href="${href} + 'number=0'">&laquo;</a>
             </li>
             <li><a th:if="${page.hasPrevious()}"
-                   th:href="${searchBarForm.href} + 'number=' + ${page.number - 1}"
+                   th:href="${href} + 'number=' + ${page.number - 1}"
                    th:text="${page.number}">1</a></li>
             <li><a href="" th:text="${page.number + 1}">2</a></li>
             <li><a th:if="${page.hasNext()}"
-                   th:href="${searchBarForm.href} + 'number=' + ${page.number + 1}"
+                   th:href="${href} + 'number=' + ${page.number + 1}"
                    th:text="${page.number + 2}">3</a></li>
-            <li><a th:href="${searchBarForm.href} + 'number=' + ${page.totalPages - 1}">&raquo;</a>
+            <li><a th:href="${href} + 'number=' + ${page.totalPages - 1}">&raquo;</a>
             </li>
         </ul>
     </div> 

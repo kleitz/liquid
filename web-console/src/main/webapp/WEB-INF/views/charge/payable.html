@@ -66,8 +66,8 @@
             <td class="text-right"><span th:text="${charge.currency} == 1 ? ${#numbers.formatDecimal(charge.totalPrice * exchangeRate, 0, 'COMMA', 2, 'POINT')} : ${#numbers.formatDecimal(charge.totalPrice, 0, 'COMMA', 2, 'POINT')}">Total Price</span></td>
             <td></td>
             <td>
-                <a th:if="${charge.order.status} == 0" th:href="'/payable/' + ${charge.order.id}"><i class="glyphicon glyphicon-credit-card text-success"/></a>
-                <span th:if="${charge.order.status} == 1"><i class="glyphicon glyphicon-check"/></span>
+                <a th:if="${charge.order.status} == 0" th:href="'/payable/' + ${charge.order.id}"><span class="glyphicon glyphicon-credit-card text-success"/></a>
+                <span th:if="${charge.order.status} == 1"><span class="glyphicon glyphicon-check"/></span>
             </td>
         </tr>
         <tr>
@@ -90,7 +90,7 @@
         </tbody>
     </table>
 
-    <div th:include="layout :: pagination_bar"></div>
+    <div th:include="layout :: pagination_bar(${searchBarForm.href})"></div>
 </div>
 
 <!-- {!begin layout} -->

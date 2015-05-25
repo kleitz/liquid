@@ -1,5 +1,7 @@
 package liquid.core.model;
 
+import liquid.util.DateUtil;
+
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -103,12 +105,16 @@ public class SearchBarForm extends Pagination {
         this.endDate = endDate;
     }
 
-    public static String toQueryStrings(SearchBarForm searchBarForm) {
+    public void prepand(String uri) {
+        setHref(uri + toQueryStrings());
+    }
+
+    public String toQueryStrings() {
         StringBuilder sb = new StringBuilder("?");
-        sb.append("startDate=").append(searchBarForm.getStartDate()).append("&");
-        sb.append("endDate=").append(searchBarForm.getEndDate()).append("&");
-        sb.append("type=").append(null == searchBarForm.getType() ? "" : searchBarForm.getType()).append("&");
-        sb.append("id=").append(null == searchBarForm.getId() ? "" : searchBarForm.getId()).append("&");
+        sb.append("startDate=").append(DateUtil.stringOf(this.getStartDate())).append("&");
+        sb.append("endDate=").append(DateUtil.stringOf(this.getEndDate())).append("&");
+        sb.append("type=").append(null == this.getType() ? "" : this.getType()).append("&");
+        sb.append("id=").append(null == this.getId() ? "" : this.getId()).append("&");
         return sb.toString();
     }
 

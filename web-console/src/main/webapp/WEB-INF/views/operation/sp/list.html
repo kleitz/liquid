@@ -39,15 +39,15 @@
             <td th:text="${sp.phone}">Phone</td>
             <td th:text="${sp.cell}">Cell</td>
             <td>
-                <i th:if="${sp.status} == 0" class="glyphicon glyphicon-ok text-success"/>
-                <i th:if="${sp.status} == 1" class="glyphicon glyphicon-ban-circle text-danger"/>
+                <span th:if="${sp.status} == 0" class="glyphicon glyphicon-ok text-success"/>
+                <span th:if="${sp.status} == 1" class="glyphicon glyphicon-ban-circle text-danger"/>
             </td>
             <td><a th:href="'/sp/' + ${sp.id}"><i class="glyphicon glyphicon-pencil"/></a></td>
         </tr>
         </tbody>
     </table>
     
-    <div th:include="layout :: pagination_bar"></div>
+    <div th:include="layout :: pagination_bar(${pagination.href})"></div>
 </div><!-- container -->
 
 <!-- {!begin layout} -->

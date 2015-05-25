@@ -24,6 +24,15 @@ public class Pagination {
         this.number = number;
     }
 
+    public void prepand(String uri) {
+        setHref(uri + toQueryStrings());
+    }
+
+    public String toQueryStrings() {
+        StringBuilder sb = new StringBuilder("?");
+        return sb.toString();
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("{Class=Pagination");

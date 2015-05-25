@@ -21,7 +21,7 @@
                 <div class="col-xs-4"><h4 class="list-group-item-heading"><span th:text="${row.id}"></span></h4></div>
                 <div class="col-xs-8">
                     <form th:action="'/shipment/' + ${row.id}" method="post">
-                        <button class="btn btn-default btn-xs pull-right" type="submit" name="save_to_route"><i class="glyphicon glyphicon-floppy-save text-success" /></button>
+                        <button class="btn btn-default btn-xs pull-right" type="submit" name="save_to_route"><span class="glyphicon glyphicon-floppy-save text-success" /></button>
                     </form>
                 </div>
             </div>
@@ -33,7 +33,7 @@
         </div>
     </div>
 
-    <div th:include="layout :: pagination_bar"></div>
+    <div th:include="layout :: pagination_bar(${pagination.href})"></div>
 </div>
 
 <!-- {!begin layout} -->

@@ -117,7 +117,8 @@
         </tbody>
     </table>
     
-    <div th:include="layout :: pagination_bar"></div>
+    <!-- FIXME - Using search bar to replace contextPath --> 
+    <div th:include="layout :: pagination_bar(${contextPath})"></div>
 </div><!-- /.container -->
 
 <!-- {!begin layout} -->

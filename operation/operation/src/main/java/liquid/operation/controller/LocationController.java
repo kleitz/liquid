@@ -3,9 +3,10 @@ package liquid.operation.controller;
 import liquid.core.controller.BaseController;
 import liquid.core.model.Alert;
 import liquid.core.model.AlertType;
-import liquid.operation.model.LocationForm;
+import liquid.core.model.Pagination;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.LocationType;
+import liquid.operation.model.LocationForm;
 import liquid.operation.service.InternalLocationService;
 import liquid.operation.service.LocationTypeService;
 import liquid.pinyin4j.PinyinHelper;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +49,10 @@ public class LocationController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String list(@RequestParam(required = false, defaultValue = "0") int number,
+    public String list(Pagination pagination,
                        @RequestParam(required = false, defaultValue = "-1") Byte type,
-                       Model model) {
-        PageRequest pageRequest = new PageRequest(number, size, new Sort(Sort.Direction.DESC, "id"));
+                       Model model, HttpServletRequest request) {
+        PageRequest pageRequest = new PageRequest(pagination.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
 
         Page<Location> page;
         if (type == -1) {
@@ -58,10 +60,11 @@ public class LocationController extends BaseController {
         } else {
             page = locationService.findAll(type, pageRequest);
         }
+        pagination.prepand(request.getRequestURI());
         model.addAttribute("page", page);
         model.addAttribute("type", type);
         model.addAttribute("location", new Location());
-        model.addAttribute("contextPath", "/location?");
+
         return ROOT_DIR + "list";
     }
 

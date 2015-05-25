@@ -49,7 +49,7 @@ public class OrderSearchBar extends Pagination {
         setHref(uri + toQueryStrings());
     }
 
-    private String toQueryStrings() {
+    public String toQueryStrings() {
         StringBuilder sb = new StringBuilder("?");
         if (null != type) sb.append("type=").append(type).append("&");
         if (null != id) sb.append("id=").append(id).append("&");

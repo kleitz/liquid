@@ -5,6 +5,7 @@ import liquid.container.domain.ContainerSubtype;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
 import liquid.core.controller.BaseController;
+import liquid.core.model.Pagination;
 import liquid.core.model.SearchBarForm;
 import liquid.operation.domain.*;
 import liquid.operation.service.CustomerService;
@@ -27,7 +28,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -108,9 +112,9 @@ public class ReceivingOrderController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String initFind(@RequestParam(defaultValue = "0", required = false) int number, SearchBarForm searchBarForm, Model model) {
+    public String initFind(Pagination pagination, SearchBarForm searchBarForm, Model model, HttpServletRequest request) {
         Page<ValueAddedOrder> page = new PageImpl<ValueAddedOrder>(new ArrayList<>());
-        PageRequest pageRequest = new PageRequest(number, size, new Sort(Sort.Direction.DESC, "id"));
+        PageRequest pageRequest = new PageRequest(pagination.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
         if ("customer".equals(searchBarForm.getType())) {
             page = valueAddedOrderFacade.findByCustomerId(searchBarForm.getId(), pageRequest);
         } else if ("order".equals(searchBarForm.getType())) {
@@ -122,8 +126,8 @@ public class ReceivingOrderController extends BaseController {
             page = valueAddedOrderFacade.findAll(pageRequest);
         }
 
+        pagination.prepand(request.getRequestURI());
         model.addAttribute("page", page);
-        model.addAttribute("contextPath", "/recv_order?");
 
         searchBarForm.setAction("/recv_order");
         searchBarForm.setTypes(new String[][]{{"orderNo", "order.no"}, {"customerName", "customer.name"}});

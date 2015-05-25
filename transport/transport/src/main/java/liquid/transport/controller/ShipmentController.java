@@ -1,5 +1,6 @@
 package liquid.transport.controller;
 
+import liquid.core.model.Pagination;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.ServiceProviderService;
@@ -27,6 +28,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -62,11 +64,11 @@ public class ShipmentController {
     private TaskService taskService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String list(@RequestParam(defaultValue = "0", required = false) int number, Model model) {
-        PageRequest pageRequest = new PageRequest(number, size, new Sort(Sort.Direction.DESC, "id"));
+    public String list(Pagination pagination, Model model, HttpServletRequest request) {
+        PageRequest pageRequest = new PageRequest(pagination.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
         Page<ShipmentEntity> page = shipmentService.findAll(pageRequest);
+        pagination.prepand(request.getRequestURI());
         model.addAttribute("page", page);
-        model.addAttribute("contextPath", "/shipment?");
         return "shipment/list";
     }
 

@@ -6,6 +6,9 @@ import liquid.container.model.Container;
 import liquid.container.model.Containers;
 import liquid.container.service.InternalContainerService;
 import liquid.container.service.InternalContainerSubtypeService;
+import liquid.core.controller.BaseController;
+import liquid.core.model.Pagination;
+import liquid.core.model.SearchBarForm;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.LocationType;
 import liquid.operation.domain.ServiceProvider;
@@ -13,8 +16,6 @@ import liquid.operation.service.LocationService;
 import liquid.order.service.ServiceItemService;
 import liquid.transport.domain.RailContainer;
 import liquid.transport.service.RailContainerService;
-import liquid.core.controller.BaseController;
-import liquid.core.model.SearchBarForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,7 +38,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  
  * User: tao
  * Date: 10/3/13
  * Time: 3:59 PM
@@ -103,12 +104,12 @@ public class ContainerController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String init(Model model,
-                       @RequestParam(required = false, defaultValue = "0") int number,
+    public String init(Pagination pagination,
                        @RequestParam(required = false, defaultValue = "0") Long subtypeId,
                        @RequestParam(required = false, defaultValue = "0") Long ownerId,
                        @RequestParam(required = false, defaultValue = "0") Long yardId,
-                       @RequestParam(required = false) String bicCode) {
+                       @RequestParam(required = false) String bicCode,
+                       Model model, HttpServletRequest request) {
 
         // container subtypes
         Iterable<ContainerSubtype> subtypes = containerSubtypeService.findByContainerType(ContainerType.SELF);
@@ -125,7 +126,7 @@ public class ContainerController extends BaseController {
             final List<ContainerEntity> list = containers;
             model.addAttribute("page", new PageImpl<ContainerEntity>(list));
         } else {
-            PageRequest pageRequest = new PageRequest(number, size, new Sort(Sort.Direction.DESC, "id"));
+            PageRequest pageRequest = new PageRequest(pagination.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
             Page<ContainerEntity> page = containerService.findAll(subtypeId, ownerId, yardId, pageRequest);
             model.addAttribute("page", page);
             model.addAttribute("contextPath", "/container?subtypeId=" + subtypeId + "&ownerId=" + ownerId + "&yardId=" + yardId + "&");
@@ -265,13 +266,13 @@ public class ContainerController extends BaseController {
     }
 
     @RequestMapping(value = "/release/all", method = RequestMethod.GET)
-    public String listReleasedAll(@RequestParam(defaultValue = "0", required = false) int number, Model model) {
-        PageRequest pageRequest = new PageRequest(number, size, new Sort(Sort.Direction.DESC, "id"));
+    public String listReleasedAll(Pagination pagination, Model model, HttpServletRequest request) {
+        PageRequest pageRequest = new PageRequest(pagination.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
         Page<RailContainer> page = railContainerService.findAll(pageRequest);
-
+        
+        pagination.prepand(request.getRequestURI());
         model.addAttribute("page", page);
         model.addAttribute("tab", "all");
-        model.addAttribute("contextPath", "/container/release/all?");
         return "container/all_release";
     }
 }

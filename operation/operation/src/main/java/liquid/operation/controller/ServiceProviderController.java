@@ -1,6 +1,7 @@
 package liquid.operation.controller;
 
 import liquid.core.controller.BaseController;
+import liquid.core.model.Pagination;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.InternalServiceProviderService;
 import liquid.operation.service.ServiceProviderTypeService;
@@ -14,8 +15,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
@@ -40,11 +45,12 @@ public class ServiceProviderController extends BaseController {
     private ServiceProviderTypeService serviceProviderTypeService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String list(@RequestParam(defaultValue = "0", required = false) int number, Model model) {
-        PageRequest pageRequest = new PageRequest(number, size, new Sort(Sort.Direction.DESC, "id"));
+    public String list(Pagination pagination, Model model, HttpServletRequest request) {
+        PageRequest pageRequest = new PageRequest(pagination.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
         Page<ServiceProvider> page = serviceProviderService.findAll(pageRequest);
+
+        pagination.prepand(request.getRequestURI());
         model.addAttribute("page", page);
-        model.addAttribute("contextPath", "/sp?");
         return ROOT_DIR + "list";
     }
 

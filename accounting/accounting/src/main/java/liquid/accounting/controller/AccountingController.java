@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 
@@ -48,11 +49,11 @@ public class AccountingController {
 
     @RequestMapping(value = "/gross_profit", method = RequestMethod.GET)
     public String grossProfit(@Valid SearchBarForm searchBarForm,
-                              BindingResult bindingResult, Model model) {
+                              BindingResult bindingResult, Model model, HttpServletRequest request) {
         model.addAttribute("tradeTypes", TradeType.values());
         model.addAttribute("exchangeRate", exchangeRateService.getExchangeRate().getValue());
 
-        model.addAttribute("contextPath", "/accounting/gross_profit" + SearchBarForm.toQueryStrings(searchBarForm));
+        searchBarForm.prepand(request.getRequestURI());
 
         if (bindingResult.hasErrors()) {
             Page<ReceivableSummary> page = new PageImpl<ReceivableSummary>(new ArrayList<>());
@@ -71,12 +72,10 @@ public class AccountingController {
 
     @RequestMapping(value = "/summary", method = RequestMethod.GET)
     public String summary(@Valid SearchBarForm searchBarForm,
-                          BindingResult bindingResult, Model model) {
+                          BindingResult bindingResult, Model model, HttpServletRequest request) {
         model.addAttribute("tradeTypes", TradeType.values());
         model.addAttribute("exchangeRate", exchangeRateService.getExchangeRate().getValue());
-
-        model.addAttribute("contextPath", "/accounting/summary" + SearchBarForm.toQueryStrings(searchBarForm));
-
+        searchBarForm.prepand(request.getRequestURI());
         if (bindingResult.hasErrors()) {
             Page<ReceivableSummary> page = new PageImpl<ReceivableSummary>(new ArrayList<>());
             model.addAttribute("page", page);
@@ -89,17 +88,18 @@ public class AccountingController {
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
 //        Page<ReceivableSummary> page = receivableFacade.findAll(searchBarForm, pageRequest);
         SumPage<ReceivableSummaryEntity> page = receivableSummaryService.findAll(searchBarForm, pageRequest);
+
         model.addAttribute("page", page);
         return "charge/summary";
     }
 
     @RequestMapping(value = "/receivable", method = RequestMethod.GET)
     public String listReceivables(@Valid SearchBarForm searchBarForm,
-                                  BindingResult bindingResult, Model model) {
+                                  BindingResult bindingResult, Model model, HttpServletRequest request) {
         model.addAttribute("tradeTypes", TradeType.values());
         model.addAttribute("exchangeRate", exchangeRateService.getExchangeRate().getValue());
 
-        model.addAttribute("contextPath", "/accounting/receivable" + SearchBarForm.toQueryStrings(searchBarForm));
+        searchBarForm.prepand(request.getRequestURI());
 
         if (bindingResult.hasErrors()) {
             Page<ReceivableSummary> page = new PageImpl<ReceivableSummary>(new ArrayList<>());
@@ -125,11 +125,11 @@ public class AccountingController {
 
     @RequestMapping(value = "/payable", method = RequestMethod.GET)
     public String payable(@Valid SearchBarForm searchBarForm,
-                          BindingResult bindingResult, Model model) {
+                          BindingResult bindingResult, Model model, HttpServletRequest request) {
         model.addAttribute("chargeWays", ChargeWay.values());
         model.addAttribute("exchangeRate", exchangeRateService.getExchangeRate().getValue());
 
-        model.addAttribute("contextPath", "/accounting/payable" + SearchBarForm.toQueryStrings(searchBarForm));
+        searchBarForm.prepand(request.getRequestURI());
 
         if (bindingResult.hasErrors()) {
             Page<Charge> page = new PageImpl<Charge>(new ArrayList<>());
