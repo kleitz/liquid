@@ -21,7 +21,7 @@ public interface OrderService {
 
     Page<OrderEntity> findAll(Pageable pageable);
 
-    Page<OrderEntity> findAll(final String orderNo, final String customerName, final String username, final Pageable pageable);
+    Page<OrderEntity> findAll(final Long id, final Long customerId, final String username, final Pageable pageable);
 
     Page<OrderEntity> findByStatus(Integer status, Pageable pageable);
 

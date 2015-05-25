@@ -156,15 +156,6 @@ public class OrderFacadeImpl implements InternalOrderFacade {
         return new PageImpl<Order>(orders, pageable, page.getTotalElements());
     }
 
-    public Page<Order> findAll(final String orderNo, final String customerName, final String username, final Pageable pageable) {
-        Page<OrderEntity> page = orderService.findAll(orderNo, customerName, username, pageable);
-
-        List<OrderEntity> entities = page.getContent();
-        List<Order> orders = convert(entities);
-
-        return new PageImpl<Order>(orders, pageable, page.getTotalElements());
-    }
-
     public Page<Order> findByStatus(Integer status, Pageable pageable) {
         Page<OrderEntity> page = orderService.findByStatus(status, pageable);
 

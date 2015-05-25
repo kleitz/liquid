@@ -15,7 +15,6 @@ import liquid.container.domain.ContainerSubtype;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
 import liquid.core.controller.BaseController;
-import liquid.core.model.SearchBarForm;
 import liquid.core.security.SecurityContext;
 import liquid.core.validation.FormValidationResult;
 import liquid.operation.domain.*;
@@ -23,6 +22,7 @@ import liquid.operation.service.*;
 import liquid.order.domain.*;
 import liquid.order.facade.InternalOrderFacade;
 import liquid.order.model.Order;
+import liquid.order.model.OrderSearchBar;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
 import liquid.process.service.BusinessKey;
@@ -36,13 +36,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -164,75 +166,29 @@ public class OrderController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String initFindPaging(@RequestParam(defaultValue = "0", required = false) int number, Model model) {
-        PageRequest pageRequest = new PageRequest(number, size, new Sort(Sort.Direction.DESC, "id"));
-        String username = SecurityContext.getInstance().getUsername();
-
-        Page<Order> page;
-
+    public String list(@ModelAttribute(value = "searchBarForm") OrderSearchBar orderSearchBar,
+                       Model model, HttpServletRequest request) {
+        PageRequest pageRequest = new PageRequest(orderSearchBar.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
+        Long id = null;
+        Long customerId = null;
+        String username = null;
         switch (SecurityContext.getInstance().getRole()) {
             case "ROLE_SALES":
             case "ROLE_MARKETING":
-                page = orderFacade.findByCreateUser(username, pageRequest);
+                username = SecurityContext.getInstance().getUsername();
                 break;
             default:
-                page = orderFacade.findAll(pageRequest);
                 break;
         }
-
-        model.addAttribute("page", page);
-        model.addAttribute("contextPath", "/order?");
-
-        SearchBarForm searchBarForm = new SearchBarForm();
-        searchBarForm.setAction("/order");
-        searchBarForm.setTypes(new String[][]{{"orderNo", "order.no"}, {"customerName", "customer.name"}});
-        model.addAttribute("searchBarForm", searchBarForm);
-        return "order/page";
-    }
-
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String search(@RequestParam(defaultValue = "0", required = false) int number, SearchBarForm searchBarForm, Model model) {
-        Page<Order> page = new PageImpl<Order>(new ArrayList<>());
-        if ("customer".equals(searchBarForm.getType())) {
-            PageRequest pageRequest = new PageRequest(number, size, new Sort(Sort.Direction.DESC, "id"));
-            page = orderFacade.findByCustomerId(searchBarForm.getId(), pageRequest);
-        } else if ("order".equals(searchBarForm.getType())) {
-            Order order = orderFacade.find(searchBarForm.getId());
-            List<Order> orders = new ArrayList<>();
-            orders.add(order);
-            page = new PageImpl<Order>(orders);
+        if ("customer".equals(orderSearchBar.getType())) {
+            customerId = orderSearchBar.getId();
+        } else if ("order".equals(orderSearchBar.getType())) {
+            id = orderSearchBar.getId();
         }
+        Page<OrderEntity> page = orderService.findAll(id, customerId, username, pageRequest);
+
+        orderSearchBar.prepand(request.getRequestURI());
         model.addAttribute("page", page);
-        model.addAttribute("searchBarForm", searchBarForm);
-        return "order/page";
-    }
-
-    @Deprecated
-    @RequestMapping(method = RequestMethod.GET, params = {"type", "text"})
-    public String search0(@RequestParam(defaultValue = "0", required = false) int number, SearchBarForm searchBarForm, Model model) {
-        PageRequest pageRequest = new PageRequest(number, size, new Sort(Sort.Direction.DESC, "id"));
-        String orderNo = "orderNo".equals(searchBarForm.getType()) ? searchBarForm.getText() : null;
-        String customerName = "customerName".equals(searchBarForm.getType()) ? searchBarForm.getText() : null;
-        String username = SecurityContext.getInstance().getUsername();
-
-        Page<Order> page;
-
-        switch (SecurityContext.getInstance().getRole()) {
-            case "ROLE_SALES":
-            case "ROLE_MARKETING":
-                page = orderFacade.findAll(orderNo, customerName, username, pageRequest);
-                break;
-            default:
-                page = orderFacade.findAll(orderNo, customerName, null, pageRequest);
-                break;
-        }
-
-        model.addAttribute("page", page);
-        model.addAttribute("contextPath", "/order?type=" + searchBarForm.getType() + "&text=" + searchBarForm.getText() + "&");
-
-        searchBarForm.setAction("/order");
-        searchBarForm.setTypes(new String[][]{{"orderNo", "order.no"}, {"customerName", "customer.name"}});
-        model.addAttribute("searchBarForm", searchBarForm);
         return "order/page";
     }
 

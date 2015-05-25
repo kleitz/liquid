@@ -290,16 +290,16 @@
     <div class="text-center">
         <ul class="pagination pagination-sm">
             <li>
-                <a th:href="${contextPath} + 'number=0'">&laquo;</a>
+                <a th:href="${searchBarForm.href} + 'number=0'">&laquo;</a>
             </li>
             <li><a th:if="${page.hasPrevious()}"
-                   th:href="${contextPath} + 'number=' + ${page.number - 1}"
+                   th:href="${searchBarForm.href} + 'number=' + ${page.number - 1}"
                    th:text="${page.number}">1</a></li>
             <li><a href="" th:text="${page.number + 1}">2</a></li>
             <li><a th:if="${page.hasNext()}"
-                   th:href="${contextPath} + 'number=' + ${page.number + 1}"
+                   th:href="${searchBarForm.href} + 'number=' + ${page.number + 1}"
                    th:text="${page.number + 2}">3</a></li>
-            <li><a th:href="${contextPath} + 'number=' + ${page.totalPages - 1}">&raquo;</a>
+            <li><a th:href="${searchBarForm.href} + 'number=' + ${page.totalPages - 1}">&raquo;</a>
             </li>
         </ul>
     </div> 

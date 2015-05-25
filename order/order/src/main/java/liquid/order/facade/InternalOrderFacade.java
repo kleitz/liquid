@@ -17,8 +17,6 @@ public interface InternalOrderFacade extends OrderFacade {
 
     Order find(long id);
 
-    Page<Order> findAll(final String orderNo, final String customerName, final String username, final Pageable pageable);
-
     FormValidationResult validateCustomer(Long id, String name);
 
     FormValidationResult validateLocation(Long id, String name);

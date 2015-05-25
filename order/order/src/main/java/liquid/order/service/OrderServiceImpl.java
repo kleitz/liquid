@@ -3,6 +3,7 @@ package liquid.order.service;
 import liquid.accounting.domain.ReceivableSummaryEntity;
 import liquid.accounting.service.ReceivableSummaryService;
 import liquid.core.security.SecurityContext;
+import liquid.operation.domain.Customer_;
 import liquid.order.domain.OrderEntity;
 import liquid.order.domain.OrderEntity_;
 import liquid.order.domain.OrderStatus;
@@ -82,34 +83,34 @@ public class OrderServiceImpl extends AbstractBaseOrderService<OrderEntity, Orde
     /**
      * Criteria Query for order.
      *
-     * @param orderNo
-     * @param customerName
+     * @param id
+     * @param customerId
      * @param username
      * @param pageable
      * @return
      */
-    public Page<OrderEntity> findAll(final String orderNo, final String customerName, final String username, final Pageable pageable) {
+    public Page<OrderEntity> findAll(final Long id, final Long customerId, final String username, final Pageable pageable) {
         List<Specification<OrderEntity>> specList = new ArrayList<>();
 
-        if (null != orderNo) {
+        if (null != id) {
             Specification<OrderEntity> orderNoSpec = new Specification<OrderEntity>() {
                 @Override
                 public Predicate toPredicate(Root<OrderEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
-                    return builder.like(root.get(OrderEntity_.orderNo), "%" + orderNo + "%");
+                    return builder.equal(root.get(OrderEntity_.id), id);
                 }
             };
             specList.add(orderNoSpec);
         }
 
-//        if (null != customerName) {
-//            Specification<OrderEntity> customerNameSpec = new Specification<OrderEntity>() {
-//                @Override
-//                public Predicate toPredicate(Root<OrderEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
-//                    return builder.like(root.get(OrderEntity_.customer).get(CustomerEntity_.name), "%" + customerName + "%");
-//                }
-//            };
-//            specList.add(customerNameSpec);
-//        }
+        if (null != customerId) {
+            Specification<OrderEntity> customerNameSpec = new Specification<OrderEntity>() {
+                @Override
+                public Predicate toPredicate(Root<OrderEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
+                    return builder.equal(root.get(OrderEntity_.customer).get(Customer_.id), customerId);
+                }
+            };
+            specList.add(customerNameSpec);
+        }
 
         if (null != username) {
             Specification<OrderEntity> usernameSpec = new Specification<OrderEntity>() {

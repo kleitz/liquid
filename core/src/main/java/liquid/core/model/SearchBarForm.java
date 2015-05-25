@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by mat on 10/18/14.
  */
-public class SearchBarForm {
+public class SearchBarForm extends Pagination {
     @Deprecated
     private String action;
     @Deprecated
@@ -34,11 +34,6 @@ public class SearchBarForm {
 
     @NotNull
     private Date endDate;
-
-    /**
-     * The number of page.
-     */
-    private int number;
 
     public SearchBarForm() {
         Calendar calendar = Calendar.getInstance();
@@ -108,14 +103,6 @@ public class SearchBarForm {
         this.endDate = endDate;
     }
 
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
     public static String toQueryStrings(SearchBarForm searchBarForm) {
         StringBuilder sb = new StringBuilder("?");
         sb.append("startDate=").append(searchBarForm.getStartDate()).append("&");
@@ -133,9 +120,8 @@ public class SearchBarForm {
         sb.append(", id=").append(id);
         sb.append(", type='").append(type).append('\'');
         sb.append(", text='").append(text).append('\'');
-        sb.append(", startDate='").append(startDate).append('\'');
-        sb.append(", endDate='").append(endDate).append('\'');
-        sb.append(", number=").append(number);
+        sb.append(", startDate=").append(startDate);
+        sb.append(", endDate=").append(endDate);
         sb.append('}');
         return sb.toString();
     }
