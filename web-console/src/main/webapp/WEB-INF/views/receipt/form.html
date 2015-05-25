@@ -32,7 +32,7 @@
         <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('issuedAt')} ? 'has-error'">
             <label for="issuedAt" th:text="#{date.of.receivable}">Issued At</label>
             <div class="input-group input-group-sm date" id="receiptIssuedAtPicker">
-                <input type="text" data-date-format="YYYY-MM-DD" class="form-control input-sm" th:field="*{issuedAt}" />
+                <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{issuedAt}" />
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -40,7 +40,7 @@
             <span class="text-danger" th:errors="*{issuedAt}">error</span>
         </div>
 
-        <button type="submit" class="btn btn-success btn-sm btn-block"><i class="glyphicon glyphicon-plus"/></button>
+        <button type="submit" class="btn btn-success btn-sm btn-block"><span class="glyphicon glyphicon-plus"/></button>
     </form>
 </div><!-- form -->
 

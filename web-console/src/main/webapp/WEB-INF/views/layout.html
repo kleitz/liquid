@@ -234,7 +234,7 @@
             <input type="text" class="form-control" th:field="*{text}" />
             
             <span class="input-group-btn">                    
-                <button type="submit" name="search" class="btn btn-primary"><i class="glyphicon glyphicon-search" /></button>
+                <button type="submit" name="search" class="btn btn-primary"><span class="glyphicon glyphicon-search" /></button>
             </span>
         </div>             
     </form>
@@ -258,7 +258,7 @@
                 <input type="hidden" th:field="*{number}"/>
                 <div class="input-group input-group-sm date" id="startPicker">
                     <span class="input-group-addon" th:text="#{start.date}">Start Date</span>
-                    <input type="text" data-date-format="YYYY-MM-DD" class="form-control input-sm" th:field="*{startDate}" />
+                    <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{startDate}" />
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -266,7 +266,7 @@
                 
                 <div class="input-group input-group-sm date" id="endPicker">
                     <span class="input-group-addon" th:text="#{end.date}">End Date</span>
-                    <input type="text" data-date-format="YYYY-MM-DD" class="form-control input-sm" th:field="*{endDate}" />
+                    <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{endDate}" />
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -276,7 +276,7 @@
                     <input type="text" class="form-control" th:field="*{text}" />
                     
                     <span class="input-group-btn">                    
-                        <button type="submit" name="search" class="btn btn-primary"><i class="glyphicon glyphicon-search" /></button>
+                        <button type="submit" name="search" class="btn btn-primary"><span class="glyphicon glyphicon-search" /></button>
                     </span>
                 </div>             
             </form> 

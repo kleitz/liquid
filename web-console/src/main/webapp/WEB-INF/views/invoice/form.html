@@ -45,7 +45,7 @@
         <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('issuedAt')} ? 'has-error'">
             <label for="issuedAt" th:text="#{date.of.invoice}">Issued At</label>
             <div class="input-group input-group-sm date" id="invoiceIssuedAtPicker">
-                <input type="text" data-date-format="YYYY-MM-DD" class="form-control input-sm" th:field="*{issuedAt}" />
+                <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{issuedAt}" />
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -56,7 +56,7 @@
         <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('expectedPaymentAt')} ? 'has-error'">
             <label for="expectedPaymentAt" th:text="#{expected.date.of.receivable}">Expected Payment At</label>
             <div class="input-group input-group-sm date" id="expectedPaymentAtPicker">
-                <input type="text" data-date-format="YYYY-MM-DD" class="form-control input-sm" th:field="*{expectedPaymentAt}" />
+                <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{expectedPaymentAt}" />
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -64,7 +64,7 @@
             <span class="text-danger" th:errors="*{expectedPaymentAt}">error</span>
         </div>            
 
-        <button type="submit" class="btn btn-success btn-sm btn-block"><i class="glyphicon glyphicon-plus"/></button>
+        <button type="submit" class="btn btn-success btn-sm btn-block"><span class="glyphicon glyphicon-plus"/></button>
     </form>
 </div><!-- form -->
 
