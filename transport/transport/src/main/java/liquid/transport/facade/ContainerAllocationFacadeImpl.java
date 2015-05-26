@@ -3,7 +3,7 @@ package liquid.transport.facade;
 import liquid.container.domain.ContainerEntity;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.transport.domain.RailContainer;
 import liquid.transport.domain.ShipmentEntity;
@@ -49,11 +49,11 @@ public class ContainerAllocationFacadeImpl implements ContainerAllocationFacade 
     private RailContainerService railContainerService;
 
     public List<ShipmentContainerAllocation> computeContainerAllocation(Long orderId) {
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
         return computeContainerAllocation(order);
     }
 
-    public List<ShipmentContainerAllocation> computeContainerAllocation(OrderEntity order) {
+    public List<ShipmentContainerAllocation> computeContainerAllocation(Order order) {
         List<ShipmentContainerAllocation> shipmentContainerAllocations = new ArrayList<>();
 
         int type = order.getContainerType();

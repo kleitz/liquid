@@ -18,7 +18,7 @@ public class OrderRail extends BaseIdEntity {
     @JsonIgnore
     @OneToOne
     @JoinColumn(name = "ORDER_ID")
-    private OrderEntity order;
+    private Order order;
 
     @Column(name = "PLAN_REPORT_TIME")
     private Date planReportTime;
@@ -50,11 +50,11 @@ public class OrderRail extends BaseIdEntity {
     @Column(name = "SAME_DAY")
     private Boolean sameDay;
 
-    public OrderEntity getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(OrderEntity order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

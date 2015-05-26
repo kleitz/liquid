@@ -5,7 +5,7 @@ import liquid.container.domain.ContainerStatus;
 import liquid.container.service.ContainerService;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.ServiceProviderService;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.core.service.AbstractService;
 import liquid.transport.domain.*;
@@ -117,7 +117,7 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
     }
 
     public Iterable<RailContainer> initializeRailContainers(Long orderId) {
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
         Collection<RailContainer> rcList = rcRepository.findByOrder(order);
         if (rcList.size() > 0) {
             return rcList;
@@ -191,7 +191,7 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
     }
 
     public Iterable<BargeContainer> initBargeContainers(Long orderId) {
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
         Collection<BargeContainer> bcList = bcRepository.findByOrder(order);
         if (bcList.size() > 0) {
             for (WaterContainerEntity container : bcList) {
@@ -277,7 +277,7 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
     }
 
     public Iterable<VesselContainer> initVesselContainers(Long orderId) {
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
         Collection<VesselContainer> vcList = vcRepository.findByOrder(order);
         if (vcList.size() > 0) {
             for (VesselContainer container : vcList) {

@@ -1,6 +1,6 @@
 package liquid.order.service;
 
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -8,28 +8,28 @@ import org.springframework.data.domain.Pageable;
  * Created by Tao Ma on 4/4/15.
  */
 public interface OrderService {
-    OrderEntity complete(Long orderId);
+    Order complete(Long orderId);
 
-    OrderEntity find(Long id);
+    Order find(Long id);
 
-    OrderEntity save(OrderEntity entity);
+    Order save(Order entity);
 
     // FIXME - The following methods for the internal use.
     String computeOrderNo(String role, String serviceCode);
 
-    Page<OrderEntity> findByCreateUser(String username, Pageable pageable);
+    Page<Order> findByCreateUser(String username, Pageable pageable);
 
-    Page<OrderEntity> findAll(Pageable pageable);
+    Page<Order> findAll(Pageable pageable);
 
-    Page<OrderEntity> findAll(final Long id, final Long customerId, final String username, final Pageable pageable);
+    Page<Order> findAll(final Long id, final Long customerId, final String username, final Pageable pageable);
 
-    Page<OrderEntity> findByStatus(Integer status, Pageable pageable);
+    Page<Order> findByStatus(Integer status, Pageable pageable);
 
-    Page<OrderEntity> findByCustomerId(Long customerId, String createdBy, Pageable pageable);
+    Page<Order> findByCustomerId(Long customerId, String createdBy, Pageable pageable);
 
-    Page<OrderEntity> findByOrderNoLike(String orderNo, Pageable pageable);
+    Page<Order> findByOrderNoLike(String orderNo, Pageable pageable);
 
-    OrderEntity saveOrder(OrderEntity order);
+    Order saveOrder(Order order);
 
-    OrderEntity submitOrder(OrderEntity order);
+    Order submitOrder(Order order);
 }

@@ -2,7 +2,7 @@ package liquid.process.handler;
 
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.ServiceProviderService;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
 import liquid.transport.facade.BookingFacade;
@@ -36,7 +36,7 @@ public class BookingShippingSpaceHandler extends AbstractTaskHandler {
 
     @Override
     public void init(Task task, Model model) {
-        OrderEntity order = orderService.find(task.getOrderId());
+        Order order = orderService.find(task.getOrderId());
 
         Booking booking = bookingFacade.computeBooking(order.getId());
         model.addAttribute("booking", booking);

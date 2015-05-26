@@ -1,7 +1,7 @@
 package liquid.process.handler;
 
 import liquid.operation.service.ServiceProviderService;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
 import liquid.process.model.SendingTruckForm;
@@ -51,7 +51,7 @@ public class SendTruckHandler extends AbstractTaskHandler {
 
     @Override
     public void init(Task task, Model model) {
-        OrderEntity order = orderService.find(task.getOrderId());
+        Order order = orderService.find(task.getOrderId());
 
         SendingTruckForm sendingTruckForm = new SendingTruckForm();
         sendingTruckForm.setDefinitionKey(task.getDefinitionKey());

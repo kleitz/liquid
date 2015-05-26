@@ -4,7 +4,7 @@ import liquid.core.model.Pagination;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.ServiceProviderService;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
 import liquid.process.handler.DefinitionKey;
@@ -74,7 +74,7 @@ public class ShipmentController {
 
     @RequestMapping(method = RequestMethod.GET, params = "o")
     public String findByOrder(@RequestParam(value = "o") Long orderId, Model model) {
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
         Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(orderId);
         model.addAttribute("tab", "shipment");
         model.addAttribute("order", order);
@@ -84,7 +84,7 @@ public class ShipmentController {
 
     @RequestMapping(method = RequestMethod.GET, params = "action=edit")
     public String initEditForm(@RequestParam(value = "o") Long orderId, Model model) {
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
         Iterable<ShipmentEntity> shipmentEntities = shipmentService.findByOrderId(orderId);
 
         ShipmentSet shipmentSet = new ShipmentSet();
@@ -191,7 +191,7 @@ public class ShipmentController {
 
         String taskId = shipmentEntity.getTaskId();
         if (null == taskId) {
-            OrderEntity order = shipmentEntity.getOrder();
+            Order order = shipmentEntity.getOrder();
             Task task = taskService.getTask(DefinitionKey.planShipment, BusinessKey.encode(order.getId(), order.getOrderNo()));
             if (null == task) {
                 // FIXME - Will delete it after GA.

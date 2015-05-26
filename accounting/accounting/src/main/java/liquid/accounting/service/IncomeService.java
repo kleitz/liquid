@@ -2,9 +2,9 @@ package liquid.accounting.service;
 
 import liquid.accounting.domain.IncomeEntity;
 import liquid.accounting.domain.IncomeType;
-import liquid.accounting.domain.ReceivableSummaryEntity;
+import liquid.accounting.domain.ReceivableSummary;
 import liquid.accounting.repository.IncomeRepository;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.process.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +46,8 @@ public class IncomeService {
         return incomeRepository.save(income);
     }
 
-    public IncomeEntity addIncome(OrderEntity order, String uid) {
-        ReceivableSummaryEntity receivableSummaryEntity = receivableSummaryService.findByOrderId(order.getId());
+    public IncomeEntity addIncome(Order order, String uid) {
+        ReceivableSummary receivableSummaryEntity = receivableSummaryService.findByOrderId(order.getId());
 
         IncomeEntity income = new IncomeEntity();
         income.setOrder(order);
@@ -59,7 +59,7 @@ public class IncomeService {
 
     public IncomeEntity addIncome(String taskId, IncomeEntity income, String uid) {
         Long orderId = taskService.getOrderIdByTaskId(taskId);
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
 
         income.setOrder(order);
         income.setTaskId(taskId);

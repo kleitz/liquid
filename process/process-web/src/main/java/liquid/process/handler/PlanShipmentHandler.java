@@ -3,7 +3,7 @@ package liquid.process.handler;
 import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.service.ChargeService;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
 import liquid.transport.domain.LegEntity;
@@ -51,7 +51,7 @@ public class PlanShipmentHandler extends AbstractTaskHandler {
 
     @Override
     public void init(Task task, Model model) {
-        OrderEntity order = orderService.find(task.getOrderId());
+        Order order = orderService.find(task.getOrderId());
 
         Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(task.getOrderId());
 

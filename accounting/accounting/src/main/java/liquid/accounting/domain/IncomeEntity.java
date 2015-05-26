@@ -1,6 +1,6 @@
 package liquid.accounting.domain;
 
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.core.domain.BaseUpdateEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 public class IncomeEntity extends BaseUpdateEntity {
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
-    private OrderEntity order;
+    private Order order;
 
     @Column(name = "TASK_ID")
     private String taskId;
@@ -38,11 +38,11 @@ public class IncomeEntity extends BaseUpdateEntity {
     @Column(name = "COMMENT")
     private String comment;
 
-    public OrderEntity getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(OrderEntity order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

@@ -1,12 +1,15 @@
 package liquid.accounting.service;
 
-import liquid.accounting.domain.ReceivableSummaryEntity;
+import liquid.accounting.domain.ReceivableSummary;
+import liquid.accounting.model.Earning;
 
 /**
  * Created by Tao Ma on 4/12/15.
  */
 public interface ReceivableSummaryService {
-    ReceivableSummaryEntity findByOrderId(Long orderId);
+    ReceivableSummary findByOrderId(Long orderId);
 
-    ReceivableSummaryEntity save(ReceivableSummaryEntity receivableSummaryEntity);
+    ReceivableSummary save(ReceivableSummary receivableSummaryEntity);
+
+    Earning calculateEarning(Long orderId);
 }

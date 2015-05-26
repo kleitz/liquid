@@ -1,11 +1,9 @@
 package liquid.accounting.controller;
 
 import liquid.accounting.domain.ChargeWay;
-import liquid.accounting.domain.ReceivableSummaryEntity;
+import liquid.accounting.domain.ReceivableSummary;
 import liquid.accounting.facade.ChargeFacade;
-import liquid.accounting.facade.ReceivableFacadeImpl;
 import liquid.accounting.model.Charge;
-import liquid.accounting.model.ReceivableSummary;
 import liquid.accounting.service.ExchangeRateService;
 import liquid.accounting.service.InternalReceivableSummaryService;
 import liquid.core.domain.SumPage;
@@ -36,9 +34,6 @@ public class AccountingController {
     private static final int size = 20;
 
     @Autowired
-    private ReceivableFacadeImpl receivableFacade;
-
-    @Autowired
     private ExchangeRateService exchangeRateService;
 
     @Autowired
@@ -65,7 +60,7 @@ public class AccountingController {
         model.addAttribute("searchBarForm", searchBarForm);
 
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
-        Page<ReceivableSummary> page = receivableFacade.findAll(searchBarForm, pageRequest);
+        SumPage<ReceivableSummary> page = receivableSummaryService.findAll(searchBarForm, pageRequest);
         model.addAttribute("page", page);
         return "accounting/gross_profit";
     }
@@ -86,8 +81,7 @@ public class AccountingController {
         model.addAttribute("searchBarForm", searchBarForm);
 
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
-//        Page<ReceivableSummary> page = receivableFacade.findAll(searchBarForm, pageRequest);
-        SumPage<ReceivableSummaryEntity> page = receivableSummaryService.findAll(searchBarForm, pageRequest);
+        SumPage<ReceivableSummary> page = receivableSummaryService.findAll(searchBarForm, pageRequest);
 
         model.addAttribute("page", page);
         return "charge/summary";
@@ -111,7 +105,7 @@ public class AccountingController {
         model.addAttribute("searchBarForm", searchBarForm);
 
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
-        Page<ReceivableSummary> page = receivableFacade.findAll(searchBarForm, pageRequest);
+        SumPage<ReceivableSummary> page = receivableSummaryService.findAll(searchBarForm, pageRequest);
         model.addAttribute("page", page);
 
         return "charge/receivable";

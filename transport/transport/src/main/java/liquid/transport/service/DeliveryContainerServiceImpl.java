@@ -1,6 +1,6 @@
 package liquid.transport.service;
 
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.core.service.AbstractService;
 import liquid.transport.domain.DeliveryContainerEntity;
@@ -39,7 +39,7 @@ public class DeliveryContainerServiceImpl extends AbstractService<DeliveryContai
     public void doSaveBefore(DeliveryContainerEntity entity) {}
 
     public Iterable<DeliveryContainerEntity> initDeliveryContainers(Long orderId) {
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
         Collection<DeliveryContainerEntity> dcList = deliveryContainerRepository.findByOrder(order);
         if (dcList.size() > 0) {
             for (DeliveryContainerEntity container : dcList) {

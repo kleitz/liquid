@@ -2,7 +2,7 @@ package liquid.order.restfulapi;
 
 import liquid.operation.domain.Customer;
 import liquid.operation.service.CustomerService;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.core.model.SearchBarForm;
 import org.slf4j.Logger;
@@ -49,8 +49,8 @@ public class ApiOrderController {
         }
 
         PageRequest pageRequest = new PageRequest(0, 10, new Sort(Sort.Direction.DESC, "id"));
-        Page<OrderEntity> page = orderService.findByOrderNoLike(text, pageRequest);
-        for (OrderEntity order : page.getContent()) {
+        Page<Order> page = orderService.findByOrderNoLike(text, pageRequest);
+        for (Order order : page.getContent()) {
             SearchBarForm searchBarForm = new SearchBarForm();
             searchBarForm.setId(order.getId());
             searchBarForm.setType("order");

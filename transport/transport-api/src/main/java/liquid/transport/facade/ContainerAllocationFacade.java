@@ -1,6 +1,6 @@
 package liquid.transport.facade;
 
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.model.ContainerAllocation;
 import liquid.transport.model.SelfContainerAllocation;
@@ -15,7 +15,7 @@ public interface ContainerAllocationFacade {
 
     List<ShipmentContainerAllocation> computeContainerAllocation(Long orderId);
 
-    List<ShipmentContainerAllocation> computeContainerAllocation(OrderEntity order);
+    List<ShipmentContainerAllocation> computeContainerAllocation(Order order);
 
     ShipmentContainerAllocation getShipmentContainerAllocation(int type, String subtypeName, ShipmentEntity shipment);
 

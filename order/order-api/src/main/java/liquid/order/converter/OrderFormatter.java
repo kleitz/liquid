@@ -1,6 +1,6 @@
 package liquid.order.converter;
 
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
@@ -13,13 +13,13 @@ import java.util.Locale;
  * Created by Tao Ma on 5/8/15.
  */
 @Component
-public class OrderFormatter implements Formatter<OrderEntity> {
+public class OrderFormatter implements Formatter<Order> {
 
     @Autowired
     private OrderService orderService;
 
     @Override
-    public OrderEntity parse(String text, Locale locale) throws ParseException {
+    public Order parse(String text, Locale locale) throws ParseException {
         if (text.length() == 0) {
             return null;
         }
@@ -27,7 +27,7 @@ public class OrderFormatter implements Formatter<OrderEntity> {
     }
 
     @Override
-    public String print(OrderEntity object, Locale locale) {
+    public String print(Order object, Locale locale) {
         if (null == object) {
             return "";
         }

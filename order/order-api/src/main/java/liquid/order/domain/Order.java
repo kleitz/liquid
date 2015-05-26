@@ -13,7 +13,7 @@ import java.util.List;
  * Time: 2:59 PM
  */
 @Entity(name = "ORD_ORDER")
-public class OrderEntity extends BaseOrder {
+public class Order extends BaseOrder {
     // 0: domestic; 1: foreign
     @Column(name = "TRADE_TYPE")
     private int tradeType;

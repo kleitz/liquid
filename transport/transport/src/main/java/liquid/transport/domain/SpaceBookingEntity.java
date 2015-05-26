@@ -1,9 +1,8 @@
 package liquid.transport.domain;
 
 import liquid.operation.domain.ServiceProvider;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.core.domain.BaseUpdateEntity;
-import liquid.transport.domain.LegEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -16,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class SpaceBookingEntity extends BaseUpdateEntity {
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
-    private OrderEntity order;
+    private Order order;
 
     @OneToOne
     @JoinColumn(name = "LEG_ID")
@@ -31,11 +30,11 @@ public class SpaceBookingEntity extends BaseUpdateEntity {
     @JoinColumn(name = "SHIPOWNER")
     private ServiceProvider shipowner;
 
-    public OrderEntity getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(OrderEntity order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

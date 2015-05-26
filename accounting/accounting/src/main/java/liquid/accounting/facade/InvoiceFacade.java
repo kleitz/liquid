@@ -9,7 +9,7 @@ import liquid.accounting.service.InternalInvoiceService;
 import liquid.accounting.service.InternalReceivableSummaryService;
 import liquid.accounting.service.InvoiceServiceImpl;
 import liquid.operation.service.CustomerService;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,7 +67,7 @@ public class InvoiceFacade implements InternalInvoiceService {
         InvoiceEntity invoiceEntity = new InvoiceEntity();
         invoiceEntity.setId(invoice.getId());
         invoiceEntity.setInvoiceNo(invoice.getInvoiceNo());
-        invoiceEntity.setOrder(OrderEntity.newInstance(OrderEntity.class, invoice.getOrderId()));
+        invoiceEntity.setOrder(Order.newInstance(Order.class, invoice.getOrderId()));
         invoiceEntity.setCny(invoice.getCny());
         invoiceEntity.setUsd(invoice.getUsd());
         invoiceEntity.setBuyerId(invoice.getBuyerId());
@@ -83,7 +83,7 @@ public class InvoiceFacade implements InternalInvoiceService {
         InvoiceEntity invoiceEntity = new InvoiceEntity();
         invoiceEntity.setId(invoice.getId());
         invoiceEntity.setInvoiceNo(invoice.getInvoiceNo());
-        invoiceEntity.setOrder(OrderEntity.newInstance(OrderEntity.class, invoice.getOrderId()));
+        invoiceEntity.setOrder(Order.newInstance(Order.class, invoice.getOrderId()));
         invoiceEntity.setCny(invoice.getCny());
         invoiceEntity.setUsd(invoice.getUsd());
         invoiceEntity.setBuyerId(invoice.getBuyerId());

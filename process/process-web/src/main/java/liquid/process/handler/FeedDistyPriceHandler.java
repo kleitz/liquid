@@ -1,6 +1,6 @@
 package liquid.process.handler;
 
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
 import liquid.process.model.Disty;
@@ -26,7 +26,7 @@ public class FeedDistyPriceHandler extends AbstractTaskHandler {
     @Override
     public void init(Task task, Model model) {
         long orderId = taskService.getOrderIdByTaskId(task.getId());
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
         Disty disty = new Disty();
         disty.setDistyCny(order.getDistyCny());
         disty.setDistyUsd(order.getDistyUsd());

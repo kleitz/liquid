@@ -1,7 +1,7 @@
 package liquid.transport.facade;
 
 import liquid.operation.domain.ServiceProvider;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.domain.SpaceBookingEntity;
@@ -71,7 +71,7 @@ public class BookingFacadeImpl implements BookingFacade {
         for (BookingItem bookingItem : booking.getBookingItems()) {
             SpaceBookingEntity bookingEntity = new SpaceBookingEntity();
             bookingEntity.setId(bookingItem.getId());
-            bookingEntity.setOrder(OrderEntity.newInstance(OrderEntity.class, orderId));
+            bookingEntity.setOrder(Order.newInstance(Order.class, orderId));
             bookingEntity.setLeg(LegEntity.newInstance(LegEntity.class, bookingItem.getLegId()));
             bookingEntity.setShipowner(ServiceProvider.newInstance(ServiceProvider.class, bookingItem.getShipownerId()));
             bookingEntity.setBookingNo(bookingItem.getBookingNo());

@@ -4,12 +4,12 @@ import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.domain.ChargeEntity_;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.repository.ChargeRepository;
-import liquid.operation.domain.ServiceProvider_;
-import liquid.order.domain.OrderEntity;
-import liquid.order.domain.OrderEntity_;
-import liquid.order.service.OrderService;
 import liquid.core.security.SecurityContext;
 import liquid.core.service.AbstractService;
+import liquid.operation.domain.ServiceProvider_;
+import liquid.order.domain.Order;
+import liquid.order.domain.Order_;
+import liquid.order.service.OrderService;
 import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.service.LegService;
@@ -93,7 +93,7 @@ public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepos
 
         entity.setCreateRole(SecurityContext.getInstance().getRole());
         // Compute grand total
-        OrderEntity order = orderService.find(entity.getOrder().getId());
+        Order order = orderService.find(entity.getOrder().getId());
         if (entity.getCurrency() == 0) {
             order.setGrandTotal(order.getGrandTotal().add(entity.getTotalPrice()));
         } else {
@@ -110,7 +110,7 @@ public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepos
     @Transactional("transactionManager")
     public void removeCharge(long chargeId) {
         ChargeEntity charge = chargeRepository.findOne(chargeId);
-        OrderEntity order = charge.getOrder();
+        Order order = charge.getOrder();
 
         if (charge.getCurrency() == 0) {
             order.setGrandTotal(order.getGrandTotal().subtract(charge.getTotalPrice()));
@@ -182,7 +182,7 @@ public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepos
             Specification<ChargeEntity> orderNoSpec = new Specification<ChargeEntity>() {
                 @Override
                 public Predicate toPredicate(Root<ChargeEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
-                    return builder.like(root.get(ChargeEntity_.order).get(OrderEntity_.orderNo), "%" + orderNo + "%");
+                    return builder.like(root.get(ChargeEntity_.order).get(Order_.orderNo), "%" + orderNo + "%");
                 }
             };
             specList.add(orderNoSpec);
@@ -225,7 +225,7 @@ public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepos
             Specification<ChargeEntity> orderIdSpec = new Specification<ChargeEntity>() {
                 @Override
                 public Predicate toPredicate(Root<ChargeEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                    return cb.equal(root.get(ChargeEntity_.order).get(OrderEntity_.id), orderId);
+                    return cb.equal(root.get(ChargeEntity_.order).get(Order_.id), orderId);
                 }
             };
             specifications = specifications.and(orderIdSpec);

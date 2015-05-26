@@ -11,7 +11,7 @@ import liquid.core.model.Alert;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.LocationService;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.order.service.ServiceItemService;
 import liquid.transport.domain.RailContainer;
@@ -90,7 +90,7 @@ public class AllocationContainersController extends BaseTaskController {
         logger.debug("taskId: {}", taskId);
 
         Long orderId = taskService.getOrderIdByTaskId(taskId);
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
         List<ShipmentContainerAllocation> shipmentContainerAllocations = containerAllocationFacade.computeContainerAllocation(order);
 
         model.addAttribute("shipmentContainerAllocations", shipmentContainerAllocations);

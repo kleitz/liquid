@@ -189,7 +189,7 @@ public class OrderController extends BaseController {
         } else if ("order".equals(orderSearchBar.getType())) {
             id = orderSearchBar.getId();
         }
-        Page<OrderEntity> page = orderService.findAll(id, customerId, username, pageRequest);
+        Page<Order> page = orderService.findAll(id, customerId, username, pageRequest);
 
         orderSearchBar.prepand(request.getRequestURI());
         model.addAttribute("page", page);
@@ -198,7 +198,7 @@ public class OrderController extends BaseController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String initCreationForm(Model model) {
-        OrderEntity order = new OrderEntity();
+        Order order = new Order();
         order.setSource(locationService.find(Long.valueOf(env.getProperty("default.origin.id"))));
         order.setDestination(locationService.find(Long.valueOf(env.getProperty("default.destination.id"))));
         order.setLoadingEt(new Date());
@@ -225,7 +225,7 @@ public class OrderController extends BaseController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "addServiceItem")
-    public String addServiceItem(@ModelAttribute(value = "order") OrderEntity order, Model model) {
+    public String addServiceItem(@ModelAttribute(value = "order") Order order, Model model) {
         logger.debug("order: {}", order);
         order.getServiceItems().add(new ServiceItemEntity());
         model.addAttribute("sourceName", order.getSource().getName());
@@ -236,7 +236,7 @@ public class OrderController extends BaseController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "removeServiceItem")
-    public String removeRow(@ModelAttribute(value = "order") OrderEntity order, Model model, HttpServletRequest request) {
+    public String removeRow(@ModelAttribute(value = "order") Order order, Model model, HttpServletRequest request) {
         final Integer rowId = Integer.valueOf(request.getParameter("removeServiceItem"));
         order.getServiceItems().remove(rowId.intValue());
         model.addAttribute("sourceName", order.getSource().getName());
@@ -247,7 +247,7 @@ public class OrderController extends BaseController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-    public String save(@Valid @ModelAttribute(value = "order") OrderEntity order, BindingResult bindingResult, Model model, HttpServletRequest request) {
+    public String save(@Valid @ModelAttribute(value = "order") Order order, BindingResult bindingResult, Model model, HttpServletRequest request) {
         logger.debug("order: {}", order);
         String sourceName = request.getParameter("sourceName");
         logger.debug("sourceName: {}", sourceName);
@@ -272,7 +272,7 @@ public class OrderController extends BaseController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "submit")
-    public String submit(@Valid @ModelAttribute(value = "order") OrderEntity order,
+    public String submit(@Valid @ModelAttribute(value = "order") Order order,
                          BindingResult bindingResult, Model model, HttpServletRequest request) {
         logger.debug("order: {}", order);
         String sourceName = request.getParameter("sourceName");
@@ -316,7 +316,7 @@ public class OrderController extends BaseController {
     public String initEdit(@PathVariable Long id, Model model) {
         logger.debug("id: {}", id);
 
-        OrderEntity order = orderService.find(id);
+        Order order = orderService.find(id);
         logger.debug("order: {}", order);
 
         List<ServiceItemEntity> serviceItemList = order.getServiceItems();
@@ -341,7 +341,7 @@ public class OrderController extends BaseController {
     public String initDuplicate(@PathVariable Long id, Model model) {
         logger.debug("id: {}", id);
 
-        OrderEntity order = orderService.find(id);
+        Order order = orderService.find(id);
         order.setId(null);
         order.getRailway().setId(null);
         order.setOrderNo(null);
@@ -364,7 +364,7 @@ public class OrderController extends BaseController {
     public String detail(@PathVariable Long id, Model model) {
         logger.debug("id: {}", id);
 
-        OrderEntity order = orderService.find(id);
+        Order order = orderService.find(id);
         List<Location> locationEntities = locationService.findByTypeId(LocationType.CITY);
         model.addAttribute("locations", locationEntities);
         model.addAttribute("order", order);
@@ -377,7 +377,7 @@ public class OrderController extends BaseController {
         logger.debug("id: {}", id);
         logger.debug("tab: {}", tab);
 
-        OrderEntity order = orderService.find(id);
+        Order order = orderService.find(id);
 
         switch (tab) {
             case "task":
@@ -413,7 +413,7 @@ public class OrderController extends BaseController {
 
     @RequestMapping(value = "/{orderId}/receivable", method = RequestMethod.GET)
     public String initPanel(@PathVariable Long orderId, Model model) {
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
 
         Statement<Invoice> statement = invoiceFacade.findByOrderId(orderId);
         model.addAttribute("statement", statement);
@@ -429,7 +429,7 @@ public class OrderController extends BaseController {
 
     @RequestMapping(value = "/{orderId}/invoice", method = RequestMethod.GET)
     public String initInvoice(@PathVariable Long orderId, Model model) {
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
         Invoice invoice = new Invoice();
         invoice.setOrderId(orderId);
         invoice.setIssuedAt(DateUtil.dayStrOf());

@@ -5,12 +5,12 @@ import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.domain.ExchangeRate;
 import liquid.accounting.facade.ChargeFacade;
-import liquid.accounting.facade.ReceivableFacade;
 import liquid.accounting.model.Charge;
 import liquid.accounting.model.ChargeStatus;
 import liquid.accounting.model.Earning;
 import liquid.accounting.service.ExchangeRateService;
 import liquid.accounting.service.InternalChargeService;
+import liquid.accounting.service.ReceivableSummaryService;
 import liquid.container.domain.ContainerCap;
 import liquid.container.domain.ContainerType;
 import liquid.core.model.Alert;
@@ -82,7 +82,7 @@ public class ChargeController {
     private ExchangeRateService exchangeRateService;
 
     @Autowired
-    private ReceivableFacade receivableFacade;
+    private ReceivableSummaryService receivableSummaryService;
 
     @ModelAttribute("transModes")
     public Map<Integer, String> populateTransModes() {
@@ -267,7 +267,7 @@ public class ChargeController {
         model.addAttribute("chargeWays", ChargeWay.values());
         model.addAttribute("serviceSubtypes", serviceSubtypes);
 
-        Earning earning = receivableFacade.calculateEarning(orderId);
+        Earning earning = receivableSummaryService.calculateEarning(orderId);
         model.addAttribute("earning", earning);
         return "charge/order_detail";
     }

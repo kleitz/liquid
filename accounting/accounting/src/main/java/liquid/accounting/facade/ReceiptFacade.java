@@ -8,7 +8,7 @@ import liquid.accounting.model.Statement;
 import liquid.accounting.service.InternalReceiptService;
 import liquid.accounting.service.InternalReceivableSummaryService;
 import liquid.accounting.service.ReceiptServiceImpl;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class ReceiptFacade implements InternalReceiptService {
 
     @Transactional(value = "transactionManager")
     public Receipt save(Receipt receipt) {
-        OrderEntity orderEntity = orderService.find(receipt.getOrderId());
+        Order orderEntity = orderService.find(receipt.getOrderId());
 
         ReceiptEntity receiptEntity = new ReceiptEntity();
         receiptEntity.setId(receipt.getId());
@@ -74,7 +74,7 @@ public class ReceiptFacade implements InternalReceiptService {
 
     @Transactional(value = "transactionManager")
     public Receipt update(Receipt receipt) {
-        OrderEntity orderEntity = orderService.find(receipt.getOrderId());
+        Order orderEntity = orderService.find(receipt.getOrderId());
 
         ReceiptEntity receiptEntity = new ReceiptEntity();
         receiptEntity.setId(receipt.getId());

@@ -16,13 +16,16 @@ var FIELDS = [
 
 var COLUMNS = [
   {name: 'id', type: 'hidden'},
-  {name: 'order', type: 'descendant', pattern: 'orderNo'},
+  {name: 'order', type: 'descendant', pattern: 'order.orderNo'},
   {name: 'qtyOfBox'},
   {name: 'revenue'},
   {name: 'recognizedAt', type: 'date', pattern: 'YYYY-MM-DD'},
+  {name: 'goods', type: 'descendant', pattern: 'order.goods.name'},
+  {name: 'receivableOrg', type: 'descendant', pattern: 'order.customer.name'},
   {name: 'receivedAmt'},
   {name: 'receivedAt', type: 'date', pattern: 'YYYY-MM-DD'},
   {name: 'invoiceNo'},
+  {name: 'invoiceTo', type: 'descendant', pattern: 'order.customer.name'},
   {name: 'invoicedAmt'},
   {name: 'invoicedAt', type: 'date', pattern: 'YYYY-MM-DD'}
 ]
@@ -282,7 +285,7 @@ var TableRow = React.createClass({
           cells.push(<DateCell key={key} value={component.props.row[column.name]} pattern={column.pattern} />) 
           break;
         case 'descendant':
-          cells.push(<DescendantCell key={key} value={component.props.row[column.name]} pattern={column.pattern} />) 
+          cells.push(<DescendantCell key={key} value={component.props.row} pattern={column.pattern} />) 
           break;
         case 'icon':
           var color = column.color[component.props.row[column.name]]
@@ -319,8 +322,11 @@ var SumRow = React.createClass({
     cells.push(<td></td>)
     cells.push(<td><b><FormattedMessage message={this.getIntlMessage('revenueSum')} /></b></td>)
     cells.push(<td><b>{parseFloat(revenueSum).toFixed(2)}</b></td>)
+    cells.push(<td></td>)
+    cells.push(<td></td>)
     cells.push(<td><b><FormattedMessage message={this.getIntlMessage('receivedSum')} /></b></td>)
     cells.push(<td><b>{parseFloat(receivedSum).toFixed(2)}</b></td>)
+    cells.push(<td></td>)
     cells.push(<td></td>)
     cells.push(<td><b><FormattedMessage message={this.getIntlMessage('invoicedSum')} /></b></td>)
     cells.push(<td><b>{parseFloat(invoicedSum).toFixed(2)}</b></td>)
@@ -350,8 +356,11 @@ var DeductionRow = React.createClass({
     cells.push(<td></td>)
     cells.push(<td><b><FormattedMessage message={this.getIntlMessage('notReceivedRevenue')} /></b></td>)
     cells.push(<td><b>{parseFloat(invoicedSum - receivedSum).toFixed(2)}</b></td>)
+    cells.push(<td></td>)
+    cells.push(<td></td>)
     cells.push(<td><b><FormattedMessage message={this.getIntlMessage('notReceivedSum')} /></b></td>)
     cells.push(<td><b>{parseFloat(invoicedSum - receivedSum).toFixed(2)}</b></td>)
+    cells.push(<td></td>)
     cells.push(<td></td>)
     cells.push(<td><b><FormattedMessage message={this.getIntlMessage('notInvoicedSum')} /></b></td>)
     cells.push(<td><b>{parseFloat(revenueSum - invoicedSum).toFixed(2)}</b></td>)

@@ -1,6 +1,6 @@
 package liquid.process.handler;
 
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.process.NotCompletedException;
 import liquid.process.domain.Task;
@@ -32,7 +32,7 @@ public class FeedContainerNoHandler extends AbstractTaskHandler {
     @Override
     public void preComplete(String taskId, Map<String, Object> variableMap) {
         Long orderId = taskService.getOrderIdByTaskId(taskId);
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
         Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(orderId);
 
         int allocatedContainerQuantity = 0;

@@ -1,6 +1,6 @@
 package liquid.order.repository;
 
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,7 +14,7 @@ import org.springframework.data.repository.CrudRepository;
  * Date: 9/28/13
  * Time: 5:19 PM
  */
-public interface OrderRepository extends CrudRepository<OrderEntity, Long>, JpaRepository<OrderEntity, Long> {
+public interface OrderRepository extends CrudRepository<Order, Long>, JpaRepository<Order, Long> {
     /**
      * Criteria Query
      *
@@ -22,7 +22,7 @@ public interface OrderRepository extends CrudRepository<OrderEntity, Long>, JpaR
      * @param pageable
      * @return
      */
-    Page<OrderEntity> findAll(Specification<OrderEntity> specification, Pageable pageable);
+    Page<Order> findAll(Specification<Order> specification, Pageable pageable);
 
     /**
      * TODO: Low Efficiency
@@ -33,7 +33,7 @@ public interface OrderRepository extends CrudRepository<OrderEntity, Long>, JpaR
      */
     @Query(value = "SELECT o FROM ORD_ORDER o LEFT JOIN FETCH o.railway r WHERE o.createdBy = ?1",
             countQuery = "SELECT count(o) FROM ORD_ORDER o WHERE o.createdBy = ?1")
-    Page<OrderEntity> findByCreatedBy(String uid, Pageable pageable);
+    Page<Order> findByCreatedBy(String uid, Pageable pageable);
 
     /**
      * TODO: Low Efficiency
@@ -42,11 +42,11 @@ public interface OrderRepository extends CrudRepository<OrderEntity, Long>, JpaR
      * @param pageable
      * @return
      */
-    Page<OrderEntity> findByStatus(Integer status, Pageable pageable);
+    Page<Order> findByStatus(Integer status, Pageable pageable);
 
-    Page<OrderEntity> findByOrderNoLike(String orderNo, Pageable pageable);
+    Page<Order> findByOrderNoLike(String orderNo, Pageable pageable);
 
-    Iterable<OrderEntity> findByOrderNoLike(String orderNo);
+    Iterable<Order> findByOrderNoLike(String orderNo);
 
-    Page<OrderEntity> findByCustomerIdAndCreatedBy(Long customerId, String createdBy, Pageable pageable);
+    Page<Order> findByCustomerIdAndCreatedBy(Long customerId, String createdBy, Pageable pageable);
 }

@@ -1,6 +1,6 @@
 package liquid.transport.domain;
 
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.core.domain.BaseTaskEntity;
 
 import javax.persistence.*;
@@ -18,7 +18,7 @@ import java.util.List;
 public class ShipmentEntity extends BaseTaskEntity {
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
-    private OrderEntity order;
+    private Order order;
 
     @Min(1)
     @Column(name = "CONTAINER_QTY")
@@ -42,11 +42,11 @@ public class ShipmentEntity extends BaseTaskEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "shipment")
     private Collection<DeliveryContainerEntity> deliveryContainers;
 
-    public OrderEntity getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(OrderEntity order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

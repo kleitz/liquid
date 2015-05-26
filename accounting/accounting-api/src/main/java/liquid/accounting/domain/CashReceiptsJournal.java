@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import liquid.accounting.deserializer.OrderDeserializer;
 import liquid.core.domain.BaseUpdateEntity;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +22,7 @@ public class CashReceiptsJournal extends BaseUpdateEntity implements Serializabl
     @JsonDeserialize(using = OrderDeserializer.class)
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
-    private OrderEntity order;
+    private Order order;
 
     @Column(name = "QTY_OF_BOX")
     private Integer qtyOfBox;
@@ -54,11 +54,11 @@ public class CashReceiptsJournal extends BaseUpdateEntity implements Serializabl
     @Column(name = "INVOICED_AT")
     private Date invoicedAt;
 
-    public OrderEntity getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(OrderEntity order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

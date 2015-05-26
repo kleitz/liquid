@@ -1,7 +1,7 @@
 package liquid.accounting.service;
 
 import liquid.accounting.domain.CashReceiptsJournal;
-import liquid.accounting.domain.ReceivableSummaryEntity;
+import liquid.accounting.domain.ReceivableSummary;
 import liquid.accounting.repository.CashReceiptsJournalRepository;
 import liquid.core.model.SearchBarForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class CashReceiptsJournalServiceImpl implements InternalCashReceiptsJourn
     @Transactional("transactionManager")
     @Override
     public CashReceiptsJournal save(CashReceiptsJournal cashReceiptsJournal) {
-        ReceivableSummaryEntity receivableSummary = receivableSummaryService.findByOrderId(cashReceiptsJournal.getOrder().getId());
+        ReceivableSummary receivableSummary = receivableSummaryService.findByOrderId(cashReceiptsJournal.getOrder().getId());
         receivableSummary.setCny(receivableSummary.getCny().add(cashReceiptsJournal.getInvoicedAmt() == null ? BigDecimal.ZERO : cashReceiptsJournal.getInvoicedAmt()));
         receivableSummary.setPaidCny(receivableSummary.getPaidCny() + (cashReceiptsJournal.getReceivedAmt() == null ? 0L : cashReceiptsJournal.getReceivedAmt().longValue()));
         receivableSummary.setInvoicedCny(receivableSummary.getInvoicedCny() + (cashReceiptsJournal.getInvoicedAmt() == null ? 0L : cashReceiptsJournal.getInvoicedAmt().longValue()));

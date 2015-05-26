@@ -57,23 +57,23 @@
                     <!--
                     <a th:href="'/order/' + ${receivable.orderId} + '/receivable'"><i class="glyphicon glyphicon-briefcase text-success"/></a>
                     -->
-                    <a th:href="'/accounting/receivable/journal?orderId=' + ${receivable.orderId}"><i class="glyphicon glyphicon-briefcase text-success"/></a>
+                    <a th:href="'/accounting/receivable/journal?orderId=' + ${receivable.order.id}"><span class="glyphicon glyphicon-briefcase text-success"/></a>
                     &nbsp;
-                    <a th:href="'/charge/order/' + ${receivable.id}" th:text="${receivable.orderNo}"/>
+                    <a th:href="'/charge/order/' + ${receivable.id}" th:text="${receivable.order.orderNo}"/>
                 </td>
                 <td th:text="${receivable.createdAt}"></td>
                 <td>
-                    <a th:href="'/order/' + ${receivable.orderId} + '/receivable'"><i class="glyphicon glyphicon-briefcase text-success"/></a>
+                    <a th:href="'/order/' + ${receivable.order.id} + '/receivable'"><span class="glyphicon glyphicon-briefcase text-success"/></a>
                     &nbsp;
-                    <span th:text="${receivable.customer.name}" />
+                    <span th:text="${receivable.order.customer.name}" />
                 </td>
-                <td th:text="${receivable.source.name}">Origin</td>
-                <td th:text="${receivable.destination}">Destination</td>
-                <td th:text="${receivable.railDestination}">Rail Destination</td>
-                <td th:text="${receivable.goods.name}"></td>
-                <td th:text="#{${tradeTypes[__${receivable.tradeType}__].i18nKey}}">Trade Type</td>
+                <td th:text="${receivable.order.source.name}">Origin</td>
+                <td th:text="${receivable.order.destination}">Destination</td>
+                <td th:text="${receivable.order.railway} ? ${receivable.order.railway.destination.name} : ''">Rail Destination</td>
+                <td th:text="${receivable.order.goods.name}"></td>
+                <td th:text="#{${tradeTypes[__${receivable.order.tradeType}__].i18nKey}}">Trade Type</td>
                 <td></td>
-                <td class="text-right"><span th:text="${receivable.containerQuantity}">Container Quantity</span></td>
+                <td class="text-right"><span th:text="${receivable.order.containerQty}">Container Quantity</span></td>
                 <td></td>
                 <td class="text-right"><span th:text="${#numbers.formatDecimal(receivable.cny, 0, 'COMMA', 2,'POINT')}">Receivable CNY</span></td>
                 <td class="text-right"><span th:text="${#numbers.formatDecimal(receivable.usd, 0, 'COMMA', 2,'POINT')}">Receivable USD</span></td>
@@ -93,7 +93,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td class="text-right"><span th:text="${page.sum.containerQuantity}">Container Quantity</span></td>
+                <td class="text-right"><span th:text="${page.sum.order.containerQty}">Container Quantity</span></td>
                 <td></td>
                 <td class="text-right"><span th:text="${#numbers.formatDecimal(page.sum.cny, 0, 'COMMA', 2, 'POINT')}">Receivable CNY</span></td>
                 <td class="text-right"><span th:text="${#numbers.formatDecimal(page.sum.usd, 0, 'COMMA', 2, 'POINT')}">Receivable USD</span></td>

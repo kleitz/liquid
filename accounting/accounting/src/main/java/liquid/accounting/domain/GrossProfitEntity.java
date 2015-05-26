@@ -1,6 +1,6 @@
 package liquid.accounting.domain;
 
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.core.domain.BaseIdEntity;
 
 import javax.persistence.Column;
@@ -16,7 +16,7 @@ import java.util.Date;
 public class GrossProfitEntity extends BaseIdEntity {
     @OneToOne
     @JoinColumn(name = "ORDER_ID")
-    private OrderEntity order;
+    private Order order;
 
     @Column(name = "CREATED_AT")
     private Date createdAt;
@@ -27,11 +27,11 @@ public class GrossProfitEntity extends BaseIdEntity {
     @Column(name = "COST")
     private Long cost;
 
-    public OrderEntity getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(OrderEntity order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

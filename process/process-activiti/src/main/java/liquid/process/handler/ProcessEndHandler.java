@@ -1,6 +1,6 @@
 package liquid.process.handler;
 
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.process.service.BusinessKey;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -27,6 +27,6 @@ public class ProcessEndHandler implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         String businessKeyText = execution.getProcessBusinessKey();
         BusinessKey businessKey = BusinessKey.decode(businessKeyText);
-        OrderEntity order = orderService.complete(businessKey.getOrderId());
+        Order order = orderService.complete(businessKey.getOrderId());
     }
 }

@@ -1,12 +1,12 @@
 package liquid.order.service;
 
-import liquid.accounting.domain.ReceivableSummaryEntity;
+import liquid.accounting.domain.ReceivableSummary;
 import liquid.accounting.service.ReceivableSummaryService;
 import liquid.core.security.SecurityContext;
 import liquid.operation.domain.Customer_;
-import liquid.order.domain.OrderEntity;
-import liquid.order.domain.OrderEntity_;
+import liquid.order.domain.Order;
 import liquid.order.domain.OrderStatus;
+import liquid.order.domain.Order_;
 import liquid.order.domain.ServiceItemEntity;
 import liquid.order.repository.OrderRepository;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ import static org.springframework.data.jpa.domain.Specifications.where;
  * Time: 8:03 PM
  */
 @Service
-public class OrderServiceImpl extends AbstractBaseOrderService<OrderEntity, OrderRepository> implements OrderService {
+public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepository> implements OrderService {
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Autowired
@@ -49,32 +49,32 @@ public class OrderServiceImpl extends AbstractBaseOrderService<OrderEntity, Orde
     private ReceivableSummaryService receivableSummaryService;
 
     @Transactional("transactionManager")
-    public void doSaveBefore(OrderEntity order) { }
+    public void doSaveBefore(Order order) { }
 
     @Transactional(value = "transactionManager")
-    public OrderEntity complete(Long orderId) {
-        OrderEntity order = find(orderId);
+    public Order complete(Long orderId) {
+        Order order = find(orderId);
         order.setStatus(OrderStatus.COMPLETED.getValue());
         order = save(order);
         return order;
     }
 
-    public Page<OrderEntity> findByCreateUser(String username, Pageable pageable) {
+    public Page<Order> findByCreateUser(String username, Pageable pageable) {
         return repository.findByCreatedBy(username, pageable);
     }
 
-    public Page<OrderEntity> findAll(Pageable pageable) {
+    public Page<Order> findAll(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public Page<OrderEntity> findByStatus(Integer status, Pageable pageable) {
+    public Page<Order> findByStatus(Integer status, Pageable pageable) {
         return repository.findByStatus(status, pageable);
     }
 
     @Override
     @Transactional(value = "transactionManager")
-    public OrderEntity find(Long id) {
-        OrderEntity order = repository.findOne(id);
+    public Order find(Long id) {
+        Order order = repository.findOne(id);
         // Initialize one to many children
         order.getServiceItems().size();
         return order;
@@ -89,40 +89,40 @@ public class OrderServiceImpl extends AbstractBaseOrderService<OrderEntity, Orde
      * @param pageable
      * @return
      */
-    public Page<OrderEntity> findAll(final Long id, final Long customerId, final String username, final Pageable pageable) {
-        List<Specification<OrderEntity>> specList = new ArrayList<>();
+    public Page<Order> findAll(final Long id, final Long customerId, final String username, final Pageable pageable) {
+        List<Specification<Order>> specList = new ArrayList<>();
 
         if (null != id) {
-            Specification<OrderEntity> orderNoSpec = new Specification<OrderEntity>() {
+            Specification<Order> orderNoSpec = new Specification<Order>() {
                 @Override
-                public Predicate toPredicate(Root<OrderEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
-                    return builder.equal(root.get(OrderEntity_.id), id);
+                public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
+                    return builder.equal(root.get(Order_.id), id);
                 }
             };
             specList.add(orderNoSpec);
         }
 
         if (null != customerId) {
-            Specification<OrderEntity> customerNameSpec = new Specification<OrderEntity>() {
+            Specification<Order> customerNameSpec = new Specification<Order>() {
                 @Override
-                public Predicate toPredicate(Root<OrderEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
-                    return builder.equal(root.get(OrderEntity_.customer).get(Customer_.id), customerId);
+                public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
+                    return builder.equal(root.get(Order_.customer).get(Customer_.id), customerId);
                 }
             };
             specList.add(customerNameSpec);
         }
 
         if (null != username) {
-            Specification<OrderEntity> usernameSpec = new Specification<OrderEntity>() {
+            Specification<Order> usernameSpec = new Specification<Order>() {
                 @Override
-                public Predicate toPredicate(Root<OrderEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
-                    return builder.equal(root.get(OrderEntity_.createdBy), username);
+                public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
+                    return builder.equal(root.get(Order_.createdBy), username);
                 }
             };
         }
 
         if (specList.size() > 0) {
-            Specifications<OrderEntity> specifications = where(specList.get(0));
+            Specifications<Order> specifications = where(specList.get(0));
             for (int i = 1; i < specList.size(); i++) {
                 specifications.and(specList.get(i));
             }
@@ -132,17 +132,17 @@ public class OrderServiceImpl extends AbstractBaseOrderService<OrderEntity, Orde
         return repository.findAll(pageable);
     }
 
-    public Page<OrderEntity> findByCustomerId(Long customerId, String createdBy, Pageable pageable) {
+    public Page<Order> findByCustomerId(Long customerId, String createdBy, Pageable pageable) {
         return repository.findByCustomerIdAndCreatedBy(customerId, createdBy, pageable);
     }
 
-    public Page<OrderEntity> findByOrderNoLike(String orderNo, Pageable pageable) {
+    public Page<Order> findByOrderNoLike(String orderNo, Pageable pageable) {
         return repository.findByOrderNoLike("%" + orderNo + "%", pageable);
     }
 
     @Transactional(value = "transactionManager")
     @Override
-    public OrderEntity saveOrder(OrderEntity order) {
+    public Order saveOrder(Order order) {
         List<ServiceItemEntity> serviceItemList = order.getServiceItems();
         Iterator<ServiceItemEntity> serviceItemIterator = serviceItemList.iterator();
         while (serviceItemIterator.hasNext()) {
@@ -154,7 +154,7 @@ public class OrderServiceImpl extends AbstractBaseOrderService<OrderEntity, Orde
 
         order = save(order);
 
-        ReceivableSummaryEntity receivableSummary = new ReceivableSummaryEntity();
+        ReceivableSummary receivableSummary = new ReceivableSummary();
         receivableSummary.setCny(order.getTotalCny());
         receivableSummary.setUsd(order.getTotalUsd());
         receivableSummary.setOrder(order);
@@ -167,18 +167,18 @@ public class OrderServiceImpl extends AbstractBaseOrderService<OrderEntity, Orde
     }
 
     @Override
-    public OrderEntity submitOrder(OrderEntity order) {
+    public Order submitOrder(Order order) {
         // set role
         order.setCreateRole(SecurityContext.getInstance().getRole());
 
         // compute order no.
         order.setOrderNo(computeOrderNo(order.getCreateRole(), order.getServiceType().getCode()));
-        OrderEntity orderEntity = saveOrder(order);
+        Order orderEntity = saveOrder(order);
 
         return orderEntity;
     }
 
-    public Iterable<OrderEntity> findByOrderNoLike(String orderNo) {
+    public Iterable<Order> findByOrderNoLike(String orderNo) {
         return repository.findByOrderNoLike("%" + orderNo + "%");
     }
 }

@@ -1,7 +1,7 @@
 package liquid.process.controller;
 
 import liquid.core.model.Alert;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.process.handler.DefinitionKey;
 import liquid.process.service.TaskService;
@@ -34,7 +34,7 @@ public class BookingShippingSpaceController extends AbstractTaskController {
     @RequestMapping(method = RequestMethod.POST, params = "definitionKey=" + DefinitionKey.bookingShippingSpace)
     public String booking(@PathVariable String taskId, Booking booking, Model model, RedirectAttributes redirectAttributes) {
         Long orderId = taskService.getOrderIdByTaskId(taskId);
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
         bookingFacade.save(order.getId(), booking);
 
         redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));

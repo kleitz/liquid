@@ -1,7 +1,7 @@
 package liquid.transport.model;
 
 import liquid.operation.domain.ServiceProvider;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.RailContainer;
 import liquid.transport.domain.ShipmentEntity;
@@ -42,7 +42,7 @@ public class RailTransport extends TransportBase {
     public static RailContainer toEntity(RailTransport transport) {
         RailContainer entity = new RailContainer();
         entity.setId(transport.getId());
-        entity.setOrder(OrderEntity.newInstance(OrderEntity.class, transport.getOrderId()));
+        entity.setOrder(Order.newInstance(Order.class, transport.getOrderId()));
         entity.setShipment(ShipmentEntity.newInstance(ShipmentEntity.class, transport.getShipmentId()));
         entity.setLeg(LegEntity.newInstance(LegEntity.class, transport.getLegId()));
         entity.setFleet(ServiceProvider.newInstance(ServiceProvider.class, transport.getFleetId()));

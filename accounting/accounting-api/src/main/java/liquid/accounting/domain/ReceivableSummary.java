@@ -1,41 +1,60 @@
-package liquid.accounting.model;
+package liquid.accounting.domain;
 
-import liquid.order.model.Order;
+import liquid.core.domain.BaseUpdateEntity;
+import liquid.order.domain.Order;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
- * Created by Tao Ma on 12/9/14.
+ * Created by redbrick9 on 8/28/14.
+ * SalesLedger
  */
-public class ReceivableSummary extends Order {
-    private Long id;
+@Entity(name = "ACT_RECEIVABLE_SUMMARY")
+public class ReceivableSummary extends BaseUpdateEntity {
+    @OneToOne
+    @JoinColumn(name = "ORDER_ID")
+    private Order order;
 
+    @Column(precision = 19, scale = 4, name = "CNY")
     private BigDecimal cny = BigDecimal.ZERO;
 
+    @Column(precision = 19, scale = 4, name = "USD")
     private BigDecimal usd = BigDecimal.ZERO;
 
-    private String prepaidTime;
+    @Column(name = "PREPAID_TIME")
+    private Date prepaidTime;
 
+    @Deprecated
+    @Column(name = "REM_BAL_CNY")
     private Long remainingBalanceCny = 0L;
 
+    @Deprecated
+    @Column(name = "REM_BAL_USD")
     private Long remainingBalanceUsd = 0L;
 
+    @Column(name = "PAID_CNY")
     private Long paidCny = 0L;
 
+    @Column(name = "PAID_USD")
     private Long paidUsd = 0L;
 
+    @Column(name = "INVOICED_CNY")
     private Long invoicedCny = 0L;
 
+    @Column(name = "INVOICED_USD")
     private Long invoicedUsd = 0L;
 
-    private Long orderId;
-
-    public Long getId() {
-        return id;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public BigDecimal getCny() {
@@ -54,11 +73,11 @@ public class ReceivableSummary extends Order {
         this.usd = usd;
     }
 
-    public String getPrepaidTime() {
+    public Date getPrepaidTime() {
         return prepaidTime;
     }
 
-    public void setPrepaidTime(String prepaidTime) {
+    public void setPrepaidTime(Date prepaidTime) {
         this.prepaidTime = prepaidTime;
     }
 
@@ -108,32 +127,5 @@ public class ReceivableSummary extends Order {
 
     public void setInvoicedUsd(Long invoicedUsd) {
         this.invoicedUsd = invoicedUsd;
-    }
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("{Class=ReceivableSummary");
-        sb.append(", id=").append(id);
-        sb.append(", cny=").append(cny);
-        sb.append(", usd=").append(usd);
-        sb.append(", prepaidTime='").append(prepaidTime).append('\'');
-        sb.append(", remainingBalanceCny=").append(remainingBalanceCny);
-        sb.append(", remainingBalanceUsd=").append(remainingBalanceUsd);
-        sb.append(", paidCny=").append(paidCny);
-        sb.append(", paidUsd=").append(paidUsd);
-        sb.append(", invoicedCny=").append(invoicedCny);
-        sb.append(", invoicedUsd=").append(invoicedUsd);
-        sb.append(", orderId=").append(orderId);
-        sb.append(", ").append(super.toString());
-        sb.append('}');
-        return sb.toString();
     }
 }

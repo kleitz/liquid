@@ -1,6 +1,6 @@
 package liquid.process.handler;
 
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
 import liquid.process.domain.VerificationSheetForm;
@@ -31,7 +31,7 @@ public class CDCIHandler extends AbstractTaskHandler {
 
     @Override
     public void init(Task task, Model model) {
-        OrderEntity order = orderService.find(task.getOrderId());
+        Order order = orderService.find(task.getOrderId());
         String verificationSheetSn = order.getVerificationSheetSn();
         VerificationSheetForm verificationSheetForm = new VerificationSheetForm();
         verificationSheetForm.setDefinitionKey(task.getDefinitionKey());

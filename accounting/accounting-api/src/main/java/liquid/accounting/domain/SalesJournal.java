@@ -1,7 +1,7 @@
 package liquid.accounting.domain;
 
 import liquid.core.domain.BaseIdEntity;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +19,7 @@ public class SalesJournal extends BaseIdEntity {
 
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
-    private OrderEntity order;
+    private Order order;
 
     @Column(name = "REVENUE_CNY")
     private BigDecimal revenueCny;
@@ -30,11 +30,11 @@ public class SalesJournal extends BaseIdEntity {
     @Column(name = "CREATED_AT")
     private Date createdAt;
 
-    public OrderEntity getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(OrderEntity order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

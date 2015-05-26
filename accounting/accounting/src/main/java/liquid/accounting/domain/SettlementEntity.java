@@ -1,6 +1,6 @@
 package liquid.accounting.domain;
 
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.core.domain.BaseUpdateEntity;
 
 import javax.persistence.Column;
@@ -16,7 +16,7 @@ import java.util.Date;
 public class SettlementEntity extends BaseUpdateEntity {
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
-    private OrderEntity order;
+    private Order order;
 
     @Column(name = "CNY")
     private Long cny;
@@ -27,11 +27,11 @@ public class SettlementEntity extends BaseUpdateEntity {
     @Column(name = "SETTLED_AT")
     private Date settledAt;
 
-    public OrderEntity getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(OrderEntity order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

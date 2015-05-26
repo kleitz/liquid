@@ -1,6 +1,6 @@
 package liquid.accounting.model;
 
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  */
 public class Charge {
     private Long id;
-    private OrderEntity order;
+    private Order order;
     private Long shipmentId;
     private Long legId;
     private Long serviceSubtypeId;
@@ -38,11 +38,11 @@ public class Charge {
         this.id = id;
     }
 
-    public OrderEntity getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(OrderEntity order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

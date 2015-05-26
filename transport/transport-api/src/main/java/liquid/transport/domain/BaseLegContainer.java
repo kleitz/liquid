@@ -1,6 +1,6 @@
 package liquid.transport.domain;
 
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.core.domain.BaseUpdateEntity;
 
 import javax.persistence.JoinColumn;
@@ -18,7 +18,7 @@ import javax.persistence.OneToOne;
 public class BaseLegContainer extends BaseUpdateEntity {
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
-    private OrderEntity order;
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "ROUTE_ID")
@@ -32,11 +32,11 @@ public class BaseLegContainer extends BaseUpdateEntity {
     @JoinColumn(name = "SC_ID")
     private ShippingContainerEntity sc;
 
-    public OrderEntity getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(OrderEntity order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

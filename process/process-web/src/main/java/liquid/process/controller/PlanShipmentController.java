@@ -3,7 +3,7 @@ package liquid.process.controller;
 import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.service.ChargeService;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.process.handler.DefinitionKey;
 import liquid.process.handler.TaskHandlerFactory;
@@ -59,7 +59,7 @@ public class PlanShipmentController extends AbstractTaskController {
         logger.debug("shipment: {}", shipment);
 
         Long orderId = taskService.getOrderIdByTaskId(taskId);
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
 
         int containerUsage = 0;
         Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(orderId);

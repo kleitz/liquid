@@ -2,13 +2,14 @@ package liquid.process.controller;
 
 import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.domain.ChargeWay;
-import liquid.accounting.facade.ReceivableFacade;
 import liquid.accounting.model.Earning;
 import liquid.accounting.service.ChargeService;
+import liquid.accounting.service.ReceivableSummaryService;
+import liquid.core.security.SecurityContext;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceProviderService;
 import liquid.operation.service.ServiceSubtypeService;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.process.NotCompletedException;
 import liquid.process.domain.Task;
@@ -16,7 +17,6 @@ import liquid.process.domain.TaskBar;
 import liquid.process.handler.TaskHandler;
 import liquid.process.handler.TaskHandlerFactory;
 import liquid.process.service.TaskService;
-import liquid.core.security.SecurityContext;
 import liquid.transport.service.RouteService;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.TruckService;
@@ -58,7 +58,7 @@ public class TaskController extends AbstractTaskController {
     private ChargeService chargeService;
 
     @Autowired
-    private ReceivableFacade receivableFacade;
+    private ReceivableSummaryService receivableSummaryService;
 
     @Autowired
     private ServiceSubtypeService serviceSubtypeService;
@@ -192,7 +192,7 @@ public class TaskController extends AbstractTaskController {
         model.addAttribute("task", task);
 
         Long orderId = taskService.getOrderIdByTaskId(taskId);
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
         Iterable<ChargeEntity> charges = chargeService.findByOrderId(order.getId());
         model.addAttribute("charges", charges);
 
@@ -200,7 +200,7 @@ public class TaskController extends AbstractTaskController {
         Iterable<ServiceSubtype> serviceSubtypes = serviceSubtypeService.findEnabled();
         model.addAttribute("serviceSubtypes", serviceSubtypes);
 
-        Earning earning = receivableFacade.calculateEarning(order.getId());
+        Earning earning = receivableSummaryService.calculateEarning(order.getId());
         model.addAttribute("earning", earning);
         return "charge/settlement";
     }

@@ -1,7 +1,7 @@
 package liquid.process.controller;
 
 import liquid.core.model.Alert;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
 import liquid.process.domain.VerificationSheetForm;
@@ -47,7 +47,7 @@ public class CDCIController extends AbstractTaskController {
             return "order/verification_sheet_sn";
         }
 
-        OrderEntity order = orderService.find(verificationSheetForm.getOrderId());
+        Order order = orderService.find(verificationSheetForm.getOrderId());
         order.setVerificationSheetSn(verificationSheetForm.getSn());
         orderService.save(order);
 

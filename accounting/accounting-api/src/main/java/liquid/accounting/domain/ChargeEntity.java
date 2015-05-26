@@ -2,7 +2,7 @@ package liquid.accounting.domain;
 
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.core.domain.BaseUpdateEntity;
 import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.ShipmentEntity;
@@ -22,7 +22,7 @@ public class ChargeEntity extends BaseUpdateEntity {
 
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
-    private OrderEntity order;
+    private Order order;
 
     @Column(name = "TASK_ID")
     private String taskId;
@@ -64,11 +64,11 @@ public class ChargeEntity extends BaseUpdateEntity {
     @Column(name = "COMMENT")
     private String comment;
 
-    public OrderEntity getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(OrderEntity order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

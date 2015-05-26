@@ -1,6 +1,6 @@
 package liquid.accounting.domain;
 
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.core.domain.BaseUpdateEntity;
 
 import javax.persistence.Column;
@@ -16,7 +16,7 @@ import java.util.Date;
 public class InvoiceEntity extends BaseUpdateEntity {
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
-    private OrderEntity order;
+    private Order order;
 
     @Column(name = "INVOICE_NO")
     private String invoiceNo;
@@ -39,11 +39,11 @@ public class InvoiceEntity extends BaseUpdateEntity {
     @Column(name = "EXP_PAY_AT")
     private Date expectedPaymentAt;
 
-    public OrderEntity getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(OrderEntity order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

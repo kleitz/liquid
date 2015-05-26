@@ -1,7 +1,7 @@
 package liquid.process.controller;
 
 import liquid.core.model.Alert;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.process.handler.DefinitionKey;
 import liquid.process.handler.TaskHandlerFactory;
@@ -51,7 +51,7 @@ public class FeedDistyPriceController extends AbstractTaskController {
         }
 
         Long orderId = taskService.getOrderIdByTaskId(taskId);
-        OrderEntity order = orderService.find(orderId);
+        Order order = orderService.find(orderId);
         order.setDistyCny(disty.getDistyCny());
         order.setDistyUsd(disty.getDistyUsd());
         order.setUpdatedBy(SecurityContext.getInstance().getUsername());

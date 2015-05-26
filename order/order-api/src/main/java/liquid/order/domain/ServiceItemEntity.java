@@ -21,7 +21,7 @@ public class ServiceItemEntity extends BaseIdEntity {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
-    private OrderEntity order;
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "SERVICE_SUBTYPE_ID")
@@ -65,11 +65,11 @@ public class ServiceItemEntity extends BaseIdEntity {
         this.uuid = uuid;
     }
 
-    public OrderEntity getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(OrderEntity order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

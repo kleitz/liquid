@@ -5,7 +5,7 @@ import liquid.accounting.model.Settlement;
 import liquid.accounting.model.Statement;
 import liquid.accounting.service.InternalSettlementService;
 import liquid.accounting.service.SettlementServiceImpl;
-import liquid.order.domain.OrderEntity;
+import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ public class SettlementFacade implements InternalSettlementService {
     }
 
     public Settlement save(Settlement settlement) {
-        OrderEntity orderEntity = orderService.find(settlement.getOrderId());
+        Order orderEntity = orderService.find(settlement.getOrderId());
 
         SettlementEntity settlementEntity = new SettlementEntity();
         settlementEntity.setId(settlement.getId());
