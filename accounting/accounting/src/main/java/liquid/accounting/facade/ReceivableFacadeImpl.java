@@ -8,7 +8,6 @@ import liquid.accounting.service.InternalReceivableSummaryService;
 import liquid.core.model.EnhancedPageImpl;
 import liquid.core.model.SearchBarForm;
 import liquid.order.domain.OrderEntity;
-import liquid.order.facade.OrderFacade;
 import liquid.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,9 +30,6 @@ public class ReceivableFacadeImpl implements ReceivableFacade {
     @Autowired
     private ExchangeRateService exchangeRateService;
 
-    @Autowired
-    private OrderFacade orderFacade;
-
     public Page<ReceivableSummary> findAll(SearchBarForm searchBar, Pageable pageable) {
         List<ReceivableSummary> receivableList = new ArrayList<>();
         Page<ReceivableSummaryEntity> entityPage = null;
@@ -48,8 +44,23 @@ public class ReceivableFacadeImpl implements ReceivableFacade {
         ReceivableSummary sum = new ReceivableSummary();
         for (ReceivableSummaryEntity entity : entityPage) {
             ReceivableSummary receivable = convert(entity);
-            // FIXME - convert receivable according to order fields.
-            orderFacade.convert(entity.getOrder(), receivable);
+
+            receivable.setOrderId(entity.getOrder().getId());
+            receivable.setOrderNo(entity.getOrder().getOrderNo());
+            receivable.setCreatedAt(DateUtil.stringOf(entity.getOrder().getCreatedAt()));
+            receivable.setCreatedBy(entity.getOrder().getCreatedBy());
+            receivable.setCustomer(entity.getOrder().getCustomer());
+            receivable.setGoods(entity.getOrder().getGoods());
+            receivable.setSource(entity.getOrder().getSource());
+            receivable.setDestination(entity.getOrder().getDestination());
+            receivable.setContainerQuantity(entity.getOrder().getContainerQty());
+
+            receivable.setGrandTotal(entity.getOrder().getGrandTotal());
+            receivable.setCnyTotal(entity.getOrder().getTotalCny());
+            receivable.setUsdTotal(entity.getOrder().getTotalUsd());
+            receivable.setDistyCny(entity.getOrder().getDistyCny());
+            receivable.setDistyUsd(entity.getOrder().getDistyUsd());
+
             receivableList.add(receivable);
 
             sum.setContainerQuantity(sum.getContainerQuantity() + receivable.getContainerQuantity());

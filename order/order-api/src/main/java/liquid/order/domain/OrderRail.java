@@ -7,6 +7,7 @@ import liquid.operation.domain.Location;
 import liquid.operation.domain.RailPlanType;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -33,10 +34,12 @@ public class OrderRail extends BaseIdEntity {
     @JoinColumn(name = "PLAN_GOODS_ID")
     private Goods planGoods;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "SOURCE_ID")
     private Location source;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "DESTINATION_ID")
     private Location destination;

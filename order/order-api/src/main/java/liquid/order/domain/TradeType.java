@@ -1,5 +1,8 @@
 package liquid.order.domain;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * User: tao
  * Date: 9/29/13
@@ -35,6 +38,15 @@ public enum TradeType {
             default:
                 throw new IllegalArgumentException(String.format("%s should be from %s and %s.", type, 0, 1));
         }
+    }
+
+    public static Map<Integer, String> toMap() {
+        Map<Integer, String> types = new HashMap<Integer, String>();
+        TradeType[] typeArray = values();
+        for (TradeType type : typeArray) {
+            types.put(type.type, type.i18nKey);
+        }
+        return types;
     }
 
     @Override

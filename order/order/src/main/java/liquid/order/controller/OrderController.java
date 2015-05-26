@@ -16,12 +16,9 @@ import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
 import liquid.core.controller.BaseController;
 import liquid.core.security.SecurityContext;
-import liquid.core.validation.FormValidationResult;
 import liquid.operation.domain.*;
 import liquid.operation.service.*;
 import liquid.order.domain.*;
-import liquid.order.facade.InternalOrderFacade;
-import liquid.order.model.Order;
 import liquid.order.model.OrderSearchBar;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
@@ -94,9 +91,6 @@ public class OrderController extends BaseController {
     private ServiceSubtypeService serviceSubtypeService;
 
     @Autowired
-    private InternalOrderFacade orderFacade;
-
-    @Autowired
     private RailwayPlanTypeService railwayPlanTypeService;
 
     @Autowired
@@ -126,9 +120,19 @@ public class OrderController extends BaseController {
         return TradeType.values();
     }
 
+    @ModelAttribute("tradeTypeMap")
+    public Map<Integer, String> populateTradeTypeMap() {
+        return TradeType.toMap();
+    }
+
     @ModelAttribute("loadingTypes")
     public LoadingType[] populateLoadings() {
         return LoadingType.values();
+    }
+
+    @ModelAttribute("loadingTypeMap")
+    public Map<Integer, String> populateLoadingTypeMap() {
+        return LoadingType.toMap();
     }
 
     @ModelAttribute("containerTypeMap")
@@ -262,45 +266,6 @@ public class OrderController extends BaseController {
             return "order/form";
         }
 
-        // FIXME - Need a new way to validate customer.
-//        FormValidationResult result = orderFacade.validateCustomer(order.getCustomerId(), order.getCustomerName());
-//        if (!result.isSuccessful()) {
-//            addFieldError(bindingResult, "order", "customerName", order.getCustomerName(), order.getCustomerName());
-//        } else {
-//            order.setCustomerId(result.getId());
-//            order.setCustomerName(result.getName());
-//        }
-
-        FormValidationResult result = orderFacade.validateLocation(order.getSource().getId(), sourceName);
-        if (!result.isSuccessful()) {
-            order.getSource().setName(sourceName);
-            addFieldError(bindingResult, "order", "source", order.getSource(), sourceName);
-        }
-
-        result = orderFacade.validateLocation(order.getDestination().getId(), destinationName);
-        if (!result.isSuccessful()) {
-            order.getDestination().setName(destinationName);
-            addFieldError(bindingResult, "order", "destination", order.getDestination(), destinationName);
-        }
-
-        result = orderFacade.validateLocation(order.getRailway().getSource().getId(), railSourceName, LocationType.STATION);
-        if (!result.isSuccessful()) {
-            order.getRailway().getSource().setName(railSourceName);
-            addFieldError(bindingResult, "order", "railSource", order.getRailway().getSource(), order.getRailway().getSource());
-        }
-
-        result = orderFacade.validateLocation(order.getRailway().getDestination().getId(), railDestinationName, LocationType.STATION);
-        if (!result.isSuccessful()) {
-            order.getRailway().getDestination().setName(railDestinationName);
-            addFieldError(bindingResult, "order", "railDestination", order.getRailway().getDestination(), order.getRailway().getDestination());
-        }
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("sourceName", order.getSource().getName());
-            model.addAttribute("destinationName", order.getDestination().getName());
-            return "order/form";
-        }
-
         order.setStatus(OrderStatus.SAVED.getValue());
         orderService.saveOrder(order);
         return "redirect:/order?number=0";
@@ -323,43 +288,6 @@ public class OrderController extends BaseController {
             model.addAttribute("destinationName", order.getDestination().getName());
             model.addAttribute("railSourceName", order.getRailway().getSource());
             model.addAttribute("railDestinationName", order.getRailway().getDestination());
-            return "order/form";
-        }
-
-        // FIXME - Need a new way to validate customer.
-//        FormValidationResult result = orderFacade.validateCustomer(order.getCustomerId(), order.getCustomerName());
-//        if (!result.isSuccessful()) {
-//            addFieldError(bindingResult, "order", "customerName", order.getCustomerName(), order.getCustomerName());
-//        } else {
-//            order.setCustomerId(result.getId());
-//            order.setCustomerName(result.getName());
-//        }
-
-        FormValidationResult result = orderFacade.validateLocation(order.getSource().getId(), sourceName);
-        if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "source", order.getSource(), sourceName);
-        }
-
-        result = orderFacade.validateLocation(order.getDestination().getId(), destinationName);
-        if (!result.isSuccessful()) {
-            addFieldError(bindingResult, "order", "destination", order.getDestination(), destinationName);
-        }
-
-        result = orderFacade.validateLocation(order.getRailway().getSource().getId(), railSourceName, LocationType.STATION);
-        if (!result.isSuccessful()) {
-            order.getRailway().getSource().setName(railSourceName);
-            addFieldError(bindingResult, "order", "railSource", order.getRailway().getSource(), order.getRailway().getSource());
-        }
-
-        result = orderFacade.validateLocation(order.getRailway().getDestination().getId(), railDestinationName, LocationType.STATION);
-        if (!result.isSuccessful()) {
-            order.getRailway().getDestination().setName(railDestinationName);
-            addFieldError(bindingResult, "order", "railDestination", order.getRailway().getDestination(), order.getRailway().getDestination());
-        }
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("sourceName", order.getSource().getName());
-            model.addAttribute("destinationName", order.getDestination().getName());
             return "order/form";
         }
 
@@ -436,7 +364,7 @@ public class OrderController extends BaseController {
     public String detail(@PathVariable Long id, Model model) {
         logger.debug("id: {}", id);
 
-        Order order = orderFacade.find(id);
+        OrderEntity order = orderService.find(id);
         List<Location> locationEntities = locationService.findByTypeId(LocationType.CITY);
         model.addAttribute("locations", locationEntities);
         model.addAttribute("order", order);
@@ -449,7 +377,7 @@ public class OrderController extends BaseController {
         logger.debug("id: {}", id);
         logger.debug("tab: {}", tab);
 
-        Order order = orderFacade.find(id);
+        OrderEntity order = orderService.find(id);
 
         switch (tab) {
             case "task":
@@ -501,7 +429,7 @@ public class OrderController extends BaseController {
 
     @RequestMapping(value = "/{orderId}/invoice", method = RequestMethod.GET)
     public String initInvoice(@PathVariable Long orderId, Model model) {
-        Order order = orderFacade.find(orderId);
+        OrderEntity order = orderService.find(orderId);
         Invoice invoice = new Invoice();
         invoice.setOrderId(orderId);
         invoice.setIssuedAt(DateUtil.dayStrOf());

@@ -9,6 +9,7 @@ import liquid.operation.domain.ServiceType;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
@@ -25,14 +26,17 @@ public class BaseOrder extends BaseUpdateEntity {
     @Column(name = "ORDER_NO")
     private String orderNo;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "CUSTOMER_ID")
     private Customer customer;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "SRC_LOC_ID")
     private Location source;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "DST_LOC_ID")
     private Location destination;

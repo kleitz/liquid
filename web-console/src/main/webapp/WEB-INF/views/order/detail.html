@@ -36,7 +36,7 @@
     <div class="col-xs-3">
             <label th:text="#{trade.type}">Trade Type</label>
             <span>:</span>
-            <span th:text="#{${order.tradeTypeName}}" />
+            <span th:text="#{${tradeTypeMap[order.tradeType]}}" />
     </div>
 </div>
 
@@ -90,7 +90,7 @@
     <div class="col-xs-3">
             <label th:text="#{loading.type}">Loading Type</label>
             <span>:</span>
-            <span th:text="#{${order.loadingTypeName}}" />
+            <span th:text="#{${loadingTypeMap[order.loadingType]}}" />
     </div>    
 </div>
 
@@ -104,7 +104,7 @@
     <div id="loadingEtSec" class="col-xs-3">
             <label th:text="#{loading.et}">Loading ET</label>
             <span>:</span>
-            <span th:text="${order.loadingEstimatedTime}" />
+            <span th:text="${order.loadingEt}" />
     </div>
 
     <div id="loadingContactSec" class="col-xs-3">
@@ -124,7 +124,7 @@
     <div class="col-xs-3">
             <label th:text="#{container.type}">Container Type</label>
             <span>:</span>
-            <span th:text="#{${order.containerTypeName}}" />
+            <span th:text="#{${containerTypeMap[order.containerType]}}" />
     </div>    
     
     <div id="ownContainerSubtypeSec" class="col-xs-3">
@@ -136,7 +136,7 @@
     <div class="col-xs-3">
             <label th:text="#{container.quantity}">Container Quantity</label>
             <span>:</span>
-            <span th:text="${order.containerQuantity}" />
+            <span th:text="${order.containerQty}" />
     </div> 
 </div>
 </div><!-- container -->

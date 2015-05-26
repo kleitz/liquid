@@ -17,19 +17,19 @@
         <div class="col-xs-3">
             <label th:text="#{railway.plan.report.time}">Plan Report Time:</label>
             <span>:</span>
-            <span th:text="${order.planReportTime}"></span>
+            <span th:text="${order.railway.planReportTime}"></span>
         </div>
     
         <div class="col-xs-3">
             <label th:text="#{railway.plan.type}">Plan Type:</label>
             <span>:</span>
-            <span th:text="${order.railPlanType.name}"></span>
+            <span th:text="${order.railway.planType.name}"></span>
         </div>
 
         <div class="col-xs-3">
             <label th:text="#{railway.goods}">Plan Goods:</label>
             <span>:</span>
-            <span th:text="${order.planGoods.name}"></span>
+            <span th:text="${order.railway.planGoods.name}"></span>
         </div>
     </div>
     
@@ -45,7 +45,7 @@
         <div class="col-xs-3"> 
             <label th:text="#{container.quantity}">Container Quantity:</label>
             <span>:</span>
-            <span th:text="${order.containerQuantity}"></span>
+            <span th:text="${order.containerQty}"></span>
         </div>
         
         <div class="col-xs-3"> 
@@ -79,13 +79,13 @@
         <div class="col-xs-3">
             <label th:text="#{railway.program.no}">Program No.:</label>
             <span>:</span>
-            <span th:text="${order.programNo}"></span>
+            <span th:text="${order.railway.programNo}"></span>
         </div>
     
         <div class="col-xs-3">   
             <label th:text="#{railway.destination.station}">Destination Station:</label>
             <span>:</span>
-            <span th:text="${order.railDestination}"></span>
+            <span th:text="${order.railway.destination.name}"></span>
         </div>
     </div>
     
@@ -99,13 +99,13 @@
         <div class="col-xs-3">
             <label th:text="#{comment}">Comment:</label>
             <span>:</span>
-            <span th:text="${order.comment}"></span>
+            <span th:text="${order.railway.comment}"></span>
         </div>
     
         <div class="col-xs-3">
             <label th:text="#{railway.same.day}">Same Day:</label>
             <span>:</span>
-            <span th:text="${order.sameDay} == true ? #{true} : ''"></span>
+            <span th:text="${order.railway.sameDay} == true ? #{true} : ''"></span>
         </div>
     </div>
 </div><!-- /.container -->
