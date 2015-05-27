@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+
+<head />
+
+<body>
+  <p th:text="${#maps.size(handlerMethods)}" />
+  <div th:each="method : ${handlerMethods}">
+    <p><span th:text="${method.key.patternsCondition.patterns}"></span></p> 
+    <p><span th:text="${method.value}"></span></p> 
+  </div>
+</body>
+</html>
