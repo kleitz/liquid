@@ -8,19 +8,6 @@
 <div th:include="layout :: header"></div>
 <!-- {!end layout} -->
 
-<div class="container">
-    <br/>
-    <ul class="nav nav-tabs">
-        <li class="active" th:class="${tab} == 'detail' ? 'active'">
-            <a th:href="'/recv_order/' + ${order.id} + '/detail'" th:text="#{order.detail}">Order Detail</a></li>
-        <li class="active" th:class="${tab} == 'task' ? 'active'">
-            <a th:href="'/recv_order/' + ${order.id} + '/task'" th:text="#{task}">Task</a></li>
-        <li class="active" th:class="${tab} == 'charge' ? 'active'">
-            <a th:href="'/recv_order/' + ${order.id} + '/charge'" th:text="#{charge}">Charge</a></li>
-    </ul>
-</div>
-<!-- /.container -->
-
 <div id="order" class="container">
 <form id="orderForm" action="/recv_order" method="POST" th:object="${order}" class="center">
 <div class="row">
@@ -133,7 +120,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group" th:classappend="${#fields.hasErrors('totalCny')} ? 'has-error'">
-                        <label th:text="#{price.with.unit}">Price</label>
+                        <label th:text="#{price}">Price</label>
                         <input type="text" th:field="*{totalCny}" class="form-control" disabled="disabled"/>
 
                         <span th:errors="*{totalCny}">error</span>
@@ -210,11 +197,11 @@
                         <br/>
 
                         <ul class="list-group">
-                            <li class="list-group-item" th:each="bicCode,rowStat : *{bicCodes}">
+                            <li class="list-group-item" th:each="container,rowStat : *{containers}">
                                 <div class="input-group">
                                     <input type="text" class="form-control"
-                                           th:field="*{bicCodes[__${rowStat.index}__]}"
-                                           th:classappend="${#fields.hasErrors('bicCodes[__${rowStat.index}__]')}? 'fieldError'"/>
+                                           th:field="*{containers[__${rowStat.index}__].bicCode}"
+                                           th:classappend="${#fields.hasErrors('containers[__${rowStat.index}__]')}? 'fieldError'"/>
                                     <span class="input-group-btn">
                                         <button type="submit" name="removeContainer" class="btn btn-default"
                                                 th:value="${rowStat.index}" disabled="disabled">
