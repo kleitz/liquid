@@ -2,7 +2,7 @@ package liquid.order.restfulapi;
 
 import liquid.operation.domain.Customer;
 import liquid.operation.service.CustomerService;
-import liquid.order.domain.ReceivingOrderEntity;
+import liquid.order.domain.ReceivingOrder;
 import liquid.order.service.ReceivingOrderServiceImpl;
 import liquid.core.model.SearchBarForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +44,8 @@ public class ApiValueAddedOrderController {
         }
 
         PageRequest pageRequest = new PageRequest(0, 10, new Sort(Sort.Direction.DESC, "id"));
-        Page<ReceivingOrderEntity> page = receivingOrderService.findByOrderNoLike(text, pageRequest);
-        for (ReceivingOrderEntity order : page.getContent()) {
+        Page<ReceivingOrder> page = receivingOrderService.findByOrderNoLike(text, pageRequest);
+        for (ReceivingOrder order : page.getContent()) {
             SearchBarForm searchBarForm = new SearchBarForm();
             searchBarForm.setId(order.getId());
             searchBarForm.setType("order");

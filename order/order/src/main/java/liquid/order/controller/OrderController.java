@@ -209,9 +209,9 @@ public class OrderController extends BaseController {
         orderRail.setPlanReportTime(new Date());
         order.setRailway(orderRail);
 
-        List<ServiceItemEntity> serviceItemList = new ArrayList<>();
+        List<ServiceItem> serviceItemList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            ServiceItemEntity serviceItem = new ServiceItemEntity();
+            ServiceItem serviceItem = new ServiceItem();
             serviceItemList.add(serviceItem);
         }
         order.setServiceItems(serviceItemList);
@@ -227,7 +227,7 @@ public class OrderController extends BaseController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "addServiceItem")
     public String addServiceItem(@ModelAttribute(value = "order") Order order, Model model) {
         logger.debug("order: {}", order);
-        order.getServiceItems().add(new ServiceItemEntity());
+        order.getServiceItems().add(new ServiceItem());
         model.addAttribute("sourceName", order.getSource().getName());
         model.addAttribute("destinationName", order.getDestination().getName());
         model.addAttribute("railSourceName", order.getRailway().getSource().getName());
@@ -295,8 +295,8 @@ public class OrderController extends BaseController {
         order = orderService.submitOrder(order);
 
         boolean hasDelivery = false;
-        List<ServiceItemEntity> serviceItems = order.getServiceItems();
-        for (ServiceItemEntity serviceItem : serviceItems) {
+        List<ServiceItem> serviceItems = order.getServiceItems();
+        for (ServiceItem serviceItem : serviceItems) {
             if (serviceItem.getServiceSubtype().getId() == Long.valueOf(env.getProperty("service.subtype.delivery.id"))) {
                 hasDelivery = true;
                 break;
@@ -319,11 +319,11 @@ public class OrderController extends BaseController {
         Order order = orderService.find(id);
         logger.debug("order: {}", order);
 
-        List<ServiceItemEntity> serviceItemList = order.getServiceItems();
+        List<ServiceItem> serviceItemList = order.getServiceItems();
         if (null == serviceItemList) serviceItemList = new ArrayList<>();
         if (serviceItemList.size() < 5) {
             for (int i = serviceItemList.size(); i < 5; i++) {
-                serviceItemList.add(new ServiceItemEntity());
+                serviceItemList.add(new ServiceItem());
             }
         }
         order.setServiceItems(serviceItemList);
@@ -346,8 +346,8 @@ public class OrderController extends BaseController {
         order.getRailway().setId(null);
         order.setOrderNo(null);
 
-        List<ServiceItemEntity> serviceItems = order.getServiceItems();
-        for (ServiceItemEntity serviceItem : serviceItems) {
+        List<ServiceItem> serviceItems = order.getServiceItems();
+        for (ServiceItem serviceItem : serviceItems) {
             serviceItem.setId(null);
         }
         logger.debug("order: {}", order);

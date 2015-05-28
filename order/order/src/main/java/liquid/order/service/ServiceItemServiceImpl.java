@@ -2,7 +2,7 @@ package liquid.order.service;
 
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.ServiceProviderService;
-import liquid.order.domain.ServiceItemEntity;
+import liquid.order.domain.ServiceItem;
 import liquid.order.repository.ServiceItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,15 +27,15 @@ public class ServiceItemServiceImpl implements ServiceItemService {
         return serviceProviderService.findByServiceSubtypeId(CONTAINER_PROVIDER_TYPE_ID);
     }
 
-    public Iterable<ServiceItemEntity> findEnabled() {
+    public Iterable<ServiceItem> findEnabled() {
         return serviceItemRepository.findAll();
     }
 
-    public ServiceItemEntity find(long id) {
+    public ServiceItem find(long id) {
         return serviceItemRepository.findOne(id);
     }
 
-    public void delete(Iterable<ServiceItemEntity> serviceItems) {
+    public void delete(Iterable<ServiceItem> serviceItems) {
         serviceItemRepository.delete(serviceItems);
     }
 }

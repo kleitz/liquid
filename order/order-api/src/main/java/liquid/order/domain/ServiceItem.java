@@ -14,7 +14,7 @@ import java.util.UUID;
  * Created by redbrick9 on 5/7/14.
  */
 @Entity(name = "ORD_SERVICE_ITEM")
-public class ServiceItemEntity extends BaseIdEntity {
+public class ServiceItem extends BaseIdEntity {
     @Column
     private String uuid;
 
@@ -36,7 +36,7 @@ public class ServiceItemEntity extends BaseIdEntity {
     @Column(name = "COMMENT")
     private String comment;
 
-    public ServiceItemEntity() {
+    public ServiceItem() {
         this.uuid = UUID.randomUUID().toString();
     }
 
@@ -45,7 +45,7 @@ public class ServiceItemEntity extends BaseIdEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ServiceItemEntity that = (ServiceItemEntity) o;
+        ServiceItem that = (ServiceItem) o;
 
         if (!uuid.equals(that.uuid)) return false;
 

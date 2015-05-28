@@ -7,7 +7,7 @@ import liquid.operation.domain.Customer_;
 import liquid.order.domain.Order;
 import liquid.order.domain.OrderStatus;
 import liquid.order.domain.Order_;
-import liquid.order.domain.ServiceItemEntity;
+import liquid.order.domain.ServiceItem;
 import liquid.order.repository.OrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -143,10 +143,10 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
     @Transactional(value = "transactionManager")
     @Override
     public Order saveOrder(Order order) {
-        List<ServiceItemEntity> serviceItemList = order.getServiceItems();
-        Iterator<ServiceItemEntity> serviceItemIterator = serviceItemList.iterator();
+        List<ServiceItem> serviceItemList = order.getServiceItems();
+        Iterator<ServiceItem> serviceItemIterator = serviceItemList.iterator();
         while (serviceItemIterator.hasNext()) {
-            ServiceItemEntity serviceItem = serviceItemIterator.next();
+            ServiceItem serviceItem = serviceItemIterator.next();
             if (serviceItem.getQuotation() == null) serviceItemIterator.remove();
             else serviceItem.setOrder(order);
         }

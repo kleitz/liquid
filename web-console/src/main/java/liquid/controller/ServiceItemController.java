@@ -2,7 +2,7 @@ package liquid.controller;
 
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceSubtypeService;
-import liquid.order.domain.ServiceItemEntity;
+import liquid.order.domain.ServiceItem;
 import liquid.order.service.ServiceItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +42,7 @@ public class ServiceItemController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String newServiceSubtype(@ModelAttribute("serviceItem") ServiceItemEntity serviceItem) {
+    public String newServiceSubtype(@ModelAttribute("serviceItem") ServiceItem serviceItem) {
 //        serviceItemService.add(serviceItem);
         return "redirect:/service_item";
     }

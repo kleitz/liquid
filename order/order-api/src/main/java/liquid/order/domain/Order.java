@@ -49,7 +49,7 @@ public class Order extends BaseOrder {
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "order")
-    private List<ServiceItemEntity> serviceItems = new ArrayList<>();
+    private List<ServiceItem> serviceItems = new ArrayList<>();
 
     public int getTradeType() {
         return tradeType;
@@ -115,11 +115,11 @@ public class Order extends BaseOrder {
         this.hasDelivery = hasDelivery;
     }
 
-    public List<ServiceItemEntity> getServiceItems() {
+    public List<ServiceItem> getServiceItems() {
         return serviceItems;
     }
 
-    public void setServiceItems(List<ServiceItemEntity> serviceItems) {
+    public void setServiceItems(List<ServiceItem> serviceItems) {
         this.serviceItems = serviceItems;
     }
 }

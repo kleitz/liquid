@@ -5,24 +5,21 @@ import liquid.container.domain.ContainerSubtype;
 import liquid.container.domain.ContainerType;
 import liquid.container.service.ContainerSubtypeService;
 import liquid.core.controller.BaseController;
-import liquid.core.model.Pagination;
-import liquid.core.model.SearchBarForm;
+import liquid.core.security.SecurityContext;
 import liquid.operation.domain.*;
 import liquid.operation.service.CustomerService;
 import liquid.operation.service.GoodsService;
 import liquid.operation.service.LocationService;
 import liquid.operation.service.ServiceTypeService;
 import liquid.order.domain.OrderStatus;
-import liquid.order.domain.ReceivingOrderEntity;
-import liquid.order.facade.ValueAddedOrderFacade;
-import liquid.order.model.TransportedContainer;
-import liquid.order.model.ValueAddedOrder;
+import liquid.order.domain.ReceivingContainer;
+import liquid.order.domain.ReceivingOrder;
+import liquid.order.model.OrderSearchBar;
 import liquid.order.service.ReceivingOrderServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -36,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -51,9 +49,6 @@ public class ReceivingOrderController extends BaseController {
 
     @Autowired
     private ReceivingOrderServiceImpl recvOrderService;
-
-    @Autowired
-    private ValueAddedOrderFacade valueAddedOrderFacade;
 
     @Autowired
     private LocationService locationService;
@@ -112,27 +107,29 @@ public class ReceivingOrderController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String initFind(Pagination pagination, SearchBarForm searchBarForm, Model model, HttpServletRequest request) {
-        Page<ValueAddedOrder> page = new PageImpl<ValueAddedOrder>(new ArrayList<>());
-        PageRequest pageRequest = new PageRequest(pagination.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
-        if ("customer".equals(searchBarForm.getType())) {
-            page = valueAddedOrderFacade.findByCustomerId(searchBarForm.getId(), pageRequest);
-        } else if ("order".equals(searchBarForm.getType())) {
-            ValueAddedOrder order = valueAddedOrderFacade.find(searchBarForm.getId());
-            List<ValueAddedOrder> orders = new ArrayList<>();
-            orders.add(order);
-            page = new PageImpl<ValueAddedOrder>(orders);
-        } else {
-            page = valueAddedOrderFacade.findAll(pageRequest);
+    public String list(@ModelAttribute(value = "searchBarForm") OrderSearchBar orderSearchBar,
+                       Model model, HttpServletRequest request) {
+        PageRequest pageRequest = new PageRequest(orderSearchBar.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
+        Long id = null;
+        Long customerId = null;
+        String username = null;
+        switch (SecurityContext.getInstance().getRole()) {
+            case "ROLE_SALES":
+            case "ROLE_MARKETING":
+                username = SecurityContext.getInstance().getUsername();
+                break;
+            default:
+                break;
         }
+        if ("customer".equals(orderSearchBar.getType())) {
+            customerId = orderSearchBar.getId();
+        } else if ("order".equals(orderSearchBar.getType())) {
+            id = orderSearchBar.getId();
+        }
+        Page<ReceivingOrder> page = recvOrderService.findAll(id, customerId, username, pageRequest);
 
-        pagination.prepand(request.getRequestURI());
+        orderSearchBar.prepand(request.getRequestURI());
         model.addAttribute("page", page);
-
-        searchBarForm.setAction("/recv_order");
-        searchBarForm.setTypes(new String[][]{{"orderNo", "order.no"}, {"customerName", "customer.name"}});
-        model.addAttribute("searchBarForm", searchBarForm);
-
         return "recv_order/find";
     }
 
@@ -140,12 +137,12 @@ public class ReceivingOrderController extends BaseController {
     public String initCreationForm(Model model) {
         List<Location> locationEntities = locationService.findByTypeId(LocationType.CITY);
 
-        ValueAddedOrder order = new ValueAddedOrder();
-
+        ReceivingOrder order = new ReceivingOrder();
         order.setServiceType(serviceTypeService.find(7L));
-        List<TransportedContainer> containers = new ArrayList<>();
+
+        List<ReceivingContainer> containers = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            containers.add(new TransportedContainer());
+            containers.add(new ReceivingContainer());
         }
         order.setContainers(containers);
         model.addAttribute("order", order);
@@ -153,23 +150,18 @@ public class ReceivingOrderController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "addContainer")
-    public String addContainer(@ModelAttribute("order") ValueAddedOrder order,
-                               @ModelAttribute("container") TransportedContainer container) {
+    public String addContainer(@ModelAttribute("order") ReceivingOrder order) {
         logger.debug("order: {}", order);
-        logger.debug("container: {}", container);
 
-        order.getContainers().add(container);
+        order.getContainers().add(new ReceivingContainer());
 
         return "recv_order/form";
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "removeContainer")
-    public String removeContainer(@ModelAttribute("order") ValueAddedOrder order,
-                                  String bicCode,
+    public String removeContainer(@ModelAttribute("order") ReceivingOrder order,
                                   final HttpServletRequest request) {
         logger.debug("order: {}", order);
-        logger.debug("order: {}", bicCode);
-
         final int index = Integer.valueOf(request.getParameter("removeContainer"));
         order.getContainers().remove(index);
 
@@ -177,7 +169,7 @@ public class ReceivingOrderController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "save")
-    public String save(@Valid @ModelAttribute("order") ValueAddedOrder order,
+    public String save(@Valid @ModelAttribute("order") ReceivingOrder order,
                        BindingResult bindingResult, Model model, HttpServletRequest request) {
         logger.debug("order: {}", order);
         String sourceName = request.getParameter("sourceName");
@@ -191,13 +183,20 @@ public class ReceivingOrderController extends BaseController {
             model.addAttribute("destinationName", destinationName);
             return "recv_order/form";
         } else {
-            valueAddedOrderFacade.save(order);
+            Iterator<ReceivingContainer> containerIterator = order.getContainers().iterator();
+            while (containerIterator.hasNext()) {
+                ReceivingContainer container = containerIterator.next();
+                if (container.getBicCode() == null || container.getBicCode().trim().length() == 0)
+                    containerIterator.remove();
+            }
+            order.setOrderNo(recvOrderService.computeOrderNo(SecurityContext.getInstance().getRole(), order.getServiceType().getCode()));
+            recvOrderService.save(order);
             return "redirect:/recv_order";
         }
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "submit")
-    public String submit(@Valid @ModelAttribute("order") ValueAddedOrder order,
+    public String submit(@Valid @ModelAttribute("order") ReceivingOrder order,
                          BindingResult bindingResult, Model model, HttpServletRequest request) {
         logger.debug("order: {}", order);
         String sourceName = request.getParameter("sourceName");
@@ -210,7 +209,14 @@ public class ReceivingOrderController extends BaseController {
             model.addAttribute("destinationName", destinationName);
             return "recv_order/form";
         } else {
-            valueAddedOrderFacade.submit(order);
+            Iterator<ReceivingContainer> containerIterator = order.getContainers().iterator();
+            while (containerIterator.hasNext()) {
+                ReceivingContainer container = containerIterator.next();
+                if (container.getBicCode() == null || container.getBicCode().trim().length() == 0)
+                    containerIterator.remove();
+            }
+            order.setOrderNo(recvOrderService.computeOrderNo(SecurityContext.getInstance().getRole(), order.getServiceType().getCode()));
+            recvOrderService.save(order);
             return "redirect:/recv_order";
         }
     }
@@ -219,7 +225,7 @@ public class ReceivingOrderController extends BaseController {
     public String detail(@PathVariable Long id, Model model) {
         logger.debug("id: {}", id);
 
-        ReceivingOrderEntity order = recvOrderService.find(id);
+        ReceivingOrder order = recvOrderService.find(id);
         List<Location> locationEntities = locationService.findByTypeId(LocationType.STATION);
         model.addAttribute("locations", locationEntities);
         model.addAttribute("order", order);
@@ -231,7 +237,7 @@ public class ReceivingOrderController extends BaseController {
     public String getOrder(@PathVariable Long id, Model model) {
         logger.debug("id: {}", id);
 
-        ValueAddedOrder order = valueAddedOrderFacade.find(id);
+        ReceivingOrder order = recvOrderService.find(id);
         logger.debug("order: {}", order);
 
         List<Location> locationEntities = locationService.findByTypeId(LocationType.STATION);
