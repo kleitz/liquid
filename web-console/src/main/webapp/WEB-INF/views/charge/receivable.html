@@ -59,7 +59,7 @@
                     -->
                     <a th:href="'/accounting/receivable/journal?orderId=' + ${receivable.order.id}"><span class="glyphicon glyphicon-briefcase text-success"/></a>
                     &nbsp;
-                    <a th:href="'/charge/order/' + ${receivable.id}" th:text="${receivable.order.orderNo}"/>
+                    <a th:href="'/charge/order/' + ${receivable.order.id}" th:text="${receivable.order.orderNo}"/>
                 </td>
                 <td th:text="${receivable.createdAt}"></td>
                 <td>
