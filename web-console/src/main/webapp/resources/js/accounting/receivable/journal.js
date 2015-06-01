@@ -1,39 +1,43 @@
 /*
   CrudTable configuration 
 */
-var FIELDS = [
-  {name: 'id', type: 'hidden'},
-  {name: 'order', type: 'hidden', value: 'descendant', pattern: 'id'},
-  {name: 'qtyOfBox'},
-  {name: 'revenue'},
-  {name: 'recognizedAt', type: 'date', pattern: 'YYYY-MM-DD'},
-  {name: 'receivedAmt'},
-  {name: 'receivedAt', type: 'date', pattern: 'YYYY-MM-DD'},
-  {name: 'invoiceNo'},
-  {name: 'invoicedAmt'},
-  {name: 'invoicedAt', type: 'date', pattern: 'YYYY-MM-DD'}
-]
-
-var COLUMNS = [
-  {name: 'id', type: 'hidden'},
-  {name: 'order', type: 'descendant', pattern: 'order.orderNo'},
-  {name: 'qtyOfBox'},
-  {name: 'revenue'},
-  {name: 'recognizedAt', type: 'date', pattern: 'YYYY-MM-DD'},
-  {name: 'goods', type: 'descendant', pattern: 'order.goods.name'},
-  {name: 'receivableOrg', type: 'descendant', pattern: 'order.customer.name'},
-  {name: 'receivedAmt'},
-  {name: 'receivedAt', type: 'date', pattern: 'YYYY-MM-DD'},
-  {name: 'invoiceNo'},
-  {name: 'invoiceTo', type: 'descendant', pattern: 'order.customer.name'},
-  {name: 'invoicedAmt'},
-  {name: 'invoicedAt', type: 'date', pattern: 'YYYY-MM-DD'}
-]
-
-var modalTitle = 'crj'
 
 /* Global variables */
 var orderId = getParameterByName('orderId');  
+
+var definition = {
+  source: '/api/receivable/journal?orderId=' + orderId,
+  columns: [
+    {name: 'id', type: 'hidden'},
+    {name: 'order', type: 'descendant', pattern: 'order.orderNo'},
+    {name: 'qtyOfBox'},
+    {name: 'revenue'},
+    {name: 'recognizedAt', type: 'date', pattern: 'YYYY-MM-DD'},
+    {name: 'goods', type: 'descendant', pattern: 'order.goods.name'},
+    {name: 'receivableOrg', type: 'descendant', pattern: 'order.customer.name'},
+    {name: 'receivedAmt'},
+    {name: 'receivedAt', type: 'date', pattern: 'YYYY-MM-DD'},
+    {name: 'invoiceNo'},
+    {name: 'invoiceTo', type: 'descendant', pattern: 'order.customer.name'},
+    {name: 'invoicedAmt'},
+    {name: 'invoicedAt', type: 'date', pattern: 'YYYY-MM-DD'}
+  ],
+  modal: {
+    title: 'crj',
+    fields: [
+      {name: 'id', type: 'hidden'},
+      {name: 'order', type: 'hidden', value: 'descendant', pattern: 'id'},
+      {name: 'qtyOfBox'},
+      {name: 'revenue'},
+      {name: 'recognizedAt', type: 'date', pattern: 'YYYY-MM-DD'},
+      {name: 'receivedAmt'},
+      {name: 'receivedAt', type: 'date', pattern: 'YYYY-MM-DD'},
+      {name: 'invoiceNo'},
+      {name: 'invoicedAmt'},
+      {name: 'invoicedAt', type: 'date', pattern: 'YYYY-MM-DD'}
+    ]
+  }
+}
 
 $.fn.serializeObject = function()
 {
@@ -128,12 +132,12 @@ var ModalForm = React.createClass({
   mixins: [IntlMixin],
 
   componentDidMount: function() {
+    component = this
     // Attach a submit handler to the form
     $("#crudForm").submit(function(event) {
       // Stop form from submitting normally
       event.preventDefault();
       var data = JSON.stringify($('#crudForm').serializeObject());
-      console.log(data)
       $.ajax({
         type: "POST",
         url: "/api/receivable/journal",
@@ -142,13 +146,8 @@ var ModalForm = React.createClass({
         dataType: "text"
       }). 
       done(function(data) {
-        console.log(data)
         $('#crudModal').modal('hide')
-        React.unmountComponentAtNode(document.getElementById('crudTable'))
-        React.render(
-          <CrudTable source={'/api/receivable/journal?orderId=' + orderId} {...i18n} />,
-          document.getElementById('crudTable')
-        )
+        component.props.onRowSubmit()
       });
     });
   },
@@ -159,18 +158,18 @@ var ModalForm = React.createClass({
     
     var counter = 0
     var columns = []
-    for(var i = 0; i < FIELDS.length; i++) {
-      columns.push(FIELDS[i])
-      if(FIELDS[i].type != 'hidden')
+    for(var i = 0; i < this.props.definition.modal.fields.length; i++) {
+      columns.push(this.props.definition.modal.fields[i])
+      if(this.props.definition.modal.fields[i].type != 'hidden')
         counter++
-      if(counter == width || i == FIELDS.length - 1) {
+      if(counter == width || i == this.props.definition.modal.fields.length - 1) {
         rows.push(<FieldRow columns={columns} width={12 / width} />)
         columns = []
         counter = 0
       }
    }
 
-    return (
+   return (
       <div className="modal fade" id="crudModal" tabindex="-1" role="dialog" aria-labelledby="hostModalLabel" aria-hidden="true">
         <div className="modal-dialog">
           <form id="crudForm">
@@ -198,7 +197,7 @@ var AddButton = React.createClass({
   mixins: [IntlMixin],
 
   handleClick: function() {
-    $('#crudModalTitle').text(this.getIntlMessage('add') + this.getIntlMessage(modalTitle))
+    $('#crudModalTitle').text(this.getIntlMessage('add') + this.getIntlMessage(this.props.definition.modal.title))
     var orderId = getParameterByName('orderId');  
     $('#order').val(orderId); 
     $('#recognizedAt').val(moment().format('YYYY-MM-DD HH:mm'));
@@ -222,7 +221,7 @@ var UpdateButton = React.createClass({
     var component = this
     
     if(this.props.row)
-      FIELDS.forEach(function(field) {
+      this.props.definition.modal.fields.forEach(function(field) {
         if(field.value === undefined)
           $('#' + field.name).val(component.props.row[field.name]); 
         else {
@@ -230,7 +229,7 @@ var UpdateButton = React.createClass({
             $('#' + field.name).val(component.props.row[field.name][field.pattern]); 
         }
       })
-    $('#crudModalTitle').text(this.getIntlMessage('update') + this.getIntlMessage(modalTitle))
+    $('#crudModalTitle').text(this.getIntlMessage('update') + this.getIntlMessage(this.props.definition.modal.title))
   },
 
   render: function() {
@@ -278,7 +277,7 @@ var TableRow = React.createClass({
 
     var cells = []
     cells.push(<td key='index'>{this.props.index + 1}</td>)  
-    COLUMNS.forEach(function(column) {
+    component.props.definition.columns.forEach(function(column) {
       var key = column.name
       switch (column.type) {
         case 'date':
@@ -297,7 +296,7 @@ var TableRow = React.createClass({
           cells.push(<td key={key}>{component.props.row[column.name]}</td>)
       } 
     })
-    cells.push(<td key='plus'><UpdateButton row={this.props.row} /></td>)  
+    cells.push(<td key='plus'><UpdateButton definition={this.props.definition} row={this.props.row} /></td>)  
     
     return ( 
       <tr>{cells}</tr>
@@ -376,21 +375,28 @@ var DeductionRow = React.createClass({
 var CrudTable = React.createClass({
   mixins: [IntlMixin],
 
-  getInitialState: function() {
-    return {data: []};
-  },
-
-  componentDidMount: function() {
-    $.get(this.props.source, function(result) {
+  refresh: function() {
+    $.get(this.props.definition.source, function(result) {
       if (this.isMounted()) {
         this.setState({
           data: result
         });
       }
     }.bind(this));
+  },
 
+  handleRowSubmit: function() {
+    this.refresh()
+  },
+
+  getInitialState: function() {
+    return {data: []};
+  },
+
+  componentDidMount: function() {
+    this.refresh()
     $('#crudModal').on('hidden.bs.modal', function (e) {
-      COLUMNS.forEach(function(column) {
+      this.props.definition.columns.forEach(function(column) {
         $('#' + column.name).val(''); 
       })
     })    
@@ -401,15 +407,15 @@ var CrudTable = React.createClass({
 
     var heads = []
     heads.push(<th key='#'>#</th>)
-    COLUMNS.forEach(function(column) {
+    this.props.definition.columns.forEach(function(column) {
       if(column.type != 'hidden')
         heads.push(<th key={column.name}><FormattedMessage message={component.getIntlMessage(column.name)} /></th>)
     })
-    heads.push(<th key='plus'><AddButton /></th>)
+    heads.push(<th key='plus'><AddButton definition={component.props.definition} /></th>)
 
     var rows = [];
     this.state.data.forEach(function(row, index) {
-      rows.push(<TableRow key={index} row={row} index={index} />);
+      rows.push(<TableRow definition={component.props.definition} key={index} row={row} index={index} />);
     }) 
   
     rows.push(<SumRow data={this.state.data} />);
@@ -426,13 +432,13 @@ var CrudTable = React.createClass({
   
           <tbody>{rows}</tbody>
         </table>
-        <ModalForm />
+        <ModalForm definition={this.props.definition} onRowSubmit={this.handleRowSubmit} />
       </div>
     );
   }
 })
 
 React.render(
-  <CrudTable source={'/api/receivable/journal?orderId=' + orderId} {...i18n} />,
+  <CrudTable definition={definition} {...i18n} />,
   document.getElementById('crudTable')
 );
