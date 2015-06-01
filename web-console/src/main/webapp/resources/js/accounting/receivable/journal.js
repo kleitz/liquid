@@ -6,6 +6,7 @@
 var orderId = getParameterByName('orderId');  
 
 var definition = {
+  orderId: orderId,
   source: '/api/receivable/journal?orderId=' + orderId,
   columns: [
     {name: 'id', type: 'hidden'},
@@ -26,15 +27,15 @@ var definition = {
     title: 'crj',
     fields: [
       {name: 'id', type: 'hidden'},
-      {name: 'order', type: 'hidden', value: 'descendant', pattern: 'id'},
+      {name: 'order', type: 'hidden', value: 'descendant', pattern: 'order.id', default: orderId},
       {name: 'qtyOfBox'},
       {name: 'revenue'},
-      {name: 'recognizedAt', type: 'date', pattern: 'YYYY-MM-DD'},
+      {name: 'recognizedAt', type: 'date', pattern: 'YYYY-MM-DD mm:ss'},
       {name: 'receivedAmt'},
-      {name: 'receivedAt', type: 'date', pattern: 'YYYY-MM-DD'},
+      {name: 'receivedAt', type: 'date', pattern: 'YYYY-MM-DD mm:ss'},
       {name: 'invoiceNo'},
       {name: 'invoicedAmt'},
-      {name: 'invoicedAt', type: 'date', pattern: 'YYYY-MM-DD'}
+      {name: 'invoicedAt', type: 'date', pattern: 'YYYY-MM-DD mm:ss'}
     ]
   }
 }
@@ -56,6 +57,12 @@ $.fn.serializeObject = function()
    return o;
 };
 
+function getDescendantProperty(obj, path) {
+  var descendantProps = path.split(".");
+  while(descendantProps.length && (obj = obj[descendantProps.shift()]));
+  return obj;
+} 
+ 
 var IntlMixin = ReactIntl.IntlMixin;
 var FormattedMessage = ReactIntl.FormattedMessage;
 
@@ -131,24 +138,20 @@ var FieldRow = React.createClass({
 var ModalForm = React.createClass({
   mixins: [IntlMixin],
 
-  componentDidMount: function() {
+  handleSubmit: function(e) {
     component = this
-    // Attach a submit handler to the form
-    $("#crudForm").submit(function(event) {
-      // Stop form from submitting normally
-      event.preventDefault();
-      var data = JSON.stringify($('#crudForm').serializeObject());
-      $.ajax({
-        type: "POST",
-        url: "/api/receivable/journal",
-        contentType: "application/json",
-        data: data,
-        dataType: "text"
-      }). 
-      done(function(data) {
-        $('#crudModal').modal('hide')
-        component.props.onRowSubmit()
-      });
+    e.preventDefault();
+    var data = JSON.stringify($('#crudForm').serializeObject());
+    $.ajax({
+      type: "POST",
+      url: "/api/receivable/journal",
+      contentType: "application/json",
+      data: data,
+      dataType: "text"
+    }). 
+    done(function(data) {
+      $('#crudModal').modal('hide')
+      component.props.onRowSubmit()
     });
   },
 
@@ -172,7 +175,7 @@ var ModalForm = React.createClass({
    return (
       <div className="modal fade" id="crudModal" tabindex="-1" role="dialog" aria-labelledby="hostModalLabel" aria-hidden="true">
         <div className="modal-dialog">
-          <form id="crudForm">
+          <form id="crudForm" onSubmit={this.handleSubmit}>
             <div className="modal-content">
               <div className="modal-header">
                 <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -198,11 +201,15 @@ var AddButton = React.createClass({
 
   handleClick: function() {
     $('#crudModalTitle').text(this.getIntlMessage('add') + this.getIntlMessage(this.props.definition.modal.title))
-    var orderId = getParameterByName('orderId');  
-    $('#order').val(orderId); 
-    $('#recognizedAt').val(moment().format('YYYY-MM-DD HH:mm'));
-    $('#receivedAt').val(moment().format('YYYY-MM-DD HH:mm'));
-    $('#invoicedAt').val(moment().format('YYYY-MM-DD HH:mm'));
+    this.props.definition.modal.fields.forEach(function(field) {
+      if('default' in field)
+        $('#' + field.name).val(field['default']); 
+      else {
+        if(field.type == 'date') {
+          $('#' + field.name).val(moment().format(field.pattern)); 
+        }
+      }
+    })   
   },
 
   render: function() {
@@ -225,8 +232,10 @@ var UpdateButton = React.createClass({
         if(field.value === undefined)
           $('#' + field.name).val(component.props.row[field.name]); 
         else {
-          if(field.value == 'descendant')
-            $('#' + field.name).val(component.props.row[field.name][field.pattern]); 
+          if(field.value == 'descendant') {
+            var value = getDescendantProperty(component.props.row, field.pattern)
+            $('#' + field.name).val(value); 
+          }
         }
       })
     $('#crudModalTitle').text(this.getIntlMessage('update') + this.getIntlMessage(this.props.definition.modal.title))
@@ -243,11 +252,6 @@ var UpdateButton = React.createClass({
 
 var DescendantCell = React.createClass({
   render: function() {
-    function getDescendantProperty(obj, path) {
-      var descendantProps = path.split(".");
-      while(descendantProps.length && (obj = obj[descendantProps.shift()]));
-      return obj;
-    } 
     var value = getDescendantProperty(this.props.value, this.props.pattern)
     return (
       <td key={this.props.key}><span>{value}</span></td>
@@ -394,9 +398,11 @@ var CrudTable = React.createClass({
   },
 
   componentDidMount: function() {
+    component = this
     this.refresh()
+
     $('#crudModal').on('hidden.bs.modal', function (e) {
-      this.props.definition.columns.forEach(function(column) {
+      component.props.definition.columns.forEach(function(column) {
         $('#' + column.name).val(''); 
       })
     })    
