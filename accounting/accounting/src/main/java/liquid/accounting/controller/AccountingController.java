@@ -19,7 +19,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -111,10 +110,14 @@ public class AccountingController {
         return "charge/receivable";
     }
 
-    @RequestMapping(value = "/receivable/journal", method = RequestMethod.GET, params = "orderId")
-    public String listReceivableJournalsByOrder(@RequestParam Long orderId, Model model) {
-        model.addAttribute("orderId", orderId);
+    @RequestMapping(value = "/receivable/journal", method = RequestMethod.GET)
+    public String listReceivableJournals(Model model) {
         return "accounting/receivable/journal";
+    }
+
+    @RequestMapping(value = "/receivable/ledger", method = RequestMethod.GET)
+    public String listReceivableLedger(Model model) {
+        return "accounting/receivable/ledger";
     }
 
     @RequestMapping(value = "/payable", method = RequestMethod.GET)

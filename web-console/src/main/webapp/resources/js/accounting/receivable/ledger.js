@@ -1,9 +1,9 @@
 /* Global variables */
-var orderId = getParameterByName('orderId');  
+var customerId = getParameterByName('customerId');  
 
 var definition = {
-  orderId: orderId,
-  source: '/api/receivable/journal?orderId=' + orderId,
+  customerId: customerId,
+  source: '/api/receivable?customerId=' + customerId,
   columns: [
     {name: 'id', type: 'hidden'},
     {name: 'order', type: 'descendant', pattern: 'order.orderNo'},
@@ -18,22 +18,7 @@ var definition = {
     {name: 'invoiceTo', type: 'descendant', pattern: 'order.customer.name'},
     {name: 'invoicedAmt'},
     {name: 'invoicedAt', type: 'date', pattern: 'YYYY-MM-DD'}
-  ],
-  modal: {
-    title: 'crj',
-    fields: [
-      {name: 'id', type: 'hidden'},
-      {name: 'order', type: 'hidden', value: 'descendant', pattern: 'order.id', default: orderId},
-      {name: 'qtyOfBox'},
-      {name: 'revenue'},
-      {name: 'recognizedAt', type: 'date', pattern: 'YYYY-MM-DD mm:ss'},
-      {name: 'receivedAmt'},
-      {name: 'receivedAt', type: 'date', pattern: 'YYYY-MM-DD mm:ss'},
-      {name: 'invoiceNo'},
-      {name: 'invoicedAmt'},
-      {name: 'invoicedAt', type: 'date', pattern: 'YYYY-MM-DD mm:ss'}
-    ]
-  }
+  ]
 }
 
 React.render(
