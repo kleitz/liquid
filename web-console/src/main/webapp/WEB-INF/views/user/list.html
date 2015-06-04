@@ -11,10 +11,10 @@
 <br />
 
 <div class="container">
-    <table class="table table-striped table-hover table-condensed table-16" th:unless="${#lists.isEmpty(accounts)}">
+    <table class="table table-striped table-hover table-condensed table-16" th:unless="${#lists.isEmpty(users)}">
         <thead>
         <tr>
-            <th th:text="#{account.uid}">Account ID</th>
+            <th th:text="#{user.uid}">Account ID</th>
             <th th:text="#{user.name}">Name</th>
             <th th:text="#{email}">Email</th>
             <th><span th:text="#{cell}">Cell</span></th>
@@ -22,33 +22,33 @@
             <th><span th:text="#{enabled}">Enabled</span></th>
             <th th:text="#{apply}">Apply</th>
             <!--
-            <th th:text="#{account.locked}">Locked</th>            
+            <th th:text="#{user.locked}">Locked</th>            
             <th th:text="#{password.reset}">Edit</th>
             -->
         </tr>
         </thead>
 
         <tbody>
-        <tr th:each="account : ${accounts}">
-            <td th:text="${account.uid}">Account ID</td>
-            <td><span th:text="${account.surname} + ${account.givenName}">Account Group</span></td>
-            <td th:text="${account.email}">Email</td>
-            <td th:text="${account.cell}">Email</td>
-            <td th:text="${account.phone}">Email</td>
-            <td><i class="glyphicon glyphicon-flag" th:classappend="${account.enabled} ? 'text-success' : 'text-danger'"/></td>
-            <td><a th:href="'/account/' + ${account.uid}"><i class="glyphicon glyphicon-cog text-muted"/></a></td>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.uid}">User ID</td>
+            <td><span th:text="${user.surname} + ${user.givenName}">User Group</span></td>
+            <td th:text="${user.email}">Email</td>
+            <td th:text="${user.cell}">Email</td>
+            <td th:text="${user.phone}">Email</td>
+            <td><span class="glyphicon glyphicon-flag" th:classappend="${user.enabled} ? 'text-success' : 'text-danger'"/></td>
+            <td><a th:href="'/user/' + ${user.uid}"><i class="glyphicon glyphicon-cog text-muted"/></a></td>
             <!--
             <td>
-                <a th:if="${account.pwdAccountLockedTime}" th:href="'/account/' + ${account.uid} + '?action=unlock'"
+                <a th:if="${user.pwdAccountLockedTime}" th:href="'/user/' + ${user.uid} + '?action=unlock'"
                    class="btn btn-default btn-xs">
                     <i class="glyphicon glyphicon-lock"/>
                 </a>
-                <a th:unless="${account.pwdAccountLockedTime}" th:href="'/account/' + ${account.uid} + '?action=lock'">
+                <a th:unless="${user.pwdAccountLockedTime}" th:href="'/user/' + ${user.uid} + '?action=lock'">
                     <i class="glyphicon glyphicon-ok"/>
                 </a>
             </td>
             <td>
-                <a th:href="'/account/password/' + ${account.uid}">
+                <a th:href="'/user/password/' + ${user.uid}">
                     <i class="glyphicon glyphicon-cog"/>
                 </a>
             </td>
