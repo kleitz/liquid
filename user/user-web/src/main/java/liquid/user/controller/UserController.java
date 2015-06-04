@@ -1,12 +1,12 @@
 package liquid.user.controller;
 
+import liquid.core.controller.BaseController;
 import liquid.core.model.Alert;
 import liquid.user.domain.GroupMember;
 import liquid.user.model.PasswordChange;
 import liquid.user.model.User;
 import liquid.user.service.UserService;
 import liquid.util.StringUtil;
-import liquid.core.controller.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +26,14 @@ import javax.validation.Valid;
 import java.util.Collection;
 
 /**
- *  
  * User: tao
  * Date: 10/6/13
  * Time: 11:50 AM
  */
 @Controller
 @RequestMapping("/user")
-public class AccountController extends BaseController {
-    private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
+public class UserController extends BaseController {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -45,7 +44,7 @@ public class AccountController extends BaseController {
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model) {
         Collection<User> list = userService.findAll();
-        model.addAttribute("accounts", list);
+        model.addAttribute("users", list);
         return "user/list";
     }
 
@@ -132,8 +131,6 @@ public class AccountController extends BaseController {
                                 PasswordChange passwordChange, BindingResult bindingResult,
                                 Model model, RedirectAttributes redirectAttributes) {
         logger.debug("uid: {}", uid);
-        logger.debug("account: {}", passwordChange);
-
         if (!bindingResult.hasErrors()) {
             if (passwordChange.getNewPassword().equals(passwordChange.getNewPassword2())) {
                 userService.changePassword(uid, passwordChange.getNewPassword());
@@ -153,8 +150,6 @@ public class AccountController extends BaseController {
                                  // BindingResult must be next to the validating object
                                  @Valid PasswordChange passwordChange, BindingResult bindingResult,
                                  Model model, RedirectAttributes redirectAttributes) {
-        logger.debug("account: {}", passwordChange);
-
         if (!bindingResult.hasErrors()) {
             if (passwordChange.getNewPassword().equals(passwordChange.getNewPassword2())) {
                 try {

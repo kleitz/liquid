@@ -13,7 +13,7 @@
 </div><!-- /.container -->
 
 <div id="m" class="container">
-    <h3><span th:text="#{account}"></span></h3>
+    <h3><span th:text="#{user}"></span></h3>
 
     <form method="POST" th:action="'/user/' + *{uid}" th:object="${user}" sec:authorize="hasRole('ROLE_ADMIN')">
         <hr />
@@ -27,7 +27,7 @@
         <hr />
         <div class="row">
             <div class="form-group col-xs-6">
-                <label th:text="#{account.uid}">Account UID</label>
+                <label th:text="#{user.uid}">User UID</label>
                 <input type="text" th:field="*{uid}" class="form-control input-sm" disabled="disabled"/>
             </div>
             <div class="form-group col-xs-6" th:classappend="${#fields.hasErrors('email')} ? 'has-error'">
