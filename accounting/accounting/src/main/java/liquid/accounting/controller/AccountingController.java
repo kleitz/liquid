@@ -97,7 +97,7 @@ public class AccountingController {
         if (bindingResult.hasErrors()) {
             Page<ReceivableSummary> page = new PageImpl<ReceivableSummary>(new ArrayList<>());
             model.addAttribute("page", page);
-            return "charge/receivable";
+            return "accounting/receivable";
         }
 
         searchBarForm.setAction("/accounting/receivable");
@@ -107,7 +107,7 @@ public class AccountingController {
         SumPage<ReceivableSummary> page = receivableSummaryService.findAll(searchBarForm, pageRequest);
         model.addAttribute("page", page);
 
-        return "charge/receivable";
+        return "accounting/receivable";
     }
 
     @RequestMapping(value = "/receivable/journal", method = RequestMethod.GET)
@@ -131,7 +131,7 @@ public class AccountingController {
         if (bindingResult.hasErrors()) {
             Page<Charge> page = new PageImpl<Charge>(new ArrayList<>());
             model.addAttribute("page", page);
-            return "charge/payable";
+            return "accounting/payable";
         }
 
         searchBarForm.setAction("/accounting/payable");
@@ -140,6 +140,6 @@ public class AccountingController {
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
         Page<Charge> page = chargeFacade.findAll(searchBarForm, pageRequest);
         model.addAttribute("page", page);
-        return "charge/payable";
+        return "accounting/payable";
     }
 }
