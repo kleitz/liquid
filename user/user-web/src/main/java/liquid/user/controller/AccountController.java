@@ -32,7 +32,7 @@ import java.util.Collection;
  * Time: 11:50 AM
  */
 @Controller
-@RequestMapping("/account")
+@RequestMapping("/user")
 public class AccountController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
@@ -46,14 +46,14 @@ public class AccountController extends BaseController {
     public String list(Model model) {
         Collection<User> list = userService.findAll();
         model.addAttribute("accounts", list);
-        return "account/list";
+        return "user/list";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String initRegister(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("groups", userService.findGroups());
-        return "account/register";
+        return "user/register";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -64,13 +64,13 @@ public class AccountController extends BaseController {
             if (user.getPassword().equals(user.getPassword2())) {
                 userService.register(user);
                 redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
-                return "redirect:/account/register";
+                return "redirect:/user/register";
             } else {
                 addFieldError(bindingResult, "user", "password2", user.getPassword2(), user.getPassword2());
             }
         }
         model.addAttribute("groups", userService.findGroups());
-        return "account/register";
+        return "user/register";
     }
 
     @RequestMapping(value = "/{uid}", method = RequestMethod.GET)
@@ -82,7 +82,7 @@ public class AccountController extends BaseController {
         PasswordChange passwordChange = new PasswordChange();
         passwordChange.setUid(uid);
         model.addAttribute("passwordChange", passwordChange);
-        return "account/edit";
+        return "user/edit";
     }
 
     @RequestMapping(value = "/{uid}", method = RequestMethod.POST, params = "action=unlock")
@@ -91,7 +91,7 @@ public class AccountController extends BaseController {
 
         userService.unlock(uid);
         redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
-        return "redirect:/account/" + StringUtil.utf8encode(uid);
+        return "redirect:/user/" + StringUtil.utf8encode(uid);
     }
 
     @RequestMapping(value = "/{uid}", method = RequestMethod.POST, params = "action=lock")
@@ -101,7 +101,7 @@ public class AccountController extends BaseController {
         userService.lock(uid);
         redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
         // TODO: The following way is workaround. There must be a best way to solve encoding issue.
-        return "redirect:/account/" + StringUtil.utf8encode(uid);
+        return "redirect:/user/" + StringUtil.utf8encode(uid);
     }
 
     @RequestMapping(value = "/{uid}", method = RequestMethod.POST, params = "action=changeProfile")
@@ -109,13 +109,13 @@ public class AccountController extends BaseController {
         logger.debug("uid: {}", uid);
         logger.debug("user: {}", user);
         if (bindingResult.hasErrors()) {
-            return "account/edit";
+            return "user/edit";
         } else {
             userService.edit(user);
             redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
         }
 
-        return "redirect:/account/" + StringUtil.utf8encode(uid);
+        return "redirect:/user/" + StringUtil.utf8encode(uid);
     }
 
     @RequestMapping(value = "/{uid}", method = RequestMethod.POST, params = "action=assignToGroup")
@@ -124,7 +124,7 @@ public class AccountController extends BaseController {
         logger.debug("group: {}", group);
         userService.assignToGroup(uid, Integer.valueOf(group));
         redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
-        return "redirect:/account/" + StringUtil.utf8encode(uid);
+        return "redirect:/user/" + StringUtil.utf8encode(uid);
     }
 
     @RequestMapping(value = "/{uid}", method = RequestMethod.POST, params = "action=resetPassword")
@@ -139,13 +139,13 @@ public class AccountController extends BaseController {
                 userService.changePassword(uid, passwordChange.getNewPassword());
                 model.addAttribute("alert", new Alert("save.success"));
                 redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
-                return "redirect:/account/" + StringUtil.utf8encode(uid);
+                return "redirect:/user/" + StringUtil.utf8encode(uid);
             } else {
                 addFieldError(bindingResult, "passwordChange", "newPassword2", passwordChange.getOldPassword(), passwordChange.getOldPassword());
             }
         }
         prepareApplyView(model, uid);
-        return "account/edit";
+        return "user/edit";
     }
 
     @RequestMapping(value = "/{uid}", method = RequestMethod.POST, params = "action=changePassword")
@@ -162,7 +162,7 @@ public class AccountController extends BaseController {
                     authenticationManager.authenticate(authentication);
                     userService.changePassword(uid, passwordChange.getNewPassword());
                     redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
-                    return "redirect:/account/" + StringUtil.utf8encode(uid);
+                    return "redirect:/user/" + StringUtil.utf8encode(uid);
                 } catch (AuthenticationException e) {
                     addFieldError(bindingResult, "passwordChange", "oldPassword", passwordChange.getOldPassword(), passwordChange.getOldPassword());
                 }
@@ -171,7 +171,7 @@ public class AccountController extends BaseController {
             }
         }
         prepareApplyView(model, uid);
-        return "account/edit";
+        return "user/edit";
     }
 
     private void prepareApplyView(Model model, String uid) {

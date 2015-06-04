@@ -35,20 +35,20 @@
             <td th:text="${account.email}">Email</td>
             <td th:text="${account.cell}">Email</td>
             <td th:text="${account.phone}">Email</td>
-            <td><i class="glyphicon glyphicon-flag" th:classappend="${account.enabled} ? 'text-success' : 'text-danger'"/></td>
-            <td><a th:href="'/account/' + ${account.uid}"><i class="glyphicon glyphicon-cog text-muted"/></a></td>
+            <td><span class="glyphicon glyphicon-flag" th:classappend="${account.enabled} ? 'text-success' : 'text-danger'"/></td>
+            <td><a th:href="'/user/' + ${account.uid}"><i class="glyphicon glyphicon-cog text-muted"/></a></td>
             <!--
             <td>
-                <a th:if="${account.pwdAccountLockedTime}" th:href="'/account/' + ${account.uid} + '?action=unlock'"
+                <a th:if="${account.pwdAccountLockedTime}" th:href="'/user/' + ${account.uid} + '?action=unlock'"
                    class="btn btn-default btn-xs">
                     <i class="glyphicon glyphicon-lock"/>
                 </a>
-                <a th:unless="${account.pwdAccountLockedTime}" th:href="'/account/' + ${account.uid} + '?action=lock'">
+                <a th:unless="${account.pwdAccountLockedTime}" th:href="'/user/' + ${account.uid} + '?action=lock'">
                     <i class="glyphicon glyphicon-ok"/>
                 </a>
             </td>
             <td>
-                <a th:href="'/account/password/' + ${account.uid}">
+                <a th:href="'/user/password/' + ${account.uid}">
                     <i class="glyphicon glyphicon-cog"/>
                 </a>
             </td>

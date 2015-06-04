@@ -15,7 +15,7 @@
 <div id="m" class="container">
     <h3><span th:text="#{account}"></span></h3>
 
-    <form method="POST" th:action="'/account/' + *{uid}" th:object="${user}" sec:authorize="hasRole('ROLE_ADMIN')">
+    <form method="POST" th:action="'/user/' + *{uid}" th:object="${user}" sec:authorize="hasRole('ROLE_ADMIN')">
         <hr />
         <button th:if="*{enabled}" type="submit" name="action" value="lock" class="btn btn-danger btn-sm"><span th:text="#{disable}"></span></button>
         <button th:unless="*{enabled}" type="submit" name="action" value="unlock" class="btn btn-success btn-sm"><span th:text="#{enable}"></span></button>
@@ -23,7 +23,7 @@
 </div><!-- /.container -->
 
 <div id="m" class="container">
-    <form method="POST" th:action="'/account/' + *{uid}" th:object="${user}">
+    <form method="POST" th:action="'/user/' + *{uid}" th:object="${user}">
         <hr />
         <div class="row">
             <div class="form-group col-xs-6">
@@ -68,7 +68,7 @@
 
 <div id="m" class="container" sec:authorize="hasRole('ROLE_ADMIN')">
     <hr/>
-    <form method="POST" th:action="'/account/' + *{uid}" th:object="${user}">
+    <form method="POST" th:action="'/user/' + *{uid}" th:object="${user}">
         <div class="row">
             <div class="form-group col-xs-6">
                 <select th:field="*{group}" class="form-control input-sm">
@@ -85,7 +85,7 @@
 
 <div id="m" class="container">
     <hr/>
-    <form method="POST" th:object="${passwordChange}" th:action="'/account/' + *{uid}">
+    <form method="POST" th:object="${passwordChange}" th:action="'/user/' + *{uid}">
         <div class="row">
             <div class="form-group col-xs-6">
                 <div th:unless="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="form-group" th:classappend="${#fields.hasErrors('oldPassword')} ? 'has-error'">

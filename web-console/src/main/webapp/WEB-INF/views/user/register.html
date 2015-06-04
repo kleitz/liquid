@@ -12,7 +12,7 @@
     <div th:include="layout :: alert"/>
     <h3><span th:text="#{register}"></span></h3>
     <hr />
-    <form action="/account/register" method="POST" th:object="${user}">
+    <form action="/user/register" method="POST" th:object="${user}">
 
         <div class="form-group" th:classappend="${#fields.hasErrors('uid')} ? 'has-error'">
             <label th:text="#{account.uid}">Account UID</label>
