@@ -8,4 +8,6 @@ import liquid.core.repository.PageRepository;
  */
 public interface CashReceiptsJournalRepository extends PageRepository<CashReceiptsJournal> {
     Iterable<CashReceiptsJournal> findByOrderId(Long orderId);
+
+    Iterable<CashReceiptsJournal> findByOrderCustomerId(Long customerId);
 }

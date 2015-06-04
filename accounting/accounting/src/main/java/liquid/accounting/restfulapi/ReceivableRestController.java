@@ -2,7 +2,6 @@ package liquid.accounting.restfulapi;
 
 import liquid.accounting.domain.CashReceiptsJournal;
 import liquid.accounting.service.InternalCashReceiptsJournalService;
-import liquid.core.model.SearchBarForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +22,14 @@ public class ReceivableRestController {
     @RequestMapping(value = "/journal", method = RequestMethod.GET, params = "orderId")
     @ResponseBody
     public Iterable<CashReceiptsJournal> listReceivableJournalsByOrder(@RequestParam Long orderId) {
-        SearchBarForm searchBarForm = new SearchBarForm();
-        searchBarForm.setType("order");
-        searchBarForm.setText(String.valueOf(orderId));
-        Iterable<CashReceiptsJournal> journals = cashReceiptsJournalService.findAll(searchBarForm);
+        Iterable<CashReceiptsJournal> journals = cashReceiptsJournalService.findByOrderId(orderId);
+        return journals;
+    }
 
-        journals = cashReceiptsJournalService.findByOrderId(orderId);
+    @RequestMapping(method = RequestMethod.GET, params = "customerId")
+    @ResponseBody
+    public Iterable<CashReceiptsJournal> listReceivableJournalsByCustomer(@RequestParam Long customerId) {
+        Iterable<CashReceiptsJournal> journals = cashReceiptsJournalService.findByCustomerId(customerId);
         return journals;
     }
 

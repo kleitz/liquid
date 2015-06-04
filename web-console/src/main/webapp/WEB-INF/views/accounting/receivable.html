@@ -63,7 +63,7 @@
                 </td>
                 <td th:text="${receivable.createdAt}"></td>
                 <td>
-                    <a th:href="'/order/' + ${receivable.order.id} + '/receivable'"><span class="glyphicon glyphicon-briefcase text-success"/></a>
+                    <a th:href="'/accounting/receivable/ledger?customerId=' + ${receivable.order.customer.id}"><span class="glyphicon glyphicon-eye-open text-success"/></a>
                     &nbsp;
                     <span th:text="${receivable.order.customer.name}" />
                 </td>

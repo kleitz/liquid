@@ -3,10 +3,7 @@ package liquid.accounting.service;
 import liquid.accounting.domain.CashReceiptsJournal;
 import liquid.accounting.domain.ReceivableSummary;
 import liquid.accounting.repository.CashReceiptsJournalRepository;
-import liquid.core.model.SearchBarForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +26,11 @@ public class CashReceiptsJournalServiceImpl implements InternalCashReceiptsJourn
         return cashReceiptsJournalRepository.findByOrderId(orderId);
     }
 
+    @Override
+    public Iterable<CashReceiptsJournal> findByCustomerId(Long customerId) {
+        return cashReceiptsJournalRepository.findByOrderCustomerId(customerId);
+    }
+
     @Transactional("transactionManager")
     @Override
     public CashReceiptsJournal save(CashReceiptsJournal cashReceiptsJournal) {
@@ -38,15 +40,5 @@ public class CashReceiptsJournalServiceImpl implements InternalCashReceiptsJourn
         receivableSummary.setInvoicedCny(receivableSummary.getInvoicedCny() + (cashReceiptsJournal.getInvoicedAmt() == null ? 0L : cashReceiptsJournal.getInvoicedAmt().longValue()));
         receivableSummaryService.save(receivableSummary);
         return cashReceiptsJournalRepository.save(cashReceiptsJournal);
-    }
-
-    @Override
-    public Iterable<CashReceiptsJournal> findAll(SearchBarForm searchBarForm) {
-        return null;
-    }
-
-    @Override
-    public Page<CashReceiptsJournal> findAll(SearchBarForm searchBar, Pageable pageable) {
-        return null;
     }
 }
