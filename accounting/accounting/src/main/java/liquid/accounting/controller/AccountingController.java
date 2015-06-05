@@ -1,9 +1,9 @@
 package liquid.accounting.controller;
 
+import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.domain.ReceivableSummary;
-import liquid.accounting.facade.ChargeFacade;
-import liquid.accounting.model.Charge;
+import liquid.accounting.service.ChargeService;
 import liquid.accounting.service.ExchangeRateService;
 import liquid.accounting.service.InternalReceivableSummaryService;
 import liquid.core.domain.SumPage;
@@ -36,7 +36,7 @@ public class AccountingController {
     private ExchangeRateService exchangeRateService;
 
     @Autowired
-    private ChargeFacade chargeFacade;
+    private ChargeService chargeService;
 
     @Autowired
     private InternalReceivableSummaryService receivableSummaryService;
@@ -129,7 +129,7 @@ public class AccountingController {
         searchBarForm.prepand(request.getRequestURI());
 
         if (bindingResult.hasErrors()) {
-            Page<Charge> page = new PageImpl<Charge>(new ArrayList<>());
+            Page<ChargeEntity> page = new PageImpl<ChargeEntity>(new ArrayList<>());
             model.addAttribute("page", page);
             return "accounting/payable";
         }
@@ -138,7 +138,7 @@ public class AccountingController {
         model.addAttribute("searchBarForm", searchBarForm);
 
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
-        Page<Charge> page = chargeFacade.findAll(searchBarForm, pageRequest);
+        Page<ChargeEntity> page = chargeService.findAll(searchBarForm.getStartDate(), searchBarForm.getEndDate(), null, null, pageRequest);
         model.addAttribute("page", page);
         return "accounting/payable";
     }

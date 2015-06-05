@@ -4,6 +4,7 @@ import liquid.accounting.domain.ChargeEntity;
 import liquid.accounting.domain.ChargeEntity_;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.repository.ChargeRepository;
+import liquid.core.domain.SumPage;
 import liquid.core.security.SecurityContext;
 import liquid.core.service.AbstractService;
 import liquid.operation.domain.ServiceProvider_;
@@ -241,7 +242,29 @@ public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepos
             };
             specifications = specifications.and(spIdSpec);
         }
-        return repository.findAll(specifications, pageable);
+
+        Page<ChargeEntity> page = repository.findAll(specifications, pageable);
+        return appendSum(page, pageable);
+    }
+
+    private SumPage<ChargeEntity> appendSum(Page<ChargeEntity> page, Pageable pageable) {
+        ChargeEntity sum = new ChargeEntity();
+        sum.setTotalPrice(BigDecimal.ZERO);
+        Order order = new Order();
+        sum.setOrder(order);
+        for (ChargeEntity entity : page) {
+            sum.getOrder().setContainerQty(sum.getOrder().getContainerQty() + entity.getOrder().getContainerQty());
+
+            if (entity.getCurrency() == 0) {
+                sum.setTotalPrice(sum.getTotalPrice().add(entity.getTotalPrice()));
+            } else if (entity.getCurrency() == 1) {
+                sum.setTotalPrice(sum.getTotalPrice().add(entity.getTotalPrice().multiply(exchangeRateService.getExchangeRate().getValue())));
+            } else {
+
+            }
+        }
+
+        return new SumPage<ChargeEntity>(page, sum, pageable);
     }
 
     public Iterable<ChargeEntity> findByOrderIdAndCreateRole(long orderId, String createRole) {
