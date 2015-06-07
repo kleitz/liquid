@@ -1,11 +1,9 @@
 package liquid.accounting.controller;
 
 
-import liquid.accounting.domain.ChargeEntity;
+import liquid.accounting.domain.Charge;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.domain.ExchangeRate;
-import liquid.accounting.facade.ChargeFacade;
-import liquid.accounting.model.Charge;
 import liquid.accounting.model.ChargeStatus;
 import liquid.accounting.model.Earning;
 import liquid.accounting.service.ExchangeRateService;
@@ -65,9 +63,6 @@ public class ChargeController {
 
     @Autowired
     private InternalChargeService chargeService;
-
-    @Autowired
-    private ChargeFacade chargeFacade;
 
     @Autowired
     private LegService legService;
@@ -130,31 +125,29 @@ public class ChargeController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String addCharge(@Valid @ModelAttribute Charge charge, BindingResult bindingResult, Model model) {
+    public String addCharge(@Valid @ModelAttribute(value = "charge") Charge charge, BindingResult bindingResult, Model model) {
         logger.debug("charge: {}", charge);
-        LegEntity leg = legService.find(charge.getLegId());
 
         if (bindingResult.hasErrors()) {
             Iterable<ServiceSubtype> serviceSubtypes = serviceSubtypeService.findEnabled();
-            List<ServiceProvider> sps = serviceProviderService.findByServiceSubtypeId(charge.getServiceSubtypeId());
+            List<ServiceProvider> sps = serviceProviderService.findByServiceSubtypeId(charge.getServiceSubtype().getId());
 
-            Iterable<ChargeEntity> charges = chargeService.findByLegId(charge.getLegId());
+            Iterable<Charge> charges = chargeService.findByLegId(charge.getLeg().getId());
 
-            charge.setShipmentId(charge.getShipmentId());
-            charge.setLegId(charge.getLegId());
+            charge.setShipment(charge.getLeg().getShipment());
 
             model.addAttribute("serviceSubtypes", serviceSubtypes);
             model.addAttribute("sps", sps);
             model.addAttribute("charge", charge);
-            model.addAttribute("shipment", leg.getShipment());
-            model.addAttribute("leg", leg);
+            model.addAttribute("shipment", charge.getLeg().getShipment());
+            model.addAttribute("leg", charge.getLeg());
             model.addAttribute("charges", charges);
             model.addAttribute("backToTask", taskService.computeTaskMainPath(charge.getTaskId()));
             return "charge/console";
         } else {
-            charge.setShipmentId(leg.getShipment().getId());
-            chargeFacade.save(charge);
-            String redirect = "/charge/console?taskId=" + charge.getTaskId() + "&legId=" + charge.getLegId();
+            charge.setShipment(charge.getLeg().getShipment());
+            chargeService.save(charge);
+            String redirect = "/charge/console?taskId=" + charge.getTaskId() + "&legId=" + charge.getLeg().getId();
             return "redirect:" + redirect;
         }
     }
@@ -167,13 +160,13 @@ public class ChargeController {
         logger.debug("legId: {}", legId);
 
         LegEntity leg = legService.find(legId);
-        Iterable<ChargeEntity> charges = chargeService.findByLegId(legId);
+        Iterable<Charge> charges = chargeService.findByLegId(legId);
 
         Charge charge = new Charge();
-        charge.setShipmentId(leg.getShipment().getId());
-        charge.setLegId(legId);
+        charge.setShipment(leg.getShipment());
+        charge.setLeg(leg);
         charge.setWay(ChargeWay.PER_CONTAINER.getValue());
-        if (null != leg.getSp()) charge.setServiceProviderId(leg.getSp().getId());
+        if (null != leg.getSp()) charge.setSp(leg.getSp());
 
         Long defaultServiceSubtypeId = 1L;
         switch (TransMode.valueOf(leg.getTransMode())) {
@@ -190,7 +183,7 @@ public class ChargeController {
                 defaultServiceSubtypeId = 5L;
                 break;
         }
-        charge.setServiceSubtypeId(defaultServiceSubtypeId);
+        charge.setServiceSubtype(serviceSubtypeService.find(defaultServiceSubtypeId));
 
         Iterable<ServiceSubtype> serviceSubtypes = serviceSubtypeService.findEnabled();
         List<ServiceProvider> sps = serviceProviderService.findByServiceSubtypeId(defaultServiceSubtypeId);
@@ -209,7 +202,7 @@ public class ChargeController {
     @RequestMapping(value = "/payable", method = RequestMethod.GET)
     public String payable(@RequestParam(defaultValue = "0", required = false) int number, Model model) {
         PageRequest pageRequest = new PageRequest(number, size, new Sort(Sort.Direction.DESC, "id"));
-        Page<ChargeEntity> page = chargeService.findAll(pageRequest);
+        Page<Charge> page = chargeService.findAll(pageRequest);
         model.addAttribute("page", page);
         model.addAttribute("contextPath", "/charge/payable?");
 
@@ -227,7 +220,7 @@ public class ChargeController {
         String orderNo = "orderNo".equals(searchBarForm.getType()) ? searchBarForm.getText() : null;
         String spName = "spName".equals(searchBarForm.getType()) ? searchBarForm.getText() : null;
 
-        Page<ChargeEntity> page = chargeService.findAll(orderNo, spName, pageRequest);
+        Page<Charge> page = chargeService.findAll(orderNo, spName, pageRequest);
 
         searchBarForm.setAction("/charge/payable");
         searchBarForm.setTypes(new String[][]{{"orderNo", "order.no"}, {"spName", "sp.name"}});
@@ -242,7 +235,7 @@ public class ChargeController {
     public String pay(@PathVariable long chargeId,
                       Model model, Principal principal) {
         logger.debug("chargeId: {}", chargeId);
-        ChargeEntity charge = chargeService.find(chargeId);
+        Charge charge = chargeService.find(chargeId);
         charge.setStatus(ChargeStatus.PAID.getValue());
         chargeService.save(charge);
         return "redirect:/charge";
@@ -261,7 +254,7 @@ public class ChargeController {
         logger.debug("orderId: {}", orderId);
 
         Iterable<ServiceSubtype> serviceSubtypes = serviceSubtypeService.findEnabled();
-        Iterable<ChargeEntity> charges = chargeService.findByOrderId(orderId);
+        Iterable<Charge> charges = chargeService.findByOrderId(orderId);
         model.addAttribute("charges", charges);
 
         model.addAttribute("chargeWays", ChargeWay.values());
@@ -279,7 +272,7 @@ public class ChargeController {
         logger.debug("chargeId: {}", chargeId);
         logger.debug("referer: {}", referer);
 
-        ChargeEntity charge = chargeService.find(chargeId);
+        Charge charge = chargeService.find(chargeId);
         Iterable<ServiceSubtype> serviceSubtypes = serviceSubtypeService.findEnabled();
         model.addAttribute("charge", charge);
         model.addAttribute("chargeWays", ChargeWay.values());
@@ -296,7 +289,7 @@ public class ChargeController {
         logger.debug("chargeId: {}", chargeId);
         logger.debug("redirectTo: {}", redirectTo);
 
-        ChargeEntity charge = chargeService.find(chargeId);
+        Charge charge = chargeService.find(chargeId);
         charge.setStatus(ChargeStatus.PAID.getValue());
         chargeService.save(charge);
 

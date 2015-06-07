@@ -1,6 +1,6 @@
 package liquid.process.handler;
 
-import liquid.accounting.domain.ChargeEntity;
+import liquid.accounting.domain.Charge;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.service.ChargeService;
 import liquid.operation.domain.ServiceSubtype;
@@ -64,7 +64,7 @@ public abstract class AbstractRailContainerHandler extends AbstractTaskHandler {
         model.addAttribute("serviceSubtypes", serviceSubtypes);
         model.addAttribute("chargeWays", ChargeWay.values());
         model.addAttribute("transModes", TransMode.toMap());
-        Iterable<ChargeEntity> charges = chargeService.findByTaskId(task.getId());
+        Iterable<Charge> charges = chargeService.findByTaskId(task.getId());
         model.addAttribute("charges", charges);
         model.addAttribute("total", chargeService.total(charges));
     }

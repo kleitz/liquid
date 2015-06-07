@@ -18,7 +18,7 @@ import java.math.BigDecimal;
  */
 @Entity(name = "ACT_CHARGE")
 @EntityListeners(liquid.audit.AuditListener.class)
-public class ChargeEntity extends BaseUpdateEntity {
+public class Charge extends BaseUpdateEntity {
 
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")

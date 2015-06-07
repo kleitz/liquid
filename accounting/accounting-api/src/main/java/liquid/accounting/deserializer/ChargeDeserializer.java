@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import liquid.accounting.domain.ChargeEntity;
+import liquid.accounting.domain.Charge;
 import liquid.accounting.service.ChargeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import java.io.IOException;
  * Created by Tao Ma on 6/7/15.
  */
 @Component
-public class ChargeDeserializer extends JsonDeserializer<ChargeEntity> {
+public class ChargeDeserializer extends JsonDeserializer<Charge> {
     @Autowired
     private ChargeService chargeService;
 
@@ -26,7 +26,7 @@ public class ChargeDeserializer extends JsonDeserializer<ChargeEntity> {
     }
 
     @Override
-    public ChargeEntity deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+    public Charge deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
         JsonToken currentToken = jsonParser.getCurrentToken();
         if (currentToken.equals(JsonToken.VALUE_STRING)) {
             String text = jsonParser.getText().trim();

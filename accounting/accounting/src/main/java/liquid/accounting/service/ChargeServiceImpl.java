@@ -1,8 +1,8 @@
 package liquid.accounting.service;
 
-import liquid.accounting.domain.ChargeEntity;
-import liquid.accounting.domain.ChargeEntity_;
+import liquid.accounting.domain.Charge;
 import liquid.accounting.domain.ChargeWay;
+import liquid.accounting.domain.Charge_;
 import liquid.accounting.repository.ChargeRepository;
 import liquid.core.domain.SumPage;
 import liquid.core.security.SecurityContext;
@@ -42,7 +42,7 @@ import static org.springframework.data.jpa.domain.Specifications.where;
  * Time: 2:59 PM
  */
 @Service
-public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepository>
+public class ChargeServiceImpl extends AbstractService<Charge, ChargeRepository>
         implements InternalChargeService {
     private static final Logger logger = LoggerFactory.getLogger(ChargeServiceImpl.class);
 
@@ -63,7 +63,7 @@ public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepos
 
     // TODO: have to enhance this function.
     @Override
-    public void doSaveBefore(ChargeEntity entity) {
+    public void doSaveBefore(Charge entity) {
         // update charge
         if (null != entity.getId()) return;
 
@@ -104,13 +104,13 @@ public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepos
 
     }
 
-    public Iterable<ChargeEntity> getChargesByOrderId(long orderId) {
+    public Iterable<Charge> getChargesByOrderId(long orderId) {
         return chargeRepository.findByOrderId(orderId);
     }
 
     @Transactional("transactionManager")
     public void removeCharge(long chargeId) {
-        ChargeEntity charge = chargeRepository.findOne(chargeId);
+        Charge charge = chargeRepository.findOne(chargeId);
         Order order = charge.getOrder();
 
         if (charge.getCurrency() == 0) {
@@ -124,21 +124,21 @@ public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepos
         chargeRepository.delete(chargeId);
     }
 
-    public Iterable<ChargeEntity> findByLegId(long legId) {
+    public Iterable<Charge> findByLegId(long legId) {
         return chargeRepository.findByLegId(legId);
     }
 
-    public Iterable<ChargeEntity> findByShipmentId(long shipmentId) {
+    public Iterable<Charge> findByShipmentId(long shipmentId) {
         return chargeRepository.findByShipmentId(shipmentId);
     }
 
-    public Iterable<ChargeEntity> findByTaskId(String taskId) {
+    public Iterable<Charge> findByTaskId(String taskId) {
         return chargeRepository.findByTaskId(taskId);
     }
 
-    public BigDecimal total(Iterable<ChargeEntity> charges) {
+    public BigDecimal total(Iterable<Charge> charges) {
         BigDecimal total = BigDecimal.ZERO;
-        for (ChargeEntity charge : charges) {
+        for (Charge charge : charges) {
             if (charge.getCurrency() == 0) {
                 total = total.add(charge.getTotalPrice());
             } else {
@@ -148,42 +148,42 @@ public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepos
         return total;
     }
 
-    public Iterable<ChargeEntity> findByOrderId(long orderId) {
+    public Iterable<Charge> findByOrderId(long orderId) {
         return chargeRepository.findByOrderId(orderId);
     }
 
-    public Page<ChargeEntity> findByOrderId(long orderId, Pageable pageable) {
+    public Page<Charge> findByOrderId(long orderId, Pageable pageable) {
         return chargeRepository.findByOrderId(orderId, pageable);
     }
 
-    public Iterable<ChargeEntity> findByOrderNo(String orderNo) {
+    public Iterable<Charge> findByOrderNo(String orderNo) {
         return chargeRepository.findByOrderOrderNoLike("%" + orderNo + "%");
     }
 
-    public Iterable<ChargeEntity> findBySpName(String spName) {
+    public Iterable<Charge> findBySpName(String spName) {
         return chargeRepository.findBySpNameLike("%" + spName + "%");
     }
 
-    public ChargeEntity find(long id) {
+    public Charge find(long id) {
         return chargeRepository.findOne(id);
     }
 
-    public Iterable<ChargeEntity> findAll() {
+    public Iterable<Charge> findAll() {
         return chargeRepository.findAll();
     }
 
-    public Page<ChargeEntity> findAll(Pageable pageable) {
+    public Page<Charge> findAll(Pageable pageable) {
         return chargeRepository.findAll(pageable);
     }
 
-    public Page<ChargeEntity> findAll(final String orderNo, final String spName, final Pageable pageable) {
-        List<Specification<ChargeEntity>> specList = new ArrayList<>();
+    public Page<Charge> findAll(final String orderNo, final String spName, final Pageable pageable) {
+        List<Specification<Charge>> specList = new ArrayList<>();
 
         if (null != orderNo) {
-            Specification<ChargeEntity> orderNoSpec = new Specification<ChargeEntity>() {
+            Specification<Charge> orderNoSpec = new Specification<Charge>() {
                 @Override
-                public Predicate toPredicate(Root<ChargeEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
-                    return builder.like(root.get(ChargeEntity_.order).get(Order_.orderNo), "%" + orderNo + "%");
+                public Predicate toPredicate(Root<Charge> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
+                    return builder.like(root.get(Charge_.order).get(Order_.orderNo), "%" + orderNo + "%");
                 }
             };
             specList.add(orderNoSpec);
@@ -191,17 +191,17 @@ public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepos
 
 
         if (null != spName) {
-            Specification<ChargeEntity> spNameSpec = new Specification<ChargeEntity>() {
+            Specification<Charge> spNameSpec = new Specification<Charge>() {
                 @Override
-                public Predicate toPredicate(Root<ChargeEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
-                    return builder.like(root.get(ChargeEntity_.sp).get(ServiceProvider_.name), "%" + spName + "%");
+                public Predicate toPredicate(Root<Charge> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
+                    return builder.like(root.get(Charge_.sp).get(ServiceProvider_.name), "%" + spName + "%");
                 }
             };
             specList.add(spNameSpec);
         }
 
         if (specList.size() > 0) {
-            Specifications<ChargeEntity> specifications = where(specList.get(0));
+            Specifications<Charge> specifications = where(specList.get(0));
             for (int i = 1; i < specList.size(); i++) {
                 specifications.and(specList.get(i));
             }
@@ -211,22 +211,22 @@ public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepos
         return repository.findAll(pageable);
     }
 
-    public Page<ChargeEntity> findAll(final Date start, final Date end, final Long orderId, final Long spId, final Pageable pageable) {
+    public Page<Charge> findAll(final Date start, final Date end, final Long orderId, final Long spId, final Pageable pageable) {
         // date range
-        Specification<ChargeEntity> dateRangeSpec = new Specification<ChargeEntity>() {
+        Specification<Charge> dateRangeSpec = new Specification<Charge>() {
             @Override
-            public Predicate toPredicate(Root<ChargeEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                return cb.between(root.get(ChargeEntity_.createdAt), start, end);
+            public Predicate toPredicate(Root<Charge> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                return cb.between(root.get(Charge_.createdAt), start, end);
             }
         };
-        Specifications<ChargeEntity> specifications = Specifications.where(dateRangeSpec);
+        Specifications<Charge> specifications = Specifications.where(dateRangeSpec);
 
         // order id
         if (null != orderId) {
-            Specification<ChargeEntity> orderIdSpec = new Specification<ChargeEntity>() {
+            Specification<Charge> orderIdSpec = new Specification<Charge>() {
                 @Override
-                public Predicate toPredicate(Root<ChargeEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                    return cb.equal(root.get(ChargeEntity_.order).get(Order_.id), orderId);
+                public Predicate toPredicate(Root<Charge> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                    return cb.equal(root.get(Charge_.order).get(Order_.id), orderId);
                 }
             };
             specifications = specifications.and(orderIdSpec);
@@ -234,25 +234,25 @@ public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepos
 
         // sp id
         if (null != spId) {
-            Specification<ChargeEntity> spIdSpec = new Specification<ChargeEntity>() {
+            Specification<Charge> spIdSpec = new Specification<Charge>() {
                 @Override
-                public Predicate toPredicate(Root<ChargeEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                    return cb.equal(root.get(ChargeEntity_.sp).get(ServiceProvider_.id), spId);
+                public Predicate toPredicate(Root<Charge> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                    return cb.equal(root.get(Charge_.sp).get(ServiceProvider_.id), spId);
                 }
             };
             specifications = specifications.and(spIdSpec);
         }
 
-        Page<ChargeEntity> page = repository.findAll(specifications, pageable);
+        Page<Charge> page = repository.findAll(specifications, pageable);
         return appendSum(page, pageable);
     }
 
-    private SumPage<ChargeEntity> appendSum(Page<ChargeEntity> page, Pageable pageable) {
-        ChargeEntity sum = new ChargeEntity();
+    private SumPage<Charge> appendSum(Page<Charge> page, Pageable pageable) {
+        Charge sum = new Charge();
         sum.setTotalPrice(BigDecimal.ZERO);
         Order order = new Order();
         sum.setOrder(order);
-        for (ChargeEntity entity : page) {
+        for (Charge entity : page) {
             sum.getOrder().setContainerQty(sum.getOrder().getContainerQty() + entity.getOrder().getContainerQty());
 
             if (entity.getCurrency() == 0) {
@@ -264,10 +264,10 @@ public class ChargeServiceImpl extends AbstractService<ChargeEntity, ChargeRepos
             }
         }
 
-        return new SumPage<ChargeEntity>(page, sum, pageable);
+        return new SumPage<Charge>(page, sum, pageable);
     }
 
-    public Iterable<ChargeEntity> findByOrderIdAndCreateRole(long orderId, String createRole) {
+    public Iterable<Charge> findByOrderIdAndCreateRole(long orderId, String createRole) {
         return chargeRepository.findByOrderIdAndCreateRole(orderId, createRole);
     }
 }

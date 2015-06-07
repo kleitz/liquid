@@ -1,6 +1,6 @@
 package liquid.process.handler;
 
-import liquid.accounting.domain.ChargeEntity;
+import liquid.accounting.domain.Charge;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.service.ChargeService;
 import liquid.order.domain.Order;
@@ -78,7 +78,7 @@ public class PlanShipmentHandler extends AbstractTaskHandler {
 
         // charge table
         model.addAttribute("chargeWays", ChargeWay.values());
-        Iterable<ChargeEntity> charges = chargeService.findByTaskId(task.getId());
+        Iterable<Charge> charges = chargeService.findByTaskId(task.getId());
         model.addAttribute("charges", charges);
         model.addAttribute("total", chargeService.total(charges));
     }

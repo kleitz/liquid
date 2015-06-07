@@ -21,7 +21,7 @@ public class Payable extends BaseUpdateEntity implements Serializable {
     @JsonDeserialize(using = ChargeDeserializer.class)
     @ManyToOne
     @JoinColumn(name = "CHARGE_ID")
-    private ChargeEntity charge;
+    private Charge charge;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     @Column(name = "APPLIED_AT")
@@ -43,11 +43,11 @@ public class Payable extends BaseUpdateEntity implements Serializable {
     @Column(name = "PAID_AT")
     private Date paidAt;
 
-    public ChargeEntity getCharge() {
+    public Charge getCharge() {
         return charge;
     }
 
-    public void setCharge(ChargeEntity charge) {
+    public void setCharge(Charge charge) {
         this.charge = charge;
     }
 

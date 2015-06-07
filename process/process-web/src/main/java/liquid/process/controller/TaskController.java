@@ -1,6 +1,6 @@
 package liquid.process.controller;
 
-import liquid.accounting.domain.ChargeEntity;
+import liquid.accounting.domain.Charge;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.model.Earning;
 import liquid.accounting.service.ChargeService;
@@ -172,10 +172,10 @@ public class TaskController extends AbstractTaskController {
         model.addAttribute("task", task);
 
         if ("ROLE_COMMERCE".equals(SecurityContext.getInstance().getRole())) {
-            Iterable<ChargeEntity> charges = chargeService.findByOrderId(orderId);
+            Iterable<Charge> charges = chargeService.findByOrderId(orderId);
             model.addAttribute("charges", charges);
         } else {
-            Iterable<ChargeEntity> charges = chargeService.findByOrderIdAndCreateRole(orderId,
+            Iterable<Charge> charges = chargeService.findByOrderIdAndCreateRole(orderId,
                     SecurityContext.getInstance().getRole());
             model.addAttribute("charges", charges);
         }
@@ -193,7 +193,7 @@ public class TaskController extends AbstractTaskController {
 
         Long orderId = taskService.getOrderIdByTaskId(taskId);
         Order order = orderService.find(orderId);
-        Iterable<ChargeEntity> charges = chargeService.findByOrderId(order.getId());
+        Iterable<Charge> charges = chargeService.findByOrderId(order.getId());
         model.addAttribute("charges", charges);
 
         model.addAttribute("chargeWays", ChargeWay.values());
