@@ -1,5 +1,6 @@
 package liquid.transport.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import liquid.operation.domain.ServiceProvider;
 import liquid.core.domain.BaseIdEntity;
 import liquid.operation.domain.Location;
@@ -14,7 +15,7 @@ import javax.persistence.*;
  */
 @Entity(name = "TSP_LEG")
 public class LegEntity extends BaseIdEntity {
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "SHIPMENT_ID")
     private ShipmentEntity shipment;

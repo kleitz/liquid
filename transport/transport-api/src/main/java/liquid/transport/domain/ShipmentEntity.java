@@ -1,7 +1,8 @@
 package liquid.transport.domain;
 
-import liquid.order.domain.Order;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import liquid.core.domain.BaseTaskEntity;
+import liquid.order.domain.Order;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 @Entity(name = "TSP_SHIPMENT")
 public class ShipmentEntity extends BaseTaskEntity {
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
     private Order order;
@@ -24,21 +26,27 @@ public class ShipmentEntity extends BaseTaskEntity {
     @Column(name = "CONTAINER_QTY")
     private int containerQty;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "shipment", orphanRemoval = true)
     public List<LegEntity> legs;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "shipment")
     private List<ShippingContainerEntity> containers;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "shipment")
     private Collection<RailContainer> railContainers;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "shipment")
     private Collection<BargeContainer> bargeContainers;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "shipment")
     private Collection<VesselContainer> vesselContainers;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "shipment")
     private Collection<DeliveryContainerEntity> deliveryContainers;
 
