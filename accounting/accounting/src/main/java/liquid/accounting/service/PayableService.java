@@ -17,4 +17,12 @@ public class PayableService {
     public Iterable<Payable> findByChargeId(Long chargeId) {
         return payableRespository.findByChargeId(chargeId);
     }
+
+    public Iterable<Payable> findByChargeSpId(Long spId) {
+        return payableRespository.findByChargeSpId(spId);
+    }
+
+    public Payable save(Payable payable) {
+        return payableRespository.save(payable);
+    }
 }

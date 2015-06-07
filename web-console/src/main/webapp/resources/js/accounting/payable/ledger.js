@@ -1,8 +1,8 @@
 /* Global variables */
-var chargeId = getParameterByName('chargeId');  
+var spId = getParameterByName('spId');  
 
 var definition = {
-  source: '/api/payable/journal?chargeId=' + chargeId,
+  source: '/api/payable?spId=' + spId,
   columns: [
     {name: 'appliedAt', type: 'date', pattern: 'YYYY-MM-DD'},
     {name: 'invoiceNo'},
@@ -10,20 +10,7 @@ var definition = {
     {name: 'serviceProvider', type: 'descendant', pattern: 'charge.sp.name'},
     {name: 'paidAmt'},
     {name: 'paidAt', type: 'date', pattern: 'YYYY-MM-DD'}
-  ],
-  modal: {
-    title: 'payable',
-    url: '/api/payable/journal',
-    fields: [
-      {name: 'id', type: 'hidden'},
-      {name: 'charge', type: 'hidden', value: 'descendant', pattern: 'charge.id', default: chargeId},
-      {name: 'appliedAt', type: 'date', pattern: 'YYYY-MM-DD mm:ss'},
-      {name: 'invoiceNo'},
-      {name: 'currency'},
-      {name: 'paidAmt'},
-      {name: 'paidAt', type: 'date', pattern: 'YYYY-MM-DD mm:ss'}
-    ]
-  }
+  ]
 }
 
 var SumRow = React.createClass({

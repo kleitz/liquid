@@ -24,6 +24,7 @@ var i18n = {
     notReceivedSum: "未收到款金额",
     invoicedSum: "已开票金额",
     notInvoicedSum: "未开票金额",
+    payable: "应收结算",
     appliedAt: "申请时间",
     currency: "货币",
     serviceProvider: "服务提供商",

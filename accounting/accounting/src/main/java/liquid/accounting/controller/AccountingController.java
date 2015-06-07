@@ -147,4 +147,9 @@ public class AccountingController {
     public String listPayable(Model model) {
         return "accounting/payable/journal";
     }
+
+    @RequestMapping(value = "/payable/ledger", method = RequestMethod.GET)
+    public String listPayableLedger(Model model) {
+        return "accounting/payable/ledger";
+    }
 }

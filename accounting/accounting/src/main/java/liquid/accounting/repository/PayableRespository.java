@@ -8,4 +8,6 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface PayableRespository extends CrudRepository<Payable, Long> {
     Iterable<Payable> findByChargeId(Long chargeId);
+
+    Iterable<Payable> findByChargeSpId(Long spId);
 }
