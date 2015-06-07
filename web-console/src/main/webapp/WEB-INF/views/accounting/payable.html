@@ -51,7 +51,7 @@
         <tbody>
         <tr th:each="charge : ${page.content}">
             <td >
-              <a th:href="'/accounting/payable?chargeId=' + ${charge.id}"><span class="glyphicon glyphicon-briefcase text-success"/></a>
+              <a th:href="'/accounting/payable/journal?chargeId=' + ${charge.id}"><span class="glyphicon glyphicon-briefcase text-success"/></a>
               &nbsp;
               <span th:text="${charge.id}" />       
             </td>
@@ -62,7 +62,7 @@
             <td></td>
             <td th:text="${charge.serviceSubtype.name}">Type</td>
             <td>
-              <a th:href="'/accounting/payable?spId=' + ${charge.sp.name}"><span class="glyphicon glyphicon-eye-open text-success"/></a>
+              <a th:href="'/accounting/payable/ledger?spId=' + ${charge.sp.id}"><span class="glyphicon glyphicon-eye-open text-success"/></a>
               &nbsp;
               <span th:text="${charge.sp.name}" />
             </td>

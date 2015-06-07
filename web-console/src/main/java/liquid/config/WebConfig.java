@@ -4,6 +4,7 @@ import liquid.container.converter.ContainerSubtypeFormatter;
 import liquid.interceptor.LoggingInterceptor;
 import liquid.operation.converter.*;
 import liquid.order.converter.OrderFormatter;
+import liquid.transport.converter.LegFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -85,6 +86,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private ServiceTypeFormatter serviceTypeFormatter;
 
+    @Autowired
+    private LegFormatter legFormatter;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
@@ -110,6 +114,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addFormatter(serviceTypeFormatter);
         registry.addFormatter(railPlanTypeFormatter);
         registry.addFormatter(serviceSubtypeFormatter);
+        registry.addFormatter(legFormatter);
     }
 
     @Bean

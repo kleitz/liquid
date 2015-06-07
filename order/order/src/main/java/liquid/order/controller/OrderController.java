@@ -1,6 +1,6 @@
 package liquid.order.controller;
 
-import liquid.accounting.domain.ChargeEntity;
+import liquid.accounting.domain.Charge;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.model.Invoice;
 import liquid.accounting.model.Receipt;
@@ -391,7 +391,7 @@ public class OrderController extends BaseController {
                 model.addAttribute("shipmentSet", shipmentSet);
                 break;
             case "charge":
-                Iterable<ChargeEntity> charges = chargeService.getChargesByOrderId(id);
+                Iterable<Charge> charges = chargeService.getChargesByOrderId(id);
 
                 Iterable<ServiceSubtype> serviceSubtypes = serviceSubtypeService.findEnabled();
                 model.addAttribute("serviceSubtypes", serviceSubtypes);

@@ -1,6 +1,6 @@
 package liquid.process.controller;
 
-import liquid.accounting.domain.ChargeEntity;
+import liquid.accounting.domain.Charge;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.service.ChargeService;
 import liquid.order.domain.Order;
@@ -75,7 +75,7 @@ public class PlanShipmentController extends AbstractTaskController {
 
             // charge table
             model.addAttribute("chargeWays", ChargeWay.values());
-            Iterable<ChargeEntity> charges = chargeService.findByTaskId(taskId);
+            Iterable<Charge> charges = chargeService.findByTaskId(taskId);
             model.addAttribute("charges", charges);
             model.addAttribute("total", chargeService.total(charges));
             return factory.locateHandler(DefinitionKey.planShipment).locateTemplate(DefinitionKey.planShipment);
@@ -89,7 +89,7 @@ public class PlanShipmentController extends AbstractTaskController {
 
             // charge table
             model.addAttribute("chargeWays", ChargeWay.values());
-            Iterable<ChargeEntity> charges = chargeService.findByTaskId(taskId);
+            Iterable<Charge> charges = chargeService.findByTaskId(taskId);
             model.addAttribute("charges", charges);
             model.addAttribute("total", chargeService.total(charges));
             return factory.locateHandler(DefinitionKey.planShipment).locateTemplate(DefinitionKey.planShipment);

@@ -1,11 +1,9 @@
 package liquid.accounting.controller;
 
-import liquid.accounting.domain.ChargeEntity;
+import liquid.accounting.domain.Charge;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.domain.IncomeEntity;
 import liquid.accounting.domain.IncomeType;
-import liquid.accounting.facade.ChargeFacade;
-import liquid.accounting.model.Charge;
 import liquid.accounting.service.ChargeService;
 import liquid.accounting.service.IncomeService;
 import liquid.operation.domain.ServiceProvider;
@@ -30,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * User: tao
  * Date: 10/30/13
  * Time: 1:29 PM
@@ -45,9 +42,6 @@ public class AjustementController extends BaseTaskController {
 
     @Autowired
     private ChargeService chargeService;
-
-    @Autowired
-    private ChargeFacade chargeFacade;
 
     @Autowired
     private ServiceProviderService serviceProviderService;
@@ -84,7 +78,7 @@ public class AjustementController extends BaseTaskController {
         Iterable<ServiceSubtype> serviceSubtypes = serviceSubtypeService.findEnabled();
         model.addAttribute("serviceSubtypes", serviceSubtypes);
         model.addAttribute("chargeWays", ChargeWay.values());
-        Iterable<ChargeEntity> charges = chargeService.findByTaskId(taskId);
+        Iterable<Charge> charges = chargeService.findByTaskId(taskId);
         model.addAttribute("charges", charges);
         model.addAttribute("chargesTotal", chargeService.total(charges));
         return "order/ajustement";
@@ -145,7 +139,7 @@ public class AjustementController extends BaseTaskController {
             return "order/add_charge";
         }
 
-        chargeFacade.save(charge);
+        chargeService.save(charge);
 
         return "redirect:/task/" + taskId + "/ajustement";
     }

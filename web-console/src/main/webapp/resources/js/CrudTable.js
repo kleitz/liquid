@@ -82,7 +82,7 @@ var ModalForm = React.createClass({
     var data = JSON.stringify($('#crudForm').serializeObject());
     $.ajax({
       type: "POST",
-      url: "/api/receivable/journal",
+      url: this.props.definition.modal.url,
       contentType: "application/json",
       data: data,
       dataType: "text"
@@ -119,9 +119,7 @@ var ModalForm = React.createClass({
                 <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 className="modal-title" id="crudModalTitle"></h4>
               </div>
-              <div className="modal-body">
-                {rows}
-              </div>
+              <div className="modal-body">{rows}</div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-default" data-dismiss="modal"><FormattedMessage message={this.getIntlMessage('close')} /></button>
                 <button type="submit" className="btn btn-success"><FormattedMessage message={this.getIntlMessage('save')} /></button>
@@ -249,83 +247,12 @@ var TableRow = React.createClass({
   }
 })
 
-var SumRow = React.createClass({
-  mixins: [IntlMixin],
-  
-  render: function() {
-    var revenueSum = 0
-    var receivedSum = 0
-    var invoicedSum = 0
-    this.props.data.forEach(function(row) {
-      revenueSum += row['revenue']
-      receivedSum += row['receivedAmt']
-      invoicedSum += row['invoicedAmt']
-    })
-    var cells = []
-    cells.push(<td></td>)
-    cells.push(<td></td>)
-    cells.push(<td><b><FormattedMessage message={this.getIntlMessage('revenueSum')} /></b></td>)
-    cells.push(<td><b>{parseFloat(revenueSum).toFixed(2)}</b></td>)
-    cells.push(<td></td>)
-    cells.push(<td></td>)
-    cells.push(<td><b><FormattedMessage message={this.getIntlMessage('receivedSum')} /></b></td>)
-    cells.push(<td><b>{parseFloat(receivedSum).toFixed(2)}</b></td>)
-    cells.push(<td></td>)
-    cells.push(<td></td>)
-    cells.push(<td><b><FormattedMessage message={this.getIntlMessage('invoicedSum')} /></b></td>)
-    cells.push(<td><b>{parseFloat(invoicedSum).toFixed(2)}</b></td>)
-    cells.push(<td></td>)
-    if("modal" in this.props.definition) {
-      cells.push(<td></td>)
-    }
-
-    return ( 
-      <tr>{cells}</tr>
-    );
-  }
-})
-
-var DeductionRow = React.createClass({
-  mixins: [IntlMixin],
-  
-  render: function() {
-    var revenueSum = 0
-    var receivedSum = 0
-    var invoicedSum = 0
-    this.props.data.forEach(function(row) {
-      revenueSum += row['revenue']
-      receivedSum += row['receivedAmt']
-      invoicedSum += row['invoicedAmt']
-    })
-    var cells = []
-    cells.push(<td></td>)
-    cells.push(<td></td>)
-    cells.push(<td><b><FormattedMessage message={this.getIntlMessage('notReceivedRevenue')} /></b></td>)
-    cells.push(<td><b>{parseFloat(invoicedSum - receivedSum).toFixed(2)}</b></td>)
-    cells.push(<td></td>)
-    cells.push(<td></td>)
-    cells.push(<td><b><FormattedMessage message={this.getIntlMessage('notReceivedSum')} /></b></td>)
-    cells.push(<td><b>{parseFloat(invoicedSum - receivedSum).toFixed(2)}</b></td>)
-    cells.push(<td></td>)
-    cells.push(<td></td>)
-    cells.push(<td><b><FormattedMessage message={this.getIntlMessage('notInvoicedSum')} /></b></td>)
-    cells.push(<td><b>{parseFloat(revenueSum - invoicedSum).toFixed(2)}</b></td>)
-    cells.push(<td></td>)
-    if("modal" in this.props.definition) {
-      cells.push(<td></td>)
-    }
-
-    return ( 
-      <tr>{cells}</tr>
-    );
-  }
-})
-
 var CrudTable = React.createClass({
   mixins: [IntlMixin],
 
   refresh: function() {
     $.get(this.props.definition.source, function(result) {
+      console.log("get: ", result)
       if (this.isMounted()) {
         this.setState({
           data: result
@@ -343,6 +270,7 @@ var CrudTable = React.createClass({
   },
 
   componentDidMount: function() {
+    console.log('componentDidMount')
     component = this
     this.refresh()
 
@@ -368,14 +296,23 @@ var CrudTable = React.createClass({
       heads.push(<th key='plus'><AddButton definition={component.props.definition} /></th>)
       modal = <ModalForm definition={this.props.definition} onRowSubmit={this.handleRowSubmit} />
     }
+    console.log("modal:", modal)
 
     var rows = [];
+    console.log("state:", this.state)
     this.state.data.forEach(function(row, index) {
       rows.push(<TableRow definition={component.props.definition} key={index} row={row} index={index} />);
     }) 
-  
-    rows.push(<SumRow data={this.state.data} definition={component.props.definition} />);
-    rows.push(<DeductionRow data={this.state.data} definition={component.props.definition} />);
+    
+    if (typeof SumRow === "undefined") 
+      console.log("SumRow is undefined.")
+    else
+      rows.push(<SumRow data={this.state.data} definition={component.props.definition} />);
+    
+    if (typeof DeductionRow === "undefined") 
+      console.log("DecuctionRow is undefined.")
+    else
+      rows.push(<DeductionRow data={this.state.data} definition={component.props.definition} />);
 
     // FIXME - sum all crj. 
     // rows.push(<JournalRow journal={...} />);
@@ -387,8 +324,8 @@ var CrudTable = React.createClass({
           </thead>
   
           <tbody>{rows}</tbody>
-          {modal}
         </table>
+        {modal}
       </div>
     );
   }

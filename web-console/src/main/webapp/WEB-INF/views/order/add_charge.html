@@ -17,7 +17,7 @@
     <form method="POST" th:action="@{${#httpServletRequest.servletPath}}" th:object="${charge}" >
         <div class="form-group">
             <label th:text="#{charge.type}" class="control-label">Charge Type</label>
-            <select class="form-control input-sm" th:field="*{serviceSubtypeId}">
+            <select class="form-control input-sm" th:field="*{serviceSubtype}">
                 <option th:each="serviceSubtype : ${serviceSubtypes}"
                         th:value="${serviceSubtype.id}"
                         th:text="${serviceSubtype.name}">Service Subtype
@@ -27,7 +27,7 @@
 
         <div class="form-group">
             <label class="control-label" th:text="#{sp}">SP</label>
-            <select th:field="*{serviceProviderId}" class="form-control">
+            <select th:field="*{sp}" class="form-control">
                 <option th:each="sp : ${sps}"
                         th:value="${sp.id}"
                         th:text="${sp.name}">SP Name

@@ -1,6 +1,6 @@
 package liquid.accounting.controller;
 
-import liquid.accounting.domain.ChargeEntity;
+import liquid.accounting.domain.Charge;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.domain.ReceivableSummary;
 import liquid.accounting.service.ChargeService;
@@ -129,7 +129,7 @@ public class AccountingController {
         searchBarForm.prepand(request.getRequestURI());
 
         if (bindingResult.hasErrors()) {
-            Page<ChargeEntity> page = new PageImpl<ChargeEntity>(new ArrayList<>());
+            Page<Charge> page = new PageImpl<Charge>(new ArrayList<>());
             model.addAttribute("page", page);
             return "accounting/payable";
         }
@@ -138,8 +138,18 @@ public class AccountingController {
         model.addAttribute("searchBarForm", searchBarForm);
 
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
-        Page<ChargeEntity> page = chargeService.findAll(searchBarForm.getStartDate(), searchBarForm.getEndDate(), null, null, pageRequest);
+        Page<Charge> page = chargeService.findAll(searchBarForm.getStartDate(), searchBarForm.getEndDate(), null, null, pageRequest);
         model.addAttribute("page", page);
         return "accounting/payable";
+    }
+
+    @RequestMapping(value = "/payable/journal", method = RequestMethod.GET)
+    public String listPayable(Model model) {
+        return "accounting/payable/journal";
+    }
+
+    @RequestMapping(value = "/payable/ledger", method = RequestMethod.GET)
+    public String listPayableLedger(Model model) {
+        return "accounting/payable/ledger";
     }
 }
