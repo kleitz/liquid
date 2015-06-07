@@ -23,6 +23,11 @@ var i18n = {
     receivedSum: "已收到款金额",
     notReceivedSum: "未收到款金额",
     invoicedSum: "已开票金额",
-    notInvoicedSum: "未开票金额"
+    notInvoicedSum: "未开票金额",
+    appliedAt: "申请时间",
+    currency: "货币",
+    serviceProvider: "服务提供商",
+    paidAmt: "付款金额",
+    paidAt: "付款时间"
   }
 };

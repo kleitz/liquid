@@ -142,4 +142,9 @@ public class AccountingController {
         model.addAttribute("page", page);
         return "accounting/payable";
     }
+
+    @RequestMapping(value = "/payable/journal", method = RequestMethod.GET)
+    public String listPayable(Model model) {
+        return "accounting/payable/journal";
+    }
 }

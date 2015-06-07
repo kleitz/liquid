@@ -119,9 +119,7 @@ var ModalForm = React.createClass({
                 <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 className="modal-title" id="crudModalTitle"></h4>
               </div>
-              <div className="modal-body">
-                {rows}
-              </div>
+              <div className="modal-body">{rows}</div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-default" data-dismiss="modal"><FormattedMessage message={this.getIntlMessage('close')} /></button>
                 <button type="submit" className="btn btn-success"><FormattedMessage message={this.getIntlMessage('save')} /></button>
@@ -326,6 +324,7 @@ var CrudTable = React.createClass({
 
   refresh: function() {
     $.get(this.props.definition.source, function(result) {
+      console.log("get: ", result)
       if (this.isMounted()) {
         this.setState({
           data: result
@@ -343,6 +342,7 @@ var CrudTable = React.createClass({
   },
 
   componentDidMount: function() {
+    console.log('componentDidMount')
     component = this
     this.refresh()
 
@@ -368,8 +368,10 @@ var CrudTable = React.createClass({
       heads.push(<th key='plus'><AddButton definition={component.props.definition} /></th>)
       modal = <ModalForm definition={this.props.definition} onRowSubmit={this.handleRowSubmit} />
     }
+    console.log("modal:", modal)
 
     var rows = [];
+    console.log("state:", this.state)
     this.state.data.forEach(function(row, index) {
       rows.push(<TableRow definition={component.props.definition} key={index} row={row} index={index} />);
     }) 

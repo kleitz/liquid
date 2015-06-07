@@ -23,6 +23,11 @@ var i18n = {
     receivedSum: "Received Sum",
     notReceivedSum: "Not Received Sum",
     invoicedSum: "Invoiced Sum",
-    notInvoicedSum: "Not Invoiced Sum"
+    notInvoicedSum: "Not Invoiced Sum",
+    appliedAt: "Applied At",
+    currency: "Currency",
+    serviceProvider: "Service Provider",
+    paidAmt: "Paid Amt",
+    paidAt: "Paid At"
   }
 };

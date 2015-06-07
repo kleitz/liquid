@@ -51,7 +51,7 @@
         <tbody>
         <tr th:each="charge : ${page.content}">
             <td >
-              <a th:href="'/accounting/payable?chargeId=' + ${charge.id}"><span class="glyphicon glyphicon-briefcase text-success"/></a>
+              <a th:href="'/accounting/payable/journal?chargeId=' + ${charge.id}"><span class="glyphicon glyphicon-briefcase text-success"/></a>
               &nbsp;
               <span th:text="${charge.id}" />       
             </td>
