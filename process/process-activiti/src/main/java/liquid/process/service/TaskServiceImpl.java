@@ -199,8 +199,6 @@ public class TaskServiceImpl implements TaskService {
                 return "/task/" + task.getId() + "/vessel";
             case "deliver":
                 return "/task/" + task.getId() + "/delivery";
-            case "adjustPrice":
-                return "/task/" + task.getId() + "/ajustement";
             case "checkCostByMarketing":
             case "checkCostByOperating":
             case "checkFromMarketing":

@@ -5,7 +5,7 @@ import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.domain.IncomeEntity;
 import liquid.accounting.domain.IncomeType;
 import liquid.accounting.service.ChargeService;
-import liquid.accounting.service.IncomeService;
+import liquid.accounting.service.IncomeServiceImpl;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceProviderService;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,7 +37,7 @@ public class AjustementController extends BaseTaskController {
     private static final Logger logger = LoggerFactory.getLogger(AjustementController.class);
 
     @Autowired
-    private IncomeService incomeService;
+    private IncomeServiceImpl incomeService;
 
     @Autowired
     private ChargeService chargeService;
@@ -62,26 +61,6 @@ public class AjustementController extends BaseTaskController {
     @ModelAttribute("sps")
     public Iterable<ServiceProvider> populateSps() {
         return serviceProviderService.findAll();
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public String init(@PathVariable String taskId,
-                       Model model, Principal principal) {
-        logger.debug("taskId: {}", taskId);
-
-        // for incomes
-        List<IncomeEntity> incomes = incomeService.findByTaskId(taskId);
-        model.addAttribute("incomes", incomes);
-        model.addAttribute("incomesTotal", incomeService.total(incomes));
-
-        // for charges
-        Iterable<ServiceSubtype> serviceSubtypes = serviceSubtypeService.findEnabled();
-        model.addAttribute("serviceSubtypes", serviceSubtypes);
-        model.addAttribute("chargeWays", ChargeWay.values());
-        Iterable<Charge> charges = chargeService.findByTaskId(taskId);
-        model.addAttribute("charges", charges);
-        model.addAttribute("chargesTotal", chargeService.total(charges));
-        return "order/ajustement";
     }
 
     @RequestMapping(value = "/income", method = RequestMethod.GET)

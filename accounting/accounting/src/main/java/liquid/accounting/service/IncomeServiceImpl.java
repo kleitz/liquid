@@ -14,13 +14,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *  
  * User: tao
  * Date: 10/30/13
  * Time: 1:02 PM
  */
 @Service
-public class IncomeService {
+public class IncomeServiceImpl implements IncomeService {
 
     @Autowired
     private IncomeRepository incomeRepository;
