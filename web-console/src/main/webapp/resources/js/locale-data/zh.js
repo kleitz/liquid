@@ -29,6 +29,10 @@ var i18n = {
     currency: "货币",
     serviceProvider: "服务提供商",
     paidAmt: "付款金额",
-    paidAt: "付款时间"
+    paidAt: "付款时间",
+    serviceSubtype: "服务子类型",
+    currency: "货币",
+    quotation: "价格",
+    comment: "备注"
   }
 };

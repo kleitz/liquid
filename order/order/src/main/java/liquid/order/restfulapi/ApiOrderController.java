@@ -1,10 +1,13 @@
 package liquid.order.restfulapi;
 
+import liquid.core.model.SearchBarForm;
 import liquid.operation.domain.Customer;
 import liquid.operation.service.CustomerService;
 import liquid.order.domain.Order;
+import liquid.order.domain.ServiceItem;
 import liquid.order.service.OrderService;
-import liquid.core.model.SearchBarForm;
+import liquid.process.domain.Task;
+import liquid.process.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,9 @@ public class ApiOrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private TaskService taskService;
+
     @RequestMapping(method = RequestMethod.GET, params = "text")
     @ResponseBody
     public Iterable<SearchBarForm> listByName(@RequestParam String text) {
@@ -59,5 +65,13 @@ public class ApiOrderController {
         }
 
         return searchBarForms;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, params = "taskId")
+    @ResponseBody
+    public List<ServiceItem> listServiceItems(@RequestParam String taskId) {
+        Task task = taskService.getTask(taskId);
+        Order order = orderService.find(task.getOrderId());
+        return order.getServiceItems();
     }
 }

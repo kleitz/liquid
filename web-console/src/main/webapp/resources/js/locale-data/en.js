@@ -29,6 +29,10 @@ var i18n = {
     currency: "Currency",
     serviceProvider: "Service Provider",
     paidAmt: "Paid Amt",
-    paidAt: "Paid At"
+    paidAt: "Paid At",
+    serviceSubtype: "Service Subtype",
+    currency: "Currency",
+    quotation: "Quotation",
+    comment: "Comment"
   }
 };
