@@ -33,6 +33,7 @@ var i18n = {
     serviceSubtype: "Service Subtype",
     currency: "Currency",
     quotation: "Quotation",
-    comment: "Comment"
+    comment: "Comment",
+    serviceItem: "Service Item"
   }
 };

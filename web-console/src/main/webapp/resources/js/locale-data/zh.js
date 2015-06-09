@@ -33,6 +33,7 @@ var i18n = {
     serviceSubtype: "服务子类型",
     currency: "货币",
     quotation: "价格",
-    comment: "备注"
+    comment: "备注",
+    serviceItem: "服务项"
   }
 };

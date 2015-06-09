@@ -98,9 +98,8 @@
       url: '/api/receivable/journal',
       fields: [
         {name: 'id', type: 'hidden'},
-        {name: 'order', type: 'hidden', value: 'descendant', pattern: 'order.id', default: orderId},
-        {name: 'serviceSubtype', type: 'descendant', pattern: 'serviceSubtype.name'},
-        {name: 'currency'},
+        {name: 'serviceSubtype', type: 'select', value: 'descendant', pattern: 'serviceSubtype.id', default: 1, url:'/api/service-subtype' },
+        {name: 'currency', type: 'select', default: 0, options: [{id:0, name:'CNY'}, {id:1, name:'USD'}]},
         {name: 'quotation'},
         {name: 'comment'}
       ]

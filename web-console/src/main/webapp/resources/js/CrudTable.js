@@ -39,6 +39,51 @@ var DateField = React.createClass({
   }
 })
 
+var SelectField = React.createClass({
+  mixins: [IntlMixin],
+
+  getInitialState: function() {
+    return {data: []};
+  },
+
+  componentDidMount: function() {
+    console.log("options are exist", 'options' in this.props.field)
+    if('options' in this.props.field) {
+      if (this.isMounted()) {
+        this.setState({
+          data: this.props.field.options
+        });
+      }
+    }
+    else { 
+      console.log("url", this.props.field.url)
+      $.get(this.props.field.url, function(result) {
+        if (this.isMounted()) {
+          this.setState({
+            data: result
+          });
+        }
+      }.bind(this));
+    }
+  },
+
+  render: function() {    
+    var options = []    
+    this.state.data.forEach(function(option) {
+      options.push(<option value={option.id}>{option.name}</option>)
+    })
+    
+    return (
+      <div className="form-group" key={this.props.key}>
+        <label for={this.props.name} className="control-label"><FormattedMessage message={this.getIntlMessage(this.props.name)} /></label>
+        <select className="form-control input-sm" id={this.props.name} name={this.props.name}>
+          {options} 
+        </select>
+      </div>
+    );
+  }
+})
+
 var FieldRow = React.createClass({
   render: function() {    
     var component = this
@@ -56,6 +101,13 @@ var FieldRow = React.createClass({
         case 'hidden':
           columns.push(
             <input type="hidden" id={field.name} name={field.name} />
+          )
+          break;
+        case 'select':
+          columns.push(
+            <div className={"col-xs-" + component.props.width}>
+              <SelectField id={field.name} name={field.name} field={field} />
+            </div>
           )
           break;
         default:
