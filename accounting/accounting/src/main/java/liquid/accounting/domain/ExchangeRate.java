@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * Date: 11/16/13
  * Time: 1:32 PM
  */
-@Entity(name = "ACT_EXCHANGE_RATE")
+@Entity(name = "ACC_EXCHANGE_RATE")
 public class ExchangeRate extends BaseUpdateEntity {
     public static final BigDecimal DEFAULT_EXCHANGE_RATE = new BigDecimal("6.09");
 

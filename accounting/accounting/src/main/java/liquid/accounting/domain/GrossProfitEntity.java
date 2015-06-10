@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * Created by Tao Ma on 2/7/15.
  */
-@Entity(name = "ACT_GROSS_PROFIT")
+@Entity(name = "ACC_GROSS_PROFIT")
 public class GrossProfitEntity extends BaseIdEntity {
     @OneToOne
     @JoinColumn(name = "ORDER_ID")

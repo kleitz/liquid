@@ -14,7 +14,7 @@ import java.util.Date;
  * Created by redbrick9 on 8/28/14.
  * SalesLedger
  */
-@Entity(name = "ACT_RECEIVABLE_SUMMARY")
+@Entity(name = "ACC_RECEIVABLE_SUMMARY")
 public class ReceivableSummary extends BaseUpdateEntity {
     @OneToOne
     @JoinColumn(name = "ORDER_ID")

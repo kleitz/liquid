@@ -16,7 +16,7 @@ import java.math.BigDecimal;
  * Date: 10/2/13
  * Time: 7:43 PM
  */
-@Entity(name = "ACT_CHARGE")
+@Entity(name = "ACC_CHARGE")
 @EntityListeners(liquid.audit.AuditListener.class)
 public class Charge extends BaseUpdateEntity {
 
