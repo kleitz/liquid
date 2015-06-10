@@ -2,10 +2,7 @@ package liquid.accounting.controller;
 
 import liquid.accounting.domain.Charge;
 import liquid.accounting.domain.ChargeWay;
-import liquid.accounting.domain.IncomeEntity;
-import liquid.accounting.domain.IncomeType;
 import liquid.accounting.service.ChargeService;
-import liquid.accounting.service.IncomeServiceImpl;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceProviderService;
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Map;
 
 /**
  * User: tao
@@ -37,9 +33,6 @@ public class AjustementController extends BaseTaskController {
     private static final Logger logger = LoggerFactory.getLogger(AjustementController.class);
 
     @Autowired
-    private IncomeServiceImpl incomeService;
-
-    @Autowired
     private ChargeService chargeService;
 
     @Autowired
@@ -47,11 +40,6 @@ public class AjustementController extends BaseTaskController {
 
     @Autowired
     private ServiceSubtypeService serviceSubtypeService;
-
-    @ModelAttribute("incomeTypes")
-    public Map<Integer, String> populateCustomers() {
-        return IncomeType.toMap();
-    }
 
     @ModelAttribute("chargeWays")
     public ChargeWay[] populateChargeWays() {
@@ -61,41 +49,6 @@ public class AjustementController extends BaseTaskController {
     @ModelAttribute("sps")
     public Iterable<ServiceProvider> populateSps() {
         return serviceProviderService.findAll();
-    }
-
-    @RequestMapping(value = "/income", method = RequestMethod.GET)
-    public String initAddIncome(@PathVariable String taskId,
-                                Model model, Principal principal) {
-        logger.debug("taskId: {}", taskId);
-
-        model.addAttribute("incomeTypes", IncomeType.toMap());
-        model.addAttribute("income", new IncomeEntity());
-        return "order/add_income";
-    }
-
-    @RequestMapping(value = "/income", method = RequestMethod.POST)
-    public String addIncome(@PathVariable String taskId,
-                            @Valid IncomeEntity income,
-                            BindingResult result, Model model, Principal principal) {
-        logger.debug("taskId: {}", taskId);
-        logger.debug("income: {}", income);
-        if (result.hasErrors()) {
-            return "order/add_income";
-        }
-
-        incomeService.addIncome(taskId, income, principal.getName());
-
-        return "redirect:/task/" + taskId + "/ajustement";
-    }
-
-    @RequestMapping(value = "/income/{incomeId}", method = RequestMethod.GET)
-    public String delIncome(@PathVariable String taskId,
-                            @PathVariable long incomeId,
-                            Model model, Principal principal) {
-        logger.debug("taskId: {}", taskId);
-
-        incomeService.delIncome(incomeId);
-        return "redirect:/task/" + taskId + "/ajustement";
     }
 
     @RequestMapping(value = "/charge", method = RequestMethod.GET)
