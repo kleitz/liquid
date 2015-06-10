@@ -2,7 +2,7 @@ package liquid.accounting.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import liquid.accounting.deserializer.OrderDeserializer;
+import liquid.order.deserializer.OrderDeserializer;
 import liquid.core.domain.BaseUpdateEntity;
 import liquid.order.domain.Order;
 

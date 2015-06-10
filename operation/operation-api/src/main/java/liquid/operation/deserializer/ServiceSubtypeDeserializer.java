@@ -1,11 +1,12 @@
-package liquid.accounting.deserializer;
+package liquid.operation.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import liquid.order.domain.Order;
-import liquid.order.service.OrderService;
+import liquid.operation.domain.ServiceSubtype;
+import liquid.operation.service.ServiceSubtypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -13,25 +14,25 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import java.io.IOException;
 
 /**
- * Created by Tao Ma on 5/14/15.
+ * Created by Tao Ma on 6/10/15.
  */
 @Component
-public class OrderDeserializer extends JsonDeserializer<Order> {
+public class ServiceSubtypeDeserializer extends JsonDeserializer<ServiceSubtype> {
 
     @Autowired
-    private OrderService orderService;
+    private ServiceSubtypeService serviceSubtypeService;
 
-    public OrderDeserializer() {
+    public ServiceSubtypeDeserializer() {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
     @Override
-    public Order deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+    public ServiceSubtype deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
         JsonToken currentToken = jsonParser.getCurrentToken();
         if (currentToken.equals(JsonToken.VALUE_STRING)) {
             String text = jsonParser.getText().trim();
-            Long orderId = Long.parseLong(text);
-            return orderService.find(orderId);
+            Long id = Long.parseLong(text);
+            return serviceSubtypeService.find(id);
         }
         throw new IllegalArgumentException();
     }

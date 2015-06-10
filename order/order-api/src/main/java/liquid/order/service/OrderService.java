@@ -12,7 +12,7 @@ public interface OrderService {
 
     Order find(Long id);
 
-    Order save(Order entity);
+    Order save(Order order);
 
     // FIXME - The following methods for the internal use.
     String computeOrderNo(String role, String serviceCode);

@@ -1,11 +1,9 @@
 package liquid.order.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * User: tao
@@ -47,9 +45,9 @@ public class Order extends BaseOrder {
     @Column(name = "HAS_DELIVERY")
     private boolean hasDelivery;
 
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "order")
-    private List<ServiceItem> serviceItems = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")
+    private Set<ServiceItem> serviceItems = new TreeSet<>();
 
     public int getTradeType() {
         return tradeType;
@@ -115,11 +113,11 @@ public class Order extends BaseOrder {
         this.hasDelivery = hasDelivery;
     }
 
-    public List<ServiceItem> getServiceItems() {
+    public Set<ServiceItem> getServiceItems() {
         return serviceItems;
     }
 
-    public void setServiceItems(List<ServiceItem> serviceItems) {
+    public void setServiceItems(Set<ServiceItem> serviceItems) {
         this.serviceItems = serviceItems;
     }
 }

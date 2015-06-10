@@ -27,6 +27,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.data.jpa.domain.Specifications.where;
 
@@ -143,12 +144,11 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
     @Transactional(value = "transactionManager")
     @Override
     public Order saveOrder(Order order) {
-        List<ServiceItem> serviceItemList = order.getServiceItems();
+        Set<ServiceItem> serviceItemList = order.getServiceItems();
         Iterator<ServiceItem> serviceItemIterator = serviceItemList.iterator();
         while (serviceItemIterator.hasNext()) {
             ServiceItem serviceItem = serviceItemIterator.next();
             if (serviceItem.getQuotation() == null) serviceItemIterator.remove();
-            else serviceItem.setOrder(order);
         }
         order.getRailway().setOrder(order);
 

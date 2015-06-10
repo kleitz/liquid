@@ -78,14 +78,15 @@
 
 <script th:inline="javascript">
 /*<![CDATA[*/
-  var taskId = [[${taskId}]]
+  var orderId = [[${task.orderId}]]
 /*]]>*/
 </script>
 <script type="text/jsx" src="/resources/js/CrudTable.js"></script>
 <script type="text/jsx">
 /*<![CDATA[*/
+  console.log("order id", orderId)
   var definition = {
-    source: '/api/order?taskId=' + taskId,
+    source: '/api/order/' + orderId + '/service-item',
     columns: [
       {name: 'id', type: 'hidden'},
       {name: 'serviceSubtype', type: 'descendant', pattern: 'serviceSubtype.name'},
@@ -95,7 +96,7 @@
     ],
     modal: {
       title: 'serviceItem',
-      url: '/api/receivable/journal',
+      url: '/api/order/' + orderId + '/service-item',
       fields: [
         {name: 'id', type: 'hidden'},
         {name: 'serviceSubtype', type: 'select', value: 'descendant', pattern: 'serviceSubtype.id', default: 1, url:'/api/service-subtype' },

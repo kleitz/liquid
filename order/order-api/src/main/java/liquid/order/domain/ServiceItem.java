@@ -1,28 +1,21 @@
 package liquid.order.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import liquid.core.domain.BaseIdEntity;
+import liquid.operation.deserializer.ServiceSubtypeDeserializer;
 import liquid.operation.domain.ServiceSubtype;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.util.UUID;
 
 /**
  * Created by redbrick9 on 5/7/14.
  */
 @Entity(name = "ORD_SERVICE_ITEM")
 public class ServiceItem extends BaseIdEntity {
-    @Column
-    private String uuid;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "ORDER_ID")
-    private Order order;
-
+    @JsonDeserialize(using = ServiceSubtypeDeserializer.class)
     @ManyToOne
     @JoinColumn(name = "SERVICE_SUBTYPE_ID")
     private ServiceSubtype serviceSubtype;
@@ -35,43 +28,6 @@ public class ServiceItem extends BaseIdEntity {
 
     @Column(name = "COMMENT")
     private String comment;
-
-    public ServiceItem() {
-        this.uuid = UUID.randomUUID().toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ServiceItem that = (ServiceItem) o;
-
-        if (!uuid.equals(that.uuid)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return uuid.hashCode();
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
 
     public ServiceSubtype getServiceSubtype() {
         return serviceSubtype;

@@ -1,6 +1,7 @@
 package liquid.core.domain;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * Created by redbrick9 on 6/10/14.
@@ -28,5 +29,18 @@ public class BaseIdEntity {
         } catch (InstantiationException | IllegalAccessException e) {
             throw new EntityInstantiationException(e);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BaseIdEntity that = (BaseIdEntity) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
