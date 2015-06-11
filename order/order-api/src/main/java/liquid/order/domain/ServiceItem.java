@@ -3,6 +3,7 @@ package liquid.order.domain;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import liquid.core.domain.BaseIdEntity;
 import liquid.operation.deserializer.ServiceSubtypeDeserializer;
+import liquid.operation.domain.Currency;
 import liquid.operation.domain.ServiceSubtype;
 
 import javax.persistence.Column;
@@ -20,8 +21,8 @@ public class ServiceItem extends BaseIdEntity {
     @JoinColumn(name = "SERVICE_SUBTYPE_ID")
     private ServiceSubtype serviceSubtype;
 
-    @Column(name = "CURRENCY")
-    private Integer currency;
+    @Column(name = "CURRENCY", length = 4)
+    private Currency currency;
 
     @Column(name = "QUOTATION")
     private Long quotation;
@@ -37,11 +38,11 @@ public class ServiceItem extends BaseIdEntity {
         this.serviceSubtype = serviceSubtype;
     }
 
-    public Integer getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Integer currency) {
+    public void setCurrency(Currency currency) {
         this.currency = currency;
     }
 
