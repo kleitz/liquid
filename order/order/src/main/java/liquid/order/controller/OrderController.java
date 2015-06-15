@@ -209,7 +209,7 @@ public class OrderController extends BaseController {
         orderRail.setPlanReportTime(new Date());
         order.setRailway(orderRail);
 
-        Set<ServiceItem> serviceItemList = new TreeSet<>();
+        List<ServiceItem> serviceItemList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             ServiceItem serviceItem = new ServiceItem();
             serviceItemList.add(serviceItem);
@@ -295,7 +295,7 @@ public class OrderController extends BaseController {
         order = orderService.submitOrder(order);
 
         boolean hasDelivery = false;
-        Set<ServiceItem> serviceItems = order.getServiceItems();
+        List<ServiceItem> serviceItems = order.getServiceItems();
         for (ServiceItem serviceItem : serviceItems) {
             if (serviceItem.getServiceSubtype().getId() == Long.valueOf(env.getProperty("service.subtype.delivery.id"))) {
                 hasDelivery = true;
@@ -319,8 +319,8 @@ public class OrderController extends BaseController {
         Order order = orderService.find(id);
         logger.debug("order: {}", order);
 
-        Set<ServiceItem> serviceItemList = order.getServiceItems();
-        if (null == serviceItemList) serviceItemList = new TreeSet<>();
+        List<ServiceItem> serviceItemList = order.getServiceItems();
+        if (null == serviceItemList) serviceItemList = new ArrayList<>();
         if (serviceItemList.size() < 5) {
             for (int i = serviceItemList.size(); i < 5; i++) {
                 serviceItemList.add(new ServiceItem());
@@ -346,7 +346,7 @@ public class OrderController extends BaseController {
         order.getRailway().setId(null);
         order.setOrderNo(null);
 
-        Set<ServiceItem> serviceItems = order.getServiceItems();
+        List<ServiceItem> serviceItems = order.getServiceItems();
         for (ServiceItem serviceItem : serviceItems) {
             serviceItem.setId(null);
         }

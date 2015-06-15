@@ -1,9 +1,9 @@
 package liquid.order.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 /**
  * User: tao
@@ -47,7 +47,7 @@ public class Order extends BaseOrder {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")
-    private Set<ServiceItem> serviceItems = new TreeSet<>();
+    private List<ServiceItem> serviceItems = new ArrayList<>();
 
     public int getTradeType() {
         return tradeType;
@@ -113,11 +113,11 @@ public class Order extends BaseOrder {
         this.hasDelivery = hasDelivery;
     }
 
-    public Set<ServiceItem> getServiceItems() {
+    public List<ServiceItem> getServiceItems() {
         return serviceItems;
     }
 
-    public void setServiceItems(Set<ServiceItem> serviceItems) {
+    public void setServiceItems(List<ServiceItem> serviceItems) {
         this.serviceItems = serviceItems;
     }
 }

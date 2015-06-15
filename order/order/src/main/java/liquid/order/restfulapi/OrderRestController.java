@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Tao Ma on 12/9/14.
@@ -66,7 +65,7 @@ public class OrderRestController {
 
     @RequestMapping(value = "/{id}/service-item", method = RequestMethod.GET)
     @ResponseBody
-    public Set<ServiceItem> listServiceItems(@PathVariable Long id) {
+    public List<ServiceItem> listServiceItems(@PathVariable Long id) {
         Order order = orderService.find(id);
         return order.getServiceItems();
     }
