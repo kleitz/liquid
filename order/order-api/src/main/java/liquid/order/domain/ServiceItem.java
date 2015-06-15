@@ -6,10 +6,7 @@ import liquid.operation.deserializer.ServiceSubtypeDeserializer;
 import liquid.operation.domain.Currency;
 import liquid.operation.domain.ServiceSubtype;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
  * Created by redbrick9 on 5/7/14.
@@ -22,6 +19,7 @@ public class ServiceItem extends BaseIdEntity {
     private ServiceSubtype serviceSubtype;
 
     @Column(name = "CURRENCY", length = 4)
+    @Enumerated(EnumType.STRING)
     private Currency currency;
 
     @Column(name = "QUOTATION")
