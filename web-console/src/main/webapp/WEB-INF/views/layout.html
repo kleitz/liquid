@@ -306,6 +306,35 @@
 </div>
 
 <!--
+- Input text
+- @alert
+-->
+<div th:fragment="input_text(field_name, label_text, placeholder)">
+  <div class="form-group" th:classappend="${#fields.hasErrors(field_name)} ? 'has-error'">
+    <label class="col-lg-4 control-label" th:text="#{${label_text}}">Customer</label>
+    <div class="col-lg-8">
+      <input type="text" class="form-control input-sm" th:field="*{__${field_name}__}" th:placeholder="${placeholder} ? #{${placeholder}} : ''"/>
+    </div>
+    <span th:errors="*{__${field_name}__}">error</span>
+  </div>
+</div>
+
+<!--
+- Input location
+- @alert
+-->
+<div th:fragment="input_location(field_name, label_text, placeholder, location_name)">
+  <div class="form-group" th:classappend="${#fields.hasErrors(field_name)} ? 'has-error'">
+    <label class="col-lg-4 control-label" th:text="#{${label_text}} + ' *'">Origin</label>
+    <div class="col-lg-8">
+      <input type="text" th:id="${location_name}" th:name="${location_name}" class="form-control input-sm" th:placeholder="${placeholder} ? #{${placeholder}} : ''"/>
+      <input type="hidden" th:field="*{__${field_name}__}"/>
+    </div>
+    <span class="text-danger" th:errors="*{__${field_name}__}">error</span>            
+  </div>
+</div>
+
+<!--
 - @alert
 -->
 <div th:fragment="alert">
