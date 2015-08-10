@@ -10,7 +10,7 @@
 
 <br/>
 
-<div id="order" class="container-fluid">
+<div id="order" class="container">
   <form id="orderForm" action="/recv_order" method="POST" th:object="${order}" class="form-horizontal">
   
     <h3 th:text="#{order.basic.info}">Order Basic Info</h3>
@@ -18,53 +18,32 @@
     <hr />
   
     <div class="row">
-      <input type="hidden" th:field="*{id}" class="form-control"/>
+      <div class="col-lg-6">
+        <input type="hidden" th:field="*{id}" />
       
-      <div class="col-lg-3">
         <div class="form-group">
           <label class="col-lg-4 control-label" th:text="#{service.type}">Service Type</label>
-          <div class="col-lg-8">
-            <select th:field="*{serviceType}" class="form-control input-sm">
-              <option th:each="serviceType : ${serviceTypes}"
-                      th:value="${serviceType.id}" th:text="'(' + ${serviceType.code} + ')' + ${serviceType.name}">Service Type Name
-              </option>
-            </select>
+          <div class="col-lg-7">
+            <input type="hidden" th:field="*{serviceType}" />
+            <span class="form-control-static" th:text="*{serviceType.name}"></span>
           </div>
         </div>
-      </div>
-  
-      <div class="col-lg-3">
+
         <div th:include="layout::input_text('customer', 'customer', 'customer.name')" />
-      </div>
-    </div>
-  
-    <div class="row">
-      <div class="col-lg-3">
+
         <div th:include="layout::input_text('consignee', 'consignee', null)" />
-      </div>
-  
-      <div class="col-lg-3">
+
         <div th:include="layout::input_text('consigneePhone', 'consignee.phone', null)" />
-      </div>
-      
-      <div class="col-lg-3">
+
         <div th:include="layout::input_text('consigneeAddress', 'consignee.address', null)" />
-      </div>
-    </div>
   
-    <div class="row">
-      <div class="col-lg-3">
         <div th:include="layout::input_location('source', 'origination', 'origination', 'sourceName')" />
-      </div>
-  
-      <div class="col-lg-3">
+
         <div th:include="layout::input_location('destination', 'destination', 'destination', 'destinationName')" />
-      </div>
-  
-      <div class="col-lg-3">
+
         <div class="form-group">
           <label class="col-lg-4 control-label" th:text="#{goods}">Cargo</label>
-          <div class="col-lg-8">
+          <div class="col-lg-7">
             <select th:field="*{goods}" class="form-control input-sm">
               <option th:each="goods : ${cargos}"
                       th:value="${goods.id}" th:text="${goods.name}">Cargo Name
@@ -72,49 +51,34 @@
             </select>
           </div>
         </div>
-      </div>
   
-      <div class="col-lg-3">
         <div th:include="layout::input_text('goodsWeight', 'goods.weight.with.unit', 'customer.name')" />
-      </div>
-    </div>
   
-    <div class="row">
-      <div class="col-lg-3">
         <div class="form-group">
           <label class="col-lg-4 control-label" th:text="#{container.type}">Container Type</label>
-          <div class="col-lg-8">
+          <div class="col-lg-7">
             <label class="radio-inline" th:each="containerType : ${containerTypeMap}">
               <input type="radio" th:field="*{containerType}" th:value="${containerType.key}"/>
               <span th:for="${#ids.prev('containerType')}" th:text="#{${containerType.value}}">Container Type</span>
             </label>
           </div>
         </div>
-      </div>
   
-      <div class="col-lg-3">
         <div class="form-group">
           <label class="col-lg-4 control-label" th:text="#{container.subtype}">Container Subtype</label>
-          <div class="col-lg-8">
+          <div class="col-lg-7">
             <input type="hidden" id="_containerSubtype" th:value="*{containerSubtype} ? *{containerSubtype.id} : '' " />
             <select class="form-control input-sm" id="containerSubtype" name="containerSubtype"></select>
           </div>
         </div>
-      </div> 
-      
-      <div class="col-lg-3">
-        <div th:include="layout::input_text('containerQty', 'container.quantity', 'customer.name')" />
-      </div>
-  
-      <div class="col-lg-3">
-        <div th:include="layout::input_text('totalCny', 'price.cny', 'customer.name')" />
-      </div>
-    </div><!-- row -->
-  
-    <hr />
 
-    <div class="row">
-      <div class="col-lg-3">
+        <div th:include="layout::input_text('containerQty', 'container.quantity', 'customer.name')" />
+  
+        <div th:include="layout::input_text('totalCny', 'price.cny', 'customer.name')" />
+
+      </div><!-- column 1 -->
+
+      <div class="col-lg-4">
         <table id="f" class="table table-bordered table-16">
           <thead>
             <tr>
