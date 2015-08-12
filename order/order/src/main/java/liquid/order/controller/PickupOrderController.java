@@ -248,4 +248,24 @@ public class PickupOrderController extends BaseController {
         model.addAttribute("destinationName", order.getDestination().getName());
         return "pickup/form";
     }
+
+    @RequestMapping(value = "/{id}/duplicate", method = RequestMethod.GET)
+    public String initDuplicate(@PathVariable Long id, Model model) {
+        logger.debug("id: {}", id);
+
+        ReceivingOrder order = recvOrderService.find(id);
+        order.setId(null);
+        order.setOrderNo(null);
+        List<ReceivingContainer> containers = new ArrayList<>();
+        for (int i = containers.size(); i < 10; i++) {
+            containers.add(new ReceivingContainer());
+        }
+        order.setContainers(containers);
+        logger.debug("order: {}", order);
+
+        model.addAttribute("order", order);
+        model.addAttribute("sourceName", order.getSource().getName());
+        model.addAttribute("destinationName", order.getDestination().getName());
+        return "pickup/form";
+    }
 }
