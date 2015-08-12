@@ -11,7 +11,7 @@
 <br/>
 
 <div id="order" class="container">
-  <form id="orderForm" action="/recv_order" method="POST" th:object="${order}" class="form-horizontal">
+  <form id="orderForm" action="/pickup_order" method="POST" th:object="${order}" class="form-horizontal">
   
     <h3 th:text="#{order.basic.info}">Order Basic Info</h3>
     
@@ -38,13 +38,21 @@
         <div th:include="layout::input_text('consigneeAddress', 'consignee.address', null)" />
   
         <div th:include="layout::input_location('source', 'origination', 'origination', 'sourceName')" />
-
+        <!--
+        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('source')} ? 'has-error'">
+            <label th:text="#{origination} + ' *'">Origin</label>
+            <input type="text" class="form-control input-sm" th:placeholder="#{origination}" id="sourceName" name="sourceName" th:value="${sourceName}" />
+            <input type="hidden" th:field="*{source}"/>
+            <span class="text-danger" th:errors="*{source}">error</span>            
+        </div>
+        -->
+ 
         <div th:include="layout::input_location('destination', 'destination', 'destination', 'destinationName')" />
 
         <div class="form-group">
           <label class="col-lg-4 control-label" th:text="#{goods}">Cargo</label>
           <div class="col-lg-7">
-            <select th:field="*{goods}" class="form-control input-sm">
+            <select th:field="*{goods}" class="form-control">
               <option th:each="goods : ${cargos}"
                       th:value="${goods.id}" th:text="${goods.name}">Cargo Name
               </option>
@@ -68,7 +76,7 @@
           <label class="col-lg-4 control-label" th:text="#{container.subtype}">Container Subtype</label>
           <div class="col-lg-7">
             <input type="hidden" id="_containerSubtype" th:value="*{containerSubtype} ? *{containerSubtype.id} : '' " />
-            <select class="form-control input-sm" id="containerSubtype" name="containerSubtype"></select>
+            <select class="form-control" id="containerSubtype" name="containerSubtype"></select>
           </div>
         </div>
 
@@ -94,12 +102,12 @@
             <tr th:each="bicCode,rowStat : *{containers}">
               <td>
                 <input type="hidden" th:field="*{containers[__${rowStat.index}__].id}" class="form-control"/>
-                <input type="text" class="form-control input-sm"
+                <input type="text" class="form-control"
                        th:field="*{containers[__${rowStat.index}__].bicCode}"
                        th:classappend="${#fields.hasErrors('containers[__${rowStat.index}__].bicCode')}? 'fieldError'"/>
               </td>
               <td>
-                <button type="submit" name="removeContainer" class="btn btn-default btn-sm"
+                <button type="submit" name="removeContainer" class="btn btn-default"
                         th:value="${rowStat.index}">
                     <span class="glyphicon glyphicon-minus"/>
                 </button>
@@ -113,15 +121,10 @@
   <br/>
   
   <div class="row">
-      <div class="col-lg-10"></div>
-      <div class="col-lg-1">
-          <input type="submit" name="save" value="Save Order" class="btn btn-default btn-block btn-sm btn-success"
+    <input type="submit" name="save" value="Save Order" class="btn btn-default btn-success"
                  th:attr="value=#{order.save}"/>
-      </div>
-      <div class="col-lg-1">
-          <input type="submit" name="submit" value="Submit Order" class="btn btn-default btn-block btn-sm btn-primary"
+    <input type="submit" name="submit" value="Submit Order" class="btn btn-default btn-primary"
                  th:attr="value=#{order.submit}"/>
-      </div>
   </div>
   </form>
 </div>

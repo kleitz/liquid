@@ -12,11 +12,11 @@
     <br/>
     <ul class="nav nav-tabs">
         <li class="active" th:class="${tab} == 'detail' ? 'active'">
-            <a th:href="'/recv_order/' + ${order.id} + '/detail'" th:text="#{order.detail}">Order Detail</a></li>
+            <a th:href="'/pickup_order/' + ${order.id} + '/detail'" th:text="#{order.detail}">Order Detail</a></li>
         <li class="active" th:class="${tab} == 'task' ? 'active'">
-            <a th:href="'/recv_order/' + ${order.id} + '/task'" th:text="#{task}">Task</a></li>
+            <a th:href="'/pickup_order/' + ${order.id} + '/task'" th:text="#{task}">Task</a></li>
         <li class="active" th:class="${tab} == 'charge' ? 'active'">
-            <a th:href="'/recv_order/' + ${order.id} + '/charge'" th:text="#{charge}">Charge</a></li>
+            <a th:href="'/pickup_order/' + ${order.id} + '/charge'" th:text="#{charge}">Charge</a></li>
     </ul>
 </div>
 

@@ -53,7 +53,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="/order" th:text="#{order.shipping}">Shipping Order</a></li>                            
-                            <li><a href="/recv_order" th:text="#{order.receiving}">Receiving cOrder</a></li>
+                            <li><a href="/pickup_order" th:text="#{order.pickup}">Pickup Order</a></li>
                         </ul>
                     </li>
                     <li class="dropdown" sec:authorize="hasAnyRole('ROLE_MARKETING')">
@@ -313,7 +313,7 @@
   <div class="form-group" th:classappend="${#fields.hasErrors(field_name)} ? 'has-error'">
     <label class="col-lg-4 control-label" th:text="#{${label_text}}">Customer</label>
     <div class="col-lg-7">
-      <input type="text" class="form-control input-sm" th:field="*{__${field_name}__}" th:placeholder="${placeholder} ? #{${placeholder}} : ''"/>
+      <input type="text" class="form-control" th:field="*{__${field_name}__}" th:placeholder="${placeholder} ? #{${placeholder}} : ''"/>
     </div>
     <span th:errors="*{__${field_name}__}">error</span>
   </div>
@@ -327,7 +327,7 @@
   <div class="form-group" th:classappend="${#fields.hasErrors(field_name)} ? 'has-error'">
     <label class="col-lg-4 control-label" th:text="#{${label_text}} + ' *'">Origin</label>
     <div class="col-lg-7">
-      <input type="text" th:id="${location_name}" th:name="${location_name}" class="form-control input-sm" th:placeholder="${placeholder} ? #{${placeholder}} : ''"/>
+      <input type="text" class="form-control" th:placeholder="${placeholder} ? #{${placeholder}} : ''" th:id="${location_name}" th:name="${location_name}" th:value="${__${location_name}__}" />
       <input type="hidden" th:field="*{__${field_name}__}"/>
     </div>
     <span class="text-danger" th:errors="*{__${field_name}__}">error</span>            

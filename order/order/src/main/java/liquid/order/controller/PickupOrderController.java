@@ -43,9 +43,9 @@ import java.util.Map;
  * Time: 4:33 PM
  */
 @Controller
-@RequestMapping("/recv_order")
-public class ReceivingOrderController extends BaseController {
-    private static Logger logger = LoggerFactory.getLogger(ReceivingOrderController.class);
+@RequestMapping("/pickup_order")
+public class PickupOrderController extends BaseController {
+    private static Logger logger = LoggerFactory.getLogger(PickupOrderController.class);
 
     @Autowired
     private ReceivingOrderServiceImpl recvOrderService;
@@ -130,23 +130,21 @@ public class ReceivingOrderController extends BaseController {
 
         orderSearchBar.prepand(request.getRequestURI());
         model.addAttribute("page", page);
-        return "recv_order/find";
+        return "pickup/find";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String initCreationForm(Model model) {
-        List<Location> locationEntities = locationService.findByTypeId(LocationType.CITY);
-
         ReceivingOrder order = new ReceivingOrder();
         order.setServiceType(serviceTypeService.find(7L));
 
         List<ReceivingContainer> containers = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             containers.add(new ReceivingContainer());
         }
         order.setContainers(containers);
         model.addAttribute("order", order);
-        return "recv_order/form";
+        return "pickup/form";
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "addContainer")
@@ -155,7 +153,7 @@ public class ReceivingOrderController extends BaseController {
 
         order.getContainers().add(new ReceivingContainer());
 
-        return "recv_order/form";
+        return "pickup/form";
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "removeContainer")
@@ -165,7 +163,7 @@ public class ReceivingOrderController extends BaseController {
         final int index = Integer.valueOf(request.getParameter("removeContainer"));
         order.getContainers().remove(index);
 
-        return "recv_order/form";
+        return "pickup/form";
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "save")
@@ -181,7 +179,7 @@ public class ReceivingOrderController extends BaseController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("sourceName", sourceName);
             model.addAttribute("destinationName", destinationName);
-            return "recv_order/form";
+            return "pickup/form";
         } else {
             Iterator<ReceivingContainer> containerIterator = order.getContainers().iterator();
             while (containerIterator.hasNext()) {
@@ -191,7 +189,7 @@ public class ReceivingOrderController extends BaseController {
             }
             order.setOrderNo(recvOrderService.computeOrderNo(SecurityContext.getInstance().getRole(), order.getServiceType().getCode()));
             recvOrderService.save(order);
-            return "redirect:/recv_order";
+            return "redirect:/pickup_order";
         }
     }
 
@@ -207,7 +205,7 @@ public class ReceivingOrderController extends BaseController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("sourceName", sourceName);
             model.addAttribute("destinationName", destinationName);
-            return "recv_order/form";
+            return "pickup/form";
         } else {
             Iterator<ReceivingContainer> containerIterator = order.getContainers().iterator();
             while (containerIterator.hasNext()) {
@@ -217,7 +215,7 @@ public class ReceivingOrderController extends BaseController {
             }
             order.setOrderNo(recvOrderService.computeOrderNo(SecurityContext.getInstance().getRole(), order.getServiceType().getCode()));
             recvOrderService.save(order);
-            return "redirect:/recv_order";
+            return "redirect:/pickup_order";
         }
     }
 
@@ -230,7 +228,7 @@ public class ReceivingOrderController extends BaseController {
         model.addAttribute("locations", locationEntities);
         model.addAttribute("order", order);
         model.addAttribute("tab", "detail");
-        return "recv_order/detail";
+        return "pickup/detail";
     }
 
     @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
@@ -240,8 +238,14 @@ public class ReceivingOrderController extends BaseController {
         ReceivingOrder order = recvOrderService.find(id);
         logger.debug("order: {}", order);
 
-        List<Location> locationEntities = locationService.findByTypeId(LocationType.STATION);
+        List<ReceivingContainer> containers = order.getContainers();
+        for (int i = containers.size(); i < 10; i++) {
+            containers.add(new ReceivingContainer());
+        }
+
         model.addAttribute("order", order);
-        return "recv_order/form";
+        model.addAttribute("sourceName", order.getSource().getName());
+        model.addAttribute("destinationName", order.getDestination().getName());
+        return "pickup/form";
     }
 }

@@ -11,12 +11,12 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-1">
-            <h3><span th:text="#{order.receiving}"></span></h3>
+            <h3><span th:text="#{order.pickup}"></span></h3>
         </div>
     
         <div class="col-xs-3 pull-right">
             <br />
-            <form method="GET" role="form" action="/recv_order" th:object="${searchBarForm}">
+            <form method="GET" role="form" action="/pickup_order" th:object="${searchBarForm}">
                 <input type="hidden" th:field="*{id}"/>
                 <input type="hidden" th:field="*{type}"/>
                 <div class="input-group input-group-sm">
@@ -49,7 +49,7 @@
             <th th:text="#{container.quantity}">Container Quantity</th>
             <th th:text="#{price}">Price</th>
             <th>
-                <a sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING')" href="/recv_order/edit">
+                <a sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING')" href="/pickup_order/edit">
                     <i class="glyphicon glyphicon-plus text-success"/>
                 </a>
             </th>
@@ -58,7 +58,7 @@
         <tbody>
         <tr th:each="order : ${page}">
             <td>
-                <a href="/recv_order/id?action=edit" th:href="'/recv_order/' + ${order.id}"
+                <a th:href="'/pickup_order/' + ${order.id}"
                    th:text="${order.orderNo}"/>
             </td>
             <td th:text="${order.customer.name}">Customer Name</td>
@@ -71,16 +71,14 @@
             <td th:text="${order.containerQty}">Container Quantity</td>
             <td th:text="${order.totalCny}">Price</td>
             <td>
-                <!--
                 <a sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING')"
                    th:if="${order.status} != 1"
-                   th:href="'/recv_order/' + ${order.id} + '/duplicate'">
+                   th:href="'/pickup_rder/' + ${order.id} + '/duplicate'">
                     <i class="glyphicon glyphicon-file text-success"/>
                 </a>
-                -->
                 <a sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING')"
                    th:if="${order.status} == 1"
-                   th:href="'/recv_order/' + ${order.id} + '/edit'">
+                   th:href="'/pickup_order/' + ${order.id} + '/edit'">
                     <i class="glyphicon glyphicon-pencil text-info"/>
                 </a>
             </td>
