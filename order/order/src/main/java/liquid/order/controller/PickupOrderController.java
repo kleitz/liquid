@@ -228,11 +228,8 @@ public class PickupOrderController extends BaseController {
         logger.debug("id: {}", id);
 
         ReceivingOrder order = recvOrderService.find(id);
-        List<Location> locationEntities = locationService.findByTypeId(LocationType.STATION);
-        model.addAttribute("locations", locationEntities);
         model.addAttribute("order", order);
-        model.addAttribute("tab", "detail");
-        return "pickup/detail";
+        return "pickup/basic";
     }
 
     @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)

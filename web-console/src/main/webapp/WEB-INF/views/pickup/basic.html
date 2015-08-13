@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="layout :: head" />
+
+<body>
+
+<div th:include="layout :: header"></div>
+
+<div class="container">
+  <h3 th:text="#{order.basic.info}">Order Basic Info</h3>
+  <hr />
+  <div class="row">
+    <div class="col-lg-3">
+      <span th:text="#{order.no}"></span>  
+      <span>:</span>
+      <span th:text="${order.orderNo}"></span>  
+    </div>
+    <div class="col-lg-6">
+      <span th:text="#{customer}"></span>  
+      <span>:</span>
+      <span th:text="${order.customer.name}"></span> 
+    </div>
+  </div><!-- row --> 
+  <div class="row">
+    <div class="col-lg-3">
+      <span th:text="#{consignee}"></span>  
+      <span>:</span>
+      <span th:text="${order.consignee}"></span>  
+    </div>
+    <div class="col-lg-3">
+      <span th:text="#{consignee.phone}"></span>  
+      <span>:</span>
+      <span th:text="${order.consigneePhone}"></span>  
+    </div>
+    <div class="col-lg-3">
+      <span th:text="#{consignee.address}"></span>  
+      <span>:</span>
+      <span th:text="${order.consigneeAddress}"></span>  
+    </div>
+  </div><!-- row -->
+  <div class="row">
+    <div class="col-lg-3">
+      <span th:text="#{origination}"></span>  
+      <span>:</span>
+      <span th:text="${order.source.name}"></span>  
+    </div>
+    <div class="col-lg-3">
+      <span th:text="#{destination}"></span>  
+      <span>:</span>
+      <span th:text="${order.destination.name}"></span>  
+    </div>
+    <div class="col-lg-3">
+      <span th:text="#{goods}"></span>  
+      <span>:</span>
+      <span th:text="${order.goods.name}"></span>  
+    </div>
+    <div class="col-lg-3">
+      <span th:text="#{goods.weight.with.unit}"></span>  
+      <span>:</span>
+      <span th:text="${order.goodsWeight}"></span>  
+    </div>
+  </div><!-- row -->
+  <div class="row">
+    <div class="col-lg-3">
+      <span th:text="#{container.type}"></span>  
+      <span>:</span>
+      <span th:text="#{${containerTypeMap[order.containerType]}}" />
+    </div>
+    <div class="col-lg-3">
+      <span th:text="#{container.subtype}"></span>  
+      <span>:</span>
+      <span th:text="${order.containerSubtype.name}"></span>  
+    </div>
+    <div class="col-lg-3">
+      <span th:text="#{container.quantity}"></span>  
+      <span>:</span>
+      <span th:text="${order.containerQty}"></span>  
+    </div>
+    <div class="col-lg-3">
+      <span th:text="#{price.cny}"></span>  
+      <span>:</span>
+      <span th:text="${#numbers.formatDecimal(order.totalCny, 0, 'COMMA', 2, 'POINT')}"></span>  
+    </div>
+  </div><!-- row -->
+  <hr />
+  <div class="row" th:if="${not #lists.isEmpty(order.containers)}">
+    <div class="col-lg-3" th:each="container : ${order.containers}">
+      <span th:text="${container.bicCode}" />
+    </div>
+  </div><!-- row -->
+</div>
+
+<div th:include="layout :: footer"></div>
+
+<div th:replace="layout :: js" />
+
+<script>
+
+</script>
+
+</body>
+
+</html>
