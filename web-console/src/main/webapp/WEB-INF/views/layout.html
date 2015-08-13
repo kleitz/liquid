@@ -311,11 +311,11 @@
 -->
 <div th:fragment="input_text(field_name, label_text, placeholder)">
   <div class="form-group" th:classappend="${#fields.hasErrors(field_name)} ? 'has-error'">
-    <label class="col-lg-4 control-label" th:text="#{${label_text}}">Customer</label>
-    <div class="col-lg-7">
+    <label class="col-xs-4 control-label" th:text="#{${label_text}}">Customer</label>
+    <div class="col-xs-7">
       <input type="text" class="form-control" th:field="*{__${field_name}__}" th:placeholder="${placeholder} ? #{${placeholder}} : ''"/>
     </div>
-    <span th:errors="*{__${field_name}__}">error</span>
+    <span class="col-xs-8 col-xs-offset-4" th:errors="*{__${field_name}__}">error</span>
   </div>
 </div>
 

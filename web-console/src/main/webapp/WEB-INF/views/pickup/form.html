@@ -38,14 +38,6 @@
         <div th:include="layout::input_text('consigneeAddress', 'consignee.address', null)" />
   
         <div th:include="layout::input_location('source', 'origination', 'origination', 'sourceName')" />
-        <!--
-        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('source')} ? 'has-error'">
-            <label th:text="#{origination} + ' *'">Origin</label>
-            <input type="text" class="form-control input-sm" th:placeholder="#{origination}" id="sourceName" name="sourceName" th:value="${sourceName}" />
-            <input type="hidden" th:field="*{source}"/>
-            <span class="text-danger" th:errors="*{source}">error</span>            
-        </div>
-        -->
  
         <div th:include="layout::input_location('destination', 'destination', 'destination', 'destinationName')" />
 

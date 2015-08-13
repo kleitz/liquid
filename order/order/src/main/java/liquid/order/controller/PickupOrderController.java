@@ -148,21 +148,25 @@ public class PickupOrderController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "addContainer")
-    public String addContainer(@ModelAttribute("order") ReceivingOrder order) {
+    public String addContainer(@ModelAttribute("order") ReceivingOrder order, Model model) {
         logger.debug("order: {}", order);
 
         order.getContainers().add(new ReceivingContainer());
 
+        model.addAttribute("sourceName", order.getSource().getName());
+        model.addAttribute("destinationName", order.getDestination().getName());
         return "pickup/form";
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "removeContainer")
-    public String removeContainer(@ModelAttribute("order") ReceivingOrder order,
+    public String removeContainer(@ModelAttribute("order") ReceivingOrder order, Model model,
                                   final HttpServletRequest request) {
         logger.debug("order: {}", order);
         final int index = Integer.valueOf(request.getParameter("removeContainer"));
         order.getContainers().remove(index);
 
+        model.addAttribute("sourceName", order.getSource().getName());
+        model.addAttribute("destinationName", order.getDestination().getName());
         return "pickup/form";
     }
 
