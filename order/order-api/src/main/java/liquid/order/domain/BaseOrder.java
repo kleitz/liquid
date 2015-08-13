@@ -6,6 +6,7 @@ import liquid.operation.domain.Customer;
 import liquid.operation.domain.Goods;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.ServiceType;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -86,6 +87,7 @@ public class BaseOrder extends BaseUpdateEntity {
     @JoinColumn(name = "RAILWAY_ID")
     private OrderRail railway;
 
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#,###.##")
     @Column(precision = 19, scale = 4, name = "TOTAL_CNY")
     private BigDecimal totalCny = BigDecimal.ZERO;
 
