@@ -1,48 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html style="background-size:cover;background-image:url(resources/images/bg.jpg);">
 
-<head th:replace="layout :: head" />
+  <head th:replace="layout :: head" />
 
-<body>
-<!-- {!begin layout} -->
-<div th:include="layout :: header"></div>
-<!-- {!end layout} -->
-
-<div id="f" class="container">   
-    <div th:if="${param.error}">
+  <body style="background-color: transparent;">
+  
+    <!--
+    <div th:include="layout :: header"></div>
+    -->
+    
+    <div class="container">   
+      <!--
+      <div th:if="${param.error}">
         <div class="alert alert-danger" role="alert">
-            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <div th:each="error : ${param.error}">
-                <span th:text="#{${error}}">Alert</span>
-            </div>
+          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> <div th:each="error : ${param.error}">
+            <span th:text="#{${error}}">Alert</span>
+          </div>
         </div>
-    </div>
+      </div>
+      -->
+    
+      <form class="form-signin" action="/login" method='POST'>
+        <h1 style="color: white;" class="form-signin-heading">Liquid</h1>
+        <input type="text" name="username" class="form-control" th:placeholder="#{username}" />
+        <input type="password" name="password" class="form-control" th:placeholder="#{password}" />
+        <button class="btn btn-primary btn-lg btn-block" type="submit"><span th:text="#{login}" /></button>
+      <a style="color: white;">Forgot your password?</a>
+      <a style="color: white;" class="pull-right">Sign Up</a>
+      </form>
+      
+    
+    </div><!-- container -->
 
-    <form action="/login" method='POST'>
-        <h3 class="form-heading" th:text="#{login}">Login</h3>
-
-        <div class="form-group">
-            <label th:text="#{username}">Username</label>
-            <input type="text" name="username" class="form-control"/>
-        </div>
-
-        <div class="form-group">
-            <label th:text="#{password}">Password</label>
-            <input type="password" name="password" class="form-control"/>
-        </div>
-
-        <input type="submit" value='Login' class="btn btn-success btn-block" th:value="#{login}"/>
-    </form>
-
-</div><!-- container -->
-
-<!-- {!begin layout} -->
-<div th:include="layout :: footer"></div>
-<!-- {!end layout} -->
-
-<!-- {!begin layout} -->
-<div th:replace="layout :: js" />
-<!-- {!end layout} -->
-</body>
+    <footer>
+      <p style="color: white;" th:text="#{footer} + #{version} + ' ' + '' + #{build.date}">Copyright</p>
+    </footer>
+ 
+    <!--
+    <div th:include="layout :: footer"></div>
+    -->
+    
+    <!--
+    <div th:replace="layout :: js" />
+    -->
+  </body>
 
 </html>
