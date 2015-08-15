@@ -4,45 +4,30 @@
   <head th:replace="layout :: head" />
 
   <body style="background-color: transparent;">
-  
-    <!--
-    <div th:include="layout :: header"></div>
-    -->
-    
-    <div class="container">   
-      <!--
-      <div th:if="${param.error}">
-        <div class="alert alert-danger" role="alert">
-          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> <div th:each="error : ${param.error}">
-            <span th:text="#{${error}}">Alert</span>
-          </div>
-        </div>
-      </div>
-      -->
-    
+    <div class="container" style="margin-top: 20px;">
+   
       <form class="form-signin" action="/login" method='POST'>
         <h1 style="color: white;" class="form-signin-heading">Liquid</h1>
         <input type="text" name="username" class="form-control" th:placeholder="#{username}" />
         <input type="password" name="password" class="form-control" th:placeholder="#{password}" />
+
+        <div class="alert alert-danger" role="alert" th:if="${param.error}">
+          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> <div th:each="error : ${param.error}">
+            <span th:text="#{${error}}">Alert</span>
+          </div>
+        </div>
+ 
         <button class="btn btn-primary btn-lg btn-block" type="submit"><span th:text="#{login}" /></button>
-      <a style="color: white;">Forgot your password?</a>
-      <a style="color: white;" class="pull-right">Sign Up</a>
+        <a style="color: white; font-size: 14px; font-weight: bold; margin-top: 10px;" class="pull-left" href="/user/register"><span>Forgot your password?</span></a>
+        <a style="color: white; font-size: 14px; font-weight: bold; margin-top: 10px;" class="pull-right" href="/user/register"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span th:text="#{register}">Register</span></a>
       </form>
-      
     
     </div><!-- container -->
 
     <footer>
       <p style="color: white;" th:text="#{footer} + #{version} + ' ' + '' + #{build.date}">Copyright</p>
     </footer>
- 
-    <!--
-    <div th:include="layout :: footer"></div>
-    -->
-    
-    <!--
-    <div th:replace="layout :: js" />
-    -->
-  </body>
 
+    <div th:replace="layout :: js"></div>
+  </body>
 </html>
