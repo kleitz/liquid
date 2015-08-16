@@ -69,6 +69,10 @@ footer {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+.form-signin label {
+  color: white; 
+  font-size: 14px;
+}
 
 .jumbotron {
   padding: 0px;
