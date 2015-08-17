@@ -147,7 +147,6 @@
                     <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_CONTAINER', 'ROLE_COMMERCE')">
                         <a href="/logout" th:text="#{logout}">Logout</a>
                     </li>
-                    <li><a href="/user/register" th:text="#{register}">Register</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -348,13 +347,9 @@
 
 <!-- footer -->
 <div th:fragment="footer">
-    <hr/>
-    <div class="container">
-        <footer>
-            <p th:text="#{footer} + #{version} + ' ' + '' + #{build.date}">Copyright</p>
-        </footer>
-    </div>
-    <!-- /.container -->
+  <footer>
+    <p th:text="#{footer} + #{version} + ' ' + '' + #{build.date}">Copyright</p>
+  </footer>
 </div>
 <!--/footer -->
 
