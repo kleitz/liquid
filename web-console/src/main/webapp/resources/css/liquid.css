@@ -74,15 +74,21 @@ footer {
   font-size: 14px;
 }
 
-.page-title {
-  padding-left: 10px;
+div.title-bar {
+  background-color: #F0F0F0;
+  margin: 0px;
 }
 
-.form-search {
+.title-bar h3 {
+  padding-left: 10px;
+}
+.title-bar form {
   max-width: 330px;
-  padding-top: 18px;
-  padding-right: 10px;
+  padding: 18px 10px 18px 0px;
   margin: 0px auto;
+}
+.title-bar button {
+  margin: 18px 10px 18px 0px;
 }
 
 .jumbotron {
