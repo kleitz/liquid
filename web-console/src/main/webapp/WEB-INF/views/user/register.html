@@ -1,78 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html style="background-size:cover;background-image:url(../resources/images/signup.jpg);">
 
-<head th:replace="layout :: head" />
+  <head th:replace="layout :: head" />
 
-<body>
-<!-- {!begin layout} -->
-<div th:include="layout :: header"></div>
-<!-- {!end layout} -->
+  <body style="background-color: transparent;">
+  
+  <div id="f" class="container">
+    <form class="form-signin" action="/user/register" method="POST" th:object="${user}">
+      <h1 style="color: white;" class="form-signin-heading"><span th:text="#{register}"></span></h1>
+      <div class="form-group" th:classappend="${#fields.hasErrors('uid')} ? 'has-error'">
+          <label th:text="#{user.uid}">User UID</label>
+          <input type="text" th:field="*{uid}" class="form-control input-sm"/>
+          <span th:errors="*{uid}">error</span>
+      </div>
 
-<div id="f" class="container">
-    <div th:include="layout :: alert"/>
-    <h3><span th:text="#{register}"></span></h3>
-    <hr />
-    <form action="/user/register" method="POST" th:object="${user}">
+      <div class="form-group" th:classappend="${#fields.hasErrors('password')} ? 'has-error'">
+        <label th:text="#{password}">User Password</label>
+        <input type="password" th:field="*{password}" class="form-control input-sm"/>
+        <span th:errors="*{password}">error</span>
+      </div>
 
-        <div class="form-group" th:classappend="${#fields.hasErrors('uid')} ? 'has-error'">
-            <label th:text="#{user.uid}">User UID</label>
-            <input type="text" th:field="*{uid}" class="form-control input-sm"/>
-            <span th:errors="*{uid}">error</span>
-        </div>
+      <div class="form-group" th:classappend="${#fields.hasErrors('password2')} ? 'has-error'">
+          <label th:text="#{password2}">User Password 2</label>
+          <input type="password" th:field="*{password2}" class="form-control input-sm"/>
+          <span th:errors="*{password2}">error</span>
+      </div>
 
-        <div class="form-group" th:classappend="${#fields.hasErrors('password')} ? 'has-error'">
-            <label th:text="#{password}">User Password</label>
-            <input type="password" th:field="*{password}" class="form-control input-sm"/>
-            <span th:errors="*{password}">error</span>
-        </div>
+      <div class="form-group" th:classappend="${#fields.hasErrors('surname')} ? 'has-error'">
+          <label th:text="#{surname}">Surnmae</label>
+          <input type="text" th:field="*{surname}" class="form-control input-sm"/>
+          <span th:errors="*{surname}">error</span>
+      </div>
 
-        <div class="form-group" th:classappend="${#fields.hasErrors('password2')} ? 'has-error'">
-            <label th:text="#{password2}">User Password 2</label>
-            <input type="password" th:field="*{password2}" class="form-control input-sm"/>
-            <span th:errors="*{password2}">error</span>
-        </div>
+      <div class="form-group" th:classappend="${#fields.hasErrors('givenName')} ? 'has-error'">
+          <label th:text="#{given.name}">Given Name</label>
+          <input type="text" th:field="*{givenName}" class="form-control input-sm"/>
+          <span th:errors="*{givenName}">error</span>
+      </div>
 
-        <div class="form-group" th:classappend="${#fields.hasErrors('surname')} ? 'has-error'">
-            <label th:text="#{surname}">Surnmae</label>
-            <input type="text" th:field="*{surname}" class="form-control input-sm"/>
-            <span th:errors="*{surname}">error</span>
-        </div>
+      <div class="form-group" th:classappend="${#fields.hasErrors('email')} ? 'has-error'">
+          <label th:text="#{email}">Email</label>
+          <input type="text" th:field="*{email}" class="form-control input-sm"/>
+          <span th:errors="*{email}">error</span>
+      </div>
 
-        <div class="form-group" th:classappend="${#fields.hasErrors('givenName')} ? 'has-error'">
-            <label th:text="#{given.name}">Given Name</label>
-            <input type="text" th:field="*{givenName}" class="form-control input-sm"/>
-            <span th:errors="*{givenName}">error</span>
-        </div>
+      <div class="form-group">
+          <label th:text="#{group}">Group</label>
 
-        <div class="form-group" th:classappend="${#fields.hasErrors('email')} ? 'has-error'">
-            <label th:text="#{email}">Email</label>
-            <input type="text" th:field="*{email}" class="form-control input-sm"/>
-            <span th:errors="*{email}">error</span>
-        </div>
+          <select th:field="*{group}" class="form-control input-sm">
+              <option th:each="g : ${groups}"
+                      th:value="${g.id}"
+                      th:text="${g.name}">Department Name
+              </option>
+          </select>
+      </div>
 
-        <div class="form-group">
-            <label th:text="#{group}">Group</label>
+      <div th:include="layout :: alert"/>
 
-            <select th:field="*{group}" class="form-control input-sm">
-                <option th:each="g : ${groups}"
-                        th:value="${g.id}"
-                        th:text="${g.name}">Department Name
-                </option>
-            </select>
-        </div>
+      <button class="btn btn-primary btn-lg btn-block" type="submit"><span th:text="#{register}" /></button>
 
-        <input type="submit" name="register" value="Register" class="btn btn-success btn-block btn-sm" th:value="#{user.register}"/>
+      <p class="text-center" style="margin-top: 10px;">
+        <a style="color: white; font-size: 14px; font-weight: bold;" href="/login"><span th:text="#{login}">Login</span></a>
+      </p>
     </form>
-</div>
-<!-- /.container -->
-
-<!-- {!begin layout} -->
-<div th:include="layout :: footer"></div>
-<!-- {!end layout} -->
-
-<!-- {!begin layout} -->
-<div th:replace="layout :: js" />
-<!-- {!end layout} -->
-</body>
-
+  </div>
+  <!-- /.container -->
+  
+    <footer>
+      <p style="color: white;" th:text="#{footer} + #{version} + ' ' + '' + #{build.date}">Copyright</p>
+    </footer>
+ 
+    <div th:replace="layout :: js" />
+  </body>
 </html>
+
