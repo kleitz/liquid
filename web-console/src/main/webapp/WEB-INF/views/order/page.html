@@ -16,7 +16,7 @@
       </div>
   
       <div class="col-lg-6">
-        <form class="pull-right" method="GET" role="form" action="/order" th:object="${searchBarForm}">
+        <form class="pull-right form-inline" method="GET" role="form" action="/order" th:object="${searchBarForm}">
           <input type="hidden" th:field="*{id}"/>
           <input type="hidden" th:field="*{type}"/>
           <div class="input-group">

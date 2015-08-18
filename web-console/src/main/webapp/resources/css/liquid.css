@@ -83,12 +83,8 @@ div.title-bar {
   padding-left: 10px;
 }
 .title-bar form {
-  max-width: 330px;
   padding: 18px 10px 18px 0px;
   margin: 0px auto;
-}
-.title-bar button {
-  margin: 18px 10px 18px 0px;
 }
 
 .jumbotron {
