@@ -8,8 +8,8 @@
    
       <form class="form-signin" action="/login" method='POST'>
         <h1 style="color: white;" class="form-signin-heading">Liquid</h1>
-        <input type="text" name="username" class="form-control" th:placeholder="#{username}" />
-        <input type="password" name="password" class="form-control" th:placeholder="#{password}" />
+        <input type="text" name="username" class="form-control username" th:placeholder="#{username}" />
+        <input type="password" name="password" class="form-control password" th:placeholder="#{password}" />
 
         <div class="alert alert-danger" role="alert" th:if="${param.error}">
           <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> 
