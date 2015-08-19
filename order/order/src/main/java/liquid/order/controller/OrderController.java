@@ -193,7 +193,7 @@ public class OrderController extends BaseController {
 
         orderSearchBar.prepand(request.getRequestURI());
         model.addAttribute("page", page);
-        return "order/shipment/page";
+        return "order/shipment/list";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)

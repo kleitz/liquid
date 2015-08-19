@@ -130,7 +130,7 @@ public class PickupOrderController extends BaseController {
 
         orderSearchBar.prepand(request.getRequestURI());
         model.addAttribute("page", page);
-        return "order/pickup/find";
+        return "order/pickup/list";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
