@@ -130,7 +130,7 @@ public class PickupOrderController extends BaseController {
 
         orderSearchBar.prepand(request.getRequestURI());
         model.addAttribute("page", page);
-        return "pickup/find";
+        return "order/pickup/find";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
@@ -144,7 +144,7 @@ public class PickupOrderController extends BaseController {
         }
         order.setContainers(containers);
         model.addAttribute("order", order);
-        return "pickup/form";
+        return "order/pickup/form";
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "addContainer")
@@ -155,7 +155,7 @@ public class PickupOrderController extends BaseController {
 
         model.addAttribute("sourceName", order.getSource().getName());
         model.addAttribute("destinationName", order.getDestination().getName());
-        return "pickup/form";
+        return "order/pickup/form";
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "removeContainer")
@@ -167,7 +167,7 @@ public class PickupOrderController extends BaseController {
 
         model.addAttribute("sourceName", order.getSource().getName());
         model.addAttribute("destinationName", order.getDestination().getName());
-        return "pickup/form";
+        return "order/pickup/form";
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "save")
@@ -183,7 +183,7 @@ public class PickupOrderController extends BaseController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("sourceName", sourceName);
             model.addAttribute("destinationName", destinationName);
-            return "pickup/form";
+            return "order/pickup/form";
         } else {
             Iterator<ReceivingContainer> containerIterator = order.getContainers().iterator();
             while (containerIterator.hasNext()) {
@@ -209,7 +209,7 @@ public class PickupOrderController extends BaseController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("sourceName", sourceName);
             model.addAttribute("destinationName", destinationName);
-            return "pickup/form";
+            return "order/pickup/form";
         } else {
             Iterator<ReceivingContainer> containerIterator = order.getContainers().iterator();
             while (containerIterator.hasNext()) {
@@ -229,7 +229,7 @@ public class PickupOrderController extends BaseController {
 
         ReceivingOrder order = recvOrderService.find(id);
         model.addAttribute("order", order);
-        return "pickup/basic";
+        return "order/pickup/basic";
     }
 
     @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
@@ -247,7 +247,7 @@ public class PickupOrderController extends BaseController {
         model.addAttribute("order", order);
         model.addAttribute("sourceName", order.getSource().getName());
         model.addAttribute("destinationName", order.getDestination().getName());
-        return "pickup/form";
+        return "order/pickup/form";
     }
 
     @RequestMapping(value = "/{id}/duplicate", method = RequestMethod.GET)
@@ -267,6 +267,6 @@ public class PickupOrderController extends BaseController {
         model.addAttribute("order", order);
         model.addAttribute("sourceName", order.getSource().getName());
         model.addAttribute("destinationName", order.getDestination().getName());
-        return "pickup/form";
+        return "order/pickup/form";
     }
 }
