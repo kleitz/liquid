@@ -173,10 +173,12 @@
               <span th:text="#{task.claim}"/>
             </button>                                        
           </form>
-          <button class="btn btn-success btn-block" data-toggle="modal" data-target="#completeTask"
-                th:if="${task.assignee}" th:disabled="${#authentication.name} != ${task.assignee}">
-            <span th:text="#{task.complete}"/>
-          </button>    
+          <div class="right">
+            <button class="btn btn-success btn-block" data-toggle="modal" data-target="#completeTask"
+                  th:if="${task.assignee}" th:disabled="${#authentication.name} != ${task.assignee}">
+              <span th:text="#{task.complete}"/>
+            </button>    
+          </div>
         </div>
       </div><!-- row -->
     </div><!-- container -->

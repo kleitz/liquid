@@ -80,11 +80,11 @@ div.title-bar {
   background-color: #F0F0F0;
   margin: 0px;
 }
-
 .title-bar h3 {
   padding-left: 10px;
 }
-.title-bar form {
+.title-bar form, 
+.title-bar .right {
   padding: 18px 10px 18px 0px;
   margin: 0px auto;
 }
