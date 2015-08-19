@@ -1,13 +1,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
   <body>
-
-    <div th:fragment="title-bar">
+    
+    <!--
+      - title
+      -->
+    <div th:fragment="title-bar(title)">
       <div class="title-bar">
         <div class="container-fluid">
           <div class="row">
             <div class="col-lg-6">
-              <h3><span th:text="#{gross.profit}"></span></h3>
+              <h3><span th:text="#{${title}}"></span></h3>
             </div>  
                   
             <div class="col-lg-6">     
