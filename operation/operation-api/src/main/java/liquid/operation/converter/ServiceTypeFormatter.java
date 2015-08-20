@@ -31,6 +31,6 @@ public class ServiceTypeFormatter implements Formatter<ServiceType> {
         if (null == object) {
             return "";
         }
-        return String.valueOf(object.getName());
+        return String.valueOf(object.getId());
     }
 }

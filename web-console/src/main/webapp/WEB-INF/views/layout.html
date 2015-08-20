@@ -53,7 +53,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="/order" th:text="#{order.shipping}">Shipping Order</a></li>                            
-                            <li><a href="/recv_order" th:text="#{order.receiving}">Receiving cOrder</a></li>
+                            <li><a href="/pickup_order" th:text="#{order.pickup}">Pickup Order</a></li>
                         </ul>
                     </li>
                     <li class="dropdown" sec:authorize="hasAnyRole('ROLE_MARKETING')">
@@ -147,7 +147,6 @@
                     <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_CONTAINER', 'ROLE_COMMERCE')">
                         <a href="/logout" th:text="#{logout}">Logout</a>
                     </li>
-                    <li><a href="/user/register" th:text="#{register}">Register</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -156,60 +155,62 @@
 
 <!-- TaskDto Bar -->
 <div th:fragment="task-bar">
-    <div class="jumbotron">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-10">
-                    <h4>
-                        <span th:text="${task.name}">Task Name</span>
-                        [<a target="_blank" th:href="'/order/' + ${task.orderId}" th:text="${task.orderNo}">Order Link</a>]
-                        <span th:text="'[' + ${task.assignee} + ']'" th:if="${task.assignee}"/>
-                        <small th:text="${task.description}"></small>
-                    </h4>
-                </div>
-            
-                <div class="col-xs-2">
-                    <form th:action="'/task/' + ${task.id}" method="POST">
-                        <button type="submit" name="claim" value="Claim" class="btn btn-sm btn-warning btn-block" th:unless="${task.assignee}">
-                            <span th:text="#{task.claim}"/>
-                        </button>                                        
-                    </form>
-                    <button class="btn btn-sm btn-success btn-block" data-toggle="modal" data-target="#completeTask"
-                            th:if="${task.assignee}" th:disabled="${#authentication.name} != ${task.assignee}">
-                        <span th:text="#{task.complete}"/>
-                    </button>    
-                </div>
-            </div><!-- row -->
-        </div><!-- container -->
-    </div><!-- jumbotron -->
-    <!-- Modal -->
-    <div class="modal" id="completeTask" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-         style="overflow-y: hidden;">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel"><span th:text="#{task.complete}" /></h4>
-                </div>
-                <div class="modal-body">
-                    <p>
-                        <span class="glyphicon glyphicon-warning-sign text-danger" />               
-                        <span th:text="#{modal.complete.task}" />
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <form th:action="'/task/' + ${task.id}" method="POST">
-                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
-                            <span th:text="#{modal.close}"/>
-                        </button>
-                        <button type="submit" name="complete" value="Complete" class="btn btn-success btn-sm">
-                            <span th:text="#{task.complete}"/>
-                        </button>
-                    </form>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal --> 
+  <div class="title-bar">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10">
+          <h3>
+              <span th:text="${task.name}">Task Name</span>
+              [<a target="_blank" th:href="'/order/' + ${task.orderId}" th:text="${task.orderNo}">Order Link</a>]
+              <span th:text="'[' + ${task.assignee} + ']'" th:if="${task.assignee}"/>
+              <small th:text="${task.description}"></small>
+          </h3>
+        </div>
+
+        <div class="col-lg-2">
+          <form th:unless="${task.assignee}" th:action="'/task/' + ${task.id}" method="POST">
+            <button type="submit" name="claim" value="Claim" class="btn btn-warning btn-block" th:unless="${task.assignee}">
+              <span th:text="#{task.claim}"/>
+            </button>                                        
+          </form>
+          <div class="right">
+            <button class="btn btn-success btn-block" data-toggle="modal" data-target="#completeTask"
+                  th:if="${task.assignee}" th:disabled="${#authentication.name} != ${task.assignee}">
+              <span th:text="#{task.complete}"/>
+            </button>    
+          </div>
+        </div>
+      </div><!-- row -->
+    </div><!-- container -->
+  </div><!-- title-bar -->
+  <!-- Modal -->
+  <div class="modal" id="completeTask" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+       style="overflow-y: hidden;">
+      <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="myModalLabel"><span th:text="#{task.complete}" /></h4>
+              </div>
+              <div class="modal-body">
+                  <p>
+                      <span class="glyphicon glyphicon-warning-sign text-danger" />               
+                      <span th:text="#{modal.complete.task}" />
+                  </p>
+              </div>
+              <div class="modal-footer">
+                  <form th:action="'/task/' + ${task.id}" method="POST">
+                      <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
+                          <span th:text="#{modal.close}"/>
+                      </button>
+                      <button type="submit" name="complete" value="Complete" class="btn btn-success btn-sm">
+                          <span th:text="#{task.complete}"/>
+                      </button>
+                  </form>
+              </div>
+          </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+  </div><!-- /.modal --> 
 </div>
 
 <!--
@@ -251,35 +252,34 @@
 -   text: 
 -->
 <div th:fragment="enhanced-search-bar">
-    <br />
-            <form method="GET" class="form-inline pull-right" role="form" th:action="${searchBarForm.action}" th:object="${searchBarForm}">
-                <input type="hidden" th:field="*{id}"/>
-                <input type="hidden" th:field="*{type}"/>
-                <input type="hidden" th:field="*{number}"/>
-                <div class="input-group input-group-sm date" id="startPicker">
-                    <span class="input-group-addon" th:text="#{start.date}">Start Date</span>
-                    <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{startDate}" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-                
-                <div class="input-group input-group-sm date" id="endPicker">
-                    <span class="input-group-addon" th:text="#{end.date}">End Date</span>
-                    <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{endDate}" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>                
-                                    
-                <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" th:field="*{text}" />
-                    
-                    <span class="input-group-btn">                    
-                        <button type="submit" name="search" class="btn btn-primary"><span class="glyphicon glyphicon-search" /></button>
-                    </span>
-                </div>             
-            </form> 
+  <form method="GET" class="form-inline pull-right" role="form" th:action="${searchBarForm.action}" th:object="${searchBarForm}">
+      <input type="hidden" th:field="*{id}"/>
+      <input type="hidden" th:field="*{type}"/>
+      <input type="hidden" th:field="*{number}"/>
+      <div class="input-group date" id="startPicker">
+          <span class="input-group-addon" th:text="#{start.date}">Start Date</span>
+          <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control" th:field="*{startDate}" />
+          <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+      </div>
+      
+      <div class="input-group date" id="endPicker">
+          <span class="input-group-addon" th:text="#{end.date}">End Date</span>
+          <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control" th:field="*{endDate}" />
+          <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+      </div>                
+                          
+      <div class="input-group">
+          <input type="text" class="form-control" th:field="*{text}" />
+          
+          <span class="input-group-btn">                    
+              <button type="submit" name="search" class="btn btn-primary"><span class="glyphicon glyphicon-search" /></button>
+          </span>
+      </div>             
+  </form> 
 </div>
 <!--
 - Variables
@@ -306,6 +306,35 @@
 </div>
 
 <!--
+- Input text
+- @alert
+-->
+<div th:fragment="input_text(field_name, label_text, placeholder)">
+  <div class="form-group" th:classappend="${#fields.hasErrors(field_name)} ? 'has-error'">
+    <label class="col-xs-4 control-label" th:text="#{${label_text}}">Customer</label>
+    <div class="col-xs-7">
+      <input type="text" class="form-control" th:field="*{__${field_name}__}" th:placeholder="${placeholder} ? #{${placeholder}} : ''"/>
+    </div>
+    <span class="col-xs-8 col-xs-offset-4" th:errors="*{__${field_name}__}">error</span>
+  </div>
+</div>
+
+<!--
+- Input location
+- @alert
+-->
+<div th:fragment="input_location(field_name, label_text, placeholder, location_name)">
+  <div class="form-group" th:classappend="${#fields.hasErrors(field_name)} ? 'has-error'">
+    <label class="col-lg-4 control-label" th:text="#{${label_text}} + ' *'">Origin</label>
+    <div class="col-lg-7">
+      <input type="text" class="form-control" th:placeholder="${placeholder} ? #{${placeholder}} : ''" th:id="${location_name}" th:name="${location_name}" th:value="${__${location_name}__}" />
+      <input type="hidden" th:field="*{__${field_name}__}"/>
+    </div>
+    <span class="text-danger" th:errors="*{__${field_name}__}">error</span>            
+  </div>
+</div>
+
+<!--
 - @alert
 -->
 <div th:fragment="alert">
@@ -319,13 +348,9 @@
 
 <!-- footer -->
 <div th:fragment="footer">
-    <hr/>
-    <div class="container">
-        <footer>
-            <p th:text="#{footer} + #{version} + ' ' + '' + #{build.date}">Copyright</p>
-        </footer>
-    </div>
-    <!-- /.container -->
+  <footer>
+    <p th:text="#{footer} + #{version} + ' ' + '' + #{build.date}">Copyright</p>
+  </footer>
 </div>
 <!--/footer -->
 

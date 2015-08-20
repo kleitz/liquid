@@ -73,7 +73,7 @@ public class AccountingController {
         if (bindingResult.hasErrors()) {
             Page<ReceivableSummary> page = new PageImpl<ReceivableSummary>(new ArrayList<>());
             model.addAttribute("page", page);
-            return "charge/summary";
+            return "accounting/summary";
         }
 
         searchBarForm.setAction("/accounting/summary");
@@ -83,7 +83,7 @@ public class AccountingController {
         SumPage<ReceivableSummary> page = receivableSummaryService.findAll(searchBarForm, pageRequest);
 
         model.addAttribute("page", page);
-        return "charge/summary";
+        return "accounting/summary";
     }
 
     @RequestMapping(value = "/receivable", method = RequestMethod.GET)

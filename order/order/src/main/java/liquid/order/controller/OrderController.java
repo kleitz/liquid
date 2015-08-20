@@ -193,7 +193,7 @@ public class OrderController extends BaseController {
 
         orderSearchBar.prepand(request.getRequestURI());
         model.addAttribute("page", page);
-        return "order/page";
+        return "order/shipment/list";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
@@ -221,7 +221,7 @@ public class OrderController extends BaseController {
         model.addAttribute("destinationName", order.getDestination().getName());
         model.addAttribute("railSourceName", orderRail.getSource().getName());
         model.addAttribute("railDestinationName", orderRail.getDestination().getName());
-        return "order/form";
+        return "order/shipment/form";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "addServiceItem")
@@ -232,7 +232,7 @@ public class OrderController extends BaseController {
         model.addAttribute("destinationName", order.getDestination().getName());
         model.addAttribute("railSourceName", order.getRailway().getSource().getName());
         model.addAttribute("railDestinationName", order.getRailway().getDestination().getName());
-        return "order/form";
+        return "order/shipment/form";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "removeServiceItem")
@@ -243,7 +243,7 @@ public class OrderController extends BaseController {
         model.addAttribute("destinationName", order.getDestination().getName());
         model.addAttribute("railSourceName", order.getRailway().getSource().getName());
         model.addAttribute("railDestinationName", order.getRailway().getDestination().getName());
-        return "order/form";
+        return "order/shipment/form";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
@@ -263,7 +263,7 @@ public class OrderController extends BaseController {
             model.addAttribute("destinationName", order.getDestination().getName());
             model.addAttribute("railSourceName", order.getRailway().getSource().getName());
             model.addAttribute("railDestinationName", order.getRailway().getDestination().getName());
-            return "order/form";
+            return "order/shipment/form";
         }
 
         order.setStatus(OrderStatus.SAVED.getValue());
@@ -288,7 +288,7 @@ public class OrderController extends BaseController {
             model.addAttribute("destinationName", order.getDestination().getName());
             model.addAttribute("railSourceName", order.getRailway().getSource());
             model.addAttribute("railDestinationName", order.getRailway().getDestination());
-            return "order/form";
+            return "order/shipment/form";
         }
 
         order.setStatus(OrderStatus.SUBMITTED.getValue());
@@ -334,7 +334,7 @@ public class OrderController extends BaseController {
         model.addAttribute("railSourceName", order.getRailway().getSource().getName());
         model.addAttribute("railDestinationName", order.getRailway().getDestination().getName());
 
-        return "order/form";
+        return "order/shipment/form";
     }
 
     @RequestMapping(value = "/{id}/duplicate", method = RequestMethod.GET)
@@ -357,7 +357,7 @@ public class OrderController extends BaseController {
         model.addAttribute("destinationName", order.getDestination().getName());
         model.addAttribute("railSourceName", order.getRailway().getSource().getName());
         model.addAttribute("railDestinationName", order.getRailway().getDestination().getName());
-        return "order/form";
+        return "order/shipment/form";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -369,7 +369,7 @@ public class OrderController extends BaseController {
         model.addAttribute("locations", locationEntities);
         model.addAttribute("order", order);
         model.addAttribute("tab", "detail");
-        return "order/detail";
+        return "order/shipment/detail";
     }
 
     @RequestMapping(value = "/{id}/{tab}", method = RequestMethod.GET)
@@ -408,7 +408,7 @@ public class OrderController extends BaseController {
 
         model.addAttribute("order", order);
         model.addAttribute("tab", tab);
-        return "order/" + tab;
+        return "order/shipment/" + tab;
     }
 
     @RequestMapping(value = "/{orderId}/receivable", method = RequestMethod.GET)
