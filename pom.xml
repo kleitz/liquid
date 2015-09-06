@@ -133,12 +133,6 @@
             </dependency>
             <dependency>
                 <groupId>liquid</groupId>
-                <artifactId>liquid-purchase-api</artifactId>
-                <version>${project.version}</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>liquid</groupId>
                 <artifactId>liquid-transport-api</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
@@ -393,6 +387,5 @@
         <module>accounting</module>
         <module>process</module>
         <module>web-console</module>
-    <module>purchase</module>
-  </modules>
+    </modules>
 </project>
