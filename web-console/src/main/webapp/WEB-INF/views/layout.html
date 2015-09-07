@@ -42,10 +42,13 @@
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li sec:authorize="hasAnyRole('ROLE_ADMIN')">
-                        <a href="/user" th:text="#{user}">User</a>
+                      <a href="/user" th:text="#{user}">User</a>
                     </li>
                     <li sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_CONTAINER', 'ROLE_COMMERCE')">
-                        <a href="/task" th:text="#{task}">Task</a>
+                      <a href="/task" th:text="#{task}">Task</a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_COMMERCE')">
+                      <a href="/invoices" th:text="#{invoice}">Invoice</a>
                     </li>
                     <li class="dropdown" sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_CONTAINER')">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">

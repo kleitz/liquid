@@ -1,29 +1,20 @@
 <!DOCTYPE html>
 <html>
 
-<head th:replace="layout :: head" />
+  <head th:replace="layout :: head" />
 
-<body>
-<!-- {!begin layout} -->
-<div th:include="layout :: header"></div>
-<!-- {!end layout} -->
-
-<br/>
-
-<div class="container">
-    <span>Welcome Template Page!</span>
-</div>
-<!-- /.container -->
-
-<br/>
-
-<!-- {!begin layout} -->
-<div th:include="layout :: footer"></div>
-<!-- {!end layout} -->
-
-<!-- {!begin layout} -->
-<div th:replace="layout :: js" />
-<!-- {!end layout} -->
-</body>
+  <body>
+  
+    <div th:include="layout :: header"></div>
+    
+    <div class="container">
+      <span>Welcome Template Page!</span>
+    </div><!-- container -->
+    
+    <div th:include="layout :: footer"></div>
+    
+    <div th:replace="layout :: js" />
+  
+  </body>
 
 </html>
