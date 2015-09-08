@@ -12,4 +12,5 @@
 .idea
 **/target
 **/logs
+**/node_modules
 **/supervise
