@@ -20,4 +20,9 @@ public class PurchaseInvoiceServiceImpl implements InternalPurchaseInvoiceServic
     public Page<PurchaseInvoice> find(Pageable pageable) {
         return repository.findAll(pageable);
     }
+
+    @Override
+    public PurchaseInvoice save(PurchaseInvoice purchaseInvoice) {
+        return repository.save(purchaseInvoice);
+    }
 }

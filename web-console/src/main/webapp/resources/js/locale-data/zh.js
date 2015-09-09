@@ -17,6 +17,7 @@ var i18n = {
     receivableOrg: "应收款单位",
     receivedAmt: "应收款金额",
     receivedAt: "收款日期",
+    invoice: "发票",
     invoiceNo: "发票号码",
     invoiceTo: "开票单位",
     invoicedAmt: "开票金额",

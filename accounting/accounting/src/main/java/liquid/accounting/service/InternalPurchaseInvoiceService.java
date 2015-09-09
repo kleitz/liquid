@@ -9,4 +9,6 @@ import org.springframework.data.domain.Pageable;
  */
 public interface InternalPurchaseInvoiceService extends PurchaseInvoiceService {
     Page<PurchaseInvoice> find(Pageable pageable);
+
+    PurchaseInvoice save(PurchaseInvoice purchaseInvoice);
 }

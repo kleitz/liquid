@@ -17,6 +17,7 @@ var i18n = {
     receivableOrg: "AR Org",
     receivedAmt: "Received Amt",
     receivedAt: "Received At",
+    invoice: "Invoice",
     invoiceNo: "Invoice #",
     invoiceTo: "Invoice To",
     invoicedAmt: "Invoiced Amt",

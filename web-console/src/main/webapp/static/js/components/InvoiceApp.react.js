@@ -10,7 +10,17 @@ var definition = {
     {name: 'issuedAt', type: 'date', pattern: 'YYYY-MM-DD'},
     {name: 'description'},
     {name: 'status'}
-  ]
+  ],
+  modal: {
+    title: 'invoice',
+    url: '/api/invoices',
+    fields: [
+      {name: 'id', type: 'hidden'},
+      {name: 'invoiceNo'},
+      {name: 'issuedAt', type: 'date', pattern: 'YYYY-MM-DD'},
+      {name: 'description'}
+    ]
+  }
 }
 
 var InvoiceApp = React.createClass({
