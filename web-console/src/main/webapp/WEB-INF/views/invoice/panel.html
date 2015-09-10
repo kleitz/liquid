@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+  <head th:replace="layout :: head" />
+
+  <body>
+  
+    <div th:include="layout :: header"></div>
+    
+    <section id="invoiceapp"></section>
+    
+    <div th:include="layout :: footer"></div>
+
+    <div th:replace="layout :: js" />
+
+    <script src="/static/js/bundle.js"></script>
+
+  </body>
+
+</html>

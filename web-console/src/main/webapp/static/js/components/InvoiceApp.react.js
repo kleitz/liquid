@@ -23,11 +23,51 @@ var definition = {
   }
 }
 
+
+/**
+ * id
+ * label
+ * defaultValue
+ * placeholder
+ */
+var TextInput = React.createClass({
+  render: function() {
+    return (
+      <div className="form-group">
+        <label htmlFor={this.props.id} className="col-sm-3 control-label">{this.props.label}</label>
+        <div className="col-sm-9">
+          <input type="text" className="form-control" id={this.props.id} placeholder={this.props.placeholder} />
+        </div>
+      </div>       
+    );
+  }
+});
+
+var Form = React.createClass({
+  render: function() {
+    return (
+      <form className="form-horizontal">
+        <div className="row">
+          <div className="col-sm-3">
+            <TextInput id="invoiceNo" label="Invoice No." placeholder="Invoice No." />
+          </div>       
+
+          <div className="col-sm-3">
+            <TextInput id="amount" label="Amount" placeholder="0.00" />
+          </div>       
+        </div>
+      </form> 
+    );
+  }
+});
+
 var InvoiceApp = React.createClass({
 
   render: function() {
     return (
-      <CrudTable definition={definition} {...i18n} />
+      <div className="container">
+        <Form />
+      </div> 
     );
   }
 });
