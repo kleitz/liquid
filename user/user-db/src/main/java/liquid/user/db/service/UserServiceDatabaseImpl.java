@@ -88,6 +88,10 @@ public class UserServiceDatabaseImpl implements UserService {
     @Transactional("userTransactionManager")
     @Override
     public void register(User user) {
+        User oldOne = find(user.getUid());
+        if(oldOne != null)
+            throw new RuntimeException();
+
         UserProfile profile = convertTo(user);
 
         profile.setPassword(encodePassword(user.getPassword()));
@@ -103,6 +107,8 @@ public class UserServiceDatabaseImpl implements UserService {
     @Override
     public User find(String uid) {
         UserProfile profile = userProfileRepository.findOne(uid);
+        if(null == profile)
+            return null;
         User user = convertTo(profile);
         return user;
     }

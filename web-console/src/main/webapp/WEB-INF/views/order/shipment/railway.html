@@ -8,11 +8,11 @@
 <div th:include="layout :: header"/>
 <!-- {!end layout} -->
 
-<div th:include="order/template :: tab"></div>
+<div th:include="order/shipment/template :: tab"></div>
 
 <br/>
 
-<div id="tc" class="container">
+<div id="tc" class="container" th:if="${order.railway}">
     <div class="row">
         <div class="col-xs-3">
             <label th:text="#{railway.plan.report.time}">Plan Report Time:</label>

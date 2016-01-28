@@ -61,9 +61,13 @@ public class UserController extends BaseController {
         logger.debug("user: {}", user);
         if (!bindingResult.hasErrors()) {
             if (user.getPassword().equals(user.getPassword2())) {
-                userService.register(user);
-                redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
-                return "redirect:/user/register";
+                if(null != userService.find(user.getUid())) {
+                    addFieldError(bindingResult, "user", "uid", user.getUid(), user.getUid());
+                } else {
+                    userService.register(user);
+                    redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
+                    return "redirect:/user/register";
+                }
             } else {
                 addFieldError(bindingResult, "user", "password2", user.getPassword2(), user.getPassword2());
             }
