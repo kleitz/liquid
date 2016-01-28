@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -67,6 +68,7 @@ public class JdbcSecurityConfig extends WebSecurityConfigurerAdapter {
         final Map<String, String> mappings = new HashMap<>();
 
         mappings.put(BadCredentialsException.class.getCanonicalName(), "/login?error=login.failure.badcredentials");
+        mappings.put(DisabledException.class.getCanonicalName(), "/login?error=user.disabled");
 
         authenticationFailureHandler.setExceptionMappings(mappings);
         return authenticationFailureHandler;

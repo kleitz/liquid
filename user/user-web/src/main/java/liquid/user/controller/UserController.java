@@ -62,7 +62,7 @@ public class UserController extends BaseController {
         if (!bindingResult.hasErrors()) {
             if (user.getPassword().equals(user.getPassword2())) {
                 if(null != userService.find(user.getUid())) {
-                    addFieldError(bindingResult, "user", "uid", user.getUid(), user.getUid());
+                    bindingResult.rejectValue("uid", "user.already.exists");
                 } else {
                     userService.register(user);
                     redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));

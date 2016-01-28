@@ -4,7 +4,12 @@
   <head th:replace="layout :: head" />
 
   <body style="background-color: transparent;">
-  
+
+  <div id="f" class="container" >
+      <div th:include="layout :: alert"/>
+  </div><!-- /.container -->
+
+ 
   <div id="f" class="container">
     <form class="form-signin" action="/user/register" method="POST" th:object="${user}">
       <h1 style="color: white;" class="form-signin-heading"><span th:text="#{register}"></span></h1>
