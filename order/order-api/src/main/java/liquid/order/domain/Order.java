@@ -120,4 +120,19 @@ public class Order extends BaseOrder {
     public void setServiceItems(List<ServiceItem> serviceItems) {
         this.serviceItems = serviceItems;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "tradeType=" + tradeType +
+                ", verificationSheetSn='" + verificationSheetSn + '\'' +
+                ", loadingType=" + loadingType +
+                ", loadingAddress='" + loadingAddress + '\'' +
+                ", loadingContact='" + loadingContact + '\'' +
+                ", loadingPhone='" + loadingPhone + '\'' +
+                ", loadingEt=" + loadingEt +
+                ", hasDelivery=" + hasDelivery +
+                ", serviceItems=" + serviceItems +
+                "} " + super.toString();
+    }
 }

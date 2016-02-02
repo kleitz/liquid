@@ -43,4 +43,11 @@ public class BaseIdEntity {
     public int hashCode() {
         return Objects.hash(getId());
     }
+
+    @Override
+    public String toString() {
+        return "BaseIdEntity{" +
+                "id=" + id +
+                '}';
+    }
 }

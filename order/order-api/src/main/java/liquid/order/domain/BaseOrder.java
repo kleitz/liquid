@@ -301,4 +301,34 @@ public class BaseOrder extends BaseUpdateEntity {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "BaseOrder{" +
+                "serviceType=" + serviceType +
+                ", orderNo='" + orderNo + '\'' +
+                ", customer=" + customer +
+                ", source=" + source +
+                ", destination=" + destination +
+                ", consignee='" + consignee + '\'' +
+                ", consigneePhone='" + consigneePhone + '\'' +
+                ", consigneeAddress='" + consigneeAddress + '\'' +
+                ", goods=" + goods +
+                ", goodsWeight=" + goodsWeight +
+                ", goodsDimension='" + goodsDimension + '\'' +
+                ", containerType=" + containerType +
+                ", containerSubtype=" + containerSubtype +
+                ", containerCap=" + containerCap +
+                ", containerQty=" + containerQty +
+                ", containerAttribute='" + containerAttribute + '\'' +
+                ", railway=" + railway +
+                ", totalCny=" + totalCny +
+                ", totalUsd=" + totalUsd +
+                ", distyCny=" + distyCny +
+                ", distyUsd=" + distyUsd +
+                ", grandTotal=" + grandTotal +
+                ", createRole='" + createRole + '\'' +
+                ", status=" + status +
+                "} " + super.toString();
+    }
 }

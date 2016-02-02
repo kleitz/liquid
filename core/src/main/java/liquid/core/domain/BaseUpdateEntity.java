@@ -59,4 +59,14 @@ public class BaseUpdateEntity extends BaseIdEntity {
     public boolean isNew() {
         return (this.id == null);
     }
+
+    @Override
+    public String toString() {
+        return "BaseUpdateEntity{" +
+                "createdBy='" + createdBy + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", updatedAt=" + updatedAt +
+                "} " + super.toString();
+    }
 }
