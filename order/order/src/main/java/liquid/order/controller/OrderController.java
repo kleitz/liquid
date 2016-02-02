@@ -258,6 +258,10 @@ public class OrderController extends BaseController {
         String railDestinationName = request.getParameter("railDestinationName");
         logger.debug("railDestinationName: {}", railDestinationName);
 
+        if(null == order.getContainerSubtype()){
+            bindingResult.rejectValue("containerSubtype", "order.container.subtype.illegal");
+        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("sourceName", order.getSource().getName());
             model.addAttribute("destinationName", order.getDestination().getName());
