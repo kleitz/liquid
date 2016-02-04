@@ -28,7 +28,8 @@
             <th th:text="#{container.quantity}">Container Quantity</th>
             <th th:text="#{price.cny}">CNY Price</th>
             <th th:text="#{price.usd}">USD Price</th>
-            <th th:text="#{create.time}">Create Time</th>
+            <th th:text="#{updated.at}">Updated At</th>
+            <th th:text="#{created.by}">Creator</th>
             <th>
                 <a sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING')" href="/order/edit">
                     <i class="glyphicon glyphicon-plus text-success"/>
@@ -61,6 +62,7 @@
             <td><span th:text="${#numbers.formatDecimal(order.totalCny, 0, 'COMMA', 2, 'POINT')}">CNY Price</span></td>
             <td><span th:text="${#numbers.formatDecimal(order.totalUsd, 0, 'COMMA', 2, 'POINT')}">USD Price</span></td>
             <td><span th:text="${#dates.format(order.updatedAt, 'yyyy-MM-dd HH:mm')}">Update At</span></td>
+            <td><span th:text="${order.createdBy}">Creator</span></td>
             <td>
                 <a sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING')"
                    th:if="${order.status} != 1"

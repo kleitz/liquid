@@ -25,6 +25,8 @@
             <th th:text="#{container.capacity}">Container Capacity</th>
             <th th:text="#{container.quantity}">Container Quantity</th>
             <th th:text="#{price}">Price</th>
+            <th th:text="#{updated.at}">Updated At</th>
+            <th th:text="#{created.by}">Creator</th>
             <th>
                 <a sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING')" href="/pickup_order/edit">
                     <i class="glyphicon glyphicon-plus text-success"/>
@@ -47,6 +49,8 @@
             <td th:text="${order.containerSubtype.name}">Container Capacity</td>
             <td th:text="${order.containerQty}">Container Quantity</td>
             <td th:text="${#numbers.formatDecimal(order.totalCny, 0, 'COMMA', 2, 'POINT')}">Price</td>
+            <td><span th:text="${#dates.format(order.updatedAt, 'yyyy-MM-dd HH:mm')}">Update At</span></td>
+            <td><span th:text="${order.createdBy}">Creator</span></td>
             <td>
                 <a sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING')"
                    th:if="${order.status} != 1"
