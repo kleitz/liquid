@@ -541,7 +541,7 @@
                 console.log("price: "+ price);
                 console.log(isNaN(price));
                 if(!isNaN(price)) {
-                    if(currency == 0) cny += price;
+                    if(currency == 'CNY') cny += price;
                     else usd += price;
                 }
             });

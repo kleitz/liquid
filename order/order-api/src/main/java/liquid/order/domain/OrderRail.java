@@ -125,8 +125,7 @@ public class OrderRail extends BaseIdEntity {
     @Override
     public String toString() {
         return "OrderRail{" +
-                "orderId=" + order.getId() +
-                ", planReportTime=" + planReportTime +
+                "planReportTime=" + planReportTime +
                 ", planType=" + planType +
                 ", programNo='" + programNo + '\'' +
                 ", planGoods=" + planGoods +
