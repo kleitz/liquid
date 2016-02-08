@@ -304,31 +304,31 @@ public class BaseOrder extends BaseUpdateEntity {
 
     @Override
     public String toString() {
-        return "BaseOrder{" +
-                "serviceType=" + serviceType +
-                ", orderNo='" + orderNo + '\'' +
-                ", customer=" + customer +
-                ", source=" + source +
-                ", destination=" + destination +
-                ", consignee='" + consignee + '\'' +
-                ", consigneePhone='" + consigneePhone + '\'' +
-                ", consigneeAddress='" + consigneeAddress + '\'' +
-                ", goods=" + goods +
-                ", goodsWeight=" + goodsWeight +
-                ", goodsDimension='" + goodsDimension + '\'' +
-                ", containerType=" + containerType +
-                ", containerSubtype=" + containerSubtype +
-                ", containerCap=" + containerCap +
-                ", containerQty=" + containerQty +
-                ", containerAttribute='" + containerAttribute + '\'' +
-                ", railway=" + railway +
-                ", totalCny=" + totalCny +
-                ", totalUsd=" + totalUsd +
-                ", distyCny=" + distyCny +
-                ", distyUsd=" + distyUsd +
-                ", grandTotal=" + grandTotal +
-                ", createRole='" + createRole + '\'' +
-                ", status=" + status +
-                "} " + super.toString();
+        final StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(", serviceType=").append(serviceType);
+        sb.append(", orderNo='").append(orderNo).append('\'');
+        sb.append(", customer=").append(customer);
+        sb.append(", source=").append(source);
+        sb.append(", destination=").append(destination);
+        sb.append(", consignee='").append(consignee).append('\'');
+        sb.append(", consigneePhone='").append(consigneePhone).append('\'');
+        sb.append(", consigneeAddress='").append(consigneeAddress).append('\'');
+        sb.append(", goods=").append(goods);
+        sb.append(", goodsWeight=").append(goodsWeight);
+        sb.append(", goodsDimension='").append(goodsDimension).append('\'');
+        sb.append(", containerType=").append(containerType);
+        sb.append(", containerSubtype=").append(containerSubtype);
+        sb.append(", containerCap=").append(containerCap);
+        sb.append(", containerQty=").append(containerQty);
+        sb.append(", containerAttribute='").append(containerAttribute).append('\'');
+        sb.append(", railway=").append(railway);
+        sb.append(", totalCny=").append(totalCny);
+        sb.append(", totalUsd=").append(totalUsd);
+        sb.append(", distyCny=").append(distyCny);
+        sb.append(", distyUsd=").append(distyUsd);
+        sb.append(", grandTotal=").append(grandTotal);
+        sb.append(", createRole='").append(createRole).append('\'');
+        sb.append(", status=").append(status);
+        return sb.toString();
     }
 }

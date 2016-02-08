@@ -123,16 +123,18 @@ public class Order extends BaseOrder {
 
     @Override
     public String toString() {
-        return "Order{" +
-                "tradeType=" + tradeType +
-                ", verificationSheetSn='" + verificationSheetSn + '\'' +
-                ", loadingType=" + loadingType +
-                ", loadingAddress='" + loadingAddress + '\'' +
-                ", loadingContact='" + loadingContact + '\'' +
-                ", loadingPhone='" + loadingPhone + '\'' +
-                ", loadingEt=" + loadingEt +
-                ", hasDelivery=" + hasDelivery +
-                ", serviceItems=" + serviceItems +
-                "} " + super.toString();
+        final StringBuilder sb = new StringBuilder("Order{");
+        sb.append(super.toString());
+        sb.append(", tradeType=").append(tradeType);
+        sb.append(", verificationSheetSn='").append(verificationSheetSn).append('\'');
+        sb.append(", loadingType=").append(loadingType);
+        sb.append(", loadingAddress='").append(loadingAddress).append('\'');
+        sb.append(", loadingContact='").append(loadingContact).append('\'');
+        sb.append(", loadingPhone='").append(loadingPhone).append('\'');
+        sb.append(", loadingEt=").append(loadingEt);
+        sb.append(", hasDelivery=").append(hasDelivery);
+        sb.append(", serviceItems=").append(serviceItems);
+        sb.append('}');
+        return sb.toString();
     }
 }

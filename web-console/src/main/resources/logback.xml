@@ -234,9 +234,11 @@
         <appender-ref ref="LIQUID"/>
     </logger>
 
+    <!--
     <logger name="liquid.interceptor" level="DEBUG" additivity="false">
         <appender-ref ref="INTERCEPTOR"/>
     </logger>
+    -->
 
     <logger name="auditing" level="INFO" additivity="false">
         <appender-ref ref="AUDITING"/>
