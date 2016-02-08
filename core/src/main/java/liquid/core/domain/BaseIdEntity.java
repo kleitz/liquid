@@ -46,8 +46,8 @@ public class BaseIdEntity {
 
     @Override
     public String toString() {
-        return "BaseIdEntity{" +
-                "id=" + id +
-                '}';
+        final StringBuilder sb = new StringBuilder();
+        sb.append("id=").append(id);
+        return sb.toString();
     }
 }

@@ -197,10 +197,11 @@
     </div>    
     
     <div class="col-lg-3">           
-        <div class="form-group">
+        <div class="form-group" th:classappend="${#fields.hasErrors('containerSubtype')} ? 'has-error'">
             <label th:text="#{container.subtype}">Container Subtype</label>
             <input type="hidden" id="_containerSubtype" th:value="*{containerSubtype} ? *{containerSubtype.id} : '' " />
             <select class="form-control input-sm" id="containerSubtype" name="containerSubtype"></select>
+            <span class="text-danger" th:errors="*{containerSubtype}">error</span>
         </div>
     </div>
     
@@ -432,17 +433,18 @@
         var boxSubtypeSet = {
           rail: [],
           self: []
-        }
-        var boxSubtype = $('#_containerSubtype').val()
+        };
+        var boxSubtype = $('#_containerSubtype').val();
 
         function cluster(data) {
           for (var i = 0; i < data.length; i++) { 
-            if (data[i].containerType == 0) 
-              boxSubtypeSet.rail.push(data[i])
-            else if (data[i].containerType == 2) 
-              boxSubtypeSet.self.push(data[i]) 
-            else
-              continue
+            if (data[i].containerType == 0) {
+              boxSubtypeSet.rail.push(data[i]);
+            } else if (data[i].containerType == 2) {
+              boxSubtypeSet.self.push(data[i]);
+            } else {
+              continue;
+            }
           }
         }
 

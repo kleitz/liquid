@@ -59,4 +59,15 @@ public class ServiceItem extends BaseIdEntity {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ServiceItem{");
+        sb.append("serviceSubtype=").append(serviceSubtype);
+        sb.append(", currency=").append(currency);
+        sb.append(", quotation=").append(quotation);
+        sb.append(", comment='").append(comment).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

@@ -124,15 +124,17 @@ public class OrderRail extends BaseIdEntity {
 
     @Override
     public String toString() {
-        return "OrderRail{" +
-                "planReportTime=" + planReportTime +
-                ", planType=" + planType +
-                ", programNo='" + programNo + '\'' +
-                ", planGoods=" + planGoods +
-                ", source=" + source +
-                ", destination=" + destination +
-                ", comment='" + comment + '\'' +
-                ", sameDay=" + sameDay +
-                "} " + super.toString();
+        final StringBuilder sb = new StringBuilder("OrderRail{");
+        sb.append(super.toString());
+        sb.append(", planReportTime=").append(planReportTime);
+        sb.append(", planType=").append(planType);
+        sb.append(", programNo='").append(programNo).append('\'');
+        sb.append(", planGoods=").append(planGoods);
+        sb.append(", source=").append(source);
+        sb.append(", destination=").append(destination);
+        sb.append(", comment='").append(comment).append('\'');
+        sb.append(", sameDay=").append(sameDay);
+        sb.append('}');
+        return sb.toString();
     }
 }

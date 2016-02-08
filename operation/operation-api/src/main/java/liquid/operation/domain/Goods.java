@@ -44,6 +44,14 @@ public class Goods extends BaseUpdateEntity {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Goods{");
+        sb.append("id='").append(getId()).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", status=").append(status);
+        sb.append('}');
+        return sb.toString();
+    }
 }
-
-
