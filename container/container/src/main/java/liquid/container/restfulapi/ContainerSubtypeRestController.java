@@ -25,11 +25,6 @@ public class ContainerSubtypeRestController {
     @RequestMapping
     @ResponseBody
     public Iterable<ContainerSubtype> findAll() {
-        try {
-            Thread.sleep(30* 1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return containerSubtypeService.findAll();
     }
 }
