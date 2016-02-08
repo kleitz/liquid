@@ -309,13 +309,16 @@
 - Input text
 - @alert
 -->
-<div th:fragment="input_text(field_name, label_text, placeholder)">
+<div th:fragment="input_text(field_name, label_text, placeholder, required)">
   <div class="form-group" th:classappend="${#fields.hasErrors(field_name)} ? 'has-error'">
-    <label class="col-xs-4 control-label" th:text="#{${label_text}}">Customer</label>
+    <label class="col-xs-4 control-label">
+      <span th:text="#{${label_text}}">Customer</span>
+      <span th:if="${required}">*</span>
+    </label>
     <div class="col-xs-7">
       <input type="text" class="form-control" th:field="*{__${field_name}__}" th:placeholder="${placeholder} ? #{${placeholder}} : ''"/>
     </div>
-    <span class="col-xs-8 col-xs-offset-4" th:errors="*{__${field_name}__}">error</span>
+    <span class="text-danger col-xs-8 col-xs-offset-4" th:errors="*{__${field_name}__}">error</span>
   </div>
 </div>
 
@@ -323,14 +326,17 @@
 - Input location
 - @alert
 -->
-<div th:fragment="input_location(field_name, label_text, placeholder, location_name)">
+<div th:fragment="input_location(field_name, label_text, placeholder, location_name, required)">
   <div class="form-group" th:classappend="${#fields.hasErrors(field_name)} ? 'has-error'">
-    <label class="col-lg-4 control-label" th:text="#{${label_text}} + ' *'">Origin</label>
+    <label class="col-lg-4 control-label">
+      <span th:text="#{${label_text}}">Origin</span>
+      <span th:if="${required}">*</span>
+    </label>
     <div class="col-lg-7">
       <input type="text" class="form-control" th:placeholder="${placeholder} ? #{${placeholder}} : ''" th:id="${location_name}" th:name="${location_name}" th:value="${__${location_name}__}" />
       <input type="hidden" th:field="*{__${field_name}__}"/>
     </div>
-    <span class="text-danger" th:errors="*{__${field_name}__}">error</span>            
+    <span class="text-danger col-xs-8 col-xs-offset-4" th:errors="*{__${field_name}__}">error</span>            
   </div>
 </div>
 

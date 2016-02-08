@@ -26,9 +26,13 @@
       </form>
     </div><!-- container -->
 
-    <footer style="position: absolute;">
+    <footer>
       <p style="color: white;" th:text="#{footer} + #{version} + ' ' + '' + #{build.date}">Copyright</p>
     </footer>
+    
+    <!--
+    <div th:include="layout :: footer"></div>
+    -->
 
     <div th:replace="layout :: js"></div>
   </body>

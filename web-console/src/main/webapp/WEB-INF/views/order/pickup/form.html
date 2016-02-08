@@ -29,17 +29,17 @@
           </div>
         </div>
 
-        <div th:include="layout::input_text('customer', 'customer', 'customer.name')" />
+        <div th:include="layout::input_text('customer', 'customer', 'customer.name', true)" />
 
-        <div th:include="layout::input_text('consignee', 'consignee', null)" />
+        <div th:include="layout::input_text('consignee', 'consignee', null, false)" />
 
-        <div th:include="layout::input_text('consigneePhone', 'consignee.phone', null)" />
+        <div th:include="layout::input_text('consigneePhone', 'consignee.phone', null, false)" />
 
-        <div th:include="layout::input_text('consigneeAddress', 'consignee.address', null)" />
+        <div th:include="layout::input_text('consigneeAddress', 'consignee.address', null, false)" />
   
-        <div th:include="layout::input_location('source', 'origination', 'origination', 'sourceName')" />
+        <div th:include="layout::input_location('source', 'origination', 'origination', 'sourceName', true)" />
  
-        <div th:include="layout::input_location('destination', 'destination', 'destination', 'destinationName')" />
+        <div th:include="layout::input_location('destination', 'destination', 'destination', 'destinationName', true)" />
 
         <div class="form-group">
           <label class="col-lg-4 control-label" th:text="#{goods}">Cargo</label>
@@ -52,7 +52,7 @@
           </div>
         </div>
   
-        <div th:include="layout::input_text('goodsWeight', 'goods.weight.with.unit', 'customer.name')" />
+        <div th:include="layout::input_text('goodsWeight', 'goods.weight.with.unit', 'customer.name', true)" />
   
         <div class="form-group">
           <label class="col-lg-4 control-label" th:text="#{container.type}">Container Type</label>
@@ -72,9 +72,9 @@
           </div>
         </div>
 
-        <div th:include="layout::input_text('containerQty', 'container.quantity', 'customer.name')" />
+        <div th:include="layout::input_text('containerQty', 'container.quantity', 'customer.name', true)" />
   
-        <div th:include="layout::input_text('totalCny', 'price.cny', 'customer.name')" />
+        <div th:include="layout::input_text('totalCny', 'price.cny', 'customer.name', true)" />
 
       </div><!-- column 1 -->
 
@@ -107,18 +107,18 @@
             </tr>
           </tbody>
         </table>        
-      </div>
+
+        <br/>
+        
+        <div class="row pull-right" >
+          <input type="submit" name="save" value="Save Order" class="btn btn-default btn-success"
+                       th:attr="value=#{order.save}"/>
+          <input type="submit" name="submit" value="Submit Order" class="btn btn-default btn-primary"
+                       th:attr="value=#{order.submit}"/>
+        </div>
+      </div><!-- col-lg-4 -->
     </div>
-  
-  <br/>
-  
-  <div class="row">
-    <input type="submit" name="save" value="Save Order" class="btn btn-default btn-success"
-                 th:attr="value=#{order.save}"/>
-    <input type="submit" name="submit" value="Submit Order" class="btn btn-default btn-primary"
-                 th:attr="value=#{order.submit}"/>
-  </div>
-  </form>
+ </form>
 </div>
 <!-- /.container -->
 
@@ -187,9 +187,7 @@
           console.log(boxSubtypeSet)
           var value = $('input[name=containerType]:checked', '#orderForm').val()
           initContainerSubtypeSelect(value)
-       });
-
-
+       	});
 
         if($('input[name=loadingType]:checked', '#orderForm').val() == 0) {
             $("#loadingAddressSec").hide();
@@ -221,11 +219,10 @@
         $('#sourceName').acWithTemplate(locations, 'name', 'source', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
         $('#destinationName').acWithTemplate(locations, 'name', 'destination', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
 
-         $("input[name$='containerType']").click(function() {
-            var value = $(this).val();
-            initContainerSubtypeSelect(value)
-         });
- 
+        $("input[name$='containerType']").click(function() {
+           var value = $(this).val();
+           initContainerSubtypeSelect(value)
+        });
     });
 
     /*]]>*/
