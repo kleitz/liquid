@@ -11,6 +11,7 @@
 # Dir #
 .idea
 node_modules
+web-console/upload
 **/target
 **/logs
 **/supervise

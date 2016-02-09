@@ -306,8 +306,20 @@ public class ContainerServiceImpl implements InternalContainerService {
     }
 
     public void writeToFile(String fileName, byte[] bytes) throws IOException {
-        try (FileOutputStream fos = new FileOutputStream(env.getProperty("upload.dir", "/opt/liquid/upload/") + fileName)) {
+        String uploadDirPathname = env.getProperty("upload.dir", "/opt/liquid-service/upload/");
+        try (FileOutputStream fos = new FileOutputStream(uploadDirPathname + fileName)) {
             fos.write(bytes);
+        } catch(FileNotFoundException e) {
+            logger.warn(e.getLocalizedMessage());
+            File uploadDir = new File(uploadDirPathname);
+            if(!uploadDir.exists()) {
+                uploadDir.mkdir();
+                try (FileOutputStream fos = new FileOutputStream(uploadDirPathname + fileName)) {
+                    fos.write(bytes);
+                }
+            }else{
+                throw e;
+            }
         }
 
         ExcelFileInfo excelFileInfo = new ExcelFileInfo();
