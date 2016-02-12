@@ -2,12 +2,22 @@ package liquid.poc.controller;
 
 import liquid.mail.model.Mail;
 import liquid.mail.service.MailNotificationService;
+import liquid.poc.model.Alert;
+import liquid.poc.model.Customer;
 import liquid.poc.service.PocService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 
 /**
  * User: tao
@@ -17,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/poc")
 public class PocController {
+    private Logger logger = LoggerFactory.getLogger(PocController.class);
 
     @Autowired
     private MailNotificationService mailNotificationService;
@@ -39,5 +50,26 @@ public class PocController {
     public String message(String msgKey) {
         String msg = pocService.i18n(msgKey);
         return "redirect:/poc/message?msg=" + msg;
+    }
+
+    @RequestMapping(value = "/customers", method = RequestMethod.GET)
+    public String getCustomers(Model model) {
+        model.addAttribute("customer", new Customer());
+        return "common/poc/customers";
+    }
+
+    @RequestMapping(value = "/customers", method = RequestMethod.POST)
+    public String createCustomer(@Valid Customer customer, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+        logger.debug("Creating a {}", customer);
+        if(bindingResult.hasErrors()) {
+            logger.debug("Binging Errors are {}.", bindingResult.getAllErrors());
+            return "common/poc/customers";
+        }
+        if(customer.getAddress().equals("2")) {
+            model.addAttribute("alert", new Alert(Alert.Type.warning, "City Beijing is not available."));
+            return "common/poc/customers";
+        }
+        redirectAttributes.addFlashAttribute("alert", new Alert(Alert.Type.success, "Success."));
+        return "redirect:/poc/customers";
     }
 }

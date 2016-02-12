@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Liquid</title>
+    
+    <!-- Bootstrap -->
+    <link href="/resources/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen"/>
+    <link rel="icon" href="/resources/favicon.ico"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="/resources/html5shiv/html5shiv.js"></script>
+      <script src="/resources/respond/respond.min.js"></script>
+    <![endif]-->    
+
+    <style>
+    .container {
+        width: 300px;
+    }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h3>Customers</h3>
+
+    <hr />
+
+    <div th:if="${alert}" th:class="'alert alert-' + ${alert.type} + ' alert-dismissible'" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <strong>Warning!</strong> <span th:text="${alert.message}" />
+    </div>
+   
+    <form action="/poc/customers" method="POST" th:object="${customer}">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="type" class="form-control" id="name" name="name" placeholder="Name" />
+          <span class="text-danger" th:errors="*{name}">error</span>
+        </div>
+        <div class="form-group">
+          <label for="address">Address</label>
+          <select class="form-control" id="address" name="address" />
+          <span class="text-danger" th:errors="*{address}">error</span>
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button> 
+    </form>
+
+    <hr />
+</div>
+
+<script src="/resources/jquery/jquery.js"></script>
+<script src="/resources/bootstrap/js/bootstrap.js"></script>
+ 
+<script>
+/*<![CDATA[*/
+    $(document).ready(function() {
+        $.ajax({ 
+            url: "/api/poc/cities",
+            timeout: 30000
+        })
+        .done(function(data) {
+            console.log("Get %o done.", data);
+            $.each(data, function(index, value) {   
+                $('#address')
+                    .append($("<option></option>")
+                        .attr("value", value.id)
+                        .text(value.name)); 
+            });            
+        })
+        .fail(function() {
+            console.log("Failure to get cities.");
+        })
+        .always(function() {
+            console.log("Always do after trying to get cities.");
+        });
+    }); // ready end
+/*]]>*/
+</script>
+ 
+</body>
+</html>
