@@ -54,7 +54,7 @@ public class ServiceProvider extends StatefulEntity implements Text {
     private String cell;
 
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "OPS_SERVICE_PROVIDER_SUBTYPE",
             joinColumns = @JoinColumn(name = "SERVICE_PROVIDER_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "SERVICE_SUBTYPE_ID", referencedColumnName = "ID"))
@@ -144,5 +144,22 @@ public class ServiceProvider extends StatefulEntity implements Text {
     @Override
     public String toText() {
         return String.valueOf(id);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ServiceProvider{");
+        sb.append("code='").append(code).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", queryName='").append(queryName).append('\'');
+        sb.append(", type=").append(type);
+        sb.append(", address='").append(address).append('\'');
+        sb.append(", postcode='").append(postcode).append('\'');
+        sb.append(", contact='").append(contact).append('\'');
+        sb.append(", phone='").append(phone).append('\'');
+        sb.append(", cell='").append(cell).append('\'');
+        sb.append(", subtypes=").append(subtypes);
+        sb.append('}');
+        return sb.toString();
     }
 }
