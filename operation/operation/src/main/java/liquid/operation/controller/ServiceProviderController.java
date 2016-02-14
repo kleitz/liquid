@@ -84,7 +84,7 @@ public class ServiceProviderController extends BaseController {
         } else {
             sp.setStatus(0);
             serviceProviderService.save(sp);
-            return "redirect:/list";
+            return "redirect:/sp";
         }
     }
 }
