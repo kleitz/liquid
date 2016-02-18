@@ -31,5 +31,20 @@ public interface OrderService {
 
     Order saveOrder(Order order);
 
+    /**
+     * Permanently delete a unsubmitted order.
+     *
+     * @param id
+     */
+    void delete(Long id);
+
     Order submitOrder(Order order);
+
+    /**
+     * Discard a submitted order.
+     *
+     * @param id
+     * @return
+     */
+    Order discard(Long id);
 }

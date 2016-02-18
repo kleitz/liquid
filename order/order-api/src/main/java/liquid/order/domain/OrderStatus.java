@@ -10,6 +10,7 @@ public enum OrderStatus {
     NULL(0, ""),
     SAVED(1, "order.status.saved"),
     SUBMITTED(2, "order.status.submitted"),
+    DISCARDED(3, "order.status.discarded"),
     COMPLETED(8, "order.status.completed");
 
     private final int value;

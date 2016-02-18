@@ -79,4 +79,10 @@ public class OrderRestController {
         order.getServiceItems().add(serviceItem);
         orderService.save(order);
     }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void delete(@PathVariable Long id){
+        orderService.delete(id);
+    }
 }

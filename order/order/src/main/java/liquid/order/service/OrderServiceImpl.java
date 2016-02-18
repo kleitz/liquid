@@ -166,6 +166,11 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
     }
 
     @Override
+    public void delete(Long id) {
+        repository.delete(id);
+    }
+
+    @Override
     public Order submitOrder(Order order) {
         // set role
         order.setCreateRole(SecurityContext.getInstance().getRole());
@@ -175,6 +180,11 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
         Order orderEntity = saveOrder(order);
 
         return orderEntity;
+    }
+
+    @Override
+    public Order discard(Long id) {
+        throw new UnsupportedOperationException();
     }
 
     public Iterable<Order> findByOrderNoLike(String orderNo) {

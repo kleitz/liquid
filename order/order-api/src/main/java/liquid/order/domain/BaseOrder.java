@@ -106,7 +106,7 @@ public class BaseOrder extends BaseUpdateEntity {
     @Column(name = "CREATE_ROLE")
     private String createRole;
 
-    // 1 saved; 2: submitted
+    // 1 saved; 2: submitted; 3
     @Column(name = "STATUS")
     private int status;
 
