@@ -172,11 +172,6 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
     }
 
     @Override
-    public void delete(Long id) {
-        repository.delete(id);
-    }
-
-    @Override
     public Order submitOrder(Order order) {
         // set role
         order.setCreateRole(SecurityContext.getInstance().getRole());
