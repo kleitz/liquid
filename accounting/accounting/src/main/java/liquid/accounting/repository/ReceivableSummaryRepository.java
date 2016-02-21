@@ -12,6 +12,8 @@ import org.springframework.data.repository.CrudRepository;
 public interface ReceivableSummaryRepository extends CrudRepository<ReceivableSummary, Long> {
     ReceivableSummary findByOrderId(Long orderId);
 
+    void deleteByOrderId(Long orderId);
+
     Page<ReceivableSummary> findAll(Pageable pageable);
 
     Page<ReceivableSummary> findAll(Specification<ReceivableSummary> specification, Pageable pageable);

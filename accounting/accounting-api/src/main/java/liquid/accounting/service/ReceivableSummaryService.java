@@ -9,6 +9,8 @@ import liquid.accounting.model.Earning;
 public interface ReceivableSummaryService {
     ReceivableSummary findByOrderId(Long orderId);
 
+    void deleteByOrderId(Long orderId);
+
     ReceivableSummary save(ReceivableSummary receivableSummaryEntity);
 
     Earning calculateEarning(Long orderId);

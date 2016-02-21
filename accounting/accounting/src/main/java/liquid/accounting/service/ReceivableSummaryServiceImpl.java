@@ -43,6 +43,11 @@ public class ReceivableSummaryServiceImpl extends AbstractService<ReceivableSumm
         return repository.findByOrderId(orderId);
     }
 
+    @Override
+    public void deleteByOrderId(Long orderId) {
+        repository.deleteByOrderId(orderId);
+    }
+
     @Transactional(value = "transactionManager")
     public void update(Long orderId, AccountingType type, AccountingOperator op, Long amountCny, Long amountUsd) {
         ReceivableSummary entity = repository.findByOrderId(orderId);

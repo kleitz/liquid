@@ -1,5 +1,6 @@
 package liquid.order.restfulapi;
 
+import liquid.accounting.service.ReceivableSummaryService;
 import liquid.core.model.SearchBarForm;
 import liquid.operation.domain.Customer;
 import liquid.operation.service.CustomerService;
@@ -34,7 +35,13 @@ public class OrderRestController {
     private OrderService orderService;
 
     @Autowired
+    private ReceivableSummaryService receivableSummaryService;
+
+    @Autowired
     private TaskService taskService;
+
+    public OrderRestController() {
+    }
 
     @RequestMapping(method = RequestMethod.GET, params = "text")
     @ResponseBody
@@ -82,7 +89,7 @@ public class OrderRestController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public void delete(@PathVariable Long id){
+    public void delete(@PathVariable Long id) {
         orderService.delete(id);
     }
 }

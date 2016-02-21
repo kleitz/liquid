@@ -15,11 +15,6 @@ import java.util.Date;
  */
 @Entity(name = "ORD_RAIL")
 public class OrderRail extends BaseIdEntity {
-    @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "ORDER_ID")
-    private Order order;
-
     @Column(name = "PLAN_REPORT_TIME")
     private Date planReportTime;
 
@@ -49,14 +44,6 @@ public class OrderRail extends BaseIdEntity {
 
     @Column(name = "SAME_DAY")
     private Boolean sameDay;
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
 
     public Date getPlanReportTime() {
         return planReportTime;

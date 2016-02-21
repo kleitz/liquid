@@ -83,7 +83,7 @@ public class BaseOrder extends BaseUpdateEntity {
     @Column(name = "CONTAINER_ATTR")
     private String containerAttribute;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "order")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "RAILWAY_ID")
     private OrderRail railway;
 

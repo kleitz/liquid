@@ -149,7 +149,6 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
             ServiceItem serviceItem = serviceItemIterator.next();
             if (serviceItem.getQuotation() == null) serviceItemIterator.remove();
         }
-        order.getRailway().setOrder(order);
 
         order = save(order);
 
@@ -165,8 +164,10 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
         return order;
     }
 
+    @Transactional(value = "transactionManager")
     @Override
     public void delete(Long id) {
+        receivableSummaryService.deleteByOrderId(id);
         repository.delete(id);
     }
 

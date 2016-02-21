@@ -162,7 +162,9 @@ public class OrderController extends BaseController {
     }
 
     @ModelAttribute("serviceSubtypes")
-    public Iterable<ServiceSubtype> populateServiceSubtyes() {return serviceSubtypeService.findEnabled(); }
+    public Iterable<ServiceSubtype> populateServiceSubtyes() {
+        return serviceSubtypeService.findEnabled();
+    }
 
     @ModelAttribute("railwayPlanTypes")
     public Iterable<RailPlanType> populateRailwayPlanTypes() {
@@ -258,7 +260,7 @@ public class OrderController extends BaseController {
         String railDestinationName = request.getParameter("railDestinationName");
         logger.debug("railDestinationName: {}", railDestinationName);
 
-        if(null == order.getContainerSubtype()){
+        if (null == order.getContainerSubtype()) {
             bindingResult.rejectValue("containerSubtype", "order.container.subtype.illegal");
         }
 
@@ -288,7 +290,7 @@ public class OrderController extends BaseController {
         String railDestinationName = request.getParameter("railDestinationName");
         logger.debug("railDestinationName: {}", railDestinationName);
 
-        if(null == order.getContainerSubtype()){
+        if (null == order.getContainerSubtype()) {
             bindingResult.rejectValue("containerSubtype", "order.container.subtype.illegal");
         }
 
@@ -352,7 +354,15 @@ public class OrderController extends BaseController {
 
         Order order = orderService.find(id);
         order.setId(null);
-        order.getRailway().setId(null);
+        if (null != order.getRailway())
+            order.getRailway().setId(null);
+        else {
+            OrderRail orderRail = new OrderRail();
+            orderRail.setSource(order.getSource());
+            orderRail.setDestination(order.getDestination());
+            orderRail.setPlanReportTime(new Date());
+            order.setRailway(orderRail);
+        }
         order.setOrderNo(null);
 
         List<ServiceItem> serviceItems = order.getServiceItems();
