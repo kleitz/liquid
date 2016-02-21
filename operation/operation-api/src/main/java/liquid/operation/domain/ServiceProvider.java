@@ -158,7 +158,6 @@ public class ServiceProvider extends StatefulEntity implements Text {
         sb.append(", contact='").append(contact).append('\'');
         sb.append(", phone='").append(phone).append('\'');
         sb.append(", cell='").append(cell).append('\'');
-        sb.append(", subtypes=").append(subtypes);
         sb.append('}');
         return sb.toString();
     }

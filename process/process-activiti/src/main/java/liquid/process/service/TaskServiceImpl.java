@@ -11,6 +11,7 @@ import liquid.util.StringUtil;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
@@ -250,9 +251,16 @@ public class TaskServiceImpl implements TaskService {
     private BusinessKey getBusinessKeyByProcessInstanceId(String processInstanceId) {
         RuntimeService runtimeService = processEngine.getRuntimeService();
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
-
-        String text = processInstance.getBusinessKey();
-        return BusinessKey.decode(text);
+        // If process has been completed, the processInstance could be null.
+        if(null == processInstance) {
+            HistoryService historyService = processEngine.getHistoryService();
+            HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+            String text = historicProcessInstance.getBusinessKey();
+            return BusinessKey.decode(text);
+        } else {
+            String text = processInstance.getBusinessKey();
+            return BusinessKey.decode(text);
+        }
     }
 
     private BusinessKey getBusinessKeyByTaskId(String taskId) {
