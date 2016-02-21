@@ -418,7 +418,7 @@ public class OrderController extends BaseController {
                 model.addAttribute("charges", charges);
                 break;
             case "amount":
-                tab = "gitk HEAD @{u}";
+                tab = "amount";
                 break;
             default:
                 tab = "detail";
