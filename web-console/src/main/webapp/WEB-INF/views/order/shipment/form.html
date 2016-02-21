@@ -450,7 +450,7 @@
 
         function initContainerSubtypeSelect(value) {
           if( value == 0) {
-            $("#containerSubtype").find("option").remove().end()
+            $("#containerSubtype").find("option").remove().end();
             var flag = false
             for(var i = 0; i < boxSubtypeSet.rail.length; i++) {
               $("#containerSubtype").append($("<option></option>")
@@ -469,7 +469,7 @@
               $("#containerSubtype").append($("<option></option>")
                 .attr("value", boxSubtypeSet.self[i].id)
                 .text(boxSubtypeSet.self[i].name))
-              if(boxSubtype == boxSubtypeSet.rail[i].id)
+              if(boxSubtype == boxSubtypeSet.self[i].id)
                 flag = true
             }
             if (flag)
@@ -480,11 +480,12 @@
         $.ajax({
           url: "/api/container-subtype"
         }).done(function(data) {
-          console.log(data) 
-          cluster(data)
-          console.log(boxSubtypeSet)
-          var value = $('input[name=containerType]:checked', '#orderForm').val()
-          initContainerSubtypeSelect(value)
+          console.log("Get container subtype data %o", data); 
+          cluster(data);
+          console.log("Box Subtype Set %o", boxSubtypeSet);
+          var value = $('input[name=containerType]:checked', '#orderForm').val();
+          console.log("Container type %d", value);
+          initContainerSubtypeSelect(value);
        });
 
         var customers = initCustomerAc();

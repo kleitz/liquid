@@ -30,5 +30,28 @@
       </div><!-- title-bar -->
     </div>
 
+    <div th:fragment="delete-order-modal">
+      <!-- Modal -->
+      <div class="modal" id="deleteOrderDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;">
+          <div class="modal-dialog modal-sm">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title" id="myModalLabel"><span th:text="#{order.delete}" /></h4>
+                  </div>
+                  <div class="modal-body">
+                      <p>
+                          <span class="glyphicon glyphicon-warning-sign text-danger" /> 
+                          <span th:text="#{order.delete}" /><span> </span><b id="_orderId"></b>?
+                      </p>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal"><span th:text="#{modal.close}" /></button>
+                      <button id="deleteOrderButton" type="button" class="btn btn-danger"><span th:text="#{delete}" /></button>
+                  </div>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+    </div>
   </body>
 </html>

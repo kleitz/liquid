@@ -171,7 +171,7 @@
               $("#containerSubtype").append($("<option></option>")
                 .attr("value", boxSubtypeSet.self[i].id)
                 .text(boxSubtypeSet.self[i].name))
-              if(boxSubtype == boxSubtypeSet.rail[i].id)
+              if(boxSubtype == boxSubtypeSet.self[i].id)
                 flag = true
             }
             if (flag)
