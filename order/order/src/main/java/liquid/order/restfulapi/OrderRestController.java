@@ -93,4 +93,10 @@ public class OrderRestController {
     public void delete(@PathVariable Long id) {
         orderService.delete(id);
     }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void discard(@PathVariable Long id) {
+        orderService.discard(id);
+    }
 }

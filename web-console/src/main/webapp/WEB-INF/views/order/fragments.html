@@ -30,9 +30,9 @@
       </div><!-- title-bar -->
     </div>
 
-    <div th:fragment="delete-order-modal">
+    <div th:fragment="confirmation-modal(modalId, actionButton)">
       <!-- Modal -->
-      <div class="modal" id="deleteOrderDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;">
+      <div class="modal" th:id="${modalId}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;">
           <div class="modal-dialog modal-sm">
               <div class="modal-content">
                   <div class="modal-header">
@@ -47,7 +47,7 @@
                   </div>
                   <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal"><span th:text="#{modal.close}" /></button>
-                      <button id="deleteOrderButton" type="button" class="btn btn-danger"><span th:text="#{delete}" /></button>
+                      <button th:id="${actionButton}" type="button" class="btn btn-danger"><span th:text="#{delete}" /></button>
                   </div>
               </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
