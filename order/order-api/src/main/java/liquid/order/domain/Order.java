@@ -1,6 +1,7 @@
 package liquid.order.domain;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +46,7 @@ public class Order extends BaseOrder {
     @Column(name = "HAS_DELIVERY")
     private boolean hasDelivery;
 
+    @Valid
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")
     private List<ServiceItem> serviceItems = new ArrayList<>();

@@ -5,8 +5,11 @@ import liquid.core.domain.BaseIdEntity;
 import liquid.operation.deserializer.ServiceSubtypeDeserializer;
 import liquid.operation.domain.Currency;
 import liquid.operation.domain.ServiceSubtype;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
+import java.math.BigDecimal;
 
 /**
  * Created by redbrick9 on 5/7/14.
@@ -22,8 +25,9 @@ public class ServiceItem extends BaseIdEntity {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#.###")
     @Column(name = "QUOTATION")
-    private Long quotation;
+    private BigDecimal quotation;
 
     @Column(name = "COMMENT")
     private String comment;
@@ -44,11 +48,11 @@ public class ServiceItem extends BaseIdEntity {
         this.currency = currency;
     }
 
-    public Long getQuotation() {
+    public BigDecimal getQuotation() {
         return quotation;
     }
 
-    public void setQuotation(Long quotation) {
+    public void setQuotation(BigDecimal quotation) {
         this.quotation = quotation;
     }
 
