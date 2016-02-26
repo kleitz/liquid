@@ -8,7 +8,6 @@ import liquid.operation.domain.ServiceSubtype;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
 import java.math.BigDecimal;
 
 /**
