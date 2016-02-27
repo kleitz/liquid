@@ -56,11 +56,11 @@ public class BaseOrder extends BaseUpdateEntity {
     private Goods goods;
 
     /**
-     * unit kilogram
+     * unit ton
      */
-    @Min(1)
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#.###")
     @Column(name = "WEIGHT")
-    private int goodsWeight;
+    private BigDecimal goodsWeight;
 
     @Column(name = "DIMENSION")
     private String goodsDimension;
@@ -182,11 +182,11 @@ public class BaseOrder extends BaseUpdateEntity {
         this.goods = goods;
     }
 
-    public int getGoodsWeight() {
+    public BigDecimal getGoodsWeight() {
         return goodsWeight;
     }
 
-    public void setGoodsWeight(int goodsWeight) {
+    public void setGoodsWeight(BigDecimal goodsWeight) {
         this.goodsWeight = goodsWeight;
     }
 
