@@ -61,7 +61,7 @@ $.fn.extend({
             suggestion: Handlebars.compile(template)
           }
         }).on('typeahead:selected', function (obj, datum) {
-            $('#' + hiddenId).val(datum.id);
+            $('input[id="' + hiddenId + '"').val(datum.id);
         });
     },
     acWithTemplateAndName: function(dataset, displayKey, template) {    

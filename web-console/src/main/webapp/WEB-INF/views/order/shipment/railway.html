@@ -81,6 +81,12 @@
             <span>:</span>
             <span th:text="${order.railway.programNo}"></span>
         </div>
+
+        <div class="col-xs-3">   
+            <label th:text="#{railway.source.station}">Destination Station:</label>
+            <span>:</span>
+            <span th:text="${order.railway.source.name}"></span>
+        </div>
     
         <div class="col-xs-3">   
             <label th:text="#{railway.destination.station}">Destination Station:</label>
