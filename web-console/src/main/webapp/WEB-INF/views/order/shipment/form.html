@@ -496,8 +496,8 @@
         $('#destinationName').acWithTemplate(locations, 'name', 'destination', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
 
         var stations = initLocationsAc(2);
-        $('#railSourceName').autoComplete(stations, 'railSource');
-        $('#railDestinationName').autoComplete(stations, 'railDestination');                           
+        $('#railSourceName').autoComplete(stations, 'railway.source');
+        $('#railDestinationName').autoComplete(stations, 'railway.destination');                           
 
         if($('input[name=loadingType]:checked', '#orderForm').val() == 0) {
             $("#loadingAddressSec").hide();
