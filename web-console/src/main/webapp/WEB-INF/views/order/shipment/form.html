@@ -160,8 +160,13 @@
     <div id="loadingEtSec" class="col-lg-3">
         <div class="form-group" th:classappend="${#fields.hasErrors('loadingEt')} ? 'has-error'">
             <label th:text="#{loading.et}">Loading ET</label>
-            <input type="text" th:field="*{loadingEt}" class="form-control input-sm"/>
-
+            <div class='input-group input-group-sm date' id='loadingEtTimePicker'>
+                <input type='text' data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{loadingEt}" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>        
+ 
             <span class="text-danger" th:errors="*{loadingEt}">error</span>
         </div>
     </div>
@@ -555,6 +560,7 @@
         
         $(".tt-hint").addClass("form-control"); 
         
+        $('#loadingEtTimePicker').dtPicker();
         $('#planReportTimePicker').dtPicker();
     }); // ready end
 /*]]>*/
