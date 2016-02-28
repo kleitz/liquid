@@ -22,6 +22,7 @@ public class ContainerSubtypeRestController {
     @Autowired
     private ContainerSubtypeService containerSubtypeService;
 
+    @Deprecated
     @RequestMapping
     @ResponseBody
     public Iterable<ContainerSubtype> findAll() {

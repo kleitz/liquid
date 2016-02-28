@@ -146,14 +146,21 @@ public class OrderController extends BaseController {
         return ContainerCap.values();
     }
 
+    @Deprecated
     @ModelAttribute("railContainerSubtypes")
     public Iterable<ContainerSubtype> populateRailContainerSubtypes() {
         return containerSubtypeService.findByContainerType(ContainerType.RAIL);
     }
 
+    @Deprecated
     @ModelAttribute("selfContainerSubtypes")
     public Iterable<ContainerSubtype> populateOwnContainerSubtypes() {
         return containerSubtypeService.findByContainerType(ContainerType.SELF);
+    }
+
+    @ModelAttribute("containerSubtypes")
+    public Iterable<ContainerSubtype> populateontainerSubtypes() {
+        return containerSubtypeService.findAll();
     }
 
     @ModelAttribute("status")

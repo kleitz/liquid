@@ -205,7 +205,12 @@
         <div class="form-group" th:classappend="${#fields.hasErrors('containerSubtype')} ? 'has-error'">
             <label th:text="#{container.subtype}">Container Subtype</label>
             <input type="hidden" id="_containerSubtype" th:value="*{containerSubtype} ? *{containerSubtype.id} : '' " />
-            <select class="form-control input-sm" id="containerSubtype" name="containerSubtype"></select>
+            <select class="form-control input-sm" id="containerSubtype" name="containerSubtype">
+                 <option th:each="containerSubtype : ${containerSubtypes}"
+                         th:value="${containerSubtype.id}"
+                         th:text="'(' + ${containerSubtype.code} + ')' + ${containerSubtype.name}">Container Subtype Name
+                 </option>
+            </select>
             <span class="text-danger" th:errors="*{containerSubtype}">error</span>
         </div>
     </div>
@@ -441,17 +446,18 @@
         };
         var boxSubtype = $('#_containerSubtype').val();
 
-        function cluster(data) {
-          for (var i = 0; i < data.length; i++) { 
-            if (data[i].containerType == 0) {
-              boxSubtypeSet.rail.push(data[i]);
-            } else if (data[i].containerType == 2) {
-              boxSubtypeSet.self.push(data[i]);
-            } else {
-              continue;
-            }
-          }
-        }
+        $('#containerSubtype option').each(function() {
+          var id = $(this).val();
+          var text = $(this).text();
+          console.log('%s, %s', id, text);
+          if (text.indexOf('(T') == 0) {
+            boxSubtypeSet.rail.push({id: id, name: text});
+          } else if(text.indexOf('(Z') == 0) {
+            boxSubtypeSet.self.push({id: id, name: text});
+          } else {
+
+          } 
+        }); 
 
         function initContainerSubtypeSelect(value) {
           if( value == 0) {
@@ -482,16 +488,14 @@
           }
         }
 
-        $.ajax({
-          url: "/api/container-subtype"
-        }).done(function(data) {
-          console.log("Get container subtype data %o", data); 
-          cluster(data);
-          console.log("Box Subtype Set %o", boxSubtypeSet);
-          var value = $('input[name=containerType]:checked', '#orderForm').val();
-          console.log("Container type %d", value);
-          initContainerSubtypeSelect(value);
-       });
+        var containerType = $('input[name=containerType]:checked').val();
+        console.log("conainer type %s", containerType);
+        initContainerSubtypeSelect(containerType);
+
+        $("input[name$='containerType']").click(function() {
+            var value = $(this).val();
+            initContainerSubtypeSelect(value)
+        });
 
         var customers = initCustomerAc();
         $('#customer').acWithTemplateAndName(customers, 'name', '<p><strong>{{name}}</strong> – {{code}}</p>');
@@ -528,11 +532,7 @@
         });
         
        
-        $("input[name$='containerType']").click(function() {
-            var value = $(this).val();
-            initContainerSubtypeSelect(value)
-        });
-             
+            
         caculateTotal();     
         $("input[name$='.quotation']").change(caculateTotal);
         $("select[name$='.currency']").change(caculateTotal);
