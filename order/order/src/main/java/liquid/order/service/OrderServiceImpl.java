@@ -154,13 +154,14 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
 
         order = save(order);
 
-        ReceivableSummary receivableSummary = new ReceivableSummary();
+        ReceivableSummary receivableSummary = receivableSummaryService.findByOrderId(order.getId());
+        if(null == receivableSummary) {
+            receivableSummary = new ReceivableSummary();
+        }
         receivableSummary.setCny(order.getTotalCny());
         receivableSummary.setUsd(order.getTotalUsd());
         receivableSummary.setOrder(order);
-        order.setId(order.getId());
-        // TODO: workaround
-        receivableSummary.setId(null);
+
         receivableSummaryService.save(receivableSummary);
 
         return order;
