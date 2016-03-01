@@ -80,7 +80,7 @@
                 </a>
             </td>
             <td>
-                <a sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING')"
+                <a sec:authorize="hasAnyRole('ROLE_ADMIN')"
                    th:if="${order.status} != 1" data-toggle="modal" href="#discardOrderDialog" data-backdrop="static" th:attr="data-order-id=${order.id}">
                     <span class="glyphicon glyphicon-trash text-danger"/>
                 </a>
@@ -166,6 +166,7 @@
 
         $('#discardButton').click(function(e) {
             var orderId = $(e.target).data('order-id');
+            console.log("discard order %s", orderId);
             $.ajax({ 
                 url: '/api/order/' + orderId,
                 type: 'PUT',
