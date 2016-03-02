@@ -49,15 +49,14 @@ public class CustomerController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.GET, params = {"search"})
-    public String search(@RequestParam(defaultValue = "0", required = false) int number, @ModelAttribute SearchBarForm searchBarForm, Model model) {
-        PageRequest pageRequest = new PageRequest(number, size, new Sort(Sort.Direction.DESC, "id"));
+    public String search(@ModelAttribute SearchBarForm searchBarForm, Model model) {
+        PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
         Page<Customer> page = customerService.findByQueryNameLike(searchBarForm.getText(), pageRequest);
         model.addAttribute("page", page);
         model.addAttribute("contextPath", "/customer?");
 
         searchBarForm.setAction("/customer");
         searchBarForm.setTypes(new String[][]{{"name", "customer.name"}});
-        model.addAttribute("searchBarForm", searchBarForm);
         return "customer/page";
     }
 
