@@ -9,6 +9,7 @@ import liquid.order.domain.OrderStatus;
 import liquid.order.domain.Order_;
 import liquid.order.domain.ServiceItem;
 import liquid.order.repository.OrderRepository;
+import org.aspectj.weaver.ast.Or;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,7 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -89,7 +87,8 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
      * @param pageable
      * @return
      */
-    public Page<Order> findAll(final Long id, final Long customerId, final String username, final Pageable pageable) {
+    @Override
+    public Page<Order> findAll(final Long id, final Long customerId, final String username, final Boolean isDiscarded, final Pageable pageable) {
         List<Specification<Order>> specList = new ArrayList<>();
 
         if (null != id) {
@@ -121,15 +120,23 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
             };
         }
 
-        if (specList.size() > 0) {
-            Specifications<Order> specifications = where(specList.get(0));
-            for (int i = 1; i < specList.size(); i++) {
-                specifications.and(specList.get(i));
+        Specification<Order> statusSpec = new Specification<Order>() {
+            @Override
+            public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
+                if(isDiscarded) {
+                    return builder.equal(root.get(Order_.status), 3);
+                } else {
+                    return builder.or(builder.equal(root.get(Order_.status), 1), builder.equal(root.get(Order_.status), 2));
+                }
             }
-            return repository.findAll(specifications, pageable);
-        }
+        };
+        specList.add(statusSpec);
 
-        return repository.findAll(pageable);
+        Specifications<Order> specifications = where(specList.get(0));
+        for (int i = 1; i < specList.size(); i++) {
+            specifications.and(specList.get(i));
+        }
+        return repository.findAll(specifications, pageable);
     }
 
     public Page<Order> findByCustomerId(Long customerId, String createdBy, Pageable pageable) {
@@ -186,7 +193,9 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
 
     @Override
     public Order discard(Long id) {
-        throw new UnsupportedOperationException();
+        Order order = find(id);
+        order.setStatus(OrderStatus.DISCARDED.getValue());
+        return saveOrder(order);
     }
 
     public Iterable<Order> findByOrderNoLike(String orderNo) {

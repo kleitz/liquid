@@ -47,13 +47,14 @@
                     <li sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_CONTAINER', 'ROLE_COMMERCE')">
                         <a href="/task" th:text="#{task}">Task</a>
                     </li>
-                    <li class="dropdown" sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_CONTAINER')">
+                    <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <span th:text="#{order}">Order</span><b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="/order" th:text="#{order.shipping}">Shipping Order</a></li>                            
                             <li><a href="/pickup_order" th:text="#{order.pickup}">Pickup Order</a></li>
+                            <li><a href="/order?status=3" th:text="#{order.discarded}">Discarded Order</a></li>                            
                         </ul>
                     </li>
                     <li class="dropdown" sec:authorize="hasAnyRole('ROLE_MARKETING')">

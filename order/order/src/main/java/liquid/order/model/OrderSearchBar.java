@@ -21,6 +21,8 @@ public class OrderSearchBar extends Pagination {
      */
     private String text;
 
+    private Integer status;
+
     public Long getId() {
         return id;
     }
@@ -43,6 +45,14 @@ public class OrderSearchBar extends Pagination {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public void prepand(String uri) {

@@ -185,6 +185,7 @@ public class OrderController extends BaseController {
         Long id = null;
         Long customerId = null;
         String username = null;
+        Boolean isDiscarded = false;
         switch (SecurityContext.getInstance().getRole()) {
             case "ROLE_SALES":
             case "ROLE_MARKETING":
@@ -198,11 +199,19 @@ public class OrderController extends BaseController {
         } else if ("order".equals(orderSearchBar.getType())) {
             id = orderSearchBar.getId();
         }
-        Page<Order> page = orderService.findAll(id, customerId, username, pageRequest);
+        if(orderSearchBar.getStatus() != null && orderSearchBar.getStatus() == 3) {
+            isDiscarded = true;
+        }
+
+        Page<Order> page = orderService.findAll(id, customerId, username, isDiscarded, pageRequest);
 
         orderSearchBar.prepand(request.getRequestURI());
         model.addAttribute("page", page);
-        return "order/shipment/list";
+        if(isDiscarded) {
+            return "order/shipment/discarded_list";
+        } else {
+            return "order/shipment/list";
+        }
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
