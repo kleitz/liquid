@@ -87,7 +87,8 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
      * @param pageable
      * @return
      */
-    public Page<Order> findAll(final Long id, final Long customerId, final String username, final Pageable pageable) {
+    @Override
+    public Page<Order> findAll(final Long id, final Long customerId, final String username, final Boolean isDiscarded, final Pageable pageable) {
         List<Specification<Order>> specList = new ArrayList<>();
 
         if (null != id) {
@@ -122,7 +123,11 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
         Specification<Order> statusSpec = new Specification<Order>() {
             @Override
             public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
-                return builder.or(builder.equal(root.get(Order_.status), 1), builder.equal(root.get(Order_.status), 2));
+                if(isDiscarded) {
+                    return builder.equal(root.get(Order_.status), 3);
+                } else {
+                    return builder.or(builder.equal(root.get(Order_.status), 1), builder.equal(root.get(Order_.status), 2));
+                }
             }
         };
         specList.add(statusSpec);

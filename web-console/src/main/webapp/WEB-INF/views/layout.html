@@ -54,6 +54,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="/order" th:text="#{order.shipping}">Shipping Order</a></li>                            
                             <li><a href="/pickup_order" th:text="#{order.pickup}">Pickup Order</a></li>
+                            <li><a href="/order?status=3" th:text="#{order.shipping}">Shipping Order</a></li>                            
                         </ul>
                     </li>
                     <li class="dropdown" sec:authorize="hasAnyRole('ROLE_MARKETING')">
