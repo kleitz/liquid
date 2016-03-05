@@ -4,6 +4,7 @@ import liquid.core.controller.BaseController;
 import liquid.core.model.Alert;
 import liquid.core.model.AlertType;
 import liquid.core.model.Pagination;
+import liquid.core.model.SearchBarForm;
 import liquid.operation.domain.Goods;
 import liquid.operation.service.InternalGoodsService;
 import org.slf4j.Logger;
@@ -39,14 +40,14 @@ public class GoodsController extends BaseController {
     private InternalGoodsService goodsService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String list(Pagination pagination,
+    public String list(SearchBarForm searchBarForm,
                        Model model, HttpServletRequest request) {
-        PageRequest pageRequest = new PageRequest(pagination.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
-        Page<Goods> page = goodsService.findAll(pageRequest);
+        PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
+        Page<Goods> page = goodsService.findAll(searchBarForm.getText(), pageRequest);
 
         model.addAttribute("goods", new Goods());
 
-        pagination.prepand(request.getRequestURI());
+        searchBarForm.prepand(request.getRequestURI());
         model.addAttribute("page", page);
         return ROOT_DIR + "list";
     }

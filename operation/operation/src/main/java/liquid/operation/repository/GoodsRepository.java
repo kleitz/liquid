@@ -4,6 +4,7 @@ import liquid.core.repository.PageRepository;
 import liquid.operation.domain.Goods;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 /**
  *  
@@ -14,4 +15,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface GoodsRepository extends PageRepository<Goods> {
     Page<Goods> findAll(Pageable pageable);
+
+    Page<Goods> findAll(Specification<Goods> specification, Pageable pageable);
 }

@@ -11,4 +11,6 @@ public interface InternalGoodsService extends GoodsService {
     Page<Goods> findAll(Pageable pageable);
 
     Goods save(Goods goods);
+
+    Page<Goods> findAll(final String name, Pageable pageable);
 }
