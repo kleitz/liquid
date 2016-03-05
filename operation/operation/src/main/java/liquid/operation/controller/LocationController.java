@@ -4,6 +4,7 @@ import liquid.core.controller.BaseController;
 import liquid.core.model.Alert;
 import liquid.core.model.AlertType;
 import liquid.core.model.Pagination;
+import liquid.core.model.SearchBarForm;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.LocationType;
 import liquid.operation.model.LocationForm;
@@ -49,21 +50,17 @@ public class LocationController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String list(Pagination pagination,
-                       @RequestParam(required = false, defaultValue = "-1") Byte type,
+    public String list(SearchBarForm searchBarForm,
                        Model model, HttpServletRequest request) {
-        PageRequest pageRequest = new PageRequest(pagination.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
+        PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
 
-        Page<Location> page;
-        if (type == -1) {
-            page = locationService.findAll(pageRequest);
-        } else {
-            page = locationService.findAll(type, pageRequest);
+        Byte typeId = null;
+        if(searchBarForm.getType() != null){
+            typeId = Byte.valueOf(searchBarForm.getType());
         }
-        pagination.prepand(request.getRequestURI());
+        Page<Location> page = locationService.findAll(searchBarForm.getText(), typeId, pageRequest);
+        searchBarForm.prepand(request.getRequestURI());
         model.addAttribute("page", page);
-        model.addAttribute("type", type);
-        model.addAttribute("location", new Location());
 
         return ROOT_DIR + "list";
     }

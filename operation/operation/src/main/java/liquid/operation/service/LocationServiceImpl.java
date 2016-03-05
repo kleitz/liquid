@@ -1,14 +1,25 @@
 package liquid.operation.service;
 
+import liquid.core.service.AbstractCachedService;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.LocationType;
+import liquid.operation.domain.LocationType_;
+import liquid.operation.domain.Location_;
 import liquid.operation.repository.LocationRepository;
-import liquid.core.service.AbstractCachedService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.data.jpa.domain.Specifications.where;
 
 /**
  *  
@@ -32,6 +43,51 @@ public class LocationServiceImpl extends AbstractCachedService<Location, Locatio
         return repository.findByTypeId(typeId, pageable);
     }
 
+
+    @Override
+    public Location save(Location location) {
+        return super.save(location);
+    }
+
+    @Override
+    public Iterable<Location> findAll() {
+        return super.findAll();
+    }
+
+    @Override
+    public Page<Location> findAll(final String name, final Byte typeId, Pageable pageable) {
+        List<Specification<Location>> specList = new ArrayList<>();
+
+        if (null != name) {
+            Specification<Location> orderNoSpec = new Specification<Location>() {
+                @Override
+                public Predicate toPredicate(Root<Location> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
+                    return builder.like(root.get(Location_.name), "%" + name + "%");
+                }
+            };
+            specList.add(orderNoSpec);
+        }
+
+        if (null != typeId) {
+            Specification<Location> orderNoSpec = new Specification<Location>() {
+                @Override
+                public Predicate toPredicate(Root<Location> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
+                    return builder.equal(root.get(Location_.type).get(LocationType_.id), typeId);
+                }
+            };
+            specList.add(orderNoSpec);
+        }
+
+        if(specList.size() == 0) {
+            return repository.findAll(pageable);
+        } else {
+            Specifications<Location> specs = where(specList.get(0));
+            for (int i = 1; i < specList.size(); i++) {
+                specs.and(specList.get(i));
+            }
+            return repository.findAll(specs, pageable);
+        }
+    }
 
     @Override
     public List<Location> findYards() {

@@ -8,12 +8,28 @@
 <div th:include="layout :: header"></div>
 <!-- {!end layout} -->
 
-<div id="t" class="container">
-    
-    <h3><span th:text="#{location}"></span></h3>
-    
-    <hr />
+<div class="title-bar">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <h3><span th:text="#{location}"></span></h3>
+      </div>
+  
+      <div class="col-lg-6">
+        <form class="pull-right form-inline" method="GET" role="form" action="/location" th:object="${searchBarForm}">
+          <div class="input-group">
+            <input type="text" class="form-control" th:field="*{text}" th:placeholder="#{location.name}" />
+            <span class="input-group-btn">                    
+              <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" /></button>
+            </span>
+          </div><!-- input-group -->
+        </form>
+      </div><!-- col -->
+    </div><!-- row -->
+  </div><!-- /.container -->
+</div><!-- title-bar -->
 
+<div id="t" class="container">
     <table class="table table-striped table-hover table-condensed table-16">
         <thead>
         <tr>
@@ -26,7 +42,7 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li>
-                            <a href="#" th:href="'/location?number=' + ${page.number} + '&amp;type=-1'" th:text="#{location.type.all}">All Owners</a>
+                            <a href="#" th:href="'/location?number=' + ${page.number}" th:text="#{location.type.all}">All Locations</a>
                         </li>        
                         <li th:each="locationType : ${locationTypes}">
                             <a href="#" th:href="'/location?number=' + ${page.number} + '&amp;type=' + ${locationType.id}" th:text="${locationType.name}">Location Type</a>
@@ -35,7 +51,7 @@
                 </div>
             </th>
             <th><span th:text="#{query.name}" /></th>
-            <th><a href="/location/new"><button class="btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"/></button></a></th>
+            <th><a href="/location/new"><span class="glyphicon glyphicon-plus text-success" /></a></th>
         </tr>
         </thead>
         <tbody>
@@ -44,12 +60,12 @@
             <td th:text="${location.name}">Name</td>
             <td th:text="${location.type.name}">Type</td>
             <td><span th:text="${#strings.length(location.queryName) > 64} ? ${#strings.substring(location.queryName, 0, 64)} : ${location.queryName}" /></td>
-            <td><a th:href="'/location/' + ${location.id}"><button class="btn btn-default btn-xs"><i class="glyphicon glyphicon-pencil"/></button></a></td>
+            <td><a th:href="'/location/' + ${location.id}"><span class="glyphicon glyphicon-pencil" /></a></td>
         </tr>
         </tbody>
     </table>
     
-    <div th:include="layout :: pagination_bar(${pagination.href})"></div>
+    <div th:include="layout :: pagination_bar(${searchBarForm.href})"></div>
 </div><!-- table -->
 
 <!-- {!begin layout} -->

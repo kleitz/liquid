@@ -16,6 +16,8 @@ public interface InternalLocationService extends LocationService {
 
     Page<Location> findAll(Byte typeId, Pageable pageable);
 
+    Page<Location> findAll(final String name, final Byte typeId, Pageable pageable);
+
     Location save(Location location);
 
     Iterable<Location> save(Iterable<Location> locations);

@@ -4,6 +4,7 @@ import liquid.operation.domain.Location;
 import liquid.core.repository.PageRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
@@ -13,10 +14,13 @@ import java.util.List;
  * Date: 10/5/13
  * Time: 10:40 AM
  */
-public interface LocationRepository extends PageRepository<Location> {
+public interface
+LocationRepository extends PageRepository<Location> {
     List<Location> findByTypeId(Byte type);
 
     Page<Location> findByTypeId(Byte typeId, Pageable pageable);
+
+    Page<Location> findAll(Specification<Location> specification, Pageable pageable);
 
     Iterable<Location> findByQueryNameLike(String queryName);
 
