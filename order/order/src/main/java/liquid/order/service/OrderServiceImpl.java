@@ -126,7 +126,7 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
                 if(isDiscarded) {
                     return builder.equal(root.get(Order_.status), 3);
                 } else {
-                    return builder.or(builder.equal(root.get(Order_.status), 1), builder.equal(root.get(Order_.status), 2));
+                    return builder.or(builder.equal(root.get(Order_.status), 1), builder.equal(root.get(Order_.status), 2), builder.equal(root.get(Order_.status), 8));
                 }
             }
         };

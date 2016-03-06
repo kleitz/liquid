@@ -530,8 +530,6 @@
                 $("#loadingPhoneSec").show();
             }
         });
-        
-       
             
         caculateTotal();     
         $("input[name$='.quotation']").change(caculateTotal);
@@ -544,7 +542,7 @@
                 var subtype = $('td:eq(0) select option:selected', this).val();
                 var currency = $('td:eq(1) select option:selected', this).val();
                 var priceText = $('td:eq(2) input', this).val();
-                var price = parseInt(priceText, 10);
+                var price = parseFloat(priceText);
                 console.log(priceText);
                 console.log("price: "+ price);
                 console.log(isNaN(price));
