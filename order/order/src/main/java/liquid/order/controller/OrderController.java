@@ -163,11 +163,6 @@ public class OrderController extends BaseController {
         return containerSubtypeService.findAll();
     }
 
-    @ModelAttribute("status")
-    public OrderStatus[] populateStatus() {
-        return OrderStatus.values();
-    }
-
     @ModelAttribute("serviceSubtypes")
     public Iterable<ServiceSubtype> populateServiceSubtyes() {
         return serviceSubtypeService.findEnabled();
@@ -336,7 +331,7 @@ public class OrderController extends BaseController {
         variableMap.put("tradeType", order.getTradeType());
         processService.startProcess(order.getUpdatedBy(), BusinessKey.encode(order.getId(), order.getOrderNo()), variableMap);
 
-        return "redirect:/order?number=0";
+        return "redirect:/order";
     }
 
     @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
