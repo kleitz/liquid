@@ -51,6 +51,11 @@ public class Order extends BaseOrder {
     @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")
     private List<ServiceItem> serviceItems = new ArrayList<>();
 
+    @Valid
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")
+    private List<ReceivingContainer> containers;
+
     public int getTradeType() {
         return tradeType;
     }
@@ -121,6 +126,14 @@ public class Order extends BaseOrder {
 
     public void setServiceItems(List<ServiceItem> serviceItems) {
         this.serviceItems = serviceItems;
+    }
+
+    public List<ReceivingContainer> getContainers() {
+        return containers;
+    }
+
+    public void setContainers(List<ReceivingContainer> containers) {
+        this.containers = containers;
     }
 
     @Override
