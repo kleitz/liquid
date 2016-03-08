@@ -236,7 +236,7 @@
 </div><!-- panel-body -->
 </div><!-- panel -->
 
-<div class="panel panel-default">
+<div id="railPlanBox" class="panel panel-default">
 <div class="panel-heading" th:text="#{railway.plan.info}">Railway Plan Info</div>
 <div class="panel-body">
 
@@ -338,6 +338,12 @@
 </div><!-- panel-body -->
 </div><!-- panel -->
 
+<div id="containersBox" class="panel panel-default">
+<div class="panel-heading" th:text="#{container.list}">Container List</div>
+<div class="panel-body">
+    
+</div><!-- panel-body -->
+</div><!-- panel -->
 
 <div class="panel panel-default">
 <div class="panel-heading" th:text="#{order.price.info}">Price Info</div>
@@ -507,6 +513,26 @@
         var stations = initLocationsAc(2);
         $('#railSourceName').autoComplete(stations, 'railway.source');
         $('#railDestinationName').autoComplete(stations, 'railway.destination');                           
+
+        function showOptionalBox(serviceType) {
+            if(serviceType == 7) {
+                $('#railPlanBox').hide();
+                $('#containersBox').show();
+            }
+            else {
+                $('#railPlanBox').show();
+                $('#containersBox').hide();
+            }
+        }
+
+        var serviceType = $('#serviceType').val();
+        console.log("ServiceType:", serviceType);
+        showOptionalBox(serviceType);
+
+        $('#serviceType').change(function() {
+            console.log("ServiceType change to ", this.value);
+            showOptionalBox(this.value); 
+        });
 
         if($('input[name=loadingType]:checked', '#orderForm').val() == 0) {
             $("#loadingAddressSec").hide();
