@@ -140,8 +140,7 @@
         <div class="form-group">
             <label th:text="#{loading.type}">Loading Type</label><br />
             <label class="radio-inline" th:each="loading : ${loadingTypes}">
-                <input type="radio" th:field="*{loadingType}" th:value="${loading.type}"/>
-                <span th:for="${#ids.prev('loadingType')}" th:text="#{${loading.i18nKey}}">Loading Type</span>
+                <input type="radio" th:field="*{loadingType}" th:value="${loading.type}"/> <span th:for="${#ids.prev('loadingType')}" th:text="#{${loading.i18nKey}}">Loading Type</span>
             </label>
         </div>
     </div>    
@@ -343,9 +342,16 @@
 
 <div class="panel-body">
 <div class="row">
-   <div class="col-lg-3" th:each="container : *{containers}">
+   <div class="col-lg-3" 
+        th:each="bicCode, rowStat : *{containers}">
         <div class="form-group">
-            <input type="text" class="form-control input-sm"/>
+            <input type="hidden" class="form-control"
+                th:field="*{containers[__${rowStat.index}__].id}" />
+            <input type="text" class="form-control input-sm" 
+                th:field="*{containers[__${rowStat.index}__].bicCode}" 
+                th:classappend="${#fields.hasErrors('containers[__${rowStat.index}__].bicCode')}? 'fieldError'" />
+            <span class="text-danger"
+                th:errors="*{containers[__${rowStat.index}__].bicCode}" />
         </div>
     </div>
 </div>
