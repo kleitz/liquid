@@ -76,9 +76,9 @@ public class BaseOrder extends BaseUpdateEntity {
     @Column(name = "CONTAINER_CAP")
     private int containerCap;
 
-    @Min(1)
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#")
     @Column(name = "CONTAINER_QTY")
-    private int containerQty;
+    private Integer containerQty;
 
     @Column(name = "CONTAINER_ATTR")
     private String containerAttribute;
@@ -218,11 +218,11 @@ public class BaseOrder extends BaseUpdateEntity {
         return containerCap;
     }
 
-    public void setContainerCap(int containerCap) {
+    public void setContainerCap(Integer containerCap) {
         this.containerCap = containerCap;
     }
 
-    public int getContainerQty() {
+    public Integer getContainerQty() {
         return containerQty;
     }
 

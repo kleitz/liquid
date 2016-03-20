@@ -636,29 +636,23 @@
             console.log('containers length:', containerElems.length);
             containerElems.each(function(idx) {
                 console.log('container elem:', $(this));
-                console.log('child:', $(this).find('input[type="hidden"]'));
-                var boxId = $('input[type="hidden"]').val();
-                console.log('box id:', boxId); 
-                var boxNo = $('input[type="text"]').val();
-                console.log('box no:', boxNo); 
-                containers.push({
-                    boxId: boxId,
-                    boxNo: boxNo
-                }); 
+                var container = {
+                    boxId: $('input[type="hidden"]', this).val()
+                    boxNo: $('input[type="text"]', this).val()
+                };
+                console.log('container:', container);
+                containers.push(container);
             });
+
             var containerQty = $('#containerQty').val();
-            if(containerQty > containers.length) {
-                for(var i = containers.length; i < containerQty; i++) { 
-                    $('#containerList').append(
-                        '<div class="col-lg-3">' +
-                        '<div class="form-group">' + 
-                        '<input type="hidden" class="form-control" id="containers' + i + '.id" name="containers[' + i + '].id" />' + 
-                        '<input type="text" class="form-control input-sm" id="containers' + i + '.bicCode" name="containers[' + i + '].bicCode" />' +
-                        '</div>' +
-                        '</div>');            
-                }
-            } else {
-                $('#containerList > div').slice(containers.length - containerQty).remove();
+            for(var i = 0; i < containerQty; i++) { 
+                $('#containerList').append(
+                    '<div class="col-lg-3">' +
+                    '<div class="form-group">' + 
+                    '<input type="hidden" class="form-control" id="containers' + i + '.id" name="containers[' + i + '].id" />' + 
+                    '<input type="text" class="form-control input-sm" id="containers' + i + '.bicCode" name="containers[' + i + '].bicCode" />' +
+                    '</div>' +
+                    '</div>');            
             }
         });
     }); // ready end
