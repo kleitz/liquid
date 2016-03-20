@@ -341,15 +341,14 @@
 <div class="panel-heading" th:text="#{container.list}">Container List</div>
 
 <div class="panel-body">
-<div class="row">
+<div id="containerList" class="row">
    <div class="col-lg-3" 
         th:each="bicCode, rowStat : *{containers}">
-        <div class="form-group">
+        <div class="form-group" th:classappend="${#fields.hasErrors('containers[__${rowStat.index}__].bicCode')}? 'fieldError'">
             <input type="hidden" class="form-control"
                 th:field="*{containers[__${rowStat.index}__].id}" />
             <input type="text" class="form-control input-sm" 
-                th:field="*{containers[__${rowStat.index}__].bicCode}" 
-                th:classappend="${#fields.hasErrors('containers[__${rowStat.index}__].bicCode')}? 'fieldError'" />
+                th:field="*{containers[__${rowStat.index}__].bicCode}" />
             <span class="text-danger"
                 th:errors="*{containers[__${rowStat.index}__].bicCode}" />
         </div>
@@ -599,6 +598,76 @@
         
         $('#loadingEtTimePicker').dtPicker();
         $('#planReportTimePicker').dtPicker();
+
+        $('#orderForm').validate({
+            rules: {
+                'railway.planReportTime': {
+                    required: serviceType != 7
+                },
+                'railway.railSourceName': {
+                    required: serviceType != 7
+                },
+                'railway.railDestinationName': {
+                    required: serviceType != 7
+                }
+            },
+            highlight: function(element) {
+                $(element).parent().addClass('has-error');
+
+            },
+            unhighlight: function(element) {
+                $(element).parent().removeClass('has-error');
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+
+        $("input[name$='].bicCode'").each(function(idx) {
+            console.log("container ", idx);
+            $(this).rules("add", {
+                required: true
+            });
+        });
+
+        $("#containerQty").change(function() {
+            var containers = [];
+            var containerElems = $("#containerList .form-group");
+            console.log('containers length:', containerElems.length);
+            containerElems.each(function(idx) {
+                console.log('container elem:', $(this));
+                console.log('child:', $(this).find('input[type="hidden"]'));
+                var boxId = $('input[type="hidden"]').val();
+                console.log('box id:', boxId); 
+                var boxNo = $('input[type="text"]').val();
+                console.log('box no:', boxNo); 
+                containers.push({
+                    boxId: boxId,
+                    boxNo: boxNo
+                }); 
+            });
+            var containerQty = $('#containerQty').val();
+            if(containerQty > containers.length) {
+                for(var i = containers.length; i < containerQty; i++) { 
+                    $('#containerList').append(
+                        '<div class="col-lg-3">' +
+                        '<div class="form-group">' + 
+                        '<input type="hidden" class="form-control" id="containers' + i + '.id" name="containers[' + i + '].id" />' + 
+                        '<input type="text" class="form-control input-sm" id="containers' + i + '.bicCode" name="containers[' + i + '].bicCode" />' +
+                        '</div>' +
+                        '</div>');            
+                }
+            } else {
+                $('#containerList > div').slice(containers.length - containerQty).remove();
+            }
+
+            $("input[name$='].bicCode'").each(function(idx) {
+                console.log("container ", idx);
+                $(this).rules("add", {
+                    required: true
+                });
+            });
+        });
     }); // ready end
 /*]]>*/
 </script>
