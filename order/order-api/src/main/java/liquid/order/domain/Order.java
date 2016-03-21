@@ -51,7 +51,7 @@ public class Order extends BaseOrder {
     @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")
     private List<ServiceItem> serviceItems = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")
     private List<ReceivingContainer> containers;
 

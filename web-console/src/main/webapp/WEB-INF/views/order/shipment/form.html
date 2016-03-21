@@ -658,7 +658,8 @@
                         '</div>');            
                 }
             } else {
-                $('#containerList > div').slice(containers.length - containerQty).remove();
+                console.log("remove box qty: ", containers.length - containerQty);
+                $('#containerList > div').slice(containerQty).remove();
             }
 
             $("input[name$='].bicCode'").each(function(idx) {

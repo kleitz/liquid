@@ -75,6 +75,7 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
         Order order = repository.findOne(id);
         // Initialize one to many children
         order.getServiceItems().size();
+        order.getContainers().size();
         return order;
     }
 
