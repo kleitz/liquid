@@ -229,6 +229,8 @@ public class OrderController extends BaseController {
         }
         order.setServiceItems(serviceItemList);
 
+        List<ReceivingContainer> receivingContainerList = new ArrayList<>();
+
         model.addAttribute("order", order);
         model.addAttribute("sourceName", order.getSource().getName());
         model.addAttribute("destinationName", order.getDestination().getName());

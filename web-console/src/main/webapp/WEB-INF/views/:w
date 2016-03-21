@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="layout :: head" />
+
+<body>
+<!-- {!begin layout} -->
+<div th:include="layout :: header"></div>
+<!-- {!end layout} -->
+
+<br/>
+
+<div id="order" class="container">
+
+<form id="orderForm" action="/order/edit" method="POST" th:object="${order}" class="center">
+
+<div class="panel panel-default">
+<div class="panel-heading" th:text="#{order.basic.info}">Order Basic Info</div>
+<div class="panel-body">
+
+<div class="row">
+
+    <input type="hidden" th:field="*{id}" />
+    
+    <div class="col-lg-3">
+        <div class="form-group form-group-sm">
+            <label th:text="#{service.type}">Service Type</label>
+            <select th:field="*{serviceType}" class="form-control input-sm">
+                <option th:each="serviceType : ${serviceTypes}"
+                        th:value="${serviceType.id}"
+                        th:text="'(' + ${serviceType.code} + ')' + ${serviceType.name}">Service Type Name
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <!--input type="hidden" th:field="*{customer}"/-->
+
+    <div class="col-lg-6">
+        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('customer')} ? 'has-error'">
+            <label th:text="#{customer} + ' *'">Customer</label><br/>
+            <input type="text" th:field="*{customer}" class="form-control input-sm" placeholder="customer name"
+                   th:placeholder="#{customer.name}"/>
+            <span class="text-danger" th:errors="*{customer}">error</span>
+        </div>
+    </div>
+    
+    <div class="col-xs-3">
+        <div class="form-group form-group-sm">
+            <label th:text="#{trade.type}">Trade Type</label><br/>
+            <label class="radio-inline" th:each="trade : ${tradeTypes}">
+                <input type="radio" th:field="*{tradeType}" th:value="${trade.type}"/>
+                <span th:for="${#ids.prev('tradeType')}" th:text="#{${trade.i18nKey}}">Trade Type</span>
+            </label>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('source')} ? 'has-error'">
+            <label th:text="#{origination} + ' *'">Origin</label>
+            <input type="text" class="form-control input-sm" th:placeholder="#{origination}" id="sourceName" name="sourceName" th:value="${sourceName}" />
+            <input type="hidden" th:field="*{source}"/>
+            <span class="text-danger" th:errors="*{source}">error</span>            
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('destination')} ? 'has-error'">
+            <label th:text="#{destination} + ' *'">Destination</label>
+            <input type="text" class="form-control input-sm" th:placeholder="#{destination}" id="destinationName" name="destinationName" th:value="${destinationName} "/>
+            <input type="hidden" th:field="*{destination}" />
+            <span class="text-danger" th:errors="*{destination}">error</span>      
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-3">
+        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('consignee')} ? 'has-error'">
+            <label th:text="#{consignee}">Consignee</label>
+            <input type="text" th:field="*{consignee}" class="form-control input-sm"/>
+
+            <span class="text-danger" th:errors="*{consignee}">error</span>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('consigneePhone')} ? 'has-error'">
+            <label th:text="#{consignee.phone}">Consignee</label>
+            <input type="text" th:field="*{consigneePhone}" class="form-control input-sm"/>
+
+            <span class="text-danger" th:errors="*{consigneePhone}">error</span>
+        </div>
+    </div>
+    
+    <div class="col-lg-6">
+        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('consigneeAddress')} ? 'has-error'">
+            <label th:text="#{consignee.address}">Consignee Address</label>
+            <input type="text" th:field="*{consigneeAddress}" class="form-control input-sm"/>
+
+            <span class="text-danger" th:errors="*{consigneeAddress}">error</span>
+        </div>
+    </div>    
+</div>
+
+<div class="row">
+    <div class="col-lg-3">
+        <div class="form-group">
+            <label th:text="#{goods}">Cargo</label>
+            <select th:field="*{goods}" class="form-control input-sm">
+                <option th:each="goods : ${cargos}"
+                        th:value="${goods.id}"
+                        th:text="${goods.name}">Cargo Name
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="form-group" th:classappend="${#fields.hasErrors('goodsWeight')} ? 'has-error'">
+            <label th:text="#{goods.weight.with.unit} + ' *'">Cargo Weight</label>
+            <input type="text" th:field="*{goodsWeight}" class="form-control input-sm"/>
+
+            <span class="text-danger" th:errors="*{goodsWeight}">error</span>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="form-group" th:classappend="${#fields.hasErrors('goodsDimension')} ? 'has-error'">
+            <label th:text="#{goods.dimension}">Cargo Dimension</label>
+            <input type="text" th:field="*{goodsDimension}" class="form-control input-sm"/>
+
+            <span class="text-danger" th:errors="*{goodsDimension}">error</span>
+        </div>
+    </div>
+
+    <div class="col-xs-3">       
+        <div class="form-group">
+            <label th:text="#{loading.type}">Loading Type</label><br />
+            <label class="radio-inline" th:each="loading : ${loadingTypes}">
+                <input type="radio" th:field="*{loadingType}" th:value="${loading.type}"/> <span th:for="${#ids.prev('loadingType')}" th:text="#{${loading.i18nKey}}">Loading Type</span>
+            </label>
+        </div>
+    </div>    
+</div>
+
+<div class="row">
+    <div id="loadingAddressSec" class="col-lg-3">
+        <div class="form-group" th:classappend="${#fields.hasErrors('loadingAddress')} ? 'has-error'">
+            <label th:text="#{loading.address}">Loading Address</label>
+            <input type="text" th:field="*{loadingAddress}" class="form-control input-sm"/>
+
+            <span class="text-danger" th:errors="*{loadingAddress}">error</span>
+        </div>
+    </div>
+
+    <div id="loadingEtSec" class="col-lg-3">
+        <div class="form-group" th:classappend="${#fields.hasErrors('loadingEt')} ? 'has-error'">
+            <label th:text="#{loading.et}">Loading ET</label>
+            <div class='input-group input-group-sm date' id='loadingEtTimePicker'>
+                <input type='text' data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{loadingEt}" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>        
+ 
+            <span class="text-danger" th:errors="*{loadingEt}">error</span>
+        </div>
+    </div>
+
+    <div id="loadingContactSec" class="col-lg-3">
+        <div class="form-group" th:classappend="${#fields.hasErrors('loadingContact')} ? 'has-error'">
+            <label th:text="#{loading.contact}">Loading Contact</label>
+            <input type="text" th:field="*{loadingContact}" class="form-control input-sm"/>
+
+            <span class="text-danger" th:errors="*{loadingContact}">error</span>
+        </div>
+    </div>
+
+    <div id="loadingPhoneSec" class="col-lg-3">
+        <div class="form-group" th:classappend="${#fields.hasErrors('loadingPhone')} ? 'has-error'">
+            <label th:text="#{loading.phone}">Loading Phone</label>
+            <input type="text" th:field="*{loadingPhone}" class="form-control input-sm"/>
+
+            <span class="text-danger" th:errors="*{loadingPhone}">error</span>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-3">
+        <div class="form-group">
+            <label th:text="#{container.type}">Container Type</label><br />
+            <label class="radio-inline" th:each="containerType : ${containerTypeMap}">
+                <input type="radio" th:field="*{containerType}" th:value="${containerType.key}"/>
+                <span th:for="${#ids.prev('containerType')}" th:text="#{${containerType.value}}">Container Type</span>
+            </label>
+        </div>
+    </div>    
+
+    <div class="col-lg-3">           
+        <div class="form-group" th:classappend="${#fields.hasErrors('containerSubtype')} ? 'has-error'">
+            <label th:text="#{container.subtype}">Container Subtype</label>
+            <input type="hidden" id="_containerSubtype" th:value="*{containerSubtype} ? *{containerSubtype.id} : '' " />
+            <select class="form-control input-sm" id="containerSubtype" name="containerSubtype">
+                 <option th:each="containerSubtype : ${containerSubtypes}"
+                         th:value="${containerSubtype.id}"
+                         th:text="'(' + ${containerSubtype.code} + ')' + ${containerSubtype.name}">Container Subtype Name
+                 </option>
+            </select>
+            <span class="text-danger" th:errors="*{containerSubtype}">error</span>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="form-group" th:classappend="${#fields.hasErrors('containerQty')} ? 'has-error'">
+            <label th:text="#{container.quantity} + ' *'">Container Quantity</label>
+            <input type="text" th:field="*{containerQty}" class="form-control input-sm"/>
+
+            <span class="text-danger" th:errors="*{containerQty}">error</span>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="form-group">
+            <label th:text="#{container.attribute}">Container Attr</label>
+            <input type="text" th:field="*{containerAttribute}" class="form-control input-sm"/>
+            <span class="text-danger" th:errors="*{containerAttribute}">error</span>
+        </div>
+    </div>
+</div>
+
+</div><!-- panel-body -->
+</div><!-- panel -->
+
+<div id="railPlanBox" class="panel panel-default">
+<div class="panel-heading" th:text="#{railway.plan.info}">Railway Plan Info</div>
+<div class="panel-body">
+
+<div class="row">
+    <input type="hidden" th:field="*{railway.id}"/>
+    <div class="col-lg-3">
+        <div class="form-group" th:classappend="${#fields.hasErrors('railway.planReportTime')} ? 'has-error'">
+            <label th:text="#{railway.plan.report.time} + ' *'">Railway Plan Report Date</label>
+            
+            <div class='input-group input-group-sm date' id='planReportTimePicker'>
+                <input type='text' data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{railway.planReportTime}" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>        
+        </div>
+    </div>
+    
+    <div class="col-lg-3">
+        <div class="form-group" th:classappend="${#fields.hasErrors('railway.programNo')} ? 'has-error'">
+            <label th:text="#{railway.program.no}">Railay Program No.</label>
+            <input type="text" th:field="*{railway.programNo}" class="form-control input-sm"/>
+
+            <span class="text-danger" th:errors="*{railway.programNo}">error</span>
+        </div>
+    </div>    
+
+    <div class="col-lg-3">
+        <div class="form-group">
+            <label th:text="#{railway.plan.type}"></label>
+            <select th:field="*{railway.planType}" class="form-control input-sm">
+                <option th:each="railwayPlanType : ${railwayPlanTypes}"
+                        th:value="${railwayPlanType.id}"
+                        th:text="${railwayPlanType.name}">Railway Plan Type Name
+                </option>
+            </select>
+        </div>
+    </div> 
+
+    <div class="col-lg-3">
+        <div class="form-group">
+            <label th:text="#{railway.goods}">Cargo</label>
+            <!-- HACK - FO - Formatter Optimization - To avoid to look up a lot of times from database, we should not use th:field.
+                For detaled information, please refer to https://jira.spring.io/browse/SPR-12472
+            -->
+            <select id="railway.planGoods" name="railway.planGoods" class="form-control input-sm">
+                <option th:each="goods : ${cargos}"
+                        th:value="${goods.id}"
+                        th:text="${goods.name}"
+                        th:selected="${order.railway.planGoods} ? ${goods.id == order.railway.planGoods.id}">Cargo Name
+                </option>
+            </select>
+        </div>
+    </div>
+</div><!-- row -->
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="form-group" th:classappend="${#fields.hasErrors('railway.source')} ? 'has-error'">
+            <label th:text="#{railway.source.station} + ' *'">Origin</label>
+            <input type="text" class="form-control input-sm" th:placeholder="#{origination}" id="railSourceName" name="railSourceName" th:value="${railSourceName}" />
+            <input type="hidden" th:field="*{railway.source}"/>
+            <span class="text-danger" th:errors="*{railway.source}">error</span>            
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="form-group" th:classappend="${#fields.hasErrors('railway.destination')} ? 'has-error'">
+            <label th:text="#{railway.destination.station} + ' *'">Destination</label>
+            <input type="text" class="form-control input-sm" th:placeholder="#{destination}" id="railDestinationName" name="railDestinationName" th:value="${railDestinationName}"/>
+            <input type="hidden" th:field="*{railway.destination}"/>
+            <span class="text-danger" th:errors="*{railway.destination}">error</span>      
+        </div>
+    </div>
+</div><!-- row -->
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="form-group" th:classappend="${#fields.hasErrors('railway.comment')} ? 'has-error'">
+            <label th:text="#{comment}">Comment</label>
+            <input type="text" th:field="*{railway.comment}" class="form-control input-sm"/>
+
+            <span class="text-danger" th:errors="*{railway.comment}">error</span>
+        </div>
+    </div>    
+    
+    <div class="col-lg-3">
+        <div class="form-group">
+            <label>&nbsp;</label><br />
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" th:field="*{railway.sameDay}"/>
+                    <strong class="text-danger" th:text="#{railway.same.day}">Same Day</strong>
+                </label>                
+            </div>
+        </div>
+    </div>    
+</div><!-- row -->
+</div><!-- panel-body -->
+</div><!-- panel -->
+
+<div id="containersBox" class="panel panel-default">
+<div class="panel-heading" th:text="#{container.list}">Container List</div>
+
+<div class="panel-body">
+<div id="containerList" class="row">
+   <div class="col-lg-3" 
+        th:each="bicCode, rowStat : *{containers}">
+        <div class="form-group" th:classappend="${#fields.hasErrors('containers[__${rowStat.index}__].bicCode')}? 'fieldError'">
+            <input type="hidden" class="form-control"
+                th:field="*{containers[__${rowStat.index}__].id}" />
+            <input type="text" class="form-control input-sm" 
+                th:field="*{containers[__${rowStat.index}__].bicCode}" />
+            <span class="text-danger"
+                th:errors="*{containers[__${rowStat.index}__].bicCode}" />
+        </div>
+    </div>
+</div>
+</div><!-- panel-body -->
+</div><!-- panel -->
+
+<div class="panel panel-default">
+<div class="panel-heading" th:text="#{order.price.info}">Price Info</div>
+
+<table id="f" class="table table-bordered table-16">
+    <thead>
+    <tr>
+        <th th:text="#{service.item}">Service Item</th>
+        <th th:text="#{currency}">Unit Price</th>
+        <th th:text="#{price}">Unit Price</th>
+        <th th:text="#{comment}">Comment</th>
+        <th>
+            <button type="submit" class="btn btn-default btn-block btn-xs" name="addServiceItem">
+                <i class="glyphicon glyphicon-plus"></i>
+            </button>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="serviceItem, rowStat : *{serviceItems}">
+        <td>
+            <input type="hidden" th:field="*{serviceItems[__${rowStat.index}__].id}" />
+            <select class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].serviceSubtype}">
+                <option th:each="serviceSubtype : ${serviceSubtypes}" th:value="${serviceSubtype.id}" th:text="${serviceSubtype.name}">Service Subtype</option>
+            </select>
+        </td>
+        <td>
+	        <select th:field="*{serviceItems[__${rowStat.index}__].currency}" class="form-control input-sm">
+	            <option value="CNY">CNY</option>
+	            <option value="USD">USD</option>
+	        </select>        
+        </td>
+        <td>
+            <div class="form-group" th:classappend="${#fields.hasErrors('serviceItems[__${rowStat.index}__].quotation')} ? 'has-error'">
+                <input type="text" th:field="*{serviceItems[__${rowStat.index}__].quotation}" class="form-control input-sm"/>
+                <span class="text-danger" th:errors="*{serviceItems[__${rowStat.index}__].quotation}">error</span>
+            </div>
+        </td>
+        <td>
+            <input type="text" class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].comment}" />
+        </td>        
+        <td>
+            <button type="submit" name="removeServiceItem" class="btn btn-default btn-block btn-sm" th:value="${rowStat.index}" >
+                <i class="glyphicon glyphicon-minus"></i>
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<ul class="list-group">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group" th:classappend="${#fields.hasErrors('totalUsd')} ? 'has-error'">
+                    <label th:text="#{usd.total} + ' *'">USD Total</label>
+                    <input type="text" th:field="*{totalUsd}" class="form-control input-sm" readonly="readonly"/>
+                    <span class="text-danger" th:errors="*{totalUsd}">error</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group" th:classappend="${#fields.hasErrors('totalCny')} ? 'has-error'">
+                    <label th:text="#{cny.total} + ' *'">CNY Total</label>
+                    <input type="text" th:field="*{totalCny}" class="form-control input-sm" readonly="readonly"/>
+                    <span class="text-danger" th:errors="*{totalCny}">error</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <input type="submit" name="save" class=" form-control btn btn-success btn-sm input-sm" th:value="#{order.save}"/>
+                 
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <input type="submit" name="submit" class=" form-control btn btn-primary btn-sm input-sm" th:value="#{order.submit}"/>
+                </div>
+            </div>
+        </div>        
+    </li>
+</ul>
+        
+</div><!-- panel -->
+
+</form>
+</div>
+<!-- /.container -->
+
+<!-- {!begin layout} -->
+<div th:include="layout :: footer"></div>
+<!-- {!end layout} -->
+
+<!-- {!begin layout} -->
+<div th:replace="layout :: js"></div>
+<!-- {!end layout} -->
+
+<script>
+/*<![CDATA[*/
+    $(document).ready(function() {
+
+        var boxSubtypeSet = {
+          rail: [],
+          self: []
+        };
+        var boxSubtype = $('#_containerSubtype').val();
+
+        $('#containerSubtype option').each(function() {
+          var id = $(this).val();
+          var text = $(this).text();
+          console.log('%s, %s', id, text);
+          if (text.indexOf('(T') == 0) {
+            boxSubtypeSet.rail.push({id: id, name: text});
+          } else if(text.indexOf('(Z') == 0) {
+            boxSubtypeSet.self.push({id: id, name: text});
+          } else {
+
+          } 
+        }); 
+
+        function initContainerSubtypeSelect(value) {
+          if( value == 0) {
+            $("#containerSubtype").find("option").remove().end();
+            var flag = false
+            for(var i = 0; i < boxSubtypeSet.rail.length; i++) {
+              $("#containerSubtype").append($("<option></option>")
+                .attr("value", boxSubtypeSet.rail[i].id)
+                .text(boxSubtypeSet.rail[i].name))
+              if(boxSubtype == boxSubtypeSet.rail[i].id)
+                flag = true
+            }
+            if (flag)
+              $("#containerSubtype").val(boxSubtype)
+          }
+          else {
+            $("#containerSubtype").find("option").remove().end()
+            var flag = false
+            for(var i = 0; i < boxSubtypeSet.self.length; i++) {
+              $("#containerSubtype").append($("<option></option>")
+                .attr("value", boxSubtypeSet.self[i].id)
+                .text(boxSubtypeSet.self[i].name))
+              if(boxSubtype == boxSubtypeSet.self[i].id)
+                flag = true
+            }
+            if (flag)
+              $("#containerSubtype").val(boxSubtype)
+          }
+        }
+
+        var containerType = $('input[name=containerType]:checked').val();
+        console.log("conainer type %s", containerType);
+        initContainerSubtypeSelect(containerType);
+
+        $("input[name$='containerType']").click(function() {
+            var value = $(this).val();
+            initContainerSubtypeSelect(value)
+        });
+
+        var customers = initCustomerAc();
+        $('#customer').acWithTemplateAndName(customers, 'name', '<p><strong>{{name}}</strong> – {{code}}</p>');
+
+        var locations = initAllLocationsAc();
+        $('#sourceName').acWithTemplate(locations, 'name', 'source', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
+        $('#destinationName').acWithTemplate(locations, 'name', 'destination', '<p><strong>{{name}}</strong>[{{type.name}}]</p>');
+
+        var stations = initLocationsAc(2);
+        $('#railSourceName').autoComplete(stations, 'railway.source');
+        $('#railDestinationName').autoComplete(stations, 'railway.destination');                           
+
+        function showOptionalBox(serviceType) {
+            if(serviceType == 7) {
+                $('#railPlanBox').hide();
+                $('#containersBox').show();
+            }
+            else {
+                $('#railPlanBox').show();
+                $('#containersBox').hide();
+            }
+        }
+
+        var serviceType = $('#serviceType').val();
+        console.log("ServiceType:", serviceType);
+        showOptionalBox(serviceType);
+
+        $('#serviceType').change(function() {
+            console.log("ServiceType change to ", this.value);
+            showOptionalBox(this.value); 
+        });
+
+        if($('input[name=loadingType]:checked', '#orderForm').val() == 0) {
+            $("#loadingAddressSec").hide();
+            $("#loadingEtSec").hide();
+            $("#loadingContactSec").hide();
+            $("#loadingPhoneSec").hide();
+        }
+        
+        $("input[name$='loadingType']").click(function() {
+            var value = $(this).val();
+            if(value == 0) {
+                $("#loadingAddressSec").hide();
+                $("#loadingEtSec").hide();
+                $("#loadingContactSec").hide();
+                $("#loadingPhoneSec").hide();
+            }
+            else {
+                $("#loadingAddressSec").show();
+                $("#loadingEtSec").show();
+                $("#loadingContactSec").show();
+                $("#loadingPhoneSec").show();
+            }
+        });
+            
+        caculateTotal();     
+        $("input[name$='.quotation']").change(caculateTotal);
+        $("select[name$='.currency']").change(caculateTotal);
+        $("button[name='removeServiceItem']").click(caculateTotal);
+                
+        function caculateTotal() {
+            var usd = 0, cny = 0;
+            $("table[id='f'] > tbody > tr").each(function() {
+                var subtype = $('td:eq(0) select option:selected', this).val();
+                var currency = $('td:eq(1) select option:selected', this).val();
+                var priceText = $('td:eq(2) input', this).val();
+                var price = parseFloat(priceText);
+                console.log(priceText);
+                console.log("price: "+ price);
+                console.log(isNaN(price));
+                if(!isNaN(price)) {
+                    if(currency == 'CNY') cny += price;
+                    else usd += price;
+                }
+            });
+            
+            $('#totalUsd').val(usd);
+            $('#totalCny').val(cny);
+        }
+        
+        $(".tt-hint").addClass("form-control"); 
+        
+        $('#loadingEtTimePicker').dtPicker();
+        $('#planReportTimePicker').dtPicker();
+
+        $('#orderForm').validate({
+            rules: {
+                'railway.planReportTime': {
+                    required: serviceType != 7
+                },
+                'railway.railSourceName': {
+                    required: serviceType != 7
+                },
+                'railway.railDestinationName': {
+                    required: serviceType != 7
+                }
+            },
+            highlight: function(element) {
+                $(element).parent().addClass('has-error');
+
+            },
+            unhighlight: function(element) {
+                $(element).parent().removeClass('has-error');
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+
+        $("input[name$='].bicCode'").each(function(idx) {
+            console.log("container ", idx);
+            $(this).rules("add", {
+                required: true
+            });
+        });
+
+        $("#containerQty").change(function() {
+            var containers = [];
+            var containerElems = $("#containerList .form-group");
+            console.log('containers length:', containerElems.length);
+            containerElems.each(function(idx) {
+                console.log('container elem:', $(this));
+                var container = {
+                    boxId: $('input[type="hidden"]', this).val()
+                    boxNo: $('input[type="text"]', this).val()
+                };
+                console.log('container:', container);
+                containers.push(container);
+            });
+
+            var containerQty = $('#containerQty').val();
+            for(var i = 0; i < containerQty; i++) { 
+                $('#containerList').append(
+                    '<div class="col-lg-3">' +
+                    '<div class="form-group">' + 
+                    '<input type="hidden" class="form-control" id="containers' + i + '.id" name="containers[' + i + '].id" />' + 
+                    '<input type="text" class="form-control input-sm" id="containers' + i + '.bicCode" name="containers[' + i + '].bicCode" />' +
+                    '</div>' +
+                    '</div>');            
+            }
+        });
+    }); // ready end
+/*]]>*/
+</script>
+</body>
+
+</html>
