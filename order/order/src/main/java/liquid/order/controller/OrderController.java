@@ -384,6 +384,12 @@ public class OrderController extends BaseController {
         }
         logger.debug("order: {}", order);
 
+        List<ReceivingContainer> containers = new ArrayList<>(order.getContainerQty());
+        for(int i = 0; i < order.getContainerQty();i++) {
+            containers.add(new ReceivingContainer());
+        }
+        order.setContainers(containers);
+
         model.addAttribute("order", order);
         model.addAttribute("sourceName", order.getSource().getName());
         model.addAttribute("destinationName", order.getDestination().getName());
