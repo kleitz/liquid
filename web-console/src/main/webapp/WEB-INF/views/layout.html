@@ -167,25 +167,57 @@
           </h3>
         </div>
 
-        <div class="col-lg-2">
+        <div class="col-lg-1">
           <form th:unless="${task.assignee}" th:action="'/task/' + ${task.id}" method="POST">
-            <button type="submit" name="claim" value="Claim" class="btn btn-warning btn-block" th:unless="${task.assignee}">
+            <button type="submit" name="claim" value="Claim" class="btn btn-primary btn-block">
               <span th:text="#{task.claim}"/>
             </button>                                        
           </form>
-          <div class="right">
-            <button class="btn btn-success btn-block" data-toggle="modal" data-target="#completeTask"
-                  th:if="${task.assignee}" th:disabled="${#authentication.name} != ${task.assignee}">
+          <div th:if="${task.assignee}" class="right">
+            <button class="btn btn-success btn-block" data-toggle="modal" data-target="#completeTask" th:disabled="${#authentication.name} != ${task.assignee}">
               <span th:text="#{task.complete}"/>
             </button>    
+          </div>
+        </div>
+        <div class="col-lg-1">
+          <div class="right">
+            <button class="btn btn-warning btn-block" data-toggle="modal" data-target="#passTask">
+              <span>PASS</span>
+            </button>                                        
           </div>
         </div>
       </div><!-- row -->
     </div><!-- container -->
   </div><!-- title-bar -->
-  <!-- Modal -->
-  <div class="modal" id="completeTask" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-       style="overflow-y: hidden;">
+  <!-- Complete Modal -->
+  <div class="modal" id="passTask" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;">
+      <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="myModalLabel"><span>PASS</span></h4>
+              </div>
+              <div class="modal-body">
+                  <form id="passForm" method="POST" th:action="'/task/' + ${task.id}">
+                      <div class="form-group">
+                        <label for="reason" class="control-label">Reason:</label>
+                        <input type="text" id="resaon" name="reason" class="form-control" />
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
+                      <span th:text="#{modal.close}"/>
+                  </button>
+                  <button type="submit" name="pass" value="Pass" form="passForm" class="btn btn-warning btn-sm">
+                      <span>PASS</span>
+                  </button>
+              </div>
+          </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+  <!-- Complete Modal -->
+  <div class="modal" id="completeTask" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;">
       <div class="modal-dialog modal-sm">
           <div class="modal-content">
               <div class="modal-header">

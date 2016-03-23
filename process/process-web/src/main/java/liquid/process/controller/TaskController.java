@@ -150,6 +150,25 @@ public class TaskController extends AbstractTaskController {
         return "redirect:/task";
     }
 
+    @RequestMapping(value = "/{taskId}", method = RequestMethod.POST, params = "pass")
+    public String pass(@PathVariable String taskId,
+                       String reason,
+                       @RequestHeader(value = "referer") String referer,
+                       Model model) {
+        logger.debug("taskId: {}; reason: {}.", taskId, reason);
+
+        try {
+            taskService.pass(taskId, reason);
+        } catch (NotCompletedException e) {
+            return "redirect:" + referer;
+        } catch (Exception e) {
+            logger.error(String.format("Complete taskId '%s' and referer '%s'.", taskId, referer), e);
+            return "redirect:" + referer;
+        }
+
+        return "redirect:/task";
+    }
+
     /**
      * TODO: Move to another controller.
      *

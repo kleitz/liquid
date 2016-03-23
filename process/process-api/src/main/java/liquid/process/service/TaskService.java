@@ -15,6 +15,8 @@ public interface TaskService {
 
     Task getTask(String definitionKey, BusinessKey businessKey);
 
+    void pass(String taskId, String reason);
+
     void claim(String taskId, String uid);
 
     void complete(String taskId) throws NotCompletedException;

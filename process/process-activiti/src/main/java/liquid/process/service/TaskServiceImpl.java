@@ -68,6 +68,18 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public void pass(String taskId, String reason) {
+        org.activiti.engine.TaskService taskService = processEngine.getTaskService();
+        org.activiti.engine.task.Task activitiTask = taskService.createTaskQuery().taskId(taskId).singleResult();
+        if (null == activitiTask) {
+            logger.warn("The taskId '{}' is null.", taskId);
+            return;
+        }
+        taskService.addComment(taskId, activitiTask.getProcessInstanceId(), reason);
+        taskService.complete(taskId);
+    }
+
+    @Override
     public void claim(String taskId, String uid) {
         org.activiti.engine.TaskService taskService = processEngine.getTaskService();
         taskService.claim(taskId, uid);
