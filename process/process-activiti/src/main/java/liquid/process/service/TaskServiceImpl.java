@@ -5,6 +5,7 @@ import liquid.process.domain.Task;
 import liquid.process.domain.TaskBar;
 import liquid.process.handler.TaskHandler;
 import liquid.process.handler.TaskHandlerFactory;
+import liquid.user.service.UserService;
 import liquid.util.DatePattern;
 import liquid.util.DateUtil;
 import liquid.util.StringUtil;
@@ -14,6 +15,8 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.IdentityLink;
+import org.activiti.engine.task.IdentityLinkType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +42,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     protected MessageSource messageSource;
+
+    @Autowired
+    private UserService userService;
 
 //    @Autowired
 //    private UserService accountService;
@@ -68,15 +74,22 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void pass(String taskId, String reason) {
+    public String pass(String taskId, String reason) {
         org.activiti.engine.TaskService taskService = processEngine.getTaskService();
         org.activiti.engine.task.Task activitiTask = taskService.createTaskQuery().taskId(taskId).singleResult();
         if (null == activitiTask) {
             logger.warn("The taskId '{}' is null.", taskId);
-            return;
+            return null;
         }
         taskService.addComment(taskId, activitiTask.getProcessInstanceId(), reason);
         taskService.complete(taskId);
+        return getBusinessKeyByProcessInstanceId(activitiTask.getProcessInstanceId()).getText();
+    }
+
+    @Override
+    public void assign(String taskId, String username) {
+        org.activiti.engine.TaskService taskService = processEngine.getTaskService();
+        taskService.setAssignee(taskId, username);
     }
 
     @Override
@@ -91,15 +104,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void complete(String taskId) throws NotCompletedException {
+    public String complete(String taskId) throws NotCompletedException {
         org.activiti.engine.TaskService taskService = processEngine.getTaskService();
         org.activiti.engine.task.Task activitiTask = taskService.createTaskQuery().taskId(taskId).singleResult();
         if (null == activitiTask) {
             logger.warn("The taskId '{}' is null.", taskId);
-            return;
+            return null;
         }
         TaskHandler task = taskFactory.locateHandler(activitiTask.getTaskDefinitionKey());
         task.complete(taskId);
+        return getBusinessKeyByProcessInstanceId(activitiTask.getProcessInstanceId()).getText();
     }
 
     @Override
@@ -134,6 +148,12 @@ public class TaskServiceImpl implements TaskService {
             BusinessKey businessKey = getBusinessKeyByProcessInstanceId(historicTask.getProcessInstanceId());
             task.setOrderId(businessKey.getOrderId());
             task.setOrderNo(businessKey.getOrderNo());
+            List<String> userList = new ArrayList<>();
+            List<String> candidateGroupList = findCandidateGroups(task.getId());
+            for (String group: candidateGroupList) {
+                userList.addAll(userService.findByGroup(group));
+            }
+            task.setCandidateUserList(userList);
             tasks.add(task);
         }
         return tasks;
@@ -174,6 +194,17 @@ public class TaskServiceImpl implements TaskService {
             if ((now.getTime() - created.getTime()) < 2 * 24 * 60 * 60 * 1000) iterator.remove();
         }
         return toTasks(activitiTasks);
+    }
+
+    @Override
+    public List<Task> findByBusinessKey(String businessKey) {
+        List<Task> tasks = new ArrayList<>();
+        org.activiti.engine.TaskService taskService = processEngine.getTaskService();
+        List<org.activiti.engine.task.Task> activitiTasks = taskService.createTaskQuery().processInstanceBusinessKey(businessKey).list();
+        for (org.activiti.engine.task.Task activitiTask: activitiTasks) {
+            tasks.add(toTask(activitiTask));
+        }
+        return tasks;
     }
 
     public Object getVariable(String taskId, String variableName) {
@@ -235,6 +266,21 @@ public class TaskServiceImpl implements TaskService {
         taskBadge.setMyTasksSize(myTasks.length);
         taskBadge.setWarningsSize(warnings.length);
         return taskBadge;
+    }
+
+    @Override
+    public List<String> findCandidateGroups(String taskId) {
+        List<String> candidateGroupList = new ArrayList<>();
+        org.activiti.engine.TaskService taskService = processEngine.getTaskService();
+        List<IdentityLink> identityLinkList = taskService.getIdentityLinksForTask(taskId);
+        for (IdentityLink identifyLink: identityLinkList) {
+            if(IdentityLinkType.CANDIDATE.equals(identifyLink.getType())) {
+                candidateGroupList.add(identifyLink.getGroupId());
+            } else {
+                logger.warn("The identity link type '{}' is illegal.", identifyLink.getGroupId());
+            }
+        }
+        return candidateGroupList;
     }
 
     private Task[] toTasks(List<org.activiti.engine.task.Task> activitiTasks) {

@@ -15,11 +15,13 @@ public interface TaskService {
 
     Task getTask(String definitionKey, BusinessKey businessKey);
 
-    void pass(String taskId, String reason);
+    String pass(String taskId, String reason);
+
+    void assign(String taskId, String username);
 
     void claim(String taskId, String uid);
 
-    void complete(String taskId) throws NotCompletedException;
+    String complete(String taskId) throws NotCompletedException;
 
     void complete(String taskId, String uid, Map<String, Object> variableMap);
 
@@ -33,6 +35,8 @@ public interface TaskService {
 
     Task[] listWarningTasks();
 
+    List<Task> findByBusinessKey(String businessKey);
+
     Object getVariable(String taskId, String variableName);
 
     void setVariable(String taskId, String variableName, Object value);
@@ -41,4 +45,6 @@ public interface TaskService {
     String computeTaskMainPath(String taskId);
 
     TaskBar calculateTaskBar(String candidateGid, String uid);
+
+    List<String> findCandidateGroups(String taskId);
 }

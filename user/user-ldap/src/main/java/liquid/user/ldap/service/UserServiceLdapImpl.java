@@ -447,6 +447,11 @@ public class UserServiceLdapImpl implements UserService {
         ldapOperations.modifyAttributes(context);
     }
 
+    @Override
+    public List<String> findByGroup(String groupId) {
+        throw new UnsupportedOperationException();
+    }
+
     private DirContextOperations setAccountAttributes(DirContextOperations adapter, User user) {
         adapter.setAttributeValues("objectclass", new String[]{"top",
                 "person", "organizationalPerson", "inetOrgPerson"});

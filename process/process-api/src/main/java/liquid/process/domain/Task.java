@@ -2,6 +2,7 @@ package liquid.process.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  *  
@@ -35,6 +36,8 @@ public class Task implements Serializable {
     private String createDate;
 
     private String prompt;
+
+    private List<String> candidateUserList;
 
     public String getId() {
         return id;
@@ -138,6 +141,14 @@ public class Task implements Serializable {
 
     public void setPrompt(String prompt) {
         this.prompt = prompt;
+    }
+
+    public List<String> getCandidateUserList() {
+        return candidateUserList;
+    }
+
+    public void setCandidateUserList(List<String> candidateUserList) {
+        this.candidateUserList = candidateUserList;
     }
 
     @Override

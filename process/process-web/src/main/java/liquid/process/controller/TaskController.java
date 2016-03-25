@@ -5,6 +5,7 @@ import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.model.Earning;
 import liquid.accounting.service.ChargeService;
 import liquid.accounting.service.ReceivableSummaryService;
+import liquid.core.model.Alert;
 import liquid.core.security.SecurityContext;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceProviderService;
@@ -20,6 +21,8 @@ import liquid.process.service.TaskService;
 import liquid.transport.service.RouteService;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.TruckService;
+import liquid.user.domain.User;
+import liquid.user.service.UserService;
 import org.activiti.engine.ActivitiTaskAlreadyClaimedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +31,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: tao
@@ -69,6 +75,9 @@ public class TaskController extends AbstractTaskController {
     @Autowired
     private TruckService truckService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String tasks(Model model) {
         return "redirect:/task?q=all";
@@ -99,6 +108,22 @@ public class TaskController extends AbstractTaskController {
         model.addAttribute("tab", tab);
         model.addAttribute("tasks", tasks);
         return "task/list";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, params = "key")
+    public String findByBusinessKey(@RequestParam("key") String businessKey, Model model) {
+        List<Task> taskList = taskService.findByBusinessKey(businessKey);
+        for (Task task: taskList) {
+            List<String> userList = new ArrayList<>();
+            List<String> candidateGroupList = taskService.findCandidateGroups(task.getId());
+            for (String group: candidateGroupList) {
+                userList.addAll(userService.findByGroup(group));
+            }
+            task.setCandidateUserList(userList);
+        }
+
+        model.addAttribute("tasks", taskList);
+        return "task/assignment";
     }
 
     @RequestMapping(value = "/{taskId}", method = RequestMethod.GET)
@@ -139,15 +164,14 @@ public class TaskController extends AbstractTaskController {
         logger.debug("taskId: {}", taskId);
 
         try {
-            taskService.complete(taskId);
+            String businessKey = taskService.complete(taskId);
+            return String.format("redirect:/task?key=%s", businessKey);
         } catch (NotCompletedException e) {
             return "redirect:" + referer;
         } catch (Exception e) {
             logger.error(String.format("Complete taskId '%s' and referer '%s'.", taskId, referer), e);
             return "redirect:" + referer;
         }
-
-        return "redirect:/task";
     }
 
     @RequestMapping(value = "/{taskId}", method = RequestMethod.POST, params = "pass")
@@ -158,15 +182,24 @@ public class TaskController extends AbstractTaskController {
         logger.debug("taskId: {}; reason: {}.", taskId, reason);
 
         try {
-            taskService.pass(taskId, reason);
+            String businessKey = taskService.pass(taskId, reason);
+            return String.format("redirect:/task?key=%s", businessKey);
         } catch (NotCompletedException e) {
             return "redirect:" + referer;
         } catch (Exception e) {
             logger.error(String.format("Complete taskId '%s' and referer '%s'.", taskId, referer), e);
             return "redirect:" + referer;
         }
+    }
 
-        return "redirect:/task";
+    @RequestMapping(value = "/{taskId}", method = RequestMethod.POST, params = "assign")
+    public String assign(@PathVariable String taskId, String username,
+                         @RequestHeader(value = "referer") String referer,
+                         RedirectAttributes redirectAttributes) {
+        logger.debug("Assign the taskId '{}' to '{}'.", taskId, username);
+        taskService.assign(taskId, username);
+        redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
+        return "redirect:" + referer;
     }
 
     /**

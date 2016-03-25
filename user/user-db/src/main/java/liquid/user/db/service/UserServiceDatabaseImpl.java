@@ -152,6 +152,18 @@ public class UserServiceDatabaseImpl implements UserService {
         userProfileRepository.save(profile);
     }
 
+    @Override
+    public List<String> findByGroup(String group) {
+        List<String> usernameList = new ArrayList<>();
+        if("ROLE_MARKETING".equals(group)) {
+            Collection<GroupMember> groupMemberList = groupMemberRepository.findByGroupId(3);
+            for (GroupMember groupMember: groupMemberList) {
+                usernameList.add(groupMember.getUsername());
+            }
+        }
+        return usernameList;
+    }
+
     private String encodePassword(String plain) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.encode(plain);
