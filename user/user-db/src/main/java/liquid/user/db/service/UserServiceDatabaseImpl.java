@@ -1,5 +1,6 @@
 package liquid.user.db.service;
 
+import liquid.user.db.domain.GroupType;
 import liquid.user.db.repository.GroupMemberRepository;
 import liquid.user.db.repository.GroupRepository;
 import liquid.user.db.repository.UserProfileRepository;
@@ -89,7 +90,7 @@ public class UserServiceDatabaseImpl implements UserService {
     @Override
     public void register(User user) {
         User oldOne = find(user.getUid());
-        if(oldOne != null)
+        if (oldOne != null)
             throw new RuntimeException();
 
         UserProfile profile = convertTo(user);
@@ -107,7 +108,7 @@ public class UserServiceDatabaseImpl implements UserService {
     @Override
     public User find(String uid) {
         UserProfile profile = userProfileRepository.findOne(uid);
-        if(null == profile)
+        if (null == profile)
             return null;
         User user = convertTo(profile);
         return user;
@@ -155,11 +156,9 @@ public class UserServiceDatabaseImpl implements UserService {
     @Override
     public List<String> findByGroup(String group) {
         List<String> usernameList = new ArrayList<>();
-        if("ROLE_MARKETING".equals(group)) {
-            Collection<GroupMember> groupMemberList = groupMemberRepository.findByGroupId(3);
-            for (GroupMember groupMember: groupMemberList) {
-                usernameList.add(groupMember.getUsername());
-            }
+        Collection<GroupMember> groupMemberList = groupMemberRepository.findByGroupId(GroupType.valueOf(group).getValue());
+        for (GroupMember groupMember : groupMemberList) {
+            usernameList.add(groupMember.getUsername());
         }
         return usernameList;
     }
@@ -195,5 +194,4 @@ public class UserServiceDatabaseImpl implements UserService {
         user.setPhone(profile.getPhone());
         return user;
     }
-
 }
