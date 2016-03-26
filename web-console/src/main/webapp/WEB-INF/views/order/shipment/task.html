@@ -48,7 +48,11 @@
                             </select>
                         </form>
                     </td>
-                    <td><button type="submit" name="assign" class="btn btn-sm btn-success" th:form="${task.id}"><span th:text="#{task.assign}">Assign</span></button></td>
+                    <td>
+                        <button th:unless="${task.endTime}" type="submit" name="assign" class="btn btn-sm btn-success" th:form="${task.id}">
+                            <span th:text="#{task.assign}">Assign</span>
+                        </button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
