@@ -223,8 +223,10 @@ public class OrderController extends BaseController {
         order.setRailway(orderRail);
 
         List<ServiceItem> serviceItemList = new ArrayList<>();
+        List<ServiceSubtype> serviceSubtypeList = serviceSubtypeService.findEnabled();
         for (int i = 0; i < 5; i++) {
             ServiceItem serviceItem = new ServiceItem();
+            serviceItem.setServiceSubtype(serviceSubtypeList.get(i));
             serviceItemList.add(serviceItem);
         }
         order.setServiceItems(serviceItemList);

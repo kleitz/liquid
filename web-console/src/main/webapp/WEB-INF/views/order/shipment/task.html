@@ -37,7 +37,8 @@
                     <td th:text="${task.endTime} ? ${#dates.format(task.endTime, 'yyyy-MM-dd HH:mm')} : ''">End Time
                     </td>
                     <td>
-                        <form th:id="${task.id}" th:action="'/task/' + ${task.id}" method="POST">
+                        <span th:if="${task.endTime}" th:text="${task.assignee}" />
+                        <form th:unless="${task.endTime}" th:id="${task.id}" th:action="'/task/' + ${task.id}" method="POST">
                             <select id="username" name="username" class="form-control input-sm">
                                 <option th:each="username: ${task.candidateUserList}"
                                         th:value="${username}"

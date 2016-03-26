@@ -148,12 +148,14 @@ public class TaskServiceImpl implements TaskService {
             BusinessKey businessKey = getBusinessKeyByProcessInstanceId(historicTask.getProcessInstanceId());
             task.setOrderId(businessKey.getOrderId());
             task.setOrderNo(businessKey.getOrderNo());
-            List<String> userList = new ArrayList<>();
-            List<String> candidateGroupList = findCandidateGroups(task.getId());
-            for (String group: candidateGroupList) {
-                userList.addAll(userService.findByGroup(group));
+            if(null == historicTask.getEndTime()) {
+                List<String> userList = new ArrayList<>();
+                List<String> candidateGroupList = findCandidateGroups(task.getId());
+                for (String group : candidateGroupList) {
+                    userList.addAll(userService.findByGroup(group));
+                }
+                task.setCandidateUserList(userList);
             }
-            task.setCandidateUserList(userList);
             tasks.add(task);
         }
         return tasks;
@@ -272,13 +274,17 @@ public class TaskServiceImpl implements TaskService {
     public List<String> findCandidateGroups(String taskId) {
         List<String> candidateGroupList = new ArrayList<>();
         org.activiti.engine.TaskService taskService = processEngine.getTaskService();
-        List<IdentityLink> identityLinkList = taskService.getIdentityLinksForTask(taskId);
-        for (IdentityLink identifyLink: identityLinkList) {
-            if(IdentityLinkType.CANDIDATE.equals(identifyLink.getType())) {
-                candidateGroupList.add(identifyLink.getGroupId());
-            } else {
-                logger.warn("The identity link type '{}' is illegal.", identifyLink.getGroupId());
+        try {
+            List<IdentityLink> identityLinkList = taskService.getIdentityLinksForTask(taskId);
+            for (IdentityLink identifyLink: identityLinkList) {
+                if(IdentityLinkType.CANDIDATE.equals(identifyLink.getType())) {
+                    candidateGroupList.add(identifyLink.getGroupId());
+                } else {
+                    logger.warn("The identity link type '{}' is illegal.", identifyLink.getGroupId());
+                }
             }
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
         }
         return candidateGroupList;
     }

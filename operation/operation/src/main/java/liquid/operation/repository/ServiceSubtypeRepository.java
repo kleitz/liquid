@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.persistence.QueryHint;
+import java.util.List;
 
 /**
  * Created by redbrick9 on 5/9/14.
@@ -12,5 +13,5 @@ import javax.persistence.QueryHint;
 public interface ServiceSubtypeRepository extends CrudRepository<ServiceSubtype, Long> {
     @Override
     @QueryHints({@QueryHint(name = "org.hibernate.cacheable", value = "true")})
-    Iterable<ServiceSubtype> findAll();
+    List<ServiceSubtype> findAll();
 }

@@ -5,6 +5,8 @@ import liquid.operation.repository.ServiceSubtypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by redbrick9 on 5/9/14.
  */
@@ -15,7 +17,7 @@ public class ServiceSubtypeServiceImpl implements ServiceSubtypeService {
     private ServiceSubtypeRepository serviceSubtypeRepository;
 
     @Override
-    public Iterable<ServiceSubtype> findEnabled() {
+    public List<ServiceSubtype> findEnabled() {
         return serviceSubtypeRepository.findAll();
     }
 
