@@ -30,6 +30,7 @@ import java.util.List;
 /**
  * Created by Tao Ma on 4/16/15.
  */
+@Deprecated
 @Controller
 public class PlanShipmentController extends AbstractTaskController {
     private static final Logger logger = LoggerFactory.getLogger(PlanShipmentController.class);

@@ -199,8 +199,9 @@
               </div>
               <div class="modal-body">
                   <form id="passForm" method="POST" th:action="'/task/' + ${task.id}">
+                      <input type="hidden" name="pass" value="Pass" /> 
                       <div class="form-group">
-                        <label for="reason" class="control-label">Reason:</label>
+                        <label for="reason" class="control-label" th:text="#{reason}">Reason</label>
                         <input type="text" id="resaon" name="reason" class="form-control" />
                       </div>
                   </form>
@@ -209,7 +210,7 @@
                   <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
                       <span th:text="#{modal.close}"/>
                   </button>
-                  <button type="submit" name="pass" value="Pass" form="passForm" class="btn btn-warning btn-sm">
+                  <button type="submit" form="passForm" class="btn btn-warning btn-sm">
                       <span>PASS</span>
                   </button>
               </div>
@@ -407,6 +408,26 @@
 <script src="/resources/react-intl/react-intl.min.js"></script>   
 <script src="/resources/js/liquid.js"></script>
 <script src="/resources/js/locale-data/zh.js"></script>
+<script>
+/*<![CDATA[*/
+  $(document).ready(function() {
+    $('#passForm').validate({
+      rules: {
+        'reason': 'required'
+      },
+      highlight: function(element) {
+          $(element).parent().addClass('has-error');
+      },
+      unhighlight: function(element) {
+          $(element).parent().removeClass('has-error');
+      },
+      submitHandler: function(form) {
+          form.submit();
+      }
+    });
+  }); // ready end
+/*]]>*/
+</script>
   
 </th:block>
 

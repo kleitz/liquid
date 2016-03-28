@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/api/purchase")
-public class PurchaseController {
+public class PurchaseRestController {
 
     @Autowired
     private ServiceProviderService serviceProviderService;

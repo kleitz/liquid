@@ -17,10 +17,6 @@ public class SpaceBookingEntity extends BaseUpdateEntity {
     @JoinColumn(name = "ORDER_ID")
     private Order order;
 
-    @OneToOne
-    @JoinColumn(name = "LEG_ID")
-    private LegEntity leg;
-
     @NotNull
     @NotEmpty
     @Column(name = "BOOKING_NO")
@@ -36,14 +32,6 @@ public class SpaceBookingEntity extends BaseUpdateEntity {
 
     public void setOrder(Order order) {
         this.order = order;
-    }
-
-    public LegEntity getLeg() {
-        return leg;
-    }
-
-    public void setLeg(LegEntity leg) {
-        this.leg = leg;
     }
 
     public String getBookingNo() {

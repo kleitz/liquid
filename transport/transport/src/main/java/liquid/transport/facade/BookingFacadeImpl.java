@@ -2,6 +2,7 @@ package liquid.transport.facade;
 
 import liquid.operation.domain.ServiceProvider;
 import liquid.order.domain.Order;
+import liquid.order.service.OrderService;
 import liquid.transport.domain.LegEntity;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.domain.SpaceBookingEntity;
@@ -25,42 +26,31 @@ import java.util.List;
 public class BookingFacadeImpl implements BookingFacade {
 
     @Autowired
-    private BookingService bookingService;
+    private OrderService orderService;
 
     @Autowired
-    private ShipmentService shipmentService;
+    private BookingService bookingService;
 
     @Override
     public Booking computeBooking(Long orderId) {
         Booking booking = new Booking();
 
         Iterable<SpaceBookingEntity> bookingEntities = bookingService.findByOrderId(orderId);
-        Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(orderId);
-        for (ShipmentEntity shipment : shipmentSet) {
-            Collection<LegEntity> legs = shipment.getLegs();
-            for (LegEntity leg : legs) {
-                switch (TransMode.valueOf(leg.getTransMode())) {
-                    case BARGE:
-                    case VESSEL:
-                        BookingItem bookingItem = new BookingItem();
-                        bookingItem.setLegId(leg.getId());
-                        bookingItem.setSource(leg.getSrcLoc().getName());
-                        bookingItem.setDestination(leg.getDstLoc().getName());
-                        bookingItem.setContainerQuantity(shipment.getContainerQty());
+        Order order = orderService.find(orderId);
 
-                        for (SpaceBookingEntity bookingEntity : bookingEntities) {
-                            if (bookingEntity.getLeg().getId().equals(leg.getId())) {
-                                bookingItem.setId(bookingEntity.getId());
-                                bookingItem.setShipownerId(bookingEntity.getShipowner().getId());
-                                bookingItem.setShipownerName(bookingEntity.getShipowner().getName());
-                                bookingItem.setBookingNo(bookingEntity.getBookingNo());
-                            }
-                        }
-                        booking.getBookingItems().add(bookingItem);
-                        break;
-                }
+        BookingItem bookingItem = new BookingItem();
+        bookingItem.setContainerQuantity(order.getContainerQty());
+
+        for (SpaceBookingEntity bookingEntity : bookingEntities) {
+            if (bookingEntity.getOrder().getId().equals(order.getId())) {
+                bookingItem.setId(bookingEntity.getId());
+                bookingItem.setShipownerId(bookingEntity.getShipowner().getId());
+                bookingItem.setShipownerName(bookingEntity.getShipowner().getName());
+                bookingItem.setBookingNo(bookingEntity.getBookingNo());
             }
         }
+        booking.getBookingItems().add(bookingItem);
+
         return booking;
     }
 
@@ -72,7 +62,6 @@ public class BookingFacadeImpl implements BookingFacade {
             SpaceBookingEntity bookingEntity = new SpaceBookingEntity();
             bookingEntity.setId(bookingItem.getId());
             bookingEntity.setOrder(Order.newInstance(Order.class, orderId));
-            bookingEntity.setLeg(LegEntity.newInstance(LegEntity.class, bookingItem.getLegId()));
             bookingEntity.setShipowner(ServiceProvider.newInstance(ServiceProvider.class, bookingItem.getShipownerId()));
             bookingEntity.setBookingNo(bookingItem.getBookingNo());
             bookingEntities.add(bookingEntity);

@@ -7,8 +7,8 @@ package liquid.accounting.domain;
  * Time: 8:39 PM
  */
 public enum ChargeWay {
-    PER_ORDER(0, "charge.per.order"),
-    PER_CONTAINER(1, "charge.per.container");
+    PER_CONTAINER(1, "charge.per.container"),
+    PER_ORDER(0, "charge.per.order");
 
     private final int value;
 

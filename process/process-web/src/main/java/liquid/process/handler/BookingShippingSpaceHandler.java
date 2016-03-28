@@ -1,16 +1,25 @@
 package liquid.process.handler;
 
+import liquid.accounting.domain.Charge;
+import liquid.accounting.domain.ChargeWay;
+import liquid.accounting.domain.Purchase;
+import liquid.accounting.service.ChargeService;
+import liquid.accounting.service.PurchaseService;
 import liquid.operation.domain.ServiceProvider;
+import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceProviderService;
+import liquid.operation.service.ServiceSubtypeService;
 import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
+import liquid.transport.domain.TransMode;
 import liquid.transport.facade.BookingFacade;
 import liquid.transport.model.Booking;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +38,12 @@ public class BookingShippingSpaceHandler extends AbstractTaskHandler {
     @Autowired
     private BookingFacade bookingFacade;
 
+    @Autowired
+    private PurchaseService purchaseService;
+
+    @Autowired
+    private ServiceSubtypeService serviceSubtypeService;
+
     @Override
     public boolean isRedirect() {
         return false;
@@ -43,6 +58,27 @@ public class BookingShippingSpaceHandler extends AbstractTaskHandler {
 
         Iterable<ServiceProvider> shipowners = serviceProviderService.findByType(3L);
         model.addAttribute("shipowners", shipowners);
+
+        model.addAttribute("chargeWays", ChargeWay.values());
+        List<Purchase> purchases = purchaseService.findByOrderId(order.getId());
+        model.addAttribute("purchases", purchases);
+
+        Purchase purchase = new Purchase();
+        purchase.setOrder(order);
+        purchase.setTaskId(task.getId());
+        purchase.setTransportMode(TransMode.VESSEL.getType());
+        model.addAttribute("purchase", purchase);
+
+        model.addAttribute("transportModeOptions", TransMode.values());
+        model.addAttribute("transModes", TransMode.toMap());
+
+        Iterable<ServiceSubtype> serviceSubtypes = serviceSubtypeService.findEnabled();
+        model.addAttribute("serviceSubtypes", serviceSubtypes);
+
+        Iterable<ServiceProvider> sps = serviceProviderService.findAll();
+        model.addAttribute("sps", sps);
+
+        model.addAttribute("chargeWays", ChargeWay.values());
     }
 
     @Override
