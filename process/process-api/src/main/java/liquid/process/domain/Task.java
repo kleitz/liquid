@@ -1,5 +1,7 @@
 package liquid.process.domain;
 
+import liquid.user.domain.UserProfile;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +39,7 @@ public class Task implements Serializable {
 
     private String prompt;
 
-    private List<String> candidateUserList;
+    private List<UserProfile> candidateUserList;
 
     public String getId() {
         return id;
@@ -143,11 +145,11 @@ public class Task implements Serializable {
         this.prompt = prompt;
     }
 
-    public List<String> getCandidateUserList() {
+    public List<UserProfile> getCandidateUserList() {
         return candidateUserList;
     }
 
-    public void setCandidateUserList(List<String> candidateUserList) {
+    public void setCandidateUserList(List<UserProfile> candidateUserList) {
         this.candidateUserList = candidateUserList;
     }
 

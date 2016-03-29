@@ -2,6 +2,7 @@ package liquid.user.service;
 
 import liquid.user.domain.Group;
 import liquid.user.domain.GroupMember;
+import liquid.user.domain.UserProfile;
 import liquid.user.model.User;
 
 import java.util.Collection;
@@ -38,5 +39,5 @@ public interface UserService {
      * @param groupId
      * @return
      */
-    List<String> findByGroup(String groupId);
+    List<UserProfile> findByGroup(String groupId);
 }

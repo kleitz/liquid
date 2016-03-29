@@ -2,6 +2,7 @@ package liquid.user.ldap.service;
 
 import liquid.user.domain.Group;
 import liquid.user.domain.GroupMember;
+import liquid.user.domain.UserProfile;
 import liquid.user.ldap.domain.GroupType;
 import liquid.user.ldap.domain.PasswordPolicy;
 import liquid.user.model.User;
@@ -448,7 +449,7 @@ public class UserServiceLdapImpl implements UserService {
     }
 
     @Override
-    public List<String> findByGroup(String groupId) {
+    public List<UserProfile> findByGroup(String groupId) {
         throw new UnsupportedOperationException();
     }
 
