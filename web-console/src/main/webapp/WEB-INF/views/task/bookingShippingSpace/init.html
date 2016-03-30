@@ -200,6 +200,13 @@
 <div th:replace="layout :: js" />
 <!-- {!end layout} -->
 
+<script th:inline="javascript">
+/*<![CDATA[*/
+  var serviceSubtypes = /*[[${serviceSubtypes}]]*/[];
+  var serviceProviders = /*[[${sps}]]*/[];
+/*]]>*/
+</script>
+
 <script>
 /*<![CDATA[*/
   $(document).ready(function() {
@@ -240,6 +247,25 @@
           form.submit();
       }
     });
+    
+    function computeProvider() {
+      var filteredProviders = [];
+      var serviceSubtypeId = $('#serviceSubtype option:selected').val();
+      for(var i = 0; i < serviceProviders.length; i++) {
+        for(var j = 0; j < serviceProviders[i].subtypes.length; j++) {
+          if(serviceSubtypeId == serviceProviders[i].subtypes[j].id) {
+            filteredProviders.push(serviceProviders[i]);
+            break;
+          }
+        } 
+      }
+      $('#sp').empty();
+      for(var i = 0; i < filteredProviders.length; i++) {
+        $('#sp').append($('<option></option>').attr('value', filteredProviders[i].id).text(filteredProviders[i].name));
+      }
+    }
+    computeProvider();
+    $('#serviceSubtype').change(computeProvider);
   });
 /*]]>*/
 </script>

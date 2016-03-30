@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 /**
- *  
  * User: tao
  * Date: 10/13/13
  * Time: 12:56 AM
@@ -31,7 +30,8 @@ public class ServiceProviderServiceImpl extends AbstractService<ServiceProvider,
     private ServiceProviderTypeRepository serviceProviderTypeRepository;
 
     @Override
-    public void doSaveBefore(ServiceProvider serviceProvider) { }
+    public void doSaveBefore(ServiceProvider serviceProvider) {
+    }
 
     @Override
     public Page<ServiceProvider> findAll(Pageable pageable) {
@@ -39,8 +39,13 @@ public class ServiceProviderServiceImpl extends AbstractService<ServiceProvider,
     }
 
     @Override
+    @Transactional("transactionManager")
     public Iterable<ServiceProvider> findAll() {
-        return repository.findOrderByName();
+        Iterable<ServiceProvider> serviceProviders = repository.findOrderByName();
+        for (ServiceProvider serviceProvider : serviceProviders) {
+            serviceProvider.getSubtypes().size();
+        }
+        return serviceProviders;
     }
 
     @Override
