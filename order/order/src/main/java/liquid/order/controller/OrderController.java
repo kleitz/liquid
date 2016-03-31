@@ -329,6 +329,7 @@ public class OrderController extends BaseController {
             }
         }
         Map<String, Object> variableMap = new HashMap<>();
+        variableMap.put("serviceCode", order.getServiceType().getCode());
         variableMap.put("loadingType", order.getLoadingType());
         variableMap.put("hasDelivery", hasDelivery);
         variableMap.put("orderOwner", order.getUpdatedBy());
