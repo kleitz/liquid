@@ -296,14 +296,13 @@ public class OrderController extends BaseController {
     public String submit(@Valid @ModelAttribute(value = "order") Order order,
                          BindingResult bindingResult, Model model, HttpServletRequest request) {
         logger.debug("order: {}", order);
+
         String sourceName = request.getParameter("sourceName");
-        logger.debug("sourceName: {}", sourceName);
         String destinationName = request.getParameter("destinationName");
-        logger.debug("destinationName: {}", destinationName);
         String railSourceName = request.getParameter("railSourceName");
-        logger.debug("railSourceName: {}", railSourceName);
         String railDestinationName = request.getParameter("railDestinationName");
-        logger.debug("railDestinationName: {}", railDestinationName);
+        logger.debug("sourceName: {}; destinationName: {}", sourceName, destinationName);
+        logger.debug("railSourceName: {}; railDestinationName: {}", railSourceName, railDestinationName);
 
         if (null == order.getContainerSubtype()) {
             bindingResult.rejectValue("containerSubtype", "order.container.subtype.illegal");
@@ -336,7 +335,7 @@ public class OrderController extends BaseController {
         variableMap.put("tradeType", order.getTradeType());
         processService.startProcess(order.getUpdatedBy(), BusinessKey.encode(order.getId(), order.getOrderNo()), variableMap);
 
-        return "redirect:/order";
+        return String.format("redirect:/task?key=%s", BusinessKey.encode(order.getId(), order.getOrderNo()).getText());
     }
 
     @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
