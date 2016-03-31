@@ -22,6 +22,7 @@ import liquid.transport.service.RouteService;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.TruckService;
 import liquid.user.domain.User;
+import liquid.user.domain.UserProfile;
 import liquid.user.service.UserService;
 import org.activiti.engine.ActivitiTaskAlreadyClaimedException;
 import org.slf4j.Logger;
@@ -114,7 +115,7 @@ public class TaskController extends AbstractTaskController {
     public String findByBusinessKey(@RequestParam("key") String businessKey, Model model) {
         List<Task> taskList = taskService.findByBusinessKey(businessKey);
         for (Task task: taskList) {
-            List<String> userList = new ArrayList<>();
+            List<UserProfile> userList = new ArrayList<>();
             List<String> candidateGroupList = taskService.findCandidateGroups(task.getId());
             for (String group: candidateGroupList) {
                 userList.addAll(userService.findByGroup(group));

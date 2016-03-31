@@ -23,6 +23,10 @@
             <groupId>liquid</groupId>
             <artifactId>liquid-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>liquid</groupId>
+            <artifactId>liquid-user-api</artifactId>
+        </dependency>
 
         <!-- spring -->
         <dependency>

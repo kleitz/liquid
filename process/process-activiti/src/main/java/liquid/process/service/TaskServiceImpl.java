@@ -5,6 +5,7 @@ import liquid.process.domain.Task;
 import liquid.process.domain.TaskBar;
 import liquid.process.handler.TaskHandler;
 import liquid.process.handler.TaskHandlerFactory;
+import liquid.user.domain.UserProfile;
 import liquid.user.service.UserService;
 import liquid.util.DatePattern;
 import liquid.util.DateUtil;
@@ -149,7 +150,7 @@ public class TaskServiceImpl implements TaskService {
             task.setOrderId(businessKey.getOrderId());
             task.setOrderNo(businessKey.getOrderNo());
             if(null == historicTask.getEndTime()) {
-                List<String> userList = new ArrayList<>();
+                List<UserProfile> userList = new ArrayList<>();
                 List<String> candidateGroupList = findCandidateGroups(task.getId());
                 for (String group : candidateGroupList) {
                     userList.addAll(userService.findByGroup(group));

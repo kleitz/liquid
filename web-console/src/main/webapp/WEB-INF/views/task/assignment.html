@@ -38,9 +38,9 @@
             <td>
                 <form th:id="${task.id}" th:action="'/task/' + ${task.id}" method="POST">
                     <select id="username" name="username" class="form-control input-sm">
-                        <option th:each="username: ${task.candidateUserList}"
-                                th:value="${username}"
-                                th:text="${username}"
+                        <option th:each="userProfile: ${task.candidateUserList}"
+                                th:value="${userProfile.username}"
+                                th:text="${userProfile.lastName} + ${userProfile.firstName}"
                                 th:selected="${task.assignee} == ${username}">
                         </option>
                     </select>

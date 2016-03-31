@@ -154,11 +154,12 @@ public class UserServiceDatabaseImpl implements UserService {
     }
 
     @Override
-    public List<String> findByGroup(String group) {
-        List<String> usernameList = new ArrayList<>();
+    public List<UserProfile> findByGroup(String group) {
+        List<UserProfile> usernameList = new ArrayList<>();
         Collection<GroupMember> groupMemberList = groupMemberRepository.findByGroupId(GroupType.valueOf(group).getValue());
         for (GroupMember groupMember : groupMemberList) {
-            usernameList.add(groupMember.getUsername());
+            UserProfile userProfile = userProfileRepository.findByUsername(groupMember.getUsername());
+            usernameList.add(userProfile);
         }
         return usernameList;
     }
