@@ -27,7 +27,7 @@ import java.util.List;
  * Time: 12:36 AM
  */
 @Service
-public class ShippingContainerServiceImpl extends AbstractService<ShippingContainerEntity, ShippingContainerRepository>
+public class ShippingContainerServiceImpl extends AbstractService<ShippingContainer, ShippingContainerRepository>
         implements InternalShippingContainerService {
     @Autowired
     private OrderService orderService;
@@ -57,9 +57,9 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
     private ServiceProviderService serviceProviderService;
 
     @Override
-    public void doSaveBefore(ShippingContainerEntity entity) { }
+    public void doSaveBefore(ShippingContainer entity) { }
 
-    public List<ShippingContainerEntity> findByShipmentId(Long shipmentid) {
+    public List<ShippingContainer> findByShipmentId(Long shipmentid) {
         return repository.findByShipmentId(shipmentid);
     }
 
@@ -67,11 +67,11 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
     public void initialize(Long orderId) {
         Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(orderId);
         for (ShipmentEntity shipment : shipmentSet) {
-            Collection<ShippingContainerEntity> containers = findByShipmentId(shipment.getId());
+            Collection<ShippingContainer> containers = findByShipmentId(shipment.getId());
             if (null == containers) containers = new ArrayList<>();
             if (containers.size() == 0) {
                 for (int i = 0; i < shipment.getContainerQty(); i++) {
-                    ShippingContainerEntity container = new ShippingContainerEntity();
+                    ShippingContainer container = new ShippingContainer();
                     container.setShipment(shipment);
                     container.setCreatedAt(new Date());
                     container.setUpdatedAt(new Date());
@@ -82,13 +82,13 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
         }
     }
 
-    public ShippingContainerEntity find(long scId) {
+    public ShippingContainer find(long scId) {
         return repository.findOne(scId);
     }
 
     @Transactional("transactionManager")
-    public void allocate(Long shipmentId, ShippingContainerEntity formBean) {
-        ShippingContainerEntity oldOne = find(formBean.getId());
+    public void allocate(Long shipmentId, ShippingContainer formBean) {
+        ShippingContainer oldOne = find(formBean.getId());
         formBean.setShipment(oldOne.getShipment());
 
         if (null != oldOne.getContainer()) {
@@ -106,7 +106,7 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
 
     @Transactional("transactionManager")
     public void remove(long scId) {
-        ShippingContainerEntity sc = repository.findOne(scId);
+        ShippingContainer sc = repository.findOne(scId);
         ContainerEntity containerEntity = sc.getContainer();
         repository.delete(scId);
 
@@ -128,8 +128,8 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
         for (ShipmentEntity shipment : shipmentSet) {
             List<LegEntity> legList = legRepository.findByShipmentAndTransMode(shipment, TransMode.RAIL.getType());
             if (legList.size() > 0) {
-                List<ShippingContainerEntity> shippingContainers = findByShipmentId(shipment.getId());
-                for (ShippingContainerEntity sc : shippingContainers) {
+                List<ShippingContainer> shippingContainers = findByShipmentId(shipment.getId());
+                for (ShippingContainer sc : shippingContainers) {
                     RailContainer rc = new RailContainer();
                     rc.setOrder(shipment.getOrder());
                     rc.setShipment(shipment);
@@ -207,8 +207,8 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
         for (ShipmentEntity shipment : shipmentSet) {
             List<LegEntity> legList = legRepository.findByShipmentAndTransMode(shipment, TransMode.BARGE.getType());
             if (legList.size() > 0) {
-                List<ShippingContainerEntity> shippingContainers = shipment.getContainers();
-                for (ShippingContainerEntity sc : shippingContainers) {
+                List<ShippingContainer> shippingContainers = shipment.getContainers();
+                for (ShippingContainer sc : shippingContainers) {
                     BargeContainer bc = new BargeContainer();
                     bc.setOrder(shipment.getOrder());
                     bc.setShipment(shipment);
@@ -293,8 +293,8 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
         for (ShipmentEntity shipment : shipmentSet) {
             List<LegEntity> legList = legRepository.findByShipmentAndTransMode(shipment, TransMode.VESSEL.getType());
             if (legList.size() > 0) {
-                List<ShippingContainerEntity> shippingContainers = findByShipmentId(shipment.getId());
-                for (ShippingContainerEntity sc : shippingContainers) {
+                List<ShippingContainer> shippingContainers = findByShipmentId(shipment.getId());
+                for (ShippingContainer sc : shippingContainers) {
                     VesselContainer vc = new VesselContainer();
                     vc.setOrder(shipment.getOrder());
                     vc.setShipment(shipment);

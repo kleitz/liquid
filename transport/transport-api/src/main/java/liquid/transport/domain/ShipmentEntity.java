@@ -32,7 +32,7 @@ public class ShipmentEntity extends BaseTaskEntity {
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "shipment")
-    private List<ShippingContainerEntity> containers;
+    private List<ShippingContainer> containers;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "shipment")
@@ -74,11 +74,11 @@ public class ShipmentEntity extends BaseTaskEntity {
         this.legs = legs;
     }
 
-    public List<ShippingContainerEntity> getContainers() {
+    public List<ShippingContainer> getContainers() {
         return containers;
     }
 
-    public void setContainers(List<ShippingContainerEntity> containers) {
+    public void setContainers(List<ShippingContainer> containers) {
         this.containers = containers;
     }
 

@@ -1,6 +1,6 @@
 package liquid.order.repository;
 
-import liquid.order.domain.ReceivingContainer;
+import liquid.order.domain.OrderContainer;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -9,6 +9,6 @@ import org.springframework.data.repository.CrudRepository;
  * Date: 10/13/13
  * Time: 6:34 PM
  */
-public interface ReceivingContainerRepository extends CrudRepository<ReceivingContainer, Long> {
+public interface ReceivingContainerRepository extends CrudRepository<OrderContainer, Long> {
 //    Collection<ReceivingContainerEntity> findByReceivingOrder(ReceivingOrderEntity recvOrder);
 }

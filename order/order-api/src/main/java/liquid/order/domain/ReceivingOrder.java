@@ -10,6 +10,7 @@ import java.util.List;
  * Date: 10/13/13
  * Time: 4:08 PM
  */
+@Deprecated
 @Entity(name = "ORD_RECV")
 public class ReceivingOrder extends BaseOrder {
     /**
@@ -17,13 +18,13 @@ public class ReceivingOrder extends BaseOrder {
      */
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "RECV_ORDER_ID", referencedColumnName = "ID")
-    private List<ReceivingContainer> containers = new ArrayList<>();
+    private List<OrderContainer> containers = new ArrayList<>();
 
-    public List<ReceivingContainer> getContainers() {
+    public List<OrderContainer> getContainers() {
         return containers;
     }
 
-    public void setContainers(List<ReceivingContainer> containers) {
+    public void setContainers(List<OrderContainer> containers) {
         this.containers = containers;
     }
 

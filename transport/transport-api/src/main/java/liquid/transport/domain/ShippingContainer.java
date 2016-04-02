@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
  * Time: 8:15 PM
  */
 @Entity(name = "TSP_CONTAINER")
-public class ShippingContainerEntity extends BaseUpdateEntity {
+public class ShippingContainer extends BaseUpdateEntity {
     @Column(name = "BIC_CODE")
     private String bicCode;
 
@@ -25,6 +25,7 @@ public class ShippingContainerEntity extends BaseUpdateEntity {
     @Transient
     private long containerId;
 
+    @Deprecated
     @ManyToOne
     @JoinColumn(name = "SHIPMENT_ID")
     private ShipmentEntity shipment;

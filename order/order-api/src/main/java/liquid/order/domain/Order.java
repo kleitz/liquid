@@ -53,7 +53,7 @@ public class Order extends BaseOrder {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")
-    private List<ReceivingContainer> containers;
+    private List<OrderContainer> containers;
 
     public int getTradeType() {
         return tradeType;
@@ -127,19 +127,18 @@ public class Order extends BaseOrder {
         this.serviceItems = serviceItems;
     }
 
-    public List<ReceivingContainer> getContainers() {
+    public List<OrderContainer> getContainers() {
         return containers;
     }
 
-    public void setContainers(List<ReceivingContainer> containers) {
+    public void setContainers(List<OrderContainer> containers) {
         this.containers = containers;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Order{");
-        sb.append(super.toString());
-        sb.append(", tradeType=").append(tradeType);
+        sb.append("tradeType=").append(tradeType);
         sb.append(", verificationSheetSn='").append(verificationSheetSn).append('\'');
         sb.append(", loadingType=").append(loadingType);
         sb.append(", loadingAddress='").append(loadingAddress).append('\'');
@@ -148,6 +147,7 @@ public class Order extends BaseOrder {
         sb.append(", loadingEt=").append(loadingEt);
         sb.append(", hasDelivery=").append(hasDelivery);
         sb.append(", serviceItems=").append(serviceItems);
+        sb.append(", containers=").append(containers);
         sb.append('}');
         return sb.toString();
     }

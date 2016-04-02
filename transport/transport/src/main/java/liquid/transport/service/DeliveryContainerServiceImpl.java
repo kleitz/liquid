@@ -5,7 +5,7 @@ import liquid.order.service.OrderService;
 import liquid.core.service.AbstractService;
 import liquid.transport.domain.DeliveryContainerEntity;
 import liquid.transport.domain.ShipmentEntity;
-import liquid.transport.domain.ShippingContainerEntity;
+import liquid.transport.domain.ShippingContainer;
 import liquid.transport.repository.DeliveryContainerRepository;
 import liquid.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +53,8 @@ public class DeliveryContainerServiceImpl extends AbstractService<DeliveryContai
         dcList = new ArrayList<DeliveryContainerEntity>();
         Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(order.getId());
         for (ShipmentEntity shipment : shipmentSet) {
-            List<ShippingContainerEntity> shippingContainers = shippingContainerService.findByShipmentId(shipment.getId());
-            for (ShippingContainerEntity sc : shippingContainers) {
+            List<ShippingContainer> shippingContainers = shippingContainerService.findByShipmentId(shipment.getId());
+            for (ShippingContainer sc : shippingContainers) {
                 DeliveryContainerEntity dc = new DeliveryContainerEntity();
                 dc.setOrder(shipment.getOrder());
                 dc.setShipment(shipment);

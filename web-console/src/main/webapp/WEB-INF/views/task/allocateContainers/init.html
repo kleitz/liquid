@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="layout :: head" />
+
+<body>
+<!-- {!begin layout} -->
+<div th:include="layout :: header"></div>
+<!-- {!end layout} -->
+
+<!-- {!begin task bar} -->
+<div th:include="layout :: task-bar"/>
+<!-- {!end task bar} -->
+
+<div id="t" class="container" th:if="${task.assignee}">
+    <div th:include="layout :: alert"/>
+
+    <form method="post" th:action="'/task/' + ${taskId} + '/allocation'" th:object="${order}" > 
+        <input type="hidden" th:field="*{id}" />
+        <table class="table table-striped table-hover table-condensed table-16">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>BIC Code</th>                        
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="container, rowStat: *{containers}">
+                <td>
+                    <input type="hidden" th:field="*{containers[__${rowStat.index}__].id}" />
+                    <span th:text="${rowStat.index + 1}">Seq</span>
+                </td>
+                <td>
+                    <input type="text" th:field="*{containers[__${rowStat.index}__].bicCode}" class="form-control input-sm" />
+                </td>
+            </tr>
+            </tbody>
+        </table>
+                
+        <div class="row">
+            <div class="col-xs-3 pull-right">
+                <input type="submit" name="allocate" value="Allocate Container" class="btn btn-success btn-block btn-sm" th:value="#{container.allocate}"/>
+            </div>
+        </div>                      
+
+    </form>  
+</div>
+
+<!-- {!begin layout} -->
+<div th:include="layout :: footer"></div>
+<!-- {!end layout} -->
+
+<!-- {!begin layout} -->
+<div th:replace="layout :: js" />
+<!-- {!end layout} -->
+</body>       
+
+</html>

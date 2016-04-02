@@ -231,7 +231,7 @@ public class OrderController extends BaseController {
         }
         order.setServiceItems(serviceItemList);
 
-        List<ReceivingContainer> receivingContainerList = new ArrayList<>();
+        List<OrderContainer> receivingContainerList = new ArrayList<>();
 
         model.addAttribute("order", order);
         model.addAttribute("sourceName", order.getSource().getName());
@@ -386,9 +386,9 @@ public class OrderController extends BaseController {
         }
         logger.debug("order: {}", order);
 
-        List<ReceivingContainer> containers = new ArrayList<>(order.getContainerQty());
+        List<OrderContainer> containers = new ArrayList<>(order.getContainerQty());
         for(int i = 0; i < order.getContainerQty();i++) {
-            containers.add(new ReceivingContainer());
+            containers.add(new OrderContainer());
         }
         order.setContainers(containers);
 

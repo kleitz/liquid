@@ -87,6 +87,14 @@ public class AllocationContainersController extends BaseTaskController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String init(@PathVariable String taskId, Model model) {
+        Long orderId = taskService.getOrderIdByTaskId(taskId);
+        Order order = orderService.find(orderId);
+        model.addAttribute("order",order);
+        return "task/allocateContainers/init";
+    }
+
+    @Deprecated
+    public String init0(@PathVariable String taskId, Model model) {
         logger.debug("taskId: {}", taskId);
 
         Long orderId = taskService.getOrderIdByTaskId(taskId);
@@ -152,15 +160,26 @@ public class AllocationContainersController extends BaseTaskController {
     }
 
     /**
-     * Rail Container Allocation.
      *
      * @param taskId
-     * @param shipmentContainerAllocation
-     * @param model
+     * @param order is used for wrapper of containers here.
+     * @param redirectAttributes
      * @return
      */
     @RequestMapping(method = RequestMethod.POST)
     public String allocate(@PathVariable String taskId,
+                           Order order,
+                           RedirectAttributes redirectAttributes) {
+        logger.debug("TaskId: {}; Containers: {}", taskId, order);
+        Order originalOrder = orderService.find(order.getId());
+        originalOrder.setContainers(order.getContainers());
+        orderService.save(originalOrder);
+        redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
+        return "redirect:/task/" + taskId + "/allocation";
+    }
+
+    @Deprecated
+    public String allocate0(@PathVariable String taskId,
                            ShipmentContainerAllocation shipmentContainerAllocation, Model model,
                            RedirectAttributes redirectAttributes) {
         logger.debug("taskId: {}", taskId);

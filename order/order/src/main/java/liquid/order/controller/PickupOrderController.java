@@ -11,8 +11,8 @@ import liquid.operation.service.CustomerService;
 import liquid.operation.service.GoodsService;
 import liquid.operation.service.LocationService;
 import liquid.operation.service.ServiceTypeService;
+import liquid.order.domain.OrderContainer;
 import liquid.order.domain.OrderStatus;
-import liquid.order.domain.ReceivingContainer;
 import liquid.order.domain.ReceivingOrder;
 import liquid.order.model.OrderSearchBar;
 import liquid.order.service.ReceivingOrderServiceImpl;
@@ -138,9 +138,9 @@ public class PickupOrderController extends BaseController {
         ReceivingOrder order = new ReceivingOrder();
         order.setServiceType(serviceTypeService.find(7L));
 
-        List<ReceivingContainer> containers = new ArrayList<>();
+        List<OrderContainer> containers = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            containers.add(new ReceivingContainer());
+            containers.add(new OrderContainer());
         }
         order.setContainers(containers);
         model.addAttribute("order", order);
@@ -151,7 +151,7 @@ public class PickupOrderController extends BaseController {
     public String addContainer(@ModelAttribute("order") ReceivingOrder order, Model model) {
         logger.debug("order: {}", order);
 
-        order.getContainers().add(new ReceivingContainer());
+        order.getContainers().add(new OrderContainer());
 
         model.addAttribute("sourceName", order.getSource().getName());
         model.addAttribute("destinationName", order.getDestination().getName());
@@ -185,9 +185,9 @@ public class PickupOrderController extends BaseController {
             model.addAttribute("destinationName", destinationName);
             return "order/pickup/form";
         } else {
-            Iterator<ReceivingContainer> containerIterator = order.getContainers().iterator();
+            Iterator<OrderContainer> containerIterator = order.getContainers().iterator();
             while (containerIterator.hasNext()) {
-                ReceivingContainer container = containerIterator.next();
+                OrderContainer container = containerIterator.next();
                 if (container.getBicCode() == null || container.getBicCode().trim().length() == 0)
                     containerIterator.remove();
             }
@@ -211,9 +211,9 @@ public class PickupOrderController extends BaseController {
             model.addAttribute("destinationName", destinationName);
             return "order/pickup/form";
         } else {
-            Iterator<ReceivingContainer> containerIterator = order.getContainers().iterator();
+            Iterator<OrderContainer> containerIterator = order.getContainers().iterator();
             while (containerIterator.hasNext()) {
-                ReceivingContainer container = containerIterator.next();
+                OrderContainer container = containerIterator.next();
                 if (container.getBicCode() == null || container.getBicCode().trim().length() == 0)
                     containerIterator.remove();
             }
@@ -239,9 +239,9 @@ public class PickupOrderController extends BaseController {
         ReceivingOrder order = recvOrderService.find(id);
         logger.debug("order: {}", order);
 
-        List<ReceivingContainer> containers = order.getContainers();
+        List<OrderContainer> containers = order.getContainers();
         for (int i = containers.size(); i < 10; i++) {
-            containers.add(new ReceivingContainer());
+            containers.add(new OrderContainer());
         }
 
         model.addAttribute("order", order);
@@ -257,9 +257,9 @@ public class PickupOrderController extends BaseController {
         ReceivingOrder order = recvOrderService.find(id);
         order.setId(null);
         order.setOrderNo(null);
-        List<ReceivingContainer> containers = new ArrayList<>();
+        List<OrderContainer> containers = new ArrayList<>();
         for (int i = containers.size(); i < 10; i++) {
-            containers.add(new ReceivingContainer());
+            containers.add(new OrderContainer());
         }
         order.setContainers(containers);
         logger.debug("order: {}", order);

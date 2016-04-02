@@ -2,7 +2,7 @@ package liquid.transport.service;
 
 import liquid.transport.domain.BargeContainer;
 import liquid.transport.domain.RailContainer;
-import liquid.transport.domain.ShippingContainerEntity;
+import liquid.transport.domain.ShippingContainer;
 import liquid.transport.domain.VesselContainer;
 import liquid.transport.model.Truck;
 
@@ -30,11 +30,11 @@ public interface ShippingContainerService {
 
     void saveTruck(Truck truck);
 
-    List<ShippingContainerEntity> findByShipmentId(Long shipmentid);
+    List<ShippingContainer> findByShipmentId(Long shipmentid);
 
-    Iterable<ShippingContainerEntity> save(Iterable<ShippingContainerEntity> shippingContainerEntities);
+    Iterable<ShippingContainer> save(Iterable<ShippingContainer> shippingContainerEntities);
 
-    ShippingContainerEntity save(ShippingContainerEntity shippingContainerEntity);
+    ShippingContainer save(ShippingContainer shippingContainer);
 
-    ShippingContainerEntity find(Long id);
+    ShippingContainer find(Long id);
 }

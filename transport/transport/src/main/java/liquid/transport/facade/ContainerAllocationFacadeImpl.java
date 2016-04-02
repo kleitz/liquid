@@ -7,7 +7,7 @@ import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.transport.domain.RailContainer;
 import liquid.transport.domain.ShipmentEntity;
-import liquid.transport.domain.ShippingContainerEntity;
+import liquid.transport.domain.ShippingContainer;
 import liquid.transport.model.ContainerAllocation;
 import liquid.transport.model.SelfContainerAllocation;
 import liquid.transport.model.ShipmentContainerAllocation;
@@ -87,13 +87,13 @@ public class ContainerAllocationFacadeImpl implements ContainerAllocationFacade 
     public List<ContainerAllocation> computeSelfContainerAllocations(String subtypeName, ShipmentEntity shipment) {
         List<ContainerAllocation> containerAllocations = new ArrayList<>();
 
-        List<ShippingContainerEntity> shippingContainers = shippingContainerService.findByShipmentId(shipment.getId());
+        List<ShippingContainer> shippingContainers = shippingContainerService.findByShipmentId(shipment.getId());
         int allocatedQuantity = shippingContainers == null ? 0 : shippingContainers.size();
 
         Collection<RailContainer> railContainers = railContainerService.findByShipmentId(shipment.getId());
         for (int j = 0; j < allocatedQuantity; j++) {
             ContainerAllocation containerAllocation = new ContainerAllocation();
-            ShippingContainerEntity shippingContainer = shippingContainers.get(j);
+            ShippingContainer shippingContainer = shippingContainers.get(j);
             if (null != shippingContainer.getContainer()) {
                 containerAllocation.setAllocationId(shippingContainer.getId());
                 containerAllocation.setShipmentId(shipment.getId());
@@ -120,7 +120,7 @@ public class ContainerAllocationFacadeImpl implements ContainerAllocationFacade 
 
     private List<ContainerAllocation> computeRailContainerAllocations(String subtypeName, ShipmentEntity shipment) {
         List<ContainerAllocation> containerAllocations = new ArrayList<>();
-        List<ShippingContainerEntity> shippingContainers = shippingContainerService.findByShipmentId(shipment.getId());
+        List<ShippingContainer> shippingContainers = shippingContainerService.findByShipmentId(shipment.getId());
         int allocatedQuantity = shippingContainers == null ? 0 : shippingContainers.size();
         for (int j = 0; j < allocatedQuantity; j++) {
             ContainerAllocation containerAllocation = new ContainerAllocation();
@@ -145,10 +145,10 @@ public class ContainerAllocationFacadeImpl implements ContainerAllocationFacade 
     public void allocate(ShipmentContainerAllocation shipmentContainerAllocation) {
         List<ContainerAllocation> containerAllocations = shipmentContainerAllocation.getContainerAllocations();
 
-        List<ShippingContainerEntity> shippingContainers = new ArrayList<ShippingContainerEntity>();
+        List<ShippingContainer> shippingContainers = new ArrayList<ShippingContainer>();
         for (int i = 0; i < containerAllocations.size(); i++) {
             ContainerAllocation containerAllocation = containerAllocations.get(i);
-            ShippingContainerEntity shippingContainer = new ShippingContainerEntity();
+            ShippingContainer shippingContainer = new ShippingContainer();
             shippingContainer.setId(containerAllocation.getAllocationId());
             if (!StringUtil.valid(containerAllocation.getBicCode())) shippingContainer.setBicCode("");
             else shippingContainer.setBicCode(containerAllocation.getBicCode());
@@ -162,18 +162,18 @@ public class ContainerAllocationFacadeImpl implements ContainerAllocationFacade 
     public void allocate(SelfContainerAllocation selfContainerAllocation) {
         ShipmentEntity shipment = shipmentService.find(selfContainerAllocation.getShipmentId());
 
-        List<ShippingContainerEntity> shippingContainers = shippingContainerService.findByShipmentId(selfContainerAllocation.getShipmentId());
+        List<ShippingContainer> shippingContainers = shippingContainerService.findByShipmentId(selfContainerAllocation.getShipmentId());
         if (CollectionUtil.isEmpty(shippingContainers))
-            shippingContainers = new ArrayList<ShippingContainerEntity>();
+            shippingContainers = new ArrayList<ShippingContainer>();
 
         for (int i = shippingContainers.size(); i < shipment.getContainerQty(); i++) {
-            ShippingContainerEntity shippingContainer = new ShippingContainerEntity();
+            ShippingContainer shippingContainer = new ShippingContainer();
             shippingContainer.setShipment(shipment);
             shippingContainers.add(shippingContainer);
         }
 
         for (int i = 0, j = 0; i < shippingContainers.size() && j < selfContainerAllocation.getContainerIds().length; i++) {
-            ShippingContainerEntity shippingContainer = shippingContainers.get(i);
+            ShippingContainer shippingContainer = shippingContainers.get(i);
             if (null == shippingContainer.getContainer()) {
                 shippingContainer.setContainer(ContainerEntity.newInstance(ContainerEntity.class,
                         selfContainerAllocation.getContainerIds()[j]));
@@ -185,7 +185,7 @@ public class ContainerAllocationFacadeImpl implements ContainerAllocationFacade 
     }
 
     public void undo(long allocationId) {
-        ShippingContainerEntity shippingContainer = shippingContainerService.find(allocationId);
+        ShippingContainer shippingContainer = shippingContainerService.find(allocationId);
         containerAllocationService.undo(shippingContainer);
     }
 }

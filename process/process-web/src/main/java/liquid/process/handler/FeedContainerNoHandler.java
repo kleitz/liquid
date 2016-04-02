@@ -5,7 +5,7 @@ import liquid.order.service.OrderService;
 import liquid.process.NotCompletedException;
 import liquid.process.domain.Task;
 import liquid.transport.domain.ShipmentEntity;
-import liquid.transport.domain.ShippingContainerEntity;
+import liquid.transport.domain.ShippingContainer;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.ShippingContainerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +38,8 @@ public class FeedContainerNoHandler extends AbstractTaskHandler {
         int allocatedContainerQuantity = 0;
 
         for (ShipmentEntity shipment : shipmentSet) {
-            Collection<ShippingContainerEntity> scs = shippingContainerService.findByShipmentId(shipment.getId());
-            for (ShippingContainerEntity shippingContainer : scs) {
+            Collection<ShippingContainer> scs = shippingContainerService.findByShipmentId(shipment.getId());
+            for (ShippingContainer shippingContainer : scs) {
                 if (null != shippingContainer.getContainer() || null != shippingContainer.getBicCode()) {
                     allocatedContainerQuantity++;
                 }

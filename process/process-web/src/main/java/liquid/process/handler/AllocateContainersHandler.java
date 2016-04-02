@@ -2,7 +2,7 @@ package liquid.process.handler;
 
 import liquid.process.domain.Task;
 import liquid.transport.domain.ShipmentEntity;
-import liquid.transport.domain.ShippingContainerEntity;
+import liquid.transport.domain.ShippingContainer;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.ShippingContainerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,6 @@ import java.util.Map;
  */
 @Component
 public class AllocateContainersHandler extends AbstractTaskHandler {
-
 
     @Override
     public boolean isRedirect() {
@@ -44,14 +43,14 @@ public class AllocateContainersHandler extends AbstractTaskHandler {
         int shippingContainerQuantity = 0;
 
         // TODO: This is temp solution for dual-allocated containers.
-        List<ShippingContainerEntity> shippingContainers = new ArrayList<ShippingContainerEntity>();
+        List<ShippingContainer> shippingContainers = new ArrayList<ShippingContainer>();
         for (ShipmentEntity shipment : shipmentSet) {
-            Collection<ShippingContainerEntity> scs = shippingContainerService.findByShipmentId(shipment.getId());
+            Collection<ShippingContainer> scs = shippingContainerService.findByShipmentId(shipment.getId());
             shippingContainerQuantity += scs.size();
 
             // TODO: This is temp solution for dual-allocated containers.
             for (int i = 0; i < shipment.getContainerQty() - shippingContainerQuantity; i++) {
-                ShippingContainerEntity shippingContainer = new ShippingContainerEntity();
+                ShippingContainer shippingContainer = new ShippingContainer();
                 shippingContainer.setShipment(shipment);
                 shippingContainers.add(shippingContainer);
             }

@@ -30,7 +30,7 @@ public class BaseLegContainer extends BaseUpdateEntity {
 
     @OneToOne
     @JoinColumn(name = "SC_ID")
-    private ShippingContainerEntity sc;
+    private ShippingContainer sc;
 
     public Order getOrder() {
         return order;
@@ -56,11 +56,11 @@ public class BaseLegContainer extends BaseUpdateEntity {
         this.leg = leg;
     }
 
-    public ShippingContainerEntity getSc() {
+    public ShippingContainer getSc() {
         return sc;
     }
 
-    public void setSc(ShippingContainerEntity sc) {
+    public void setSc(ShippingContainer sc) {
         this.sc = sc;
     }
 }
