@@ -30,8 +30,7 @@ public class AbstractTruckController extends AbstractTaskController {
 
     public String save(@PathVariable String taskId, RailContainerListForm railContainerListForm,
                        Model model, RedirectAttributes redirectAttributes) {
-        logger.debug("taskId: {}", taskId);
-        logger.debug("railContainerListForm: {}", railContainerListForm);
+        logger.debug("TaskId: {}; RailContainerListForm: {}", taskId, railContainerListForm);
 
         Long orderId = taskService.getOrderIdByTaskId(taskId);
 

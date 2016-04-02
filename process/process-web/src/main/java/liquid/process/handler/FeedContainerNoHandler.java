@@ -1,6 +1,7 @@
 package liquid.process.handler;
 
 import liquid.order.domain.Order;
+import liquid.order.domain.OrderContainer;
 import liquid.order.service.OrderService;
 import liquid.process.NotCompletedException;
 import liquid.process.domain.Task;
@@ -37,12 +38,9 @@ public class FeedContainerNoHandler extends AbstractTaskHandler {
 
         int allocatedContainerQuantity = 0;
 
-        for (ShipmentEntity shipment : shipmentSet) {
-            Collection<ShippingContainer> scs = shippingContainerService.findByShipmentId(shipment.getId());
-            for (ShippingContainer shippingContainer : scs) {
-                if (null != shippingContainer.getContainer() || null != shippingContainer.getBicCode()) {
-                    allocatedContainerQuantity++;
-                }
+        for (OrderContainer container : order.getContainers()) {
+            if (null != container.getBicCode()) {
+                allocatedContainerQuantity++;
             }
         }
 

@@ -6,6 +6,7 @@ import liquid.container.service.ContainerService;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.ServiceProviderService;
 import liquid.order.domain.Order;
+import liquid.order.domain.OrderContainer;
 import liquid.order.service.OrderService;
 import liquid.core.service.AbstractService;
 import liquid.transport.domain.*;
@@ -117,6 +118,25 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
     }
 
     public Iterable<RailContainer> initializeRailContainers(Long orderId) {
+        Order order = orderService.find(orderId);
+        Collection<RailContainer> rcList = rcRepository.findByOrder(order);
+        if (rcList.size() > 0) {
+            return rcList;
+        }
+
+        rcList = new ArrayList<RailContainer>();
+        for (OrderContainer container : order.getContainers()) {
+            RailContainer rc = new RailContainer();
+            rc.setOrder(order);
+            rc.setContainer(container);
+            rcList.add(rc);
+        }
+
+        return rcRepository.save(rcList);
+    }
+
+    @Deprecated
+    public Iterable<RailContainer> initializeRailContainers0(Long orderId) {
         Order order = orderService.find(orderId);
         Collection<RailContainer> rcList = rcRepository.findByOrder(order);
         if (rcList.size() > 0) {

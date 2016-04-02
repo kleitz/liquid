@@ -24,8 +24,6 @@
                 <table id="f" class="table table-bordered table-16">
                     <thead>
                     <tr>
-                        <th th:text="#{rail.origination}">Railway Origination</th>
-                        <th th:text="#{rail.destination}">Railway Destination</th>
                         <th th:text="#{container.no}">Container No.</th>
                         <th th:text="#{fleet}">Fleet</th>
                         <th th:text="#{plate.no}">Plate No.</th>
@@ -39,11 +37,9 @@
                     </thead>
                     <tbody>
                     <tr th:each="container, rowStat: *{list}">
-                        <td th:text="${container.leg.srcLoc.name}">Railway Origination</td>
-                        <td th:text="${container.leg.dstLoc.name}">Railway Destination</td>
                         <td>
                             <input type="hidden" th:field="*{list[__${rowStat.index}__].id}" />
-                            <span th:text="${container.sc.container} ? ${container.sc.container.bicCode} : ${container.sc.bicCode}">Container No.</span>
+                            <span th:text="${container.container} ? ${container.container.bicCode} : ${container.container.bicCode}">Container No.</span>
                         </td>
                         <td>
                             <select th:field="*{list[__${rowStat.index}__].fleet}" class="form-control input-sm" th:readonly="${task.definitionKey != 'loadOnYard' and task.definitionKey != 'loadByTruck'}">

@@ -19,8 +19,6 @@ public class RailContainerServiceImpl extends AbstractService<RailContainer, Rai
     @Override
     public void doSaveBefore(RailContainer entity) { }
 
-
-
     @Override
     public Collection<RailContainer> findByShipmentId(Long shipmentId) {
         return repository.findByShipmentId(shipmentId);

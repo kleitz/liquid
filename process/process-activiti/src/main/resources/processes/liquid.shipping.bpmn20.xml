@@ -50,8 +50,6 @@
         <flowNodeRef>reclaimReceipt</flowNodeRef>
         <flowNodeRef>checkCostByOperating</flowNodeRef>
         <flowNodeRef>confirmProviderInvoicingByOperating</flowNodeRef>
-        <flowNodeRef>bargeOpsDecision</flowNodeRef>
-        <flowNodeRef>vesselOpsDecision</flowNodeRef>
         <flowNodeRef>loadingDecision</flowNodeRef>
         <flowNodeRef>sendLoadingOnYard</flowNodeRef>
         <flowNodeRef>loadOnYardAndRailwayPlanFork</flowNodeRef>
@@ -69,10 +67,10 @@
     <sequenceFlow id="flow000" sourceRef="placeOrder" targetRef="shipDecision"></sequenceFlow>
     <exclusiveGateway id="shipDecision" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow010" sourceRef="shipDecision" targetRef="allocateContainers">
-    	<conditionExpression xsi:type="tFormalExpression"><![CDATA[${serviceCode == 0 or serviceCode == 2 or serviceCode == 4 or serviceCode == 5 or serviceCode == 6}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${serviceCode == 0 or serviceCode == 2 or serviceCode == 4 or serviceCode == 5 or serviceCode == 6}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow020" sourceRef="shipDecision" targetRef="bookingShippingSpace">
-    	<conditionExpression xsi:type="tFormalExpression"><![CDATA[${serviceCode == 1 or serviceCode == 3}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${serviceCode == 1 or serviceCode == 3}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="bookingShippingSpace" name="订舱操作" activiti:candidateGroups="ROLE_OPERATING">
       <documentation>${employeeName}已经在${endTime}制定运输路线方案。您需要订舱操作。</documentation>
@@ -102,25 +100,9 @@
     <userTask id="CDCI" name="报关报检" activiti:candidateGroups="ROLE_OPERATING">
       <documentation>${employeeName}已经在${endTime}记录装车发运时间。您需要记录核销单号。</documentation>
     </userTask>
-    <sequenceFlow id="flow255" sourceRef="CDCI" targetRef="bargeOpsDecision"></sequenceFlow>
-    <exclusiveGateway id="bargeOpsDecision" name="驳船操作决策"></exclusiveGateway>
-    <sequenceFlow id="flow260" sourceRef="bargeOpsDecision" targetRef="doBargeOps">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${hasBarge == true}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow270" sourceRef="bargeOpsDecision" targetRef="vesselOpsDecision">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${hasBarge == false}]]></conditionExpression>
-    </sequenceFlow>
     <userTask id="doBargeOps" name="驳船操作" activiti:candidateGroups="ROLE_OPERATING">
       <documentation>${employeeName}已经在${endTime}记录装车发运时间。您需要驳船操作。</documentation>
     </userTask>
-    <sequenceFlow id="flow280" sourceRef="doBargeOps" targetRef="vesselOpsDecision"></sequenceFlow>
-    <exclusiveGateway id="vesselOpsDecision" name="大船操作决策"></exclusiveGateway>
-    <sequenceFlow id="flow310" sourceRef="vesselOpsDecision" targetRef="doVesselOps">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${hasVessel == true}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow320" sourceRef="vesselOpsDecision" targetRef="deliveryDecision">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${hasVessel == false}]]></conditionExpression>
-    </sequenceFlow>
     <userTask id="doVesselOps" name="大船操作" activiti:candidateGroups="ROLE_OPERATING">
       <documentation>上一操作已经在${endTime}完成，您记录您需要大船操作。</documentation>
     </userTask>
@@ -241,9 +223,11 @@
     <sequenceFlow id="flow240" sourceRef="CDCIDecision" targetRef="CDCI">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${tradeType == 1}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow250" sourceRef="CDCIDecision" targetRef="bargeOpsDecision">
+    <sequenceFlow id="flow250" sourceRef="CDCIDecision" targetRef="doBargeOps">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${tradeType == 0}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="flow581" sourceRef="CDCI" targetRef="doBargeOps"></sequenceFlow>
+    <sequenceFlow id="flow582" sourceRef="doBargeOps" targetRef="doVesselOps"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_Collaboration">
     <bpmndi:BPMNPlane bpmnElement="Collaboration" id="BPMNPlane_Collaboration">
@@ -267,6 +251,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="placeOrder" id="BPMNShape_placeOrder">
         <omgdc:Bounds height="35.0" width="35.0" x="61.0" y="43.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="shipDecision" id="BPMNShape_shipDecision">
+        <omgdc:Bounds height="40.0" width="40.0" x="141.0" y="41.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="bookingShippingSpace" id="BPMNShape_bookingShippingSpace">
         <omgdc:Bounds height="60.0" width="100.0" x="123.0" y="501.0"></omgdc:Bounds>
@@ -292,14 +279,8 @@
       <bpmndi:BPMNShape bpmnElement="CDCI" id="BPMNShape_CDCI">
         <omgdc:Bounds height="60.0" width="100.0" x="751.0" y="560.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="bargeOpsDecision" id="BPMNShape_bargeOpsDecision">
-        <omgdc:Bounds height="40.0" width="40.0" x="841.0" y="498.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="doBargeOps" id="BPMNShape_doBargeOps">
         <omgdc:Bounds height="60.0" width="100.0" x="871.0" y="560.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="vesselOpsDecision" id="BPMNShape_vesselOpsDecision">
-        <omgdc:Bounds height="40.0" width="40.0" x="961.0" y="498.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="doVesselOps" id="BPMNShape_doVesselOps">
         <omgdc:Bounds height="60.0" width="100.0" x="991.0" y="560.0"></omgdc:Bounds>
@@ -394,9 +375,18 @@
       <bpmndi:BPMNShape bpmnElement="CDCIDecision" id="BPMNShape_CDCIDecision">
         <omgdc:Bounds height="40.0" width="40.0" x="780.0" y="670.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="shipDecision" id="BPMNShape_shipDecision">
-        <omgdc:Bounds height="40.0" width="40.0" x="141.0" y="41.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow000" id="BPMNEdge_flow000">
+        <omgdi:waypoint x="96.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="141.0" y="61.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow010" id="BPMNEdge_flow010">
+        <omgdi:waypoint x="161.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="91.0" y="752.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow020" id="BPMNEdge_flow020">
+        <omgdi:waypoint x="161.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="173.0" y="501.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow030" id="BPMNEdge_flow030">
         <omgdi:waypoint x="173.0" y="561.0"></omgdi:waypoint>
         <omgdi:waypoint x="91.0" y="752.0"></omgdi:waypoint>
@@ -433,30 +423,6 @@
         <omgdi:waypoint x="671.0" y="609.0"></omgdi:waypoint>
         <omgdi:waypoint x="709.0" y="608.0"></omgdi:waypoint>
         <omgdi:waypoint x="710.0" y="659.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow255" id="BPMNEdge_flow255">
-        <omgdi:waypoint x="801.0" y="560.0"></omgdi:waypoint>
-        <omgdi:waypoint x="861.0" y="538.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow260" id="BPMNEdge_flow260">
-        <omgdi:waypoint x="861.0" y="538.0"></omgdi:waypoint>
-        <omgdi:waypoint x="921.0" y="560.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow270" id="BPMNEdge_flow270">
-        <omgdi:waypoint x="881.0" y="518.0"></omgdi:waypoint>
-        <omgdi:waypoint x="961.0" y="518.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow280" id="BPMNEdge_flow280">
-        <omgdi:waypoint x="921.0" y="560.0"></omgdi:waypoint>
-        <omgdi:waypoint x="981.0" y="538.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow310" id="BPMNEdge_flow310">
-        <omgdi:waypoint x="981.0" y="538.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1041.0" y="560.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow320" id="BPMNEdge_flow320">
-        <omgdi:waypoint x="1001.0" y="518.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1080.0" y="518.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow330" id="BPMNEdge_flow330">
         <omgdi:waypoint x="1041.0" y="560.0"></omgdi:waypoint>
@@ -612,20 +578,16 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow250" id="BPMNEdge_flow250">
         <omgdi:waypoint x="820.0" y="690.0"></omgdi:waypoint>
-        <omgdi:waypoint x="861.0" y="690.0"></omgdi:waypoint>
-        <omgdi:waypoint x="861.0" y="538.0"></omgdi:waypoint>
+        <omgdi:waypoint x="920.0" y="690.0"></omgdi:waypoint>
+        <omgdi:waypoint x="921.0" y="620.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow000" id="BPMNEdge_flow000">
-        <omgdi:waypoint x="96.0" y="60.0"></omgdi:waypoint>
-        <omgdi:waypoint x="141.0" y="61.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow581" id="BPMNEdge_flow581">
+        <omgdi:waypoint x="851.0" y="590.0"></omgdi:waypoint>
+        <omgdi:waypoint x="871.0" y="590.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow020" id="BPMNEdge_flow020">
-        <omgdi:waypoint x="161.0" y="81.0"></omgdi:waypoint>
-        <omgdi:waypoint x="173.0" y="501.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow010" id="BPMNEdge_flow010">
-        <omgdi:waypoint x="161.0" y="81.0"></omgdi:waypoint>
-        <omgdi:waypoint x="91.0" y="752.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow582" id="BPMNEdge_flow582">
+        <omgdi:waypoint x="971.0" y="590.0"></omgdi:waypoint>
+        <omgdi:waypoint x="991.0" y="590.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

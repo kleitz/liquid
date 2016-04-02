@@ -168,6 +168,7 @@ public class TaskController extends AbstractTaskController {
             String businessKey = taskService.complete(taskId);
             return String.format("redirect:/task?key=%s", businessKey);
         } catch (NotCompletedException e) {
+            logger.error("Task completion error.", e);
             return "redirect:" + referer;
         } catch (Exception e) {
             logger.error(String.format("Complete taskId '%s' and referer '%s'.", taskId, referer), e);

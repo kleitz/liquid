@@ -2,6 +2,7 @@ package liquid.transport.domain;
 
 import liquid.order.domain.Order;
 import liquid.core.domain.BaseUpdateEntity;
+import liquid.order.domain.OrderContainer;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,17 +21,24 @@ public class BaseLegContainer extends BaseUpdateEntity {
     @JoinColumn(name = "ORDER_ID")
     private Order order;
 
+    @Deprecated
     @ManyToOne
     @JoinColumn(name = "ROUTE_ID")
     private ShipmentEntity shipment;
 
+    @Deprecated
     @ManyToOne
     @JoinColumn(name = "LEG_ID")
     private LegEntity leg;
 
+    @Deprecated
     @OneToOne
     @JoinColumn(name = "SC_ID")
     private ShippingContainer sc;
+
+    @OneToOne
+    @JoinColumn(name = "CONTAINER_ID")
+    private OrderContainer container;
 
     public Order getOrder() {
         return order;
@@ -62,5 +70,13 @@ public class BaseLegContainer extends BaseUpdateEntity {
 
     public void setSc(ShippingContainer sc) {
         this.sc = sc;
+    }
+
+    public OrderContainer getContainer() {
+        return container;
+    }
+
+    public void setContainer(OrderContainer container) {
+        this.container = container;
     }
 }
