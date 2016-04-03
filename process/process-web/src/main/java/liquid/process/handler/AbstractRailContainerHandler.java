@@ -6,6 +6,8 @@ import liquid.accounting.service.ChargeService;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceProviderService;
 import liquid.operation.service.ServiceSubtypeService;
+import liquid.order.domain.Order;
+import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
 import liquid.process.model.RailContainerListForm;
 import liquid.process.service.TaskService;
@@ -24,19 +26,10 @@ import java.util.Map;
 public abstract class AbstractRailContainerHandler extends AbstractTaskHandler {
 
     @Autowired
-    private TaskService taskService;
-
-    @Autowired
     private ShippingContainerService scService;
 
     @Autowired
-    private ServiceProviderService serviceProviderService;
-
-    @Autowired
-    private ChargeService chargeService;
-
-    @Autowired
-    private ServiceSubtypeService serviceSubtypeService;
+    private OrderService orderService;
 
     @Override
     public boolean isRedirect() {
@@ -45,6 +38,8 @@ public abstract class AbstractRailContainerHandler extends AbstractTaskHandler {
 
     @Override
     public void init(Task task, Model model) {
+        Order order = orderService.find(task.getOrderId());
+
         Iterable<RailContainer> containers = scService.initializeRailContainers(task.getOrderId());
         for (RailContainer container : containers) {
             if (null == container.getEts()) container.setEts(new Date());
@@ -56,17 +51,8 @@ public abstract class AbstractRailContainerHandler extends AbstractTaskHandler {
         }
         model.addAttribute("containerListForm", new RailContainerListForm(containers));
         model.addAttribute("action", "/task/" + task.getId());
-        // FIXME - this is bug, we need to use subtype instead.
-        model.addAttribute("sps", serviceProviderService.findByType(4L));
 
-        // for charges
-        Iterable<ServiceSubtype> serviceSubtypes = serviceSubtypeService.findEnabled();
-        model.addAttribute("serviceSubtypes", serviceSubtypes);
-        model.addAttribute("chargeWays", ChargeWay.values());
-        model.addAttribute("transModes", TransMode.toMap());
-        Iterable<Charge> charges = chargeService.findByTaskId(task.getId());
-        model.addAttribute("charges", charges);
-        model.addAttribute("total", chargeService.total(charges));
+        buildPurchase(task, model, order);
     }
 
     @Override

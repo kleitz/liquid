@@ -38,5 +38,7 @@ public class CDCIHandler extends AbstractTaskHandler {
         verificationSheetForm.setSn(verificationSheetSn);
         verificationSheetForm.setOrderId(task.getOrderId());
         model.addAttribute("verificationSheetForm", verificationSheetForm);
+
+        buildPurchase(task, model, order);
     }
 }

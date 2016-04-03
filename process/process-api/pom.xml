@@ -27,6 +27,14 @@
             <groupId>liquid</groupId>
             <artifactId>liquid-user-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>liquid</groupId>
+            <artifactId>liquid-order-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>liquid</groupId>
+            <artifactId>liquid-accounting-api</artifactId>
+        </dependency>
 
         <!-- spring -->
         <dependency>

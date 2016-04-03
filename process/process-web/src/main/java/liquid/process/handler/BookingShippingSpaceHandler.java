@@ -59,27 +59,10 @@ public class BookingShippingSpaceHandler extends AbstractTaskHandler {
         Iterable<ServiceProvider> shipowners = serviceProviderService.findByType(3L);
         model.addAttribute("shipowners", shipowners);
 
-        model.addAttribute("chargeWays", ChargeWay.values());
-        List<Purchase> purchases = purchaseService.findByOrderId(order.getId());
-        model.addAttribute("purchases", purchases);
-
-        Purchase purchase = new Purchase();
-        purchase.setOrder(order);
-        purchase.setTaskId(task.getId());
-        purchase.setTransportMode(TransMode.VESSEL.getType());
-        model.addAttribute("purchase", purchase);
-
-        model.addAttribute("transportModeOptions", TransMode.values());
-        model.addAttribute("transModes", TransMode.toMap());
-
-        Iterable<ServiceSubtype> serviceSubtypes = serviceSubtypeService.findEnabled();
-        model.addAttribute("serviceSubtypes", serviceSubtypes);
-
-        Iterable<ServiceProvider> sps = serviceProviderService.findAll();
-        model.addAttribute("sps", sps);
-
-        model.addAttribute("chargeWays", ChargeWay.values());
+        buildPurchase(task, model, order);
     }
+
+
 
     @Override
     public void preComplete(String taskId, Map<String, Object> variableMap) {

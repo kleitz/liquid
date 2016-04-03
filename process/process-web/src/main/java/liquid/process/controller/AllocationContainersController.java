@@ -1,5 +1,8 @@
 package liquid.process.controller;
 
+import liquid.accounting.domain.ChargeWay;
+import liquid.accounting.domain.Purchase;
+import liquid.accounting.service.PurchaseService;
 import liquid.container.domain.ContainerEntity;
 import liquid.container.domain.ContainerSubtype;
 import liquid.container.domain.ContainerType;
@@ -10,12 +13,16 @@ import liquid.container.service.ContainerSubtypeService;
 import liquid.core.model.Alert;
 import liquid.operation.domain.Location;
 import liquid.operation.domain.ServiceProvider;
+import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.LocationService;
+import liquid.operation.service.ServiceProviderService;
+import liquid.operation.service.ServiceSubtypeService;
 import liquid.order.domain.Order;
 import liquid.order.service.OrderService;
 import liquid.order.service.ServiceItemService;
 import liquid.transport.domain.RailContainer;
 import liquid.transport.domain.ShipmentEntity;
+import liquid.transport.domain.TransMode;
 import liquid.transport.domain.TruckEntity;
 import liquid.transport.facade.ContainerAllocationFacade;
 import liquid.transport.model.*;
@@ -85,11 +92,44 @@ public class AllocationContainersController extends BaseTaskController {
     @Autowired
     private RailContainerService railContainerService;
 
+    @Autowired
+    private PurchaseService purchaseService;
+
+    @Autowired
+    private ServiceSubtypeService serviceSubtypeService;
+
+    @Autowired
+    private ServiceProviderService serviceProviderService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String init(@PathVariable String taskId, Model model) {
         Long orderId = taskService.getOrderIdByTaskId(taskId);
         Order order = orderService.find(orderId);
         model.addAttribute("order",order);
+
+        model.addAttribute("chargeWays", ChargeWay.values());
+        List<Purchase> purchases = purchaseService.findByOrderId(order.getId());
+        model.addAttribute("purchases", purchases);
+
+        Purchase purchase = new Purchase();
+        purchase.setOrder(order);
+        purchase.setTaskId(taskId);
+        purchase.setTransportMode(TransMode.VESSEL.getType());
+        model.addAttribute("purchase", purchase);
+
+        model.addAttribute("containerQuantity", order.getContainerQty());
+
+        model.addAttribute("transportModeOptions", TransMode.values());
+        model.addAttribute("transModes", TransMode.toMap());
+
+        Iterable<ServiceSubtype> serviceSubtypes = serviceSubtypeService.findEnabled();
+        model.addAttribute("serviceSubtypes", serviceSubtypes);
+
+        Iterable<ServiceProvider> sps = serviceProviderService.findAll();
+        model.addAttribute("sps", sps);
+
+        model.addAttribute("chargeWays", ChargeWay.values());
+
         return "task/allocateContainers/init";
     }
 
