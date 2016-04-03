@@ -214,7 +214,34 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
         Order order = orderService.find(orderId);
         Collection<BargeContainer> bcList = bcRepository.findByOrder(order);
         if (bcList.size() > 0) {
-            for (WaterContainerEntity container : bcList) {
+            for (WaterContainer container : bcList) {
+                if (container.getEts() != null) {
+                    container.setEts(container.getEts());
+                } else {
+                    container.setEts(new Date());
+                }
+            }
+            return bcList;
+        }
+
+        bcList = new ArrayList<BargeContainer>();
+        for (OrderContainer container : order.getContainers()) {
+            BargeContainer bc = new BargeContainer();
+            bc.setOrder(order);
+            bc.setContainer(container);
+            bc.setEts(new Date());
+            bcList.add(bc);
+        }
+
+        return bcRepository.save(bcList);
+    }
+
+    @Deprecated
+    public Iterable<BargeContainer> initBargeContainers0(Long orderId) {
+        Order order = orderService.find(orderId);
+        Collection<BargeContainer> bcList = bcRepository.findByOrder(order);
+        if (bcList.size() > 0) {
+            for (WaterContainer container : bcList) {
                 if (container.getEts() != null) {
                     container.setEtsStr(DateUtil.dayStrOf(container.getEts()));
                 }
@@ -263,19 +290,19 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
             Collection<BargeContainer> containers = bcRepository.findByShipmentId(shipment.getId());
 
             if (formBean.getEtsStr() != null && formBean.getEtsStr().trim().length() > 0) {
-                for (WaterContainerEntity rc : containers) {
+                for (WaterContainer rc : containers) {
                     rc.setEts(DateUtil.dayOf(formBean.getEtsStr()));
                 }
             }
 
             if (formBean.getBolNo() != null && formBean.getBolNo().trim().length() > 0) {
-                for (WaterContainerEntity rc : containers) {
+                for (WaterContainer rc : containers) {
                     rc.setBolNo(formBean.getBolNo());
                 }
             }
 
             if (formBean.getSlot() != null && formBean.getSlot().trim().length() > 0) {
-                for (WaterContainerEntity rc : containers) {
+                for (WaterContainer rc : containers) {
                     rc.setSlot(formBean.getSlot());
                 }
             }
@@ -297,6 +324,33 @@ public class ShippingContainerServiceImpl extends AbstractService<ShippingContai
     }
 
     public Iterable<VesselContainer> initVesselContainers(Long orderId) {
+        Order order = orderService.find(orderId);
+        Collection<VesselContainer> vcList = vcRepository.findByOrder(order);
+        if (vcList.size() > 0) {
+            for (WaterContainer container : vcList) {
+                if (container.getEts() != null) {
+                    container.setEts(container.getEts());
+                } else {
+                    container.setEts(new Date());
+                }
+            }
+            return vcList;
+        }
+
+        vcList = new ArrayList<VesselContainer>();
+        for (OrderContainer container : order.getContainers()) {
+            VesselContainer vc = new VesselContainer();
+            vc.setOrder(order);
+            vc.setContainer(container);
+            vc.setEts(new Date());
+            vcList.add(vc);
+        }
+
+        return vcRepository.save(vcList);
+    }
+
+    @Deprecated
+    public Iterable<VesselContainer> initVesselContainers0(Long orderId) {
         Order order = orderService.find(orderId);
         Collection<VesselContainer> vcList = vcRepository.findByOrder(order);
         if (vcList.size() > 0) {

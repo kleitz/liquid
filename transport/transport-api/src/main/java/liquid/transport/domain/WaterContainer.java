@@ -10,7 +10,7 @@ import java.util.Date;
  * Time: 2:42 PM
  */
 @MappedSuperclass
-public class WaterContainerEntity extends BaseLegContainer {
+public class WaterContainer extends BaseLegContainer {
     /**
      * Bill of Lading No.
      */

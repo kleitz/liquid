@@ -1,5 +1,7 @@
 package liquid.process.handler;
 
+import liquid.order.domain.Order;
+import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
 import liquid.process.model.BargeContainerListForm;
 import liquid.transport.service.ShippingContainerService;
@@ -17,6 +19,9 @@ public class DoBargeOpsHandler extends AbstractTaskHandler {
     @Autowired
     private ShippingContainerService scService;
 
+    @Autowired
+    private OrderService orderService;
+
     @Override
     public boolean isRedirect() {
         return false;
@@ -24,8 +29,11 @@ public class DoBargeOpsHandler extends AbstractTaskHandler {
 
     @Override
     public void init(Task task, Model model) {
+        Order order = orderService.find(task.getOrderId());
         model.addAttribute("containerListForm", new BargeContainerListForm(scService.initBargeContainers(task.getOrderId())));
         model.addAttribute("action", "/task/" + task.getId());
+
+        buildPurchase(task, model, order);
     }
 
     @Override
