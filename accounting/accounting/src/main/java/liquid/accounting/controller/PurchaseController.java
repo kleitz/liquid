@@ -1,5 +1,6 @@
 package liquid.accounting.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import liquid.accounting.domain.Purchase;
 import liquid.accounting.service.PurchaseService;
 import org.slf4j.Logger;
@@ -23,12 +24,21 @@ public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public String addPurchase(Purchase purchase,
-                              @RequestHeader(value = "referer") String referer,
-                              BindingResult bindingResult, Model model) {
+    @RequestMapping(method = RequestMethod.POST)
+    public String addOne(Purchase purchase,
+                         @RequestHeader(value = "referer") String referer,
+                         BindingResult bindingResult, Model model) {
         logger.debug("Purchase: {}", purchase);
-        purchaseService.save(purchase);
+        purchaseService.addOne(purchase);
+        return "redirect:" + referer;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, params = "voidPurchase")
+    public String voidOne(Purchase purchase,
+                          @RequestHeader(value = "referer") String referer,
+                          BindingResult bindingResult, Model model) {
+        logger.debug("Purchase: {}", purchase);
+        purchaseService.voidOne(purchase);
         return "redirect:" + referer;
     }
 }

@@ -16,4 +16,8 @@ public interface PurchaseService {
     List<Purchase> findByOrderId(Long orderId);
 
     Purchase save(Purchase purchase);
+
+    Purchase addOne(Purchase purchase);
+
+    Purchase voidOne(Purchase purchase);
 }

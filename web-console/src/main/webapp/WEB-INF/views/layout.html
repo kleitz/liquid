@@ -423,6 +423,12 @@
           <td><span th:text="${purchase.currency}"></span></td>
           <td><span th:text="${purchase.comment}"></span></td>
           <td>
+            <a href="#" name="voidPurchaseLink" data-toggle="modal" data-target="#voidPurchase"
+              th:if="${purchase.status == 0}" th:attr="data-purchase-id=${purchase.id}">
+              <span class="glyphicon glyphicon-trash text-success" aria-hidden="true"></span>
+            </a>
+            <span class="glyphicon glyphicon-trash text-danger" aria-hidden="true"
+              th:if="${purchase.status == 1}"></span>
           </td>
         </tr>
       </tbody>
@@ -520,6 +526,39 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <div class="modal" id="voidPurchase" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;" data-backdrop="static">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel"><span th:text="#{purchase}">Void Purchase</span></h4>
+          </div>
+          <div class="modal-body">
+            <form id="voidPurchaseForm" method="POST" th:action="'/purchase'"
+              th:object="${purchase}">
+              <input type="hidden" name="voidPurchase" value="voidPurchase" />
+              <input type="hidden" id="id" name="id" value="" />
+              <div class="form-group">
+                <label for="reason" class="control-label"><span th:text="#{comment}">Comment</span><span>*</span></label>
+                <input type="text" id="comment" name="comment" class="form-control" />
+              </div>
+            </form>
+          </div>
+  
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
+              <span th:text="#{modal.close}"/>
+            </button>
+            <button type="submit" name="void" value="void" form="voidPurchaseForm" class="btn btn-warning btn-sm">
+              <span th:text="#{charge.add}">Void</span>
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
   </div><!-- /.container -->
 </div>
 
@@ -573,6 +612,20 @@
       }
     });
     
+    $('#voidPurchaseForm').validate({
+      rules: {
+        'comment': 'required'
+      },
+      highlight: function(element) {
+          $(element).parent().addClass('has-error');
+      },
+      unhighlight: function(element) {
+          $(element).parent().removeClass('has-error');
+      },
+      submitHandler: function(form) {
+          form.submit();
+      }
+    });
 
     function caculateTotal() {
       var totalAmount = 0;
@@ -591,6 +644,12 @@
 
     $('#unitPrice').change(caculateTotal);
     $('#chargeType').change(caculateTotal);
+
+    $('a[name="voidPurchaseLink"]').click(function() {
+      var purchaseId = $(this).data('purchase-id');
+      console.log('Purchase id: %s', purchaseId);
+      $('.modal-body #id').val(purchaseId);
+    });
 
     $('#purchaseForm').validate({
       rules: {
