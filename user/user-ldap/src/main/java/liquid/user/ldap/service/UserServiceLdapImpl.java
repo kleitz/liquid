@@ -502,6 +502,11 @@ public class UserServiceLdapImpl implements UserService {
         });
     }
 
+    @Override
+    public UserProfile findByUid(String username) {
+        throw new UnsupportedOperationException();
+    }
+
     public void updateGroup(Group group) {
         LdapName dn = buildGroupDn(group);
         DirContextOperations adapter = (DirContextOperations) ldapOperations

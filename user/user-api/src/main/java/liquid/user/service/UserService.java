@@ -40,4 +40,6 @@ public interface UserService {
      * @return
      */
     List<UserProfile> findByGroup(String groupId);
+
+    UserProfile findByUid(String username);
 }

@@ -164,6 +164,11 @@ public class UserServiceDatabaseImpl implements UserService {
         return usernameList;
     }
 
+    @Override
+    public UserProfile findByUid(String username) {
+        return userProfileRepository.findByUsername(username);
+    }
+
     private String encodePassword(String plain) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.encode(plain);
