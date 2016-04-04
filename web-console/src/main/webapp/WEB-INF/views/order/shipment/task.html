@@ -28,6 +28,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="task : ${completedTasks}">
+                    <form th:unless="${task.endTime}" th:id="${task.id}" th:action="'/task/' + ${task.id}" method="POST">
                     <td th:text="${task.id}">Task ID</td>
                     <td th:text="${task.name}"/>
                     <td th:text="${task.description}">Task Description</td>
@@ -38,7 +39,6 @@
                     </td>
                     <td>
                         <span th:if="${task.endTime}" th:text="${task.assignee}" />
-                        <form th:unless="${task.endTime}" th:id="${task.id}" th:action="'/task/' + ${task.id}" method="POST">
                             <select id="username" name="username" class="form-control input-sm">
                                 <option th:each="userProfile: ${task.candidateUserList}"
                                         th:value="${userProfile.username}"
@@ -46,13 +46,13 @@
                                         th:selected="${task.assignee} == ${username}">
                                 </option>
                             </select>
-                        </form>
                     </td>
                     <td>
                         <button th:unless="${task.endTime}" type="submit" name="assign" class="btn btn-sm btn-success" th:form="${task.id}">
                             <span th:text="#{task.assign}">Assign</span>
                         </button>
                     </td>
+                    </form>
                 </tr>
                 </tbody>
             </table>
