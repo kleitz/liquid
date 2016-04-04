@@ -155,6 +155,9 @@ public class TaskServiceImpl implements TaskService {
                 for (String group : candidateGroupList) {
                     userList.addAll(userService.findByGroup(group));
                 }
+                if(0 == candidateGroupList.size() && null != task.getAssignee()) {
+                    userList.add(userService.findByUid(task.getAssignee()));
+                }
                 task.setCandidateUserList(userList);
             }
             tasks.add(task);
