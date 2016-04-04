@@ -204,16 +204,16 @@
                         <label for="reason" class="control-label" th:text="#{reason}">Reason</label>
                         <input type="text" id="resaon" name="reason" class="form-control" />
                       </div>
+                      <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
+                          <span th:text="#{modal.close}"/>
+                      </button>
+                      <button type="submit" form="passForm" class="btn btn-warning btn-sm">
+                          <span>PASS</span>
+                      </button>
                   </form>
               </div>
               <div class="modal-footer">
-                  <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
-                      <span th:text="#{modal.close}"/>
-                  </button>
-                  <button type="submit" form="passForm" class="btn btn-warning btn-sm">
-                      <span>PASS</span>
-                  </button>
-              </div>
+             </div>
           </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
