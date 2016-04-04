@@ -512,17 +512,17 @@
                 <label for="comment" class="control-label" th:text="#{comment}">Comment</label>
                 <input type="text" id="comment" name="comment" class="form-control" />
               </div>
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
+                  <span th:text="#{modal.close}"/>
+                </button>
+                <button type="submit" name="add" value="add" form="purchaseForm" class="btn btn-warning btn-sm">
+                  <span th:text="#{charge.add}">Add</span>
+                </button>
             </form>
           </div>
   
           <div class="modal-footer">
-            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
-              <span th:text="#{modal.close}"/>
-            </button>
-            <button type="submit" name="add" value="add" form="purchaseForm" class="btn btn-warning btn-sm">
-              <span th:text="#{charge.add}">Add</span>
-            </button>
-          </div>
+         </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
@@ -543,17 +543,17 @@
                 <label for="reason" class="control-label"><span th:text="#{comment}">Comment</span><span>*</span></label>
                 <input type="text" id="comment" name="comment" class="form-control" />
               </div>
+              <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
+                <span th:text="#{modal.close}"/>
+              </button>
+              <button type="submit" name="void" value="void" form="voidPurchaseForm" class="btn btn-warning btn-sm">
+                <span th:text="#{charge.add}">Void</span>
+              </button>
             </form>
           </div>
   
           <div class="modal-footer">
-            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
-              <span th:text="#{modal.close}"/>
-            </button>
-            <button type="submit" name="void" value="void" form="voidPurchaseForm" class="btn btn-warning btn-sm">
-              <span th:text="#{charge.add}">Void</span>
-            </button>
-          </div>
+         </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
