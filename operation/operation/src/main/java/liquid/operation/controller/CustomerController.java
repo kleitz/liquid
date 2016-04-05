@@ -34,29 +34,12 @@ public class CustomerController extends BaseController {
     private InternalCustomerService customerService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String list(Pagination pagination, Model model, HttpServletRequest request) {
-        PageRequest pageRequest = new PageRequest(pagination.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
-        Page<Customer> page = customerService.findAll(pageRequest);
-
-        pagination.prepand(request.getRequestURI());
-        model.addAttribute("page", page);
-
-        SearchBarForm searchBarForm = new SearchBarForm();
-        searchBarForm.setAction("/customer");
-        searchBarForm.setTypes(new String[][]{{"name", "customer.name"}});
-        model.addAttribute("searchBarForm", searchBarForm);
-        return "customer/page";
-    }
-
-    @RequestMapping(method = RequestMethod.GET, params = {"search"})
-    public String search(@ModelAttribute SearchBarForm searchBarForm, Model model) {
+    public String list(SearchBarForm searchBarForm, Model model, HttpServletRequest request) {
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
-        Page<Customer> page = customerService.findByQueryNameLike(searchBarForm.getText(), pageRequest);
-        model.addAttribute("page", page);
-        model.addAttribute("contextPath", "/customer?");
+        Page<Customer> page = customerService.findAll(searchBarForm.getText(), pageRequest);
 
-        searchBarForm.setAction("/customer");
-        searchBarForm.setTypes(new String[][]{{"name", "customer.name"}});
+        model.addAttribute("page", page);
+        searchBarForm.prepand(request.getRequestURI());
         return "customer/page";
     }
 

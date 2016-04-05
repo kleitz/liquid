@@ -2,6 +2,8 @@ package liquid.operation.controller;
 
 import liquid.core.controller.BaseController;
 import liquid.core.model.Pagination;
+import liquid.core.model.SearchBarForm;
+import liquid.operation.domain.Goods;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.InternalServiceProviderService;
 import liquid.operation.service.ServiceProviderTypeService;
@@ -45,11 +47,12 @@ public class ServiceProviderController extends BaseController {
     private ServiceProviderTypeService serviceProviderTypeService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String list(Pagination pagination, Model model, HttpServletRequest request) {
-        PageRequest pageRequest = new PageRequest(pagination.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
-        Page<ServiceProvider> page = serviceProviderService.findAll(pageRequest);
+    public String list(SearchBarForm searchBarForm,
+                       Model model, HttpServletRequest request) {
+        PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
+        Page<ServiceProvider> page = serviceProviderService.findAll(searchBarForm.getText(), pageRequest);
 
-        pagination.prepand(request.getRequestURI());
+        searchBarForm.prepand(request.getRequestURI());
         model.addAttribute("page", page);
         return ROOT_DIR + "list";
     }

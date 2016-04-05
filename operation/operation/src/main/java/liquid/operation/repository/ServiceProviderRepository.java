@@ -5,6 +5,7 @@ import liquid.operation.domain.ServiceProviderType;
 import liquid.operation.domain.ServiceSubtype;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -12,7 +13,6 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *  
  * User: tao
  * Date: 10/2/13
  * Time: 5:03 PM
@@ -28,4 +28,6 @@ public interface ServiceProviderRepository extends CrudRepository<ServiceProvide
     Iterable<ServiceProvider> findByQueryNameLike(String queryName);
 
     List<ServiceProvider> findBySubtypes(Set<ServiceSubtype> subtypes);
+
+    Page<ServiceProvider> findAll(Specification<ServiceProvider> specification, Pageable pageable);
 }
