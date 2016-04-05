@@ -1,18 +1,27 @@
 package liquid.operation.service;
 
+import liquid.core.service.AbstractService;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceProviderType;
+import liquid.operation.domain.ServiceProvider_;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.repository.ServiceProviderRepository;
 import liquid.operation.repository.ServiceProviderTypeRepository;
-import liquid.core.service.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.*;
+
+import static org.springframework.data.jpa.domain.Specifications.where;
 
 /**
  * User: tao
@@ -86,5 +95,30 @@ public class ServiceProviderServiceImpl extends AbstractService<ServiceProvider,
         HashSet<ServiceSubtype> serviceSubtypes = new HashSet<>();
         serviceSubtypes.add(ServiceSubtype.newInstance(ServiceSubtype.class, serviceSubtypeId));
         return repository.findBySubtypes(serviceSubtypes);
+    }
+
+    @Override
+    public Page<ServiceProvider> findAll(String name, Pageable pageable) {
+        List<Specification<ServiceProvider>> specList = new ArrayList<>();
+
+        if (null != name) {
+            Specification<ServiceProvider> orderNoSpec = new Specification<ServiceProvider>() {
+                @Override
+                public Predicate toPredicate(Root<ServiceProvider> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
+                    return builder.like(root.get(ServiceProvider_.name), "%" + name + "%");
+                }
+            };
+            specList.add(orderNoSpec);
+        }
+
+        if (specList.size() == 0) {
+            return repository.findAll(pageable);
+        } else {
+            Specifications<ServiceProvider> specs = where(specList.get(0));
+            for (int i = 1; i < specList.size(); i++) {
+                specs.and(specList.get(i));
+            }
+            return repository.findAll(specs, pageable);
+        }
     }
 }
