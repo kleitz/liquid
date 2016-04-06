@@ -62,9 +62,12 @@ public class BaseUpdateEntity extends BaseIdEntity {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder(super.toString());
+        final StringBuilder sb = new StringBuilder("BaseUpdateEntity{");
+        sb.append("createdBy='").append(createdBy).append('\'');
+        sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedBy='").append(updatedBy).append('\'');
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append('}');
         return sb.toString();
     }
 }
