@@ -4,7 +4,7 @@ import liquid.operation.domain.Customer_;
 import liquid.operation.domain.Location;
 import liquid.order.domain.ReceivingOrder;
 import liquid.order.domain.ReceivingOrder_;
-import liquid.order.repository.ReceivingContainerRepository;
+import liquid.order.repository.OrderContainerRepository;
 import liquid.order.repository.ReceivingOrderRepository;
 import liquid.util.CollectionUtil;
 import org.slf4j.Logger;
@@ -16,7 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -41,7 +40,7 @@ public class ReceivingOrderServiceImpl extends AbstractBaseOrderService<Receivin
     private ReceivingOrderRepository recvOrderRepository;
 
     @Autowired
-    private ReceivingContainerRepository recvContainerRepository;
+    private OrderContainerRepository recvContainerRepository;
 
     public ReceivingOrder newOrder(List<Location> locationEntities) {
         ReceivingOrder order = new ReceivingOrder();

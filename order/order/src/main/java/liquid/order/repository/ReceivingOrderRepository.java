@@ -12,6 +12,7 @@ import org.springframework.data.repository.CrudRepository;
  * Date: 10/13/13
  * Time: 4:31 PM
  */
+@Deprecated
 public interface ReceivingOrderRepository extends CrudRepository<ReceivingOrder, Long>, JpaRepository<ReceivingOrder, Long> {
     Iterable<ReceivingOrder> findByOrderNoLike(String orderNo);
 

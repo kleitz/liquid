@@ -9,8 +9,12 @@ import liquid.operation.domain.ServiceType;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * User: tao
@@ -18,7 +22,7 @@ import java.math.BigDecimal;
  * Time: 8:34 PM
  */
 @MappedSuperclass
-public class BaseOrder extends BaseUpdateEntity {
+public class BaseOrder extends ModifiableOrder {
     @ManyToOne
     @JoinColumn(name = "SERVICE_TYPE_ID")
     private ServiceType serviceType;
@@ -30,16 +34,6 @@ public class BaseOrder extends BaseUpdateEntity {
     @ManyToOne
     @JoinColumn(name = "CUSTOMER_ID")
     private Customer customer;
-
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "SRC_LOC_ID")
-    private Location source;
-
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "DST_LOC_ID")
-    private Location destination;
 
     @Column(name = "CONSIGNEE")
     private String consignee;
@@ -75,16 +69,57 @@ public class BaseOrder extends BaseUpdateEntity {
     @Column(name = "CONTAINER_CAP")
     private int containerCap;
 
-    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#")
-    @Column(name = "CONTAINER_QTY")
-    private Integer containerQty;
-
     @Column(name = "CONTAINER_ATTR")
     private String containerAttribute;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "RAILWAY_ID")
     private OrderRail railway;
+
+    // 0: domestic; 1: foreign
+    @Column(name = "TRADE_TYPE")
+    private int tradeType;
+
+    /**
+     * Hid
+     */
+    @Column(name = "VER_SHEET_SN")
+    private String verificationSheetSn;
+
+    // 0: yard; 1: truck
+    @Column(name = "LOADING_TYPE")
+    private int loadingType;
+
+    // For loading by truck
+    @Column(name = "LOADING_ADDR")
+    private String loadingAddress;
+
+    @Column(name = "LOADING_CONTACT")
+    private String loadingContact;
+
+    @Column(name = "LOADING_PHONE")
+    private String loadingPhone;
+
+    /**
+     * Estimated Time of Loading
+     */
+    @Column(name = "LOADING_ET")
+    private Date loadingEt;
+
+    @Column(name = "HAS_DELIVERY")
+    private boolean hasDelivery;
+
+    @Valid
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")
+    private List<ServiceItem> serviceItems = new ArrayList<>();
+
+    /**
+     * HACK - Unidirectional OneToMany, No Inverse ManyToOne, No Join Table (JPA 2.0 ONLY).
+     */
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")
+    private List<OrderContainer> containers;
 
     @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#,###.##")
     @Column(precision = 19, scale = 4, name = "TOTAL_CNY")
@@ -131,22 +166,6 @@ public class BaseOrder extends BaseUpdateEntity {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    public Location getSource() {
-        return source;
-    }
-
-    public void setSource(Location source) {
-        this.source = source;
-    }
-
-    public Location getDestination() {
-        return destination;
-    }
-
-    public void setDestination(Location destination) {
-        this.destination = destination;
     }
 
     public String getConsignee() {
@@ -221,14 +240,6 @@ public class BaseOrder extends BaseUpdateEntity {
         this.containerCap = containerCap;
     }
 
-    public Integer getContainerQty() {
-        return containerQty;
-    }
-
-    public void setContainerQty(int containerQty) {
-        this.containerQty = containerQty;
-    }
-
     public String getContainerAttribute() {
         return containerAttribute;
     }
@@ -243,6 +254,86 @@ public class BaseOrder extends BaseUpdateEntity {
 
     public void setRailway(OrderRail railway) {
         this.railway = railway;
+    }
+
+    public int getTradeType() {
+        return tradeType;
+    }
+
+    public void setTradeType(int tradeType) {
+        this.tradeType = tradeType;
+    }
+
+    public String getVerificationSheetSn() {
+        return verificationSheetSn;
+    }
+
+    public void setVerificationSheetSn(String verificationSheetSn) {
+        this.verificationSheetSn = verificationSheetSn;
+    }
+
+    public int getLoadingType() {
+        return loadingType;
+    }
+
+    public void setLoadingType(int loadingType) {
+        this.loadingType = loadingType;
+    }
+
+    public String getLoadingAddress() {
+        return loadingAddress;
+    }
+
+    public void setLoadingAddress(String loadingAddress) {
+        this.loadingAddress = loadingAddress;
+    }
+
+    public String getLoadingContact() {
+        return loadingContact;
+    }
+
+    public void setLoadingContact(String loadingContact) {
+        this.loadingContact = loadingContact;
+    }
+
+    public String getLoadingPhone() {
+        return loadingPhone;
+    }
+
+    public void setLoadingPhone(String loadingPhone) {
+        this.loadingPhone = loadingPhone;
+    }
+
+    public Date getLoadingEt() {
+        return loadingEt;
+    }
+
+    public void setLoadingEt(Date loadingEt) {
+        this.loadingEt = loadingEt;
+    }
+
+    public boolean isHasDelivery() {
+        return hasDelivery;
+    }
+
+    public void setHasDelivery(boolean hasDelivery) {
+        this.hasDelivery = hasDelivery;
+    }
+
+    public List<ServiceItem> getServiceItems() {
+        return serviceItems;
+    }
+
+    public void setServiceItems(List<ServiceItem> serviceItems) {
+        this.serviceItems = serviceItems;
+    }
+
+    public List<OrderContainer> getContainers() {
+        return containers;
+    }
+
+    public void setContainers(List<OrderContainer> containers) {
+        this.containers = containers;
     }
 
     public BigDecimal getTotalCny() {
@@ -307,8 +398,6 @@ public class BaseOrder extends BaseUpdateEntity {
         sb.append(", serviceType=").append(serviceType);
         sb.append(", orderNo='").append(orderNo).append('\'');
         sb.append(", customer=").append(customer);
-        sb.append(", source=").append(source);
-        sb.append(", destination=").append(destination);
         sb.append(", consignee='").append(consignee).append('\'');
         sb.append(", consigneePhone='").append(consigneePhone).append('\'');
         sb.append(", consigneeAddress='").append(consigneeAddress).append('\'');
@@ -318,14 +407,15 @@ public class BaseOrder extends BaseUpdateEntity {
         sb.append(", containerType=").append(containerType);
         sb.append(", containerSubtype=").append(containerSubtype);
         sb.append(", containerCap=").append(containerCap);
-        sb.append(", containerQty=").append(containerQty);
         sb.append(", containerAttribute='").append(containerAttribute).append('\'');
         sb.append(", railway=").append(railway);
-        sb.append(", totalCny=").append(totalCny);
-        sb.append(", totalUsd=").append(totalUsd);
-        sb.append(", distyCny=").append(distyCny);
-        sb.append(", distyUsd=").append(distyUsd);
-        sb.append(", grandTotal=").append(grandTotal);
+        sb.append(", tradeType=").append(tradeType);
+        sb.append(", verificationSheetSn='").append(verificationSheetSn).append('\'');
+        sb.append(", loadingType=").append(loadingType);
+        sb.append(", loadingAddress='").append(loadingAddress).append('\'');
+        sb.append(", loadingContact='").append(loadingContact).append('\'');
+        sb.append(", loadingPhone='").append(loadingPhone).append('\'');
+        sb.append(", loadingEt=").append(loadingEt);
         sb.append(", createRole='").append(createRole).append('\'');
         sb.append(", status=").append(status);
         return sb.toString();
