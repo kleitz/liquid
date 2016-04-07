@@ -422,7 +422,7 @@ public class OrderController extends BaseController {
         switch (tab) {
             case "task":
                 List<Task> completedTasks = taskService.listCompltedTasks(id + ":" + order.getOrderNo());
-                model.addAttribute("completedTasks", completedTasks);
+                model.addAttribute("tasks", completedTasks);
                 break;
             case "railway":
                 break;

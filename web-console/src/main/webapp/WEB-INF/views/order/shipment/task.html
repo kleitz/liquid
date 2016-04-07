@@ -11,51 +11,7 @@
 <div th:include="order/shipment/template :: tab"></div>
 
 <div id="tc" class="container">
-    <div th:include="layout :: alert" />
-            <table class="table table-striped table-hover table-condensed table-16"
-                   sth:unless="${#lists.isEmpty(completedTasks)}">
-                <thead>
-                <tr>
-                    <th th:text="#{task.id}">Task ID</th>
-                    <th th:text="#{task.name}">Task Name</th>
-                    <th th:text="#{task.description}">Task Description</th>
-                    <th th:text="#{task.start.time}">Start Time</th>
-                    <th th:text="#{task.claim.time}">Claim Time</th>
-                    <th th:text="#{task.end.time}">End Time</th>
-                    <th th:text="#{task.owner}">Task Owner</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="task : ${completedTasks}">
-                    <form th:unless="${task.endTime}" th:id="${task.id}" th:action="'/task/' + ${task.id}" method="POST">
-                    <td th:text="${task.id}">Task ID</td>
-                    <td th:text="${task.name}"/>
-                    <td th:text="${task.description}">Task Description</td>
-                    <td th:text="${#dates.format(task.startTime, 'yyyy-MM-dd HH:mm')}">Start Time</td>
-                    <td th:text="${task.claimTime} ? ${#dates.format(task.claimTime, 'yyyy-MM-dd HH:mm')} : ''">Claim Time
-                    </td>
-                    <td th:text="${task.endTime} ? ${#dates.format(task.endTime, 'yyyy-MM-dd HH:mm')} : ''">End Time
-                    </td>
-                    <td>
-                        <span th:if="${task.endTime}" th:text="${task.assignee}" />
-                            <select id="username" name="username" class="form-control input-sm">
-                                <option th:each="userProfile: ${task.candidateUserList}"
-                                        th:value="${userProfile.username}"
-                                        th:text="${userProfile.lastName} + ${userProfile.firstName}"
-                                        th:selected="${task.assignee} == ${username}">
-                                </option>
-                            </select>
-                    </td>
-                    <td>
-                        <button th:unless="${task.endTime}" type="submit" name="assign" class="btn btn-sm btn-success" th:form="${task.id}">
-                            <span th:text="#{task.assign}">Assign</span>
-                        </button>
-                    </td>
-                    </form>
-                </tr>
-                </tbody>
-            </table>
+    <div th:include="task_template :: list"/>
 </div><!-- /.container -->
 
 <!-- {!begin layout} -->
