@@ -5,6 +5,7 @@ import liquid.core.domain.BaseUpdateEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * User: tao
@@ -21,6 +22,8 @@ public class ExchangeRate extends BaseUpdateEntity {
         this.value = value;
     }
 
+    private Date month;
+
     /**
      * 1 usd = ? cny
      */
@@ -33,5 +36,23 @@ public class ExchangeRate extends BaseUpdateEntity {
 
     public void setValue(BigDecimal value) {
         this.value = value;
+    }
+
+    public Date getMonth() {
+        return month;
+    }
+
+    public void setMonth(Date month) {
+        this.month = month;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ExchangeRate{");
+        sb.append("super=").append(super.toString()).append('\'');
+        sb.append(", month=").append(month);
+        sb.append(", value=").append(value);
+        sb.append('}');
+        return sb.toString();
     }
 }
