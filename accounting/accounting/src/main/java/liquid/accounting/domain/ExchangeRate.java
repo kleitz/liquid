@@ -39,16 +39,16 @@ public class ExchangeRate extends BaseUpdateEntity {
         this.value = value;
     }
 
-    public static BigDecimal getDefaultExchangeRate() {
-        return DEFAULT_EXCHANGE_RATE;
-    }
-
     public Date getMonth() {
         return month;
     }
 
     public void setMonth(Date month) {
         this.month = month;
+    }
+
+    public static BigDecimal getDefaultExchangeRate() {
+        return DEFAULT_EXCHANGE_RATE;
     }
 
     @Override
