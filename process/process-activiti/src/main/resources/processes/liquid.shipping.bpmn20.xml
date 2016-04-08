@@ -48,7 +48,6 @@
         <flowNodeRef>doVesselOps</flowNodeRef>
         <flowNodeRef>deliver</flowNodeRef>
         <flowNodeRef>reclaimReceipt</flowNodeRef>
-        <flowNodeRef>checkCostByOperating</flowNodeRef>
         <flowNodeRef>confirmProviderInvoicingByOperating</flowNodeRef>
         <flowNodeRef>loadingDecision</flowNodeRef>
         <flowNodeRef>sendLoadingOnYard</flowNodeRef>
@@ -155,7 +154,7 @@
     <sequenceFlow id="flow460" sourceRef="sendSettling" targetRef="checkCostFork"></sequenceFlow>
     <parallelGateway id="checkCostFork" name="市场操作同时核对金额"></parallelGateway>
     <sequenceFlow id="flow470" sourceRef="checkCostFork" targetRef="checkCostByMarketing"></sequenceFlow>
-    <sequenceFlow id="flow480" sourceRef="checkCostFork" targetRef="checkCostByOperating"></sequenceFlow>
+    <sequenceFlow id="flow480" sourceRef="checkCostFork" targetRef="confirmProviderInvoicingByOperating"></sequenceFlow>
     <userTask id="checkCostByMarketing" name="核对金额" activiti:candidateGroups="ROLE_MARKETING">
       <documentation>您需要核对金额。</documentation>
     </userTask>
@@ -168,10 +167,6 @@
       <documentation>您需要核对市场采购金额。</documentation>
     </userTask>
     <sequenceFlow id="flow510" sourceRef="checkFromMarketing" targetRef="checkJoin"></sequenceFlow>
-    <userTask id="checkCostByOperating" name="核对金额" activiti:candidateGroups="ROLE_OPERATING">
-      <documentation>您需要核对金额。</documentation>
-    </userTask>
-    <sequenceFlow id="flow520" sourceRef="checkCostByOperating" targetRef="confirmProviderInvoicingByOperating"></sequenceFlow>
     <userTask id="confirmProviderInvoicingByOperating" name="确认供应商开具发票" activiti:candidateGroups="ROLE_OPERATING">
       <documentation>您需要确认供应商开具发票。</documentation>
     </userTask>
@@ -250,13 +245,13 @@
         <omgdc:Bounds height="96.0" width="1211.0" x="21.0" y="733.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="placeOrder" id="BPMNShape_placeOrder">
-        <omgdc:Bounds height="35.0" width="35.0" x="61.0" y="43.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="44.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="shipDecision" id="BPMNShape_shipDecision">
-        <omgdc:Bounds height="40.0" width="40.0" x="141.0" y="41.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="170.0" y="41.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="bookingShippingSpace" id="BPMNShape_bookingShippingSpace">
-        <omgdc:Bounds height="60.0" width="100.0" x="123.0" y="501.0"></omgdc:Bounds>
+        <omgdc:Bounds height="60.0" width="100.0" x="140.0" y="501.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="allocateContainers" id="BPMNShape_allocateContainers">
         <omgdc:Bounds height="60.0" width="100.0" x="41.0" y="752.0"></omgdc:Bounds>
@@ -330,9 +325,6 @@
       <bpmndi:BPMNShape bpmnElement="checkFromMarketing" id="BPMNShape_checkFromMarketing">
         <omgdc:Bounds height="60.0" width="100.0" x="681.0" y="127.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="checkCostByOperating" id="BPMNShape_checkCostByOperating">
-        <omgdc:Bounds height="60.0" width="100.0" x="321.0" y="409.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="confirmProviderInvoicingByOperating" id="BPMNShape_confirmProviderInvoicingByOperating">
         <omgdc:Bounds height="60.0" width="100.0" x="511.0" y="409.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -376,19 +368,20 @@
         <omgdc:Bounds height="40.0" width="40.0" x="780.0" y="670.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow000" id="BPMNEdge_flow000">
-        <omgdi:waypoint x="96.0" y="60.0"></omgdi:waypoint>
-        <omgdi:waypoint x="141.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="95.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="170.0" y="61.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow010" id="BPMNEdge_flow010">
-        <omgdi:waypoint x="161.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="190.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="91.0" y="205.0"></omgdi:waypoint>
         <omgdi:waypoint x="91.0" y="752.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow020" id="BPMNEdge_flow020">
-        <omgdi:waypoint x="161.0" y="81.0"></omgdi:waypoint>
-        <omgdi:waypoint x="173.0" y="501.0"></omgdi:waypoint>
+        <omgdi:waypoint x="190.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="190.0" y="501.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow030" id="BPMNEdge_flow030">
-        <omgdi:waypoint x="173.0" y="561.0"></omgdi:waypoint>
+        <omgdi:waypoint x="190.0" y="561.0"></omgdi:waypoint>
         <omgdi:waypoint x="91.0" y="752.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow040" id="BPMNEdge_flow040">
@@ -494,7 +487,8 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow480" id="BPMNEdge_flow480">
         <omgdi:waypoint x="370.0" y="267.0"></omgdi:waypoint>
-        <omgdi:waypoint x="371.0" y="409.0"></omgdi:waypoint>
+        <omgdi:waypoint x="369.0" y="438.0"></omgdi:waypoint>
+        <omgdi:waypoint x="511.0" y="439.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow490" id="BPMNEdge_flow490">
         <omgdi:waypoint x="541.0" y="336.0"></omgdi:waypoint>
@@ -508,10 +502,6 @@
       <bpmndi:BPMNEdge bpmnElement="flow510" id="BPMNEdge_flow510">
         <omgdi:waypoint x="731.0" y="187.0"></omgdi:waypoint>
         <omgdi:waypoint x="730.0" y="217.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow520" id="BPMNEdge_flow520">
-        <omgdi:waypoint x="421.0" y="439.0"></omgdi:waypoint>
-        <omgdi:waypoint x="511.0" y="439.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow530" id="BPMNEdge_flow530">
         <omgdi:waypoint x="611.0" y="439.0"></omgdi:waypoint>
