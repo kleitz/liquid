@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://activiti.org/bpmn20" id="definitions">
+  <collaboration id="Collaboration">
+    <participant id="pool_liquid" name="订单流程" processRef="shipping"></participant>
+  </collaboration>
+  <process id="shipping" name="Liquid Shipping Process" isExecutable="true">
+    <documentation>Liquid Shipping Process</documentation>
+    <extensionElements>
+      <activiti:executionListener event="end" delegateExpression="${processEndHandler}"></activiti:executionListener>
+    </extensionElements>
+    <laneSet id="laneSet_shipping">
+      <lane id="lane_sales_or_marketing" name="销售/市场">
+        <flowNodeRef>placeOrder</flowNodeRef>
+        <flowNodeRef>adjustPrice</flowNodeRef>
+        <flowNodeRef>confirmInvoiceAmount</flowNodeRef>
+        <flowNodeRef>return</flowNodeRef>
+        <flowNodeRef>theEnd1</flowNodeRef>
+      </lane>
+      <lane id="lane_accounting" name="商务">
+        <flowNodeRef>checkFromMarketing</flowNodeRef>
+        <flowNodeRef>invoice</flowNodeRef>
+        <flowNodeRef>settlementJoin</flowNodeRef>
+        <flowNodeRef>comfirmData</flowNodeRef>
+        <flowNodeRef>theEnd1</flowNodeRef>
+      </lane>
+      <lane id="lane_marketing" name="市场"></lane>
+      <lane id="lane_operating" name="操作">
+        <flowNodeRef>sendTruck</flowNodeRef>
+        <flowNodeRef>sendLoadingOnYard</flowNodeRef>
+      </lane>
+    </laneSet>
+    <startEvent id="placeOrder" activiti:initiator="employeeName"></startEvent>
+    <userTask id="sendTruck" name="派车" activiti:candidateGroups="ROLE_OPERATING">
+      <documentation>${employeeName}已经在${endTime}发布车辆调度指令。您需要派车。</documentation>
+    </userTask>
+    <userTask id="adjustPrice" name="修正订单价格" activiti:assignee="${orderOwner}">
+      <documentation>${employeeName}已经在${endTime}完成回收签收单，您需要修正订单价格。</documentation>
+    </userTask>
+    <userTask id="confirmInvoiceAmount" name="确认发票金额" activiti:assignee="${orderOwner}">
+      <documentation>您需要确认发票金额${salesPrice}。</documentation>
+    </userTask>
+    <sequenceFlow id="flow420" sourceRef="confirmInvoiceAmount" targetRef="invoice"></sequenceFlow>
+    <userTask id="invoice" name="开发票" activiti:candidateGroups="ROLE_COMMERCE">
+      <documentation>您需要开发票。</documentation>
+    </userTask>
+    <sequenceFlow id="flow430" sourceRef="invoice" targetRef="return"></sequenceFlow>
+    <userTask id="return" name="催收款" activiti:assignee="${orderOwner}">
+      <documentation>您需要催收款。</documentation>
+    </userTask>
+    <userTask id="checkFromMarketing" name="核对市场采购金额" activiti:candidateGroups="ROLE_COMMERCE">
+      <documentation>您需要核对市场采购金额。</documentation>
+    </userTask>
+    <parallelGateway id="settlementJoin" name="结算合并"></parallelGateway>
+    <sequenceFlow id="flow570" sourceRef="settlementJoin" targetRef="comfirmData"></sequenceFlow>
+    <userTask id="comfirmData" name="确认修正数据" activiti:candidateGroups="ROLE_COMMERCE">
+      <documentation>您需要确认修正数据。</documentation>
+    </userTask>
+    <sequenceFlow id="flow580" sourceRef="comfirmData" targetRef="theEnd1"></sequenceFlow>
+    <endEvent id="theEnd1" name="End"></endEvent>
+    <sequenceFlow id="flow583" sourceRef="placeOrder" targetRef="sendTruck"></sequenceFlow>
+    <sequenceFlow id="flow584" sourceRef="sendTruck" targetRef="adjustPrice"></sequenceFlow>
+    <sequenceFlow id="flow586" sourceRef="return" targetRef="settlementJoin"></sequenceFlow>
+    <sequenceFlow id="flow587" sourceRef="checkFromMarketing" targetRef="settlementJoin"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Collaboration">
+    <bpmndi:BPMNPlane bpmnElement="Collaboration" id="BPMNPlane_Collaboration">
+      <bpmndi:BPMNShape bpmnElement="pool_liquid" id="BPMNShape_pool_liquid">
+        <omgdc:Bounds height="463.0" width="1140.0" x="1.0" y="0.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="lane_sales_or_marketing" id="BPMNShape_lane_sales_or_marketing">
+        <omgdc:Bounds height="101.0" width="1120.0" x="21.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="lane_accounting" id="BPMNShape_lane_accounting">
+        <omgdc:Bounds height="151.0" width="1120.0" x="21.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="lane_marketing" id="BPMNShape_lane_marketing">
+        <omgdc:Bounds height="109.0" width="1120.0" x="21.0" y="252.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="lane_operating" id="BPMNShape_lane_operating">
+        <omgdc:Bounds height="101.0" width="1120.0" x="21.0" y="360.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="placeOrder" id="BPMNShape_placeOrder">
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="44.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sendTruck" id="BPMNShape_sendTruck">
+        <omgdc:Bounds height="60.0" width="100.0" x="170.0" y="379.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="adjustPrice" id="BPMNShape_adjustPrice">
+        <omgdc:Bounds height="60.0" width="100.0" x="170.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="confirmInvoiceAmount" id="BPMNShape_confirmInvoiceAmount">
+        <omgdc:Bounds height="60.0" width="100.0" x="490.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="invoice" id="BPMNShape_invoice">
+        <omgdc:Bounds height="60.0" width="100.0" x="700.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="return" id="BPMNShape_return">
+        <omgdc:Bounds height="60.0" width="100.0" x="700.0" y="31.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="checkFromMarketing" id="BPMNShape_checkFromMarketing">
+        <omgdc:Bounds height="60.0" width="100.0" x="490.0" y="177.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="settlementJoin" id="BPMNShape_settlementJoin">
+        <omgdc:Bounds height="40.0" width="40.0" x="870.0" y="186.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="comfirmData" id="BPMNShape_comfirmData">
+        <omgdc:Bounds height="60.0" width="100.0" x="1000.0" y="177.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="theEnd1" id="BPMNShape_theEnd1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1040.0" y="44.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow420" id="BPMNEdge_flow420">
+        <omgdi:waypoint x="540.0" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="750.0" y="130.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow430" id="BPMNEdge_flow430">
+        <omgdi:waypoint x="750.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="750.0" y="91.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow570" id="BPMNEdge_flow570">
+        <omgdi:waypoint x="910.0" y="206.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1000.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow580" id="BPMNEdge_flow580">
+        <omgdi:waypoint x="1050.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1057.0" y="79.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow583" id="BPMNEdge_flow583">
+        <omgdi:waypoint x="77.0" y="79.0"></omgdi:waypoint>
+        <omgdi:waypoint x="77.0" y="409.0"></omgdi:waypoint>
+        <omgdi:waypoint x="170.0" y="409.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow584" id="BPMNEdge_flow584">
+        <omgdi:waypoint x="220.0" y="379.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="90.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow586" id="BPMNEdge_flow586">
+        <omgdi:waypoint x="800.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="890.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="890.0" y="186.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow587" id="BPMNEdge_flow587">
+        <omgdi:waypoint x="590.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="870.0" y="206.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
