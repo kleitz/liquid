@@ -50,7 +50,6 @@
         <flowNodeRef>reclaimReceipt</flowNodeRef>
         <flowNodeRef>confirmProviderInvoicingByOperating</flowNodeRef>
         <flowNodeRef>loadingDecision</flowNodeRef>
-        <flowNodeRef>sendLoadingOnYard</flowNodeRef>
         <flowNodeRef>loadOnYardAndRailwayPlanFork</flowNodeRef>
         <flowNodeRef>loadOnYard</flowNodeRef>
         <flowNodeRef>recordTory</flowNodeRef>
@@ -189,16 +188,12 @@
     <sequenceFlow id="flow580" sourceRef="comfirmData" targetRef="theEnd1"></sequenceFlow>
     <endEvent id="theEnd1" name="End"></endEvent>
     <exclusiveGateway id="loadingDecision" name="装货决策"></exclusiveGateway>
-    <sequenceFlow id="flow050" sourceRef="loadingDecision" targetRef="sendLoadingOnYard">
+    <sequenceFlow id="flow050" sourceRef="loadingDecision" targetRef="loadOnYardAndRailwayPlanFork">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${loadingType == 0}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow060" sourceRef="loadingDecision" targetRef="loadByTruckAndRailwayPlanFork">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${loadingType == 1}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="sendLoadingOnYard" name="发布场装指令" activiti:candidateGroups="ROLE_OPERATING">
-      <documentation>${employeeName}已经在${endTime}分配集装箱。您需要发布场装指令。</documentation>
-    </userTask>
-    <sequenceFlow id="flow070" sourceRef="sendLoadingOnYard" targetRef="loadOnYardAndRailwayPlanFork"></sequenceFlow>
     <parallelGateway id="loadOnYardAndRailwayPlanFork" name="场装同时申报铁路计划"></parallelGateway>
     <sequenceFlow id="flow090" sourceRef="loadOnYardAndRailwayPlanFork" targetRef="applyRailwayPlan"></sequenceFlow>
     <sequenceFlow id="flow100" sourceRef="loadOnYardAndRailwayPlanFork" targetRef="loadOnYard"></sequenceFlow>
@@ -257,7 +252,7 @@
         <omgdc:Bounds height="60.0" width="100.0" x="41.0" y="752.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="loadByTruckAndRailwayPlanFork" id="BPMNShape_loadByTruckAndRailwayPlanFork">
-        <omgdc:Bounds height="40.0" width="40.0" x="350.0" y="589.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="340.0" y="510.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="applyRailwayPlan" id="BPMNShape_applyRailwayPlan">
         <omgdc:Bounds height="60.0" width="100.0" x="420.0" y="580.0"></omgdc:Bounds>
@@ -347,13 +342,10 @@
         <omgdc:Bounds height="35.0" width="35.0" x="1131.0" y="43.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="loadingDecision" id="BPMNShape_loadingDecision">
-        <omgdc:Bounds height="40.0" width="40.0" x="161.0" y="668.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="sendLoadingOnYard" id="BPMNShape_sendLoadingOnYard">
-        <omgdc:Bounds height="60.0" width="100.0" x="222.0" y="659.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="250.0" y="589.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="loadOnYardAndRailwayPlanFork" id="BPMNShape_loadOnYardAndRailwayPlanFork">
-        <omgdc:Bounds height="40.0" width="40.0" x="350.0" y="668.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="340.0" y="668.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="loadOnYard" id="BPMNShape_loadOnYard">
         <omgdc:Bounds height="60.0" width="100.0" x="420.0" y="659.0"></omgdc:Bounds>
@@ -382,20 +374,20 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow030" id="BPMNEdge_flow030">
         <omgdi:waypoint x="190.0" y="561.0"></omgdi:waypoint>
+        <omgdi:waypoint x="189.0" y="689.0"></omgdi:waypoint>
         <omgdi:waypoint x="91.0" y="752.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow040" id="BPMNEdge_flow040">
         <omgdi:waypoint x="141.0" y="782.0"></omgdi:waypoint>
-        <omgdi:waypoint x="181.0" y="782.0"></omgdi:waypoint>
-        <omgdi:waypoint x="181.0" y="708.0"></omgdi:waypoint>
+        <omgdi:waypoint x="269.0" y="782.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="629.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow110" id="BPMNEdge_flow110">
-        <omgdi:waypoint x="390.0" y="609.0"></omgdi:waypoint>
-        <omgdi:waypoint x="420.0" y="610.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="550.0"></omgdi:waypoint>
+        <omgdi:waypoint x="470.0" y="580.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow120" id="BPMNEdge_flow120">
-        <omgdi:waypoint x="370.0" y="589.0"></omgdi:waypoint>
-        <omgdi:waypoint x="369.0" y="531.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="530.0"></omgdi:waypoint>
         <omgdi:waypoint x="420.0" y="531.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow190" id="BPMNEdge_flow190">
@@ -530,24 +522,19 @@
         <omgdi:waypoint x="1148.0" y="78.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow050" id="BPMNEdge_flow050">
-        <omgdi:waypoint x="201.0" y="688.0"></omgdi:waypoint>
-        <omgdi:waypoint x="222.0" y="689.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="629.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="668.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow060" id="BPMNEdge_flow060">
-        <omgdi:waypoint x="181.0" y="668.0"></omgdi:waypoint>
-        <omgdi:waypoint x="219.0" y="609.0"></omgdi:waypoint>
-        <omgdi:waypoint x="350.0" y="609.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow070" id="BPMNEdge_flow070">
-        <omgdi:waypoint x="322.0" y="689.0"></omgdi:waypoint>
-        <omgdi:waypoint x="350.0" y="688.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="589.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="550.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow090" id="BPMNEdge_flow090">
-        <omgdi:waypoint x="370.0" y="668.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="668.0"></omgdi:waypoint>
         <omgdi:waypoint x="470.0" y="640.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow100" id="BPMNEdge_flow100">
-        <omgdi:waypoint x="390.0" y="688.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="688.0"></omgdi:waypoint>
         <omgdi:waypoint x="420.0" y="689.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow130" id="BPMNEdge_flow130">
