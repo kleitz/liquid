@@ -24,21 +24,21 @@ import java.util.Map;
 public class ProcessServiceImpl implements ProcessService {
     private static final Logger logger = LoggerFactory.getLogger(ProcessServiceImpl.class);
 
-    private String processDefinitionKey = "shipping";
-    private String definitionClasspath = "processes/liquid.shipping.bpmn20.xml";
+//    private String processDefinitionKey = "shipping";
+//    private String definitionClasspath = "processes/liquid.shipping.bpmn20.xml";
 
     @Autowired
     private ProcessEngine processEngine;
 
     @Override
-    public void startProcess(String uid, BusinessKey businessKey, Map<String, Object> variableMap) {
+    public void startProcess(String serviceTypeCode, String uid, BusinessKey businessKey, Map<String, Object> variableMap) {
         RuntimeService runtimeService = processEngine.getRuntimeService();
-
-        deployProcess();
+        Process process = getProcess(serviceTypeCode);
+        deployProcess(process);
 
         variableMap.put("employeeName", uid);
         variableMap.put("endTime", DateUtil.stringOf(Calendar.getInstance().getTime(), DatePattern.UNTIL_SECOND));
-        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey.getText(), variableMap);
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(process.getKey(), businessKey.getText(), variableMap);
         runtimeService.addUserIdentityLink(processInstance.getId(), uid, IdentityLinkType.STARTER);
 
         // FIXME email notification.
@@ -48,13 +48,29 @@ public class ProcessServiceImpl implements ProcessService {
 //                account.getEmail());
     }
 
-    private void deployProcess() {
+    private void deployProcess(Process process) {
         RepositoryService repositoryService = processEngine.getRepositoryService();
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().
-                processDefinitionKey(processDefinitionKey).latestVersion().singleResult();
+                processDefinitionKey(process.getKey()).latestVersion().singleResult();
         // If there are something changed in definition file located definitionClasspath, activiti will auto-deploy it.
         if (null == processDefinition)
-            repositoryService.createDeployment().addClasspathResource(definitionClasspath).deploy();
+            repositoryService.createDeployment().addClasspathResource(process.getClasspath()).deploy();
+    }
+
+    private Process getProcess(String serviceTypeCode) {
+        switch (serviceTypeCode) {
+            case "0":
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+                return new Process("shipping", "processes/liquid.shipping.bpmn20.xml");
+            case "5":
+            case "6":
+                return new Process("truck", "processes/liquid.truck.bpmn20.xml");
+            default:
+                throw new IllegalArgumentException(serviceTypeCode);
+        }
     }
 
     @Override
@@ -64,6 +80,34 @@ public class ProcessServiceImpl implements ProcessService {
                 processDefinitionKey(key).orderByProcessDefinitionVersion().asc().list();
         for (ProcessDefinition processDefinition : processDefinitions) {
             System.out.println(processDefinition);
+        }
+    }
+
+    private static class Process {
+        private final String key;
+        private final String classpath;
+
+        public Process(String key, String classpath) {
+            this.key = key;
+            this.classpath = classpath;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public String getClasspath() {
+            return classpath;
+        }
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("Process{");
+            sb.append("super=").append(super.toString()).append('\'');
+            sb.append(", key='").append(key).append('\'');
+            sb.append(", classpath='").append(classpath).append('\'');
+            sb.append('}');
+            return sb.toString();
         }
     }
 }

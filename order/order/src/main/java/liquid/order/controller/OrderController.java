@@ -333,7 +333,7 @@ public class OrderController extends BaseController {
         variableMap.put("hasDelivery", hasDelivery);
         variableMap.put("orderOwner", order.getUpdatedBy());
         variableMap.put("tradeType", order.getTradeType());
-        processService.startProcess(order.getUpdatedBy(), BusinessKey.encode(order.getId(), order.getOrderNo()), variableMap);
+        processService.startProcess(order.getServiceType().getCode(), order.getUpdatedBy(), BusinessKey.encode(order.getId(), order.getOrderNo()), variableMap);
 
         return String.format("redirect:/task?key=%s", BusinessKey.encode(order.getId(), order.getOrderNo()).getText());
     }
