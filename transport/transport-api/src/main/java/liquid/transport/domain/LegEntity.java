@@ -13,6 +13,7 @@ import javax.persistence.*;
  * Date: 10/10/13
  * Time: 8:18 PM
  */
+@Deprecated
 @Entity(name = "TSP_LEG")
 public class LegEntity extends BaseIdEntity {
     @JsonIgnore

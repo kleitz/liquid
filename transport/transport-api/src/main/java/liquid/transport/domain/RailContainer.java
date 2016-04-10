@@ -15,7 +15,7 @@ import java.util.Date;
 public class RailContainer extends BaseLegContainer {
     @OneToOne
     @JoinColumn(name = "TRUCK_ID")
-    private TruckEntity truck;
+    private Truck truck;
 
     @ManyToOne
     @JoinColumn(name = "FLEET_ID")
@@ -71,11 +71,11 @@ public class RailContainer extends BaseLegContainer {
     @Transient
     private boolean batch;
 
-    public TruckEntity getTruck() {
+    public Truck getTruck() {
         return truck;
     }
 
-    public void setTruck(TruckEntity truck) {
+    public void setTruck(Truck truck) {
         this.truck = truck;
     }
 

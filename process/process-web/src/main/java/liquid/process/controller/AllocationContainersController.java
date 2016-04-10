@@ -23,7 +23,7 @@ import liquid.order.service.ServiceItemService;
 import liquid.transport.domain.RailContainer;
 import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.domain.TransMode;
-import liquid.transport.domain.TruckEntity;
+import liquid.transport.domain.Truck;
 import liquid.transport.facade.ContainerAllocationFacade;
 import liquid.transport.model.*;
 import liquid.transport.service.RailContainerService;
@@ -146,35 +146,23 @@ public class AllocationContainersController extends BaseTaskController {
         if (ContainerType.RAIL.getType() == order.getContainerType()) {
             return "task/allocateContainers/rail_container";
         } else {
-            List<TruckForm> truckForms = new ArrayList<>();
+            List<Truck> trucks = new ArrayList<>();
 
             Iterable<ShipmentEntity> shipmentEntities = shipmentService.findByOrderId(orderId);
             for (ShipmentEntity shipmentEntity : shipmentEntities) {
-                Iterable<TruckEntity> truckEntityIterable = truckService.findByShipmentId(shipmentEntity.getId());
-                List<TruckForm> truckFormsForShipment = new ArrayList<>();
-                for (TruckEntity truckEntity : truckEntityIterable) {
-                    TruckForm truck = convert(truckEntity);
+                Iterable<Truck> truckEntityIterable = truckService.findByShipmentId(shipmentEntity.getId());
+                List<Truck> truckFormsForShipment = new ArrayList<>();
+                for (Truck truck : truckEntityIterable) {
                     truckFormsForShipment.add(truck);
                 }
 
-                truckForms.addAll(truckFormsForShipment);
+                trucks.addAll(truckFormsForShipment);
             }
 
             model.addAttribute("shipmentContainerAllocation", new ShipmentContainerAllocation());
-            model.addAttribute("truckForms", truckForms);
+            model.addAttribute("truckForms", trucks);
             return "task/allocateContainers/self_container";
         }
-    }
-
-    private TruckForm convert(TruckEntity entity) {
-        TruckForm truck = new TruckForm();
-        truck.setId(entity.getId());
-        truck.setShipmentId(entity.getShipment().getId());
-        truck.setPickingAt(DateUtil.stringOf(entity.getPickingAt()));
-        truck.setServiceProviderId(entity.getServiceProviderId());
-        truck.setLicensePlate(entity.getLicensePlate());
-        truck.setDriver(entity.getDriver());
-        return truck;
     }
 
     @RequestMapping(value = "/rail", method = RequestMethod.GET, params = "shipmentId")
@@ -272,11 +260,10 @@ public class AllocationContainersController extends BaseTaskController {
         model.addAttribute("contextPath", "/task/" + taskId + "/allocation?shipmentId=" + shipmentId + "&ownerId=" + ownerId + "&yardId=" + yardId + "&");
 
         // For the allocation form
-        List<TruckForm> truckForms = new ArrayList<>();
-        Iterable<TruckEntity> truckEntityIterable = truckService.findByShipmentId(shipmentEntity.getId());
-        List<TruckForm> truckFormsForShipment = new ArrayList<>();
-        for (TruckEntity truckEntity : truckEntityIterable) {
-            TruckForm truck = convert(truckEntity);
+        List<Truck> truckForms = new ArrayList<>();
+        Iterable<Truck> truckEntityIterable = truckService.findByShipmentId(shipmentEntity.getId());
+        List<Truck> truckFormsForShipment = new ArrayList<>();
+        for (Truck truck : truckEntityIterable) {
             truckFormsForShipment.add(truck);
         }
 
@@ -308,11 +295,11 @@ public class AllocationContainersController extends BaseTaskController {
         for (RailContainer railContainer : railContainers) {
             for (ContainerAllocation containerAllocation : containerAllocations) {
                 if (railContainer.getSc().getId().equals(containerAllocation.getAllocationId())) {
-                    TruckEntity truckEntity = truckService.find(containerAllocation.getTruckId());
-                    railContainer.setTruck(truckEntity);
-                    railContainer.setFleet(ServiceProvider.newInstance(liquid.operation.domain.ServiceProvider.class, truckEntity.getServiceProviderId()));
-                    railContainer.setPlateNo(truckEntity.getLicensePlate());
-                    railContainer.setTrucker(truckEntity.getDriver());
+                    Truck truck = truckService.find(containerAllocation.getTruckId());
+                    railContainer.setTruck(truck);
+                    railContainer.setFleet(truck.getSp());
+                    railContainer.setPlateNo(truck.getLicensePlate());
+                    railContainer.setTrucker(truck.getDriver());
                     railContainer.setReleasedAt(new Date());
                     railContainerService.save(railContainer);
                 }

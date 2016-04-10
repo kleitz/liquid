@@ -2,15 +2,13 @@ package liquid.process.controller;
 
 import liquid.core.model.Alert;
 import liquid.operation.service.ServiceProviderService;
+import liquid.order.domain.Order;
 import liquid.process.domain.Task;
 import liquid.process.handler.SendTruckHandler;
 import liquid.process.model.SendingTruckForm;
 import liquid.process.service.TaskService;
-import liquid.transport.domain.ShipmentEntity;
-import liquid.transport.domain.TruckEntity;
-import liquid.transport.model.TruckForm;
+import liquid.transport.domain.Truck;
 import liquid.transport.service.TruckService;
-import liquid.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Tao Ma on 4/16/15.
@@ -59,26 +55,12 @@ public class SendTruckController extends AbstractTaskController {
             return "task/sendTruck/init";
         }
 
-        List<TruckEntity> truckEntityList = new ArrayList<>();
-        for (TruckForm truck : sendingTruckForm.getTruckList()) {
-            TruckEntity truckEntity = convert(truck);
-            truckEntityList.add(truckEntity);
+        for (Truck truck: sendingTruckForm.getTruckList()) {
+            truck.setOrder(Order.newInstance(Order.class, sendingTruckForm.getOrderId()));
         }
-        truckService.save(truckEntityList);
+        truckService.save(sendingTruckForm.getTruckList());
 
         redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
         return "redirect:/task/" + taskId;
-    }
-
-    // FIXME - use Fomatter instead.
-    private TruckEntity convert(TruckForm truck) {
-        TruckEntity entity = new TruckEntity();
-        entity.setId(truck.getId());
-        entity.setShipment(ShipmentEntity.newInstance(ShipmentEntity.class, truck.getShipmentId()));
-        entity.setPickingAt(DateUtil.dateOf(truck.getPickingAt()));
-        entity.setServiceProviderId(truck.getServiceProviderId());
-        entity.setLicensePlate(truck.getLicensePlate());
-        entity.setDriver(truck.getDriver());
-        return entity;
     }
 }

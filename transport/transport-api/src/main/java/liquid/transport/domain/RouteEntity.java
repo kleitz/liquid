@@ -15,6 +15,7 @@ import java.util.List;
  * enabled      启用,
  * disabled     禁用.
  */
+@Deprecated
 @Entity(name = "TSP_ROUTE")
 public class RouteEntity extends BaseStatusEntity {
 

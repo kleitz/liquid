@@ -12,6 +12,7 @@ import java.util.Locale;
 /**
  * Created by Tao Ma on 6/7/15.
  */
+@Deprecated
 @Component
 public class LegFormatter implements Formatter<LegEntity> {
     @Autowired

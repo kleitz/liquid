@@ -1,7 +1,7 @@
 package liquid.process.model;
 
 import liquid.process.web.domain.TaskForm;
-import liquid.transport.model.TruckForm;
+import liquid.transport.domain.Truck;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -11,13 +11,13 @@ import java.util.List;
  */
 public class SendingTruckForm extends TaskForm {
     @Valid
-    private List<TruckForm> truckList;
+    private List<Truck> truckList;
 
-    public List<TruckForm> getTruckList() {
+    public List<Truck> getTruckList() {
         return truckList;
     }
 
-    public void setTruckList(List<TruckForm> truckList) {
+    public void setTruckList(List<Truck> truckList) {
         this.truckList = truckList;
     }
 

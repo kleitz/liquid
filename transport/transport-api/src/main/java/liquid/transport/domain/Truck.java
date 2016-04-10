@@ -1,6 +1,8 @@
 package liquid.transport.domain;
 
 import liquid.core.domain.BaseUpdateEntity;
+import liquid.operation.domain.ServiceProvider;
+import liquid.order.domain.Order;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,13 +11,19 @@ import java.util.Date;
  * Created by Tao Ma on 12/31/14.
  */
 @Entity(name = "TSP_TRUCK")
-public class TruckEntity extends BaseUpdateEntity {
+public class Truck extends BaseUpdateEntity {
+    @ManyToOne
+    @JoinColumn(name = "ORDER_ID")
+    private Order order;
+
+    @Deprecated
     @ManyToOne
     @JoinColumn(name = "SHIPMENT_ID")
     private ShipmentEntity shipment;
 
-    @Column(name = "SP_ID")
-    private Long serviceProviderId;
+    @ManyToOne
+    @JoinColumn(name = "SP_ID")
+    private ServiceProvider sp;
 
     @Column(name = "PICKING_AT")
     private Date pickingAt;
@@ -25,6 +33,14 @@ public class TruckEntity extends BaseUpdateEntity {
 
     @Column(name = "DRIVER")
     private String driver;
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 
     public ShipmentEntity getShipment() {
         return shipment;
@@ -42,12 +58,12 @@ public class TruckEntity extends BaseUpdateEntity {
         this.pickingAt = pickingAt;
     }
 
-    public Long getServiceProviderId() {
-        return serviceProviderId;
+    public ServiceProvider getSp() {
+        return sp;
     }
 
-    public void setServiceProviderId(Long serviceProviderId) {
-        this.serviceProviderId = serviceProviderId;
+    public void setSp(ServiceProvider sp) {
+        this.sp = sp;
     }
 
     public String getLicensePlate() {
@@ -64,5 +80,19 @@ public class TruckEntity extends BaseUpdateEntity {
 
     public void setDriver(String driver) {
         this.driver = driver;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Truck{");
+        sb.append("super=").append(super.toString()).append('\'');
+        sb.append(", order=").append(order);
+        sb.append(", shipment=").append(shipment);
+        sb.append(", sp=").append(sp);
+        sb.append(", pickingAt=").append(pickingAt);
+        sb.append(", licensePlate='").append(licensePlate).append('\'');
+        sb.append(", driver='").append(driver).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

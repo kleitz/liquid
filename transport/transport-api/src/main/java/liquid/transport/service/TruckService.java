@@ -1,14 +1,19 @@
 package liquid.transport.service;
 
-import liquid.transport.domain.TruckEntity;
+import liquid.transport.domain.Truck;
+
+import java.util.List;
 
 /**
  * Created by Tao Ma on 4/12/15.
  */
 public interface TruckService {
-    TruckEntity find(Long id);
+    Truck find(Long id);
 
-    Iterable<TruckEntity> findByShipmentId(Long shipmentId);
+    @Deprecated
+    Iterable<Truck> findByShipmentId(Long shipmentId);
 
-    Iterable<TruckEntity> save(Iterable<TruckEntity> truckEntities);
+    List<Truck> findByOrderId(Long orderId);
+
+    Iterable<Truck> save(Iterable<Truck> truckEntities);
 }

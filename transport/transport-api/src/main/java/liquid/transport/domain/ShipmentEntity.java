@@ -15,6 +15,7 @@ import java.util.List;
  * Date: 10/10/13
  * Time: 9:15 PM
  */
+@Deprecated
 @Entity(name = "TSP_SHIPMENT")
 public class ShipmentEntity extends BaseTaskEntity {
     @JsonIgnore
