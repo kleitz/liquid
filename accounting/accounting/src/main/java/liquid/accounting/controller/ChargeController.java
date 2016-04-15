@@ -40,6 +40,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -299,14 +301,24 @@ public class ChargeController {
     @RequestMapping(value = "/exchange_rate", method = RequestMethod.GET)
     public String getExchangeRate(Model model) {
         ExchangeRate exchangeRate = exchangeRateService.getExchangeRate();
+        Iterable<ExchangeRate> exchangeRateList = exchangeRateService.findAll();
 
         model.addAttribute("exchangeRateForm", exchangeRate);
+        model.addAttribute("exchangeRateList", exchangeRateList);
         return "charge/exchange_rate";
     }
 
     @RequestMapping(value = "/exchange_rate", method = RequestMethod.POST)
     public String setExchangeRate(@ModelAttribute("exchangeRateForm") ExchangeRate exchangeRate, RedirectAttributes redirectAttributes) {
         logger.debug("exchangeRate: {}", exchangeRate);
+
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        calendar.clear();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        exchangeRate.setMonth(calendar.getTime());
 
         exchangeRateService.save(exchangeRate);
         redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
