@@ -441,6 +441,9 @@ public class OrderController extends BaseController {
             case "amount":
                 tab = "amount";
                 break;
+            case "changes":
+                tab = "changes";
+                break;
             default:
                 tab = "detail";
                 break;
