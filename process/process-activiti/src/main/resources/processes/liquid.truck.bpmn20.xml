@@ -5,6 +5,9 @@
     <participant id="pool1" name="卡车流程" processRef="process_pool1"></participant>
   </collaboration>
   <process id="process_pool1" name="process_pool1" isExecutable="true">
+    <extensionElements>
+      <activiti:executionListener event="end" delegateExpression="${processEndHandler}"></activiti:executionListener>
+    </extensionElements>
     <laneSet id="laneSet_process_pool1">
       <lane id="lane1" name="销售/市场"></lane>
       <lane id="lane2" name="商务"></lane>
