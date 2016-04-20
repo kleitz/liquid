@@ -32,23 +32,23 @@
   <div class="modal" id="addChange" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;" data-backdrop="static">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
+          <form id="changeForm" method="POST" th:action="'/orders/' + ${order.id} + '/changes'">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4 class="modal-title" id="myModalLabel"><span th:text="#{change}">Add Change</span></h4>
         </div>
         <div class="modal-body">
-          <form id="changeForm" method="POST" th:action="'/orders/' + ${order.id} + '/changes'">
+        </div>
+
+        <div class="modal-footer">
             <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
               <span th:text="#{modal.close}"/>
             </button>
             <button type="submit" name="add" value="add" form="changeForm" class="btn btn-warning btn-sm">
               <span th:text="#{add}">Add</span>
             </button>
+        <div>
           </form>
-        </div>
-
-        <div class="modal-footer">
-       </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
