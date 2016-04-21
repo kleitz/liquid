@@ -67,7 +67,6 @@ public class ProcessServiceImpl implements ProcessService {
             case "4":
                 return new Process("shipping", "processes/liquid.shipping.bpmn20.xml");
             case "5":
-                return new Process("truck", "processes/liquid.truck.origin.bpmn20.xml");
             case "6":
                 return new Process("process_pool1", "processes/liquid.truck.bpmn20.xml");
             default:

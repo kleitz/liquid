@@ -443,6 +443,9 @@ public class OrderController extends BaseController {
                 break;
             case "changes":
                 tab = "changes";
+                OrderChange orderChange = new OrderChange();
+                model.addAttribute("change", orderChange);
+                model.addAttribute("changeItemOptions", ChangeItem.values());
                 break;
             default:
                 tab = "detail";

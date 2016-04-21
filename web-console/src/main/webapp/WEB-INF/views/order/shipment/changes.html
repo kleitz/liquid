@@ -15,11 +15,11 @@
     <thead>
       <tr>
         <th>No.</th>
-        <th>Type</th>
-        <th>Old One</th>
-        <th>New One</th>
-        <th>Changed At</th>
-        <th>Changed By</th>                    
+        <th><span th:text="#{change.item}">Item</span></th>
+        <th><span th:text="#{change.old.value}">Old One</span></th>
+        <th><span th:text="#{change.new.value}">New One</span></th>
+        <th><span th:text="#{change.date}">Changed At</span></th>
+        <th><span th:text="#{change.user}">Changed By</span></th>                    
         <th>
           <a data-toggle="modal" data-target="#addChange" href="#">
             <span class="glyphicon glyphicon-plus text-success" />
@@ -32,23 +32,33 @@
   <div class="modal" id="addChange" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;" data-backdrop="static">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
-          <form id="changeForm" method="POST" th:action="'/orders/' + ${order.id} + '/changes'">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title" id="myModalLabel"><span th:text="#{change}">Add Change</span></h4>
-        </div>
-        <div class="modal-body">
-        </div>
+        <form id="changeForm" method="POST" th:action="'/orders/' + ${order.id} + '/changes'"
+              th:object="${change}">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel"><span th:text="#{change}">Add Change</span></h4>
+          </div>
 
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
-              <span th:text="#{modal.close}"/>
-            </button>
-            <button type="submit" name="add" value="add" form="changeForm" class="btn btn-warning btn-sm">
-              <span th:text="#{add}">Add</span>
-            </button>
-        </div>
-          </form>
+          <div class="modal-body">
+            <div class="form-group form-group-sm">
+              <label for="transportMode"  class="control-label" th:text="#{change.item}">Change Item</label>
+              <select th:field="*{item}" class="form-control input-sm">
+                <option th:each="option : ${changeItemOptions}"
+                        th:value="${option.fieldName}" th:text="#{${option.i18nKey}}">Change Item
+                </option>
+              </select>
+            </div>
+          </div>
+  
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
+                <span th:text="#{modal.close}"/>
+              </button>
+              <button type="submit" name="add" value="add" form="changeForm" class="btn btn-warning btn-sm">
+                <span th:text="#{add}">Add</span>
+              </button>
+          </div>
+        </form>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
