@@ -30,7 +30,7 @@ public class OrderChange extends BaseIdEntity {
     private Date changedAt;
 
     @Column(name = "CHANGED_BY")
-    private Date changedBy;
+    private String changedBy;
 
     public Order getOrder() {
         return order;
@@ -72,11 +72,11 @@ public class OrderChange extends BaseIdEntity {
         this.changedAt = changedAt;
     }
 
-    public Date getChangedBy() {
+    public String getChangedBy() {
         return changedBy;
     }
 
-    public void setChangedBy(Date changedBy) {
+    public void setChangedBy(String changedBy) {
         this.changedBy = changedBy;
     }
 

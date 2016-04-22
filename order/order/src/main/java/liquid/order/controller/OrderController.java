@@ -20,6 +20,7 @@ import liquid.operation.domain.*;
 import liquid.operation.service.*;
 import liquid.order.domain.*;
 import liquid.order.model.OrderSearchBar;
+import liquid.order.service.OrderChangeService;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
 import liquid.process.service.BusinessKey;
@@ -104,6 +105,9 @@ public class OrderController extends BaseController {
 
     @Autowired
     private ProcessService processService;
+
+    @Autowired
+    private OrderChangeService orderChangeService;
 
     @ModelAttribute("serviceTypes")
     public Iterable<ServiceType> populateServiceTypes() {
@@ -443,9 +447,11 @@ public class OrderController extends BaseController {
                 break;
             case "changes":
                 tab = "changes";
+                model.addAttribute("changes", orderChangeService.findByOrderId(order.getId()));
+
                 OrderChange orderChange = new OrderChange();
                 model.addAttribute("change", orderChange);
-                model.addAttribute("changeItemOptions", ChangeItem.values());
+                model.addAttribute("changeItemMap", OrderChangeItem.toMap());
                 break;
             default:
                 tab = "detail";

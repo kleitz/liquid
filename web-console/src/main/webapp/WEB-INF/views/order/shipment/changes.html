@@ -27,6 +27,17 @@
         </th>
       </tr>
     </thead>
+    <tbody>
+      <tr th:each="item : ${changes}">
+        <td><span th:text="${item.id}">ID</span></td>
+        <td><span th:text="#{${changeItemMap[item.item]}}">Item</span></td>
+        <td><span th:text="${item.oldValue}">Old One</span></td>
+        <td><span th:text="${item.newValue}">New One</span></td>
+        <td><span th:text="${item.changedAt}">Changed At</span></td>
+        <td><span th:text="${item.changedBy}">Changed By</span></td>                    
+        <td></td>
+      </tr>
+    </tbody>
   </table>
 
   <div class="modal" id="addChange" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;" data-backdrop="static">
@@ -41,13 +52,18 @@
 
           <div class="modal-body">
             <div class="form-group form-group-sm">
-              <label for="transportMode"  class="control-label" th:text="#{change.item}">Change Item</label>
+              <label for="item"  class="control-label" th:text="#{change.item}">Change Item</label>
               <select th:field="*{item}" class="form-control input-sm">
-                <option th:each="option : ${changeItemOptions}"
-                        th:value="${option.fieldName}" th:text="#{${option.i18nKey}}">Change Item
+                <option th:each="option : ${changeItemMap}"
+                        th:value="${option.key}" th:text="#{${option.value}}">Change Item
                 </option>
               </select>
             </div>
+            <div class="form-group form-group-sm">
+              <label for="newValue" class="control-label" th:text="#{change.new.value}">New Value</label>
+              <input type="text" class="form-control" th:field="*{newValue}" />
+            </div>
+ 
           </div>
   
           <div class="modal-footer">

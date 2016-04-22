@@ -2,6 +2,7 @@ package liquid.order.controller;
 
 import liquid.order.domain.Order;
 import liquid.order.domain.OrderChange;
+import liquid.order.service.OrderChangeService;
 import liquid.order.service.OrderService;
 import liquid.process.service.BusinessKey;
 import liquid.process.service.ProcessService;
@@ -26,11 +27,16 @@ public class OrderChangeController {
     private OrderService orderService;
 
     @Autowired
+    private OrderChangeService orderChangeService;
+
+    @Autowired
     private ProcessService processService;
 
     @RequestMapping(method = RequestMethod.POST)
     public String add(@PathVariable Long id, OrderChange change, @RequestHeader(value = "referer") String referer) {
         logger.debug("order id: {}; change: {}; referer: {}.",id, change, referer);
+        change.setOrder(Order.newInstance(Order.class, id));
+        orderChangeService.addChange(change);
         Order order = orderService.find(id);
         processService.messageEventReceived(BusinessKey.encode(order.getId(), order.getOrderNo()));
         return "redirect:" + referer;

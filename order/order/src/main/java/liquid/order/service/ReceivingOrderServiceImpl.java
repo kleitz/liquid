@@ -31,6 +31,7 @@ import static org.springframework.data.jpa.domain.Specifications.where;
  * Date: 10/13/13
  * Time: 4:57 PM
  */
+@Deprecated
 @Service
 public class ReceivingOrderServiceImpl extends AbstractBaseOrderService<ReceivingOrder, ReceivingOrderRepository> {
     private static Logger logger = LoggerFactory.getLogger(ReceivingOrderServiceImpl.class);
