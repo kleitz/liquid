@@ -9,4 +9,6 @@ public interface ProcessService {
     void startProcess(String serviceTypeCode, String uid, BusinessKey businessKey, Map<String, Object> variableMap);
 
     void listProcessDefinitions(String key);
+
+    void messageEventReceived(BusinessKey businessKey);
 }

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <collaboration id="Collaboration">
-    <participant id="pool1" name="卡车流程" processRef="truck"></participant>
+    <participant id="pool1" name="码头流程" processRef="port"></participant>
   </collaboration>
   <message id="changeOrderMessage" name="changeOrder"></message>
-  <process id="truck" name="process_pool1" isExecutable="true">
+  <process id="port" name="process_pool1" isExecutable="true">
     <extensionElements>
       <activiti:executionListener event="end" delegateExpression="${processEndHandler}"></activiti:executionListener>
     </extensionElements>
-    <laneSet id="laneSet_truck">
+    <laneSet id="laneSet_port">
       <lane id="lane1" name="销售/市场"></lane>
       <lane id="lane2" name="商务"></lane>
       <lane id="lane3" name="市场"></lane>
@@ -23,13 +23,13 @@
       <userTask id="adjustPrice" name="修正订单价格" activiti:assignee="${orderOwner}">
         <documentation>${employeeName}已经在${endTime}完成回收签收单，您需要修正订单价格。</documentation>
       </userTask>
-      <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="sendTruck"></sequenceFlow>
-      <sequenceFlow id="flow2" sourceRef="sendTruck" targetRef="portOps"></sequenceFlow>
+      <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="portOps"></sequenceFlow>
+      <sequenceFlow id="flow2" sourceRef="sendTruck" targetRef="adjustPrice"></sequenceFlow>
       <sequenceFlow id="flow3" sourceRef="adjustPrice" targetRef="endevent1"></sequenceFlow>
       <userTask id="portOps" name="码头操作" activiti:candidateGroups="ROLE_OPERATING">
       	<documentation>${employeeName}已经在${endTime}派车。你要进行码头操作。</documentation>
       </userTask>
-      <sequenceFlow id="flow16" sourceRef="portOps" targetRef="adjustPrice"></sequenceFlow>
+      <sequenceFlow id="flow16" sourceRef="portOps" targetRef="sendTruck"></sequenceFlow>
     </subProcess>
     <boundaryEvent id="boundarymessage1" name="Message" attachedToRef="subprocess1" cancelActivity="true">
       <messageEventDefinition messageRef="changeOrderMessage"></messageEventDefinition>
@@ -96,13 +96,13 @@
         <omgdc:Bounds height="35.0" width="35.0" x="355.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sendTruck" id="BPMNShape_sendTruck">
-        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="480.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="380.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="adjustPrice" id="BPMNShape_adjustPrice">
         <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="380.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="portOps" id="BPMNShape_portOps">
+        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="470.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundarymessage1" id="BPMNShape_boundarymessage1">
         <omgdc:Bounds height="30.0" width="30.0" x="300.0" y="594.0"></omgdc:Bounds>
@@ -139,19 +139,19 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="372.0" y="560.0"></omgdi:waypoint>
-        <omgdi:waypoint x="372.0" y="535.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="525.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="372.0" y="480.0"></omgdi:waypoint>
-        <omgdi:waypoint x="372.0" y="435.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="380.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="145.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="372.0" y="90.0"></omgdi:waypoint>
         <omgdi:waypoint x="372.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="372.0" y="380.0"></omgdi:waypoint>
-        <omgdi:waypoint x="372.0" y="145.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="470.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="435.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="315.0" y="624.0"></omgdi:waypoint>

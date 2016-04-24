@@ -6,6 +6,7 @@ import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.IdentityLinkType;
 import org.slf4j.Logger;
@@ -53,7 +54,7 @@ public class ProcessServiceImpl implements ProcessService {
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().
                 processDefinitionKey(process.getKey()).latestVersion().singleResult();
         // If there are something changed in definition file located definitionClasspath, activiti will auto-deploy it.
-        if (null == processDefinition)
+        // if (null == processDefinition)
             repositoryService.createDeployment().addClasspathResource(process.getClasspath()).deploy();
     }
 
@@ -66,6 +67,7 @@ public class ProcessServiceImpl implements ProcessService {
             case "4":
                 return new Process("shipping", "processes/liquid.shipping.bpmn20.xml");
             case "5":
+                return new Process("port", "processes/liquid.port.bpmn20.xml");
             case "6":
                 return new Process("truck", "processes/liquid.truck.bpmn20.xml");
             default:
@@ -109,5 +111,16 @@ public class ProcessServiceImpl implements ProcessService {
             sb.append('}');
             return sb.toString();
         }
+    }
+
+    @Override
+    public void messageEventReceived(BusinessKey businessKey){
+        RuntimeService runtimeService= processEngine.getRuntimeService();
+        Execution processInstance = runtimeService.createExecutionQuery().processInstanceBusinessKey(businessKey.getText()).singleResult();
+        Execution execution = runtimeService.createExecutionQuery()
+                .messageEventSubscriptionName("changeOrder")
+                .processInstanceId(processInstance.getId())
+                .singleResult();
+        runtimeService.messageEventReceived("changeOrder", execution.getId());
     }
 }

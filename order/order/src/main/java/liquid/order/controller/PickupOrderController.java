@@ -42,6 +42,7 @@ import java.util.Map;
  * Date: 10/13/13
  * Time: 4:33 PM
  */
+@Deprecated
 @Controller
 @RequestMapping("/pickup_order")
 public class PickupOrderController extends BaseController {

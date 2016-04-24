@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://activiti.org/bpmn20" id="definitions">
+  <collaboration id="Collaboration">
+    <participant id="pool_liquid" name="发货订单" processRef="shipping"></participant>
+  </collaboration>
+  <process id="shipping" name="Liquid Shipping Process" isExecutable="true">
+    <documentation>Liquid Shipping Process</documentation>
+    <extensionElements>
+      <activiti:executionListener event="end" delegateExpression="${processEndHandler}"></activiti:executionListener>
+    </extensionElements>
+    <laneSet id="laneSet_shipping">
+      <lane id="lane_sales" name="销售">
+        <flowNodeRef>placeOrder</flowNodeRef>
+        <flowNodeRef>adjustPrice</flowNodeRef>
+        <flowNodeRef>sendInvoicingAndPsFork</flowNodeRef>
+        <flowNodeRef>confirmInvoiceAmount</flowNodeRef>
+        <flowNodeRef>return</flowNodeRef>
+        <flowNodeRef>theEnd1</flowNodeRef>
+        <flowNodeRef>shipDecision</flowNodeRef>
+      </lane>
+      <lane id="lane_accounting" name="商务">
+        <flowNodeRef>confirmProviderInvoicingByMarketing</flowNodeRef>
+        <flowNodeRef>sendInvoicing</flowNodeRef>
+        <flowNodeRef>sendSettling</flowNodeRef>
+        <flowNodeRef>checkCostFork</flowNodeRef>
+        <flowNodeRef>checkFromMarketing</flowNodeRef>
+        <flowNodeRef>invoice</flowNodeRef>
+        <flowNodeRef>checkJoin</flowNodeRef>
+        <flowNodeRef>confirmIncomeSettlement</flowNodeRef>
+        <flowNodeRef>confirmPurchaingSettlement</flowNodeRef>
+        <flowNodeRef>settlementJoin</flowNodeRef>
+        <flowNodeRef>comfirmData</flowNodeRef>
+        <flowNodeRef>theEnd1</flowNodeRef>
+      </lane>
+      <lane id="lane_marketing" name="市场">
+        <flowNodeRef>checkCostByMarketing</flowNodeRef>
+        <flowNodeRef>checkFromOperating</flowNodeRef>
+      </lane>
+      <lane id="lane_operating" name="操作">
+        <flowNodeRef>bookingShippingSpace</flowNodeRef>
+        <flowNodeRef>loadByTruckAndRailwayPlanFork</flowNodeRef>
+        <flowNodeRef>applyRailwayPlan</flowNodeRef>
+        <flowNodeRef>sendTruck</flowNodeRef>
+        <flowNodeRef>loadAndRailwayPlanJoin</flowNodeRef>
+        <flowNodeRef>CDCI</flowNodeRef>
+        <flowNodeRef>doBargeOps</flowNodeRef>
+        <flowNodeRef>deliveryDecision</flowNodeRef>
+        <flowNodeRef>doVesselOps</flowNodeRef>
+        <flowNodeRef>deliver</flowNodeRef>
+        <flowNodeRef>reclaimReceipt</flowNodeRef>
+        <flowNodeRef>confirmProviderInvoicingByOperating</flowNodeRef>
+        <flowNodeRef>loadingDecision</flowNodeRef>
+        <flowNodeRef>loadOnYardAndRailwayPlanFork</flowNodeRef>
+        <flowNodeRef>loadOnYard</flowNodeRef>
+        <flowNodeRef>recordTory</flowNodeRef>
+        <flowNodeRef>recordTod</flowNodeRef>
+        <flowNodeRef>CDCIDecision</flowNodeRef>
+      </lane>
+      <lane id="lane_container" name="箱管">
+        <flowNodeRef>feedContainerNo</flowNodeRef>
+        <flowNodeRef>allocateContainers</flowNodeRef>
+      </lane>
+    </laneSet>
+    <startEvent id="placeOrder" activiti:initiator="employeeName"></startEvent>
+    <sequenceFlow id="flow000" sourceRef="placeOrder" targetRef="shipDecision"></sequenceFlow>
+    <exclusiveGateway id="shipDecision" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow010" sourceRef="shipDecision" targetRef="allocateContainers">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${serviceCode == 0 or serviceCode == 2 or serviceCode == 4 or serviceCode == 5 or serviceCode == 6}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow020" sourceRef="shipDecision" targetRef="bookingShippingSpace">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${serviceCode == 1 or serviceCode == 3}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="bookingShippingSpace" name="订舱操作" activiti:candidateGroups="ROLE_OPERATING">
+      <documentation>${employeeName}已经在${endTime}制定运输路线方案。您需要订舱操作。</documentation>
+    </userTask>
+    <sequenceFlow id="flow030" sourceRef="bookingShippingSpace" targetRef="allocateContainers"></sequenceFlow>
+    <userTask id="allocateContainers" name="分配集装箱" activiti:candidateGroups="ROLE_CONTAINER">
+      <documentation>您需要分配集装箱。</documentation>
+    </userTask>
+    <sequenceFlow id="flow040" sourceRef="allocateContainers" targetRef="loadingDecision"></sequenceFlow>
+    <parallelGateway id="loadByTruckAndRailwayPlanFork" name="车辆调度同时申报铁路计划"></parallelGateway>
+    <sequenceFlow id="flow110" sourceRef="loadByTruckAndRailwayPlanFork" targetRef="applyRailwayPlan"></sequenceFlow>
+    <sequenceFlow id="flow120" sourceRef="loadByTruckAndRailwayPlanFork" targetRef="sendTruck"></sequenceFlow>
+    <userTask id="applyRailwayPlan" name="申报铁路计划" activiti:candidateGroups="ROLE_OPERATING">
+      <documentation>${employeeName}已经在${endTime}发布车辆调度指令。您需要申报铁路计划。</documentation>
+    </userTask>
+    <sequenceFlow id="flow190" sourceRef="applyRailwayPlan" targetRef="loadAndRailwayPlanJoin"></sequenceFlow>
+    <userTask id="sendTruck" name="派车" activiti:candidateGroups="ROLE_OPERATING">
+      <documentation>${employeeName}已经在${endTime}发布车辆调度指令。您需要派车。</documentation>
+    </userTask>
+    <sequenceFlow id="flow140" sourceRef="sendTruck" targetRef="recordTory"></sequenceFlow>
+    <userTask id="feedContainerNo" name="填写集装箱号" activiti:candidateGroups="ROLE_CONTAINER">
+      <documentation>${employeeName}已经在${endTime}记录进入铁路货场时间。您需要填写集装箱号。</documentation>
+    </userTask>
+    <sequenceFlow id="flow210" sourceRef="feedContainerNo" targetRef="loadAndRailwayPlanJoin"></sequenceFlow>
+    <parallelGateway id="loadAndRailwayPlanJoin" name="装货发车同时申报铁路计划合并"></parallelGateway>
+    <sequenceFlow id="flow220" sourceRef="loadAndRailwayPlanJoin" targetRef="recordTod"></sequenceFlow>
+    <userTask id="CDCI" name="报关报检" activiti:candidateGroups="ROLE_OPERATING">
+      <documentation>${employeeName}已经在${endTime}记录装车发运时间。您需要记录核销单号。</documentation>
+    </userTask>
+    <userTask id="doBargeOps" name="驳船操作" activiti:candidateGroups="ROLE_OPERATING">
+      <documentation>${employeeName}已经在${endTime}记录装车发运时间。您需要驳船操作。</documentation>
+    </userTask>
+    <userTask id="doVesselOps" name="大船操作" activiti:candidateGroups="ROLE_OPERATING">
+      <documentation>上一操作已经在${endTime}完成，您记录您需要大船操作。</documentation>
+    </userTask>
+    <sequenceFlow id="flow330" sourceRef="doVesselOps" targetRef="deliveryDecision"></sequenceFlow>
+    <exclusiveGateway id="deliveryDecision" name="配送决策"></exclusiveGateway>
+    <sequenceFlow id="flow340" sourceRef="deliveryDecision" targetRef="deliver">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${hasDelivery == true}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow350" sourceRef="deliveryDecision" targetRef="reclaimReceipt">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${hasDelivery == false}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="deliver" name="配送" activiti:candidateGroups="ROLE_OPERATING">
+      <documentation>上一操作已经在${endTime}完成，您需要配送。</documentation>
+    </userTask>
+    <sequenceFlow id="flow360" sourceRef="deliver" targetRef="reclaimReceipt"></sequenceFlow>
+    <userTask id="reclaimReceipt" name="回收签收单" activiti:candidateGroups="ROLE_OPERATING">
+      <documentation>${employeeName}已经在${endTime}完成配送，您需要回收签收单。</documentation>
+    </userTask>
+    <sequenceFlow id="flow370" sourceRef="reclaimReceipt" targetRef="adjustPrice"></sequenceFlow>
+    <userTask id="adjustPrice" name="修正订单价格" activiti:assignee="${orderOwner}">
+      <documentation>${employeeName}已经在${endTime}完成回收签收单，您需要修正订单价格。</documentation>
+    </userTask>
+    <sequenceFlow id="flow380" sourceRef="adjustPrice" targetRef="sendInvoicingAndPsFork"></sequenceFlow>
+    <parallelGateway id="sendInvoicingAndPsFork"></parallelGateway>
+    <sequenceFlow id="flow390" sourceRef="sendInvoicingAndPsFork" targetRef="sendInvoicing"></sequenceFlow>
+    <sequenceFlow id="flow400" sourceRef="sendInvoicingAndPsFork" targetRef="sendSettling"></sequenceFlow>
+    <userTask id="sendInvoicing" name="发送开发票指令" activiti:candidateGroups="ROLE_COMMERCE">
+      <documentation>上一操作已经在${endTime}完成，您需要发送开发票指令。</documentation>
+    </userTask>
+    <sequenceFlow id="flow410" sourceRef="sendInvoicing" targetRef="confirmInvoiceAmount"></sequenceFlow>
+    <userTask id="confirmInvoiceAmount" name="确认发票金额" activiti:assignee="${orderOwner}">
+      <documentation>您需要确认发票金额${salesPrice}。</documentation>
+    </userTask>
+    <sequenceFlow id="flow420" sourceRef="confirmInvoiceAmount" targetRef="invoice"></sequenceFlow>
+    <userTask id="invoice" name="开发票" activiti:candidateGroups="ROLE_COMMERCE">
+      <documentation>您需要开发票。</documentation>
+    </userTask>
+    <sequenceFlow id="flow430" sourceRef="invoice" targetRef="return"></sequenceFlow>
+    <userTask id="return" name="催收款" activiti:assignee="${orderOwner}">
+      <documentation>您需要催收款。</documentation>
+    </userTask>
+    <sequenceFlow id="flow440" sourceRef="return" targetRef="confirmIncomeSettlement"></sequenceFlow>
+    <userTask id="confirmIncomeSettlement" name="确认收入结算" activiti:candidateGroups="ROLE_COMMERCE">
+      <documentation>您确认收入结算。</documentation>
+    </userTask>
+    <sequenceFlow id="flow450" sourceRef="confirmIncomeSettlement" targetRef="settlementJoin"></sequenceFlow>
+    <userTask id="sendSettling" name="发送采购结算指令" activiti:candidateGroups="ROLE_COMMERCE">
+      <documentation>您需要发送采购结算指令。</documentation>
+    </userTask>
+    <sequenceFlow id="flow460" sourceRef="sendSettling" targetRef="checkCostFork"></sequenceFlow>
+    <parallelGateway id="checkCostFork" name="市场操作同时核对金额"></parallelGateway>
+    <sequenceFlow id="flow470" sourceRef="checkCostFork" targetRef="checkCostByMarketing"></sequenceFlow>
+    <sequenceFlow id="flow480" sourceRef="checkCostFork" targetRef="confirmProviderInvoicingByOperating"></sequenceFlow>
+    <userTask id="checkCostByMarketing" name="核对金额" activiti:candidateGroups="ROLE_MARKETING">
+      <documentation>您需要核对金额。</documentation>
+    </userTask>
+    <sequenceFlow id="flow490" sourceRef="checkCostByMarketing" targetRef="confirmProviderInvoicingByMarketing"></sequenceFlow>
+    <userTask id="confirmProviderInvoicingByMarketing" name="确认供应商开具发票" activiti:candidateGroups="ROLE_MARKETING">
+      <documentation>您需要确认供应商开具发票。</documentation>
+    </userTask>
+    <sequenceFlow id="flow500" sourceRef="confirmProviderInvoicingByMarketing" targetRef="checkFromMarketing"></sequenceFlow>
+    <userTask id="checkFromMarketing" name="核对市场采购金额" activiti:candidateGroups="ROLE_COMMERCE">
+      <documentation>您需要核对市场采购金额。</documentation>
+    </userTask>
+    <sequenceFlow id="flow510" sourceRef="checkFromMarketing" targetRef="checkJoin"></sequenceFlow>
+    <userTask id="confirmProviderInvoicingByOperating" name="确认供应商开具发票" activiti:candidateGroups="ROLE_OPERATING">
+      <documentation>您需要确认供应商开具发票。</documentation>
+    </userTask>
+    <sequenceFlow id="flow530" sourceRef="confirmProviderInvoicingByOperating" targetRef="checkFromOperating"></sequenceFlow>
+    <userTask id="checkFromOperating" name="核对操作采购金额" activiti:candidateGroups="ROLE_COMMERCE">
+      <documentation>您需要核对操作采购金额。</documentation>
+    </userTask>
+    <sequenceFlow id="flow540" sourceRef="checkFromOperating" targetRef="checkJoin"></sequenceFlow>
+    <parallelGateway id="checkJoin" name="核对采购金额合并"></parallelGateway>
+    <sequenceFlow id="flow550" sourceRef="checkJoin" targetRef="confirmPurchaingSettlement"></sequenceFlow>
+    <userTask id="confirmPurchaingSettlement" name="确认采购结算" activiti:candidateGroups="ROLE_COMMERCE">
+      <documentation>您需要确认采购结算。</documentation>
+    </userTask>
+    <sequenceFlow id="flow560" sourceRef="confirmPurchaingSettlement" targetRef="settlementJoin"></sequenceFlow>
+    <parallelGateway id="settlementJoin" name="结算合并"></parallelGateway>
+    <sequenceFlow id="flow570" sourceRef="settlementJoin" targetRef="comfirmData"></sequenceFlow>
+    <userTask id="comfirmData" name="确认修正数据" activiti:candidateGroups="ROLE_COMMERCE">
+      <documentation>您需要确认修正数据。</documentation>
+    </userTask>
+    <sequenceFlow id="flow580" sourceRef="comfirmData" targetRef="theEnd1"></sequenceFlow>
+    <endEvent id="theEnd1" name="End"></endEvent>
+    <exclusiveGateway id="loadingDecision" name="装货决策"></exclusiveGateway>
+    <sequenceFlow id="flow050" sourceRef="loadingDecision" targetRef="loadOnYardAndRailwayPlanFork">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${loadingType == 0}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow060" sourceRef="loadingDecision" targetRef="loadByTruckAndRailwayPlanFork">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${loadingType == 1}]]></conditionExpression>
+    </sequenceFlow>
+    <parallelGateway id="loadOnYardAndRailwayPlanFork" name="场装同时申报铁路计划"></parallelGateway>
+    <sequenceFlow id="flow090" sourceRef="loadOnYardAndRailwayPlanFork" targetRef="applyRailwayPlan"></sequenceFlow>
+    <sequenceFlow id="flow100" sourceRef="loadOnYardAndRailwayPlanFork" targetRef="loadOnYard"></sequenceFlow>
+    <userTask id="loadOnYard" name="场装作业" activiti:candidateGroups="ROLE_OPERATING">
+      <documentation>${employeeName}已经在${endTime}发布场装指令。您需要进行场装作业。</documentation>
+    </userTask>
+    <sequenceFlow id="flow130" sourceRef="loadOnYard" targetRef="recordTory"></sequenceFlow>
+    <userTask id="recordTory" name="记录进入铁路货场时间" activiti:candidateGroups="ROLE_OPERATING">
+      <documentation>${employeeName}已经在${endTime}发布车辆调度指令。您需要记录进入铁路货场时间。</documentation>
+    </userTask>
+    <sequenceFlow id="flow200" sourceRef="recordTory" targetRef="feedContainerNo"></sequenceFlow>
+    <userTask id="recordTod" name="记录装车发运时间" activiti:candidateGroups="ROLE_OPERATING">
+      <documentation>${employeeName}已经在${endTime}记录进入铁路货场时间。您需要记录装车发运时间。</documentation>
+    </userTask>
+    <sequenceFlow id="flow230" sourceRef="recordTod" targetRef="CDCIDecision"></sequenceFlow>
+    <exclusiveGateway id="CDCIDecision" name="报关报检决策"></exclusiveGateway>
+    <sequenceFlow id="flow240" sourceRef="CDCIDecision" targetRef="CDCI">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${tradeType == 1}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow250" sourceRef="CDCIDecision" targetRef="doBargeOps">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${tradeType == 0}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow581" sourceRef="CDCI" targetRef="doBargeOps"></sequenceFlow>
+    <sequenceFlow id="flow582" sourceRef="doBargeOps" targetRef="doVesselOps"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Collaboration">
+    <bpmndi:BPMNPlane bpmnElement="Collaboration" id="BPMNPlane_Collaboration">
+      <bpmndi:BPMNShape bpmnElement="pool_liquid" id="BPMNShape_pool_liquid">
+        <omgdc:Bounds height="832.0" width="1231.0" x="1.0" y="0.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="lane_sales" id="BPMNShape_lane_sales">
+        <omgdc:Bounds height="101.0" width="1211.0" x="21.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="lane_accounting" id="BPMNShape_lane_accounting">
+        <omgdc:Bounds height="181.0" width="1211.0" x="21.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="lane_marketing" id="BPMNShape_lane_marketing">
+        <omgdc:Bounds height="109.0" width="1211.0" x="21.0" y="282.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="lane_operating" id="BPMNShape_lane_operating">
+        <omgdc:Bounds height="344.0" width="1211.0" x="21.0" y="390.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="lane_container" id="BPMNShape_lane_container">
+        <omgdc:Bounds height="96.0" width="1211.0" x="21.0" y="733.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="placeOrder" id="BPMNShape_placeOrder">
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="44.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="shipDecision" id="BPMNShape_shipDecision">
+        <omgdc:Bounds height="40.0" width="40.0" x="170.0" y="41.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="bookingShippingSpace" id="BPMNShape_bookingShippingSpace">
+        <omgdc:Bounds height="60.0" width="100.0" x="140.0" y="501.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="allocateContainers" id="BPMNShape_allocateContainers">
+        <omgdc:Bounds height="60.0" width="100.0" x="41.0" y="752.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="loadByTruckAndRailwayPlanFork" id="BPMNShape_loadByTruckAndRailwayPlanFork">
+        <omgdc:Bounds height="40.0" width="40.0" x="340.0" y="510.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="applyRailwayPlan" id="BPMNShape_applyRailwayPlan">
+        <omgdc:Bounds height="60.0" width="100.0" x="420.0" y="580.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sendTruck" id="BPMNShape_sendTruck">
+        <omgdc:Bounds height="60.0" width="100.0" x="420.0" y="501.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="feedContainerNo" id="BPMNShape_feedContainerNo">
+        <omgdc:Bounds height="60.0" width="100.0" x="541.0" y="752.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="loadAndRailwayPlanJoin" id="BPMNShape_loadAndRailwayPlanJoin">
+        <omgdc:Bounds height="40.0" width="40.0" x="631.0" y="589.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="CDCI" id="BPMNShape_CDCI">
+        <omgdc:Bounds height="60.0" width="100.0" x="751.0" y="560.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="doBargeOps" id="BPMNShape_doBargeOps">
+        <omgdc:Bounds height="60.0" width="100.0" x="871.0" y="560.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="doVesselOps" id="BPMNShape_doVesselOps">
+        <omgdc:Bounds height="60.0" width="100.0" x="991.0" y="560.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="deliveryDecision" id="BPMNShape_deliveryDecision">
+        <omgdc:Bounds height="40.0" width="40.0" x="1080.0" y="498.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="deliver" id="BPMNShape_deliver">
+        <omgdc:Bounds height="60.0" width="100.0" x="1111.0" y="560.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="reclaimReceipt" id="BPMNShape_reclaimReceipt">
+        <omgdc:Bounds height="60.0" width="100.0" x="961.0" y="409.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="adjustPrice" id="BPMNShape_adjustPrice">
+        <omgdc:Bounds height="60.0" width="100.0" x="231.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sendInvoicingAndPsFork" id="BPMNShape_sendInvoicingAndPsFork">
+        <omgdc:Bounds height="40.0" width="40.0" x="351.0" y="39.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sendInvoicing" id="BPMNShape_sendInvoicing">
+        <omgdc:Bounds height="60.0" width="100.0" x="441.0" y="127.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="confirmInvoiceAmount" id="BPMNShape_confirmInvoiceAmount">
+        <omgdc:Bounds height="60.0" width="100.0" x="651.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="invoice" id="BPMNShape_invoice">
+        <omgdc:Bounds height="60.0" width="100.0" x="801.0" y="127.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="return" id="BPMNShape_return">
+        <omgdc:Bounds height="60.0" width="100.0" x="801.0" y="31.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="confirmIncomeSettlement" id="BPMNShape_confirmIncomeSettlement">
+        <omgdc:Bounds height="60.0" width="100.0" x="921.0" y="127.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sendSettling" id="BPMNShape_sendSettling">
+        <omgdc:Bounds height="60.0" width="100.0" x="321.0" y="127.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="checkCostFork" id="BPMNShape_checkCostFork">
+        <omgdc:Bounds height="40.0" width="40.0" x="350.0" y="227.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="checkCostByMarketing" id="BPMNShape_checkCostByMarketing">
+        <omgdc:Bounds height="60.0" width="100.0" x="441.0" y="306.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="confirmProviderInvoicingByMarketing" id="BPMNShape_confirmProviderInvoicingByMarketing">
+        <omgdc:Bounds height="60.0" width="100.0" x="561.0" y="127.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="checkFromMarketing" id="BPMNShape_checkFromMarketing">
+        <omgdc:Bounds height="60.0" width="100.0" x="681.0" y="127.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="confirmProviderInvoicingByOperating" id="BPMNShape_confirmProviderInvoicingByOperating">
+        <omgdc:Bounds height="60.0" width="100.0" x="511.0" y="409.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="checkFromOperating" id="BPMNShape_checkFromOperating">
+        <omgdc:Bounds height="60.0" width="100.0" x="681.0" y="306.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="checkJoin" id="BPMNShape_checkJoin">
+        <omgdc:Bounds height="40.0" width="40.0" x="710.0" y="217.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="confirmPurchaingSettlement" id="BPMNShape_confirmPurchaingSettlement">
+        <omgdc:Bounds height="60.0" width="100.0" x="921.0" y="208.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="settlementJoin" id="BPMNShape_settlementJoin">
+        <omgdc:Bounds height="40.0" width="40.0" x="1031.0" y="177.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="comfirmData" id="BPMNShape_comfirmData">
+        <omgdc:Bounds height="60.0" width="100.0" x="1091.0" y="168.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="theEnd1" id="BPMNShape_theEnd1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1131.0" y="43.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="loadingDecision" id="BPMNShape_loadingDecision">
+        <omgdc:Bounds height="40.0" width="40.0" x="250.0" y="589.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="loadOnYardAndRailwayPlanFork" id="BPMNShape_loadOnYardAndRailwayPlanFork">
+        <omgdc:Bounds height="40.0" width="40.0" x="340.0" y="668.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="loadOnYard" id="BPMNShape_loadOnYard">
+        <omgdc:Bounds height="60.0" width="100.0" x="420.0" y="659.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="recordTory" id="BPMNShape_recordTory">
+        <omgdc:Bounds height="60.0" width="100.0" x="540.0" y="659.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="recordTod" id="BPMNShape_recordTod">
+        <omgdc:Bounds height="60.0" width="100.0" x="660.0" y="659.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="CDCIDecision" id="BPMNShape_CDCIDecision">
+        <omgdc:Bounds height="40.0" width="40.0" x="780.0" y="670.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow000" id="BPMNEdge_flow000">
+        <omgdi:waypoint x="95.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="170.0" y="61.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow010" id="BPMNEdge_flow010">
+        <omgdi:waypoint x="190.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="91.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="91.0" y="752.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow020" id="BPMNEdge_flow020">
+        <omgdi:waypoint x="190.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="190.0" y="501.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow030" id="BPMNEdge_flow030">
+        <omgdi:waypoint x="190.0" y="561.0"></omgdi:waypoint>
+        <omgdi:waypoint x="189.0" y="689.0"></omgdi:waypoint>
+        <omgdi:waypoint x="91.0" y="752.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow040" id="BPMNEdge_flow040">
+        <omgdi:waypoint x="141.0" y="782.0"></omgdi:waypoint>
+        <omgdi:waypoint x="269.0" y="782.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="629.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow110" id="BPMNEdge_flow110">
+        <omgdi:waypoint x="360.0" y="550.0"></omgdi:waypoint>
+        <omgdi:waypoint x="470.0" y="580.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow120" id="BPMNEdge_flow120">
+        <omgdi:waypoint x="380.0" y="530.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="531.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow190" id="BPMNEdge_flow190">
+        <omgdi:waypoint x="520.0" y="610.0"></omgdi:waypoint>
+        <omgdi:waypoint x="631.0" y="609.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow140" id="BPMNEdge_flow140">
+        <omgdi:waypoint x="520.0" y="531.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="531.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="659.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow210" id="BPMNEdge_flow210">
+        <omgdi:waypoint x="641.0" y="782.0"></omgdi:waypoint>
+        <omgdi:waypoint x="651.0" y="784.0"></omgdi:waypoint>
+        <omgdi:waypoint x="651.0" y="629.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow220" id="BPMNEdge_flow220">
+        <omgdi:waypoint x="671.0" y="609.0"></omgdi:waypoint>
+        <omgdi:waypoint x="709.0" y="608.0"></omgdi:waypoint>
+        <omgdi:waypoint x="710.0" y="659.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow330" id="BPMNEdge_flow330">
+        <omgdi:waypoint x="1041.0" y="560.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1100.0" y="538.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow340" id="BPMNEdge_flow340">
+        <omgdi:waypoint x="1100.0" y="538.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1161.0" y="560.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow350" id="BPMNEdge_flow350">
+        <omgdi:waypoint x="1100.0" y="498.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1011.0" y="469.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow360" id="BPMNEdge_flow360">
+        <omgdi:waypoint x="1161.0" y="560.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1161.0" y="439.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1061.0" y="439.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow370" id="BPMNEdge_flow370">
+        <omgdi:waypoint x="1011.0" y="469.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1012.0" y="489.0"></omgdi:waypoint>
+        <omgdi:waypoint x="281.0" y="489.0"></omgdi:waypoint>
+        <omgdi:waypoint x="281.0" y="90.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow380" id="BPMNEdge_flow380">
+        <omgdi:waypoint x="331.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="351.0" y="59.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow390" id="BPMNEdge_flow390">
+        <omgdi:waypoint x="391.0" y="59.0"></omgdi:waypoint>
+        <omgdi:waypoint x="444.0" y="59.0"></omgdi:waypoint>
+        <omgdi:waypoint x="491.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow400" id="BPMNEdge_flow400">
+        <omgdi:waypoint x="371.0" y="79.0"></omgdi:waypoint>
+        <omgdi:waypoint x="371.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow410" id="BPMNEdge_flow410">
+        <omgdi:waypoint x="491.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="545.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="651.0" y="60.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow420" id="BPMNEdge_flow420">
+        <omgdi:waypoint x="701.0" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow430" id="BPMNEdge_flow430">
+        <omgdi:waypoint x="851.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="91.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow440" id="BPMNEdge_flow440">
+        <omgdi:waypoint x="901.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="971.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="971.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow450" id="BPMNEdge_flow450">
+        <omgdi:waypoint x="1021.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1051.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1051.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow460" id="BPMNEdge_flow460">
+        <omgdi:waypoint x="371.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow470" id="BPMNEdge_flow470">
+        <omgdi:waypoint x="390.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="491.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="491.0" y="306.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow480" id="BPMNEdge_flow480">
+        <omgdi:waypoint x="370.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="369.0" y="438.0"></omgdi:waypoint>
+        <omgdi:waypoint x="511.0" y="439.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow490" id="BPMNEdge_flow490">
+        <omgdi:waypoint x="541.0" y="336.0"></omgdi:waypoint>
+        <omgdi:waypoint x="611.0" y="336.0"></omgdi:waypoint>
+        <omgdi:waypoint x="611.0" y="187.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow500" id="BPMNEdge_flow500">
+        <omgdi:waypoint x="661.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="681.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow510" id="BPMNEdge_flow510">
+        <omgdi:waypoint x="731.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="730.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow530" id="BPMNEdge_flow530">
+        <omgdi:waypoint x="611.0" y="439.0"></omgdi:waypoint>
+        <omgdi:waypoint x="731.0" y="439.0"></omgdi:waypoint>
+        <omgdi:waypoint x="731.0" y="366.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow540" id="BPMNEdge_flow540">
+        <omgdi:waypoint x="731.0" y="306.0"></omgdi:waypoint>
+        <omgdi:waypoint x="730.0" y="257.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow550" id="BPMNEdge_flow550">
+        <omgdi:waypoint x="750.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="921.0" y="238.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow560" id="BPMNEdge_flow560">
+        <omgdi:waypoint x="1021.0" y="238.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1051.0" y="238.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1051.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow570" id="BPMNEdge_flow570">
+        <omgdi:waypoint x="1071.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1091.0" y="198.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow580" id="BPMNEdge_flow580">
+        <omgdi:waypoint x="1141.0" y="168.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1148.0" y="78.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow050" id="BPMNEdge_flow050">
+        <omgdi:waypoint x="270.0" y="629.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="668.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow060" id="BPMNEdge_flow060">
+        <omgdi:waypoint x="270.0" y="589.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="550.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow090" id="BPMNEdge_flow090">
+        <omgdi:waypoint x="360.0" y="668.0"></omgdi:waypoint>
+        <omgdi:waypoint x="470.0" y="640.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow100" id="BPMNEdge_flow100">
+        <omgdi:waypoint x="380.0" y="688.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="689.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow130" id="BPMNEdge_flow130">
+        <omgdi:waypoint x="520.0" y="689.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="689.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow200" id="BPMNEdge_flow200">
+        <omgdi:waypoint x="590.0" y="719.0"></omgdi:waypoint>
+        <omgdi:waypoint x="591.0" y="752.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow230" id="BPMNEdge_flow230">
+        <omgdi:waypoint x="760.0" y="689.0"></omgdi:waypoint>
+        <omgdi:waypoint x="780.0" y="690.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow240" id="BPMNEdge_flow240">
+        <omgdi:waypoint x="800.0" y="670.0"></omgdi:waypoint>
+        <omgdi:waypoint x="801.0" y="620.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow250" id="BPMNEdge_flow250">
+        <omgdi:waypoint x="820.0" y="690.0"></omgdi:waypoint>
+        <omgdi:waypoint x="920.0" y="690.0"></omgdi:waypoint>
+        <omgdi:waypoint x="921.0" y="620.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow581" id="BPMNEdge_flow581">
+        <omgdi:waypoint x="851.0" y="590.0"></omgdi:waypoint>
+        <omgdi:waypoint x="871.0" y="590.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow582" id="BPMNEdge_flow582">
+        <omgdi:waypoint x="971.0" y="590.0"></omgdi:waypoint>
+        <omgdi:waypoint x="991.0" y="590.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
