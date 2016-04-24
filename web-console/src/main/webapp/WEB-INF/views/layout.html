@@ -118,7 +118,14 @@
                         </ul>
                     </li>
                     <li sec:authorize="hasAnyRole('ROLE_SALES', 'ROLE_MARKETING', 'ROLE_OPERATING', 'ROLE_CONTAINER', 'ROLE_COMMERCE')">
-                        <a href="/diagram" th:text="#{diagram}">Diagram</a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span th:text="#{diagram}">Diagram</span><b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/diagram/shipping" th:text="#{service.type} + '[0-4]'">Service Type</a></li>
+                            <li><a href="/diagram/port" th:text="#{service.type} + '[5]'">Service Type</a></li>
+                            <li><a href="/diagram/truck" th:text="#{service.type} + '[6]'">Service Type</a></li>
+                        </ul>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
