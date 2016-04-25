@@ -10,9 +10,11 @@ import liquid.user.service.UserService;
 import liquid.util.DatePattern;
 import liquid.util.DateUtil;
 import liquid.util.StringUtil;
+import org.activiti.bpmn.model.Activity;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -163,6 +165,29 @@ public class TaskServiceImpl implements TaskService {
             tasks.add(task);
         }
         return tasks;
+    }
+
+    public boolean isFinished(BusinessKey businessKey, String activityId) {
+        List<HistoricActivityInstance> historicActivityInstanceList = listHistoricActivities(businessKey, activityId);
+        for (HistoricActivityInstance historicActivityInstance: historicActivityInstanceList) {
+            if(historicActivityInstance.getEndTime() != null) {
+                continue;
+            } else{
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private List<HistoricActivityInstance> listHistoricActivities(BusinessKey businessKey, String activityId) {
+        RuntimeService runtimeService = processEngine.getRuntimeService();
+        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceBusinessKey(businessKey.getText()).singleResult();
+
+        HistoryService historyService = processEngine.getHistoryService();
+        List<HistoricActivityInstance> historicActivityInstanceList = historyService.
+                createHistoricActivityInstanceQuery().processInstanceId(processInstance.getProcessInstanceId()).activityId(activityId).list();
+
+        return historicActivityInstanceList;
     }
 
     @Override

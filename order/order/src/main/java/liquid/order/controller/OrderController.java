@@ -448,7 +448,6 @@ public class OrderController extends BaseController {
             case "changes":
                 tab = "changes";
                 model.addAttribute("changes", orderChangeService.findByOrderId(order.getId()));
-
                 OrderChange orderChange = new OrderChange();
                 model.addAttribute("change", orderChange);
                 model.addAttribute("changeItemMap", OrderChangeItem.toMap());

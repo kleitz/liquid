@@ -16,7 +16,7 @@
       <lane id="lane_operating" name="操作"></lane>
       <lane id="lane_container" name="箱管"></lane>
     </laneSet>
-    <subProcess id="subprocess1" name="Sub Process">
+    <subProcess id="subprocess1" name="子流程">
       <startEvent id="startevent1" name="Start"></startEvent>
       <exclusiveGateway id="shipDecision" name="Exclusive Gateway"></exclusiveGateway>
       <sequenceFlow id="flow010" sourceRef="shipDecision" targetRef="allocateContainers">
