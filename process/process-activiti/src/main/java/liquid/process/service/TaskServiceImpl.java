@@ -167,6 +167,7 @@ public class TaskServiceImpl implements TaskService {
         return tasks;
     }
 
+    @Override
     public boolean isFinished(BusinessKey businessKey, String activityId) {
         List<HistoricActivityInstance> historicActivityInstanceList = listHistoricActivities(businessKey, activityId);
         for (HistoricActivityInstance historicActivityInstance: historicActivityInstanceList) {
@@ -180,12 +181,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     private List<HistoricActivityInstance> listHistoricActivities(BusinessKey businessKey, String activityId) {
-        RuntimeService runtimeService = processEngine.getRuntimeService();
-        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceBusinessKey(businessKey.getText()).singleResult();
-
         HistoryService historyService = processEngine.getHistoryService();
+        HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceBusinessKey(businessKey.getText()).singleResult();
+
         List<HistoricActivityInstance> historicActivityInstanceList = historyService.
-                createHistoricActivityInstanceQuery().processInstanceId(processInstance.getProcessInstanceId()).activityId(activityId).list();
+                createHistoricActivityInstanceQuery().processInstanceId(historicProcessInstance.getId()).activityId(activityId).list();
 
         return historicActivityInstanceList;
     }

@@ -450,7 +450,10 @@ public class OrderController extends BaseController {
                 model.addAttribute("changes", orderChangeService.findByOrderId(order.getId()));
                 OrderChange orderChange = new OrderChange();
                 model.addAttribute("change", orderChange);
-                model.addAttribute("changeItemMap", OrderChangeItem.toMap());
+                if(taskService.isFinished(BusinessKey.encode(order.getId(), order.getOrderNo()), "subprocess1"))
+                    model.addAttribute("changeItemMap", Collections.EMPTY_MAP);
+                else
+                    model.addAttribute("changeItemMap", OrderChangeItem.toMap());
                 break;
             default:
                 tab = "detail";

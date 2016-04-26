@@ -27,6 +27,15 @@ public interface TaskService {
 
     List<Task> listCompltedTasks(String businessKey);
 
+    /**
+     * Determine if a subprocess is finished.
+     *
+     * @param businessKey
+     * @param activityId
+     * @return
+     */
+    boolean isFinished(BusinessKey businessKey, String activityId);
+
     Long getOrderIdByTaskId(String taskId);
 
     Task[] listTasks(String candidateGid);
