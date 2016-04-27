@@ -23,13 +23,27 @@
       <userTask id="adjustPrice" name="修正订单价格" activiti:assignee="${orderOwner}">
         <documentation>${employeeName}已经在${endTime}完成回收签收单，您需要修正订单价格。</documentation>
       </userTask>
-      <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="portOps"></sequenceFlow>
-      <sequenceFlow id="flow2" sourceRef="sendTruck" targetRef="adjustPrice"></sequenceFlow>
+      <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="CDCI"></sequenceFlow>
+      <sequenceFlow id="flow2" sourceRef="sendTruck" targetRef="exclusivegateway1"></sequenceFlow>
       <sequenceFlow id="flow3" sourceRef="adjustPrice" targetRef="endevent1"></sequenceFlow>
-      <userTask id="portOps" name="码头操作" activiti:candidateGroups="ROLE_OPERATING">
-      	<documentation>${employeeName}已经在${endTime}派车。你要进行码头操作。</documentation>
+      <userTask id="CDCI" name="报关报检" activiti:candidateGroups="ROLE_OPERATING">
+        <documentation>${employeeName}已经在${endTime}派车。你要进行码头操作。</documentation>
       </userTask>
-      <sequenceFlow id="flow16" sourceRef="portOps" targetRef="sendTruck"></sequenceFlow>
+      <sequenceFlow id="flow16" sourceRef="CDCI" targetRef="doBargeOps"></sequenceFlow>
+      <userTask id="doBargeOps" name="驳船操作"></userTask>
+      <userTask id="doVesselOps" name="大船操作"></userTask>
+      <sequenceFlow id="flow17" sourceRef="doBargeOps" targetRef="doVesselOps"></sequenceFlow>
+      <sequenceFlow id="flow18" sourceRef="doVesselOps" targetRef="sendTruck"></sequenceFlow>
+      <userTask id="deliver" name="配送"></userTask>
+      <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway">
+      </exclusiveGateway>
+      <sequenceFlow id="flow19" sourceRef="exclusivegateway1" targetRef="deliver">
+      	<conditionExpression xsi:type="tFormalExpression"><![CDATA[${hasDelivery == true}]]></conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="flow20" sourceRef="deliver" targetRef="adjustPrice">
+      	<conditionExpression xsi:type="tFormalExpression"><![CDATA[${hasDelivery == false}]]></conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="flow21" sourceRef="exclusivegateway1" targetRef="adjustPrice"></sequenceFlow>
     </subProcess>
     <boundaryEvent id="boundarymessage1" name="Message" attachedToRef="subprocess1" cancelActivity="true">
       <messageEventDefinition messageRef="changeOrderMessage"></messageEventDefinition>
@@ -90,19 +104,31 @@
         <omgdc:Bounds height="600.0" width="181.0" x="280.0" y="10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="355.0" y="560.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="355.0" y="570.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="355.0" y="30.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="355.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sendTruck" id="BPMNShape_sendTruck">
-        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="380.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="289.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="adjustPrice" id="BPMNShape_adjustPrice">
         <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="portOps" id="BPMNShape_portOps">
-        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="470.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="CDCI" id="BPMNShape_CDCI">
+        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="500.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="doBargeOps" id="BPMNShape_doBargeOps">
+        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="430.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="doVesselOps" id="BPMNShape_doVesselOps">
+        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="360.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="deliver" id="BPMNShape_deliver">
+        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="352.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundarymessage1" id="BPMNShape_boundarymessage1">
         <omgdc:Bounds height="30.0" width="30.0" x="300.0" y="594.0"></omgdc:Bounds>
@@ -138,20 +164,42 @@
         <omgdc:Bounds height="35.0" width="35.0" x="180.0" y="292.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="372.0" y="560.0"></omgdi:waypoint>
-        <omgdi:waypoint x="372.0" y="525.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="570.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="555.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="372.0" y="380.0"></omgdi:waypoint>
-        <omgdi:waypoint x="372.0" y="145.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="289.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="270.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="372.0" y="90.0"></omgdi:waypoint>
-        <omgdi:waypoint x="372.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="75.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="372.0" y="470.0"></omgdi:waypoint>
-        <omgdi:waypoint x="372.0" y="435.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="500.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="485.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="372.0" y="430.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="415.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="372.0" y="360.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="344.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="372.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="215.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="372.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="145.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="352.0" y="250.0"></omgdi:waypoint>
+        <omgdi:waypoint x="304.0" y="249.0"></omgdi:waypoint>
+        <omgdi:waypoint x="304.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="117.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="315.0" y="624.0"></omgdi:waypoint>

@@ -24,12 +24,14 @@
         <documentation>${employeeName}已经在${endTime}完成回收签收单，您需要修正订单价格。</documentation>
       </userTask>
       <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="sendTruck"></sequenceFlow>
-      <sequenceFlow id="flow2" sourceRef="sendTruck" targetRef="portOps"></sequenceFlow>
       <sequenceFlow id="flow3" sourceRef="adjustPrice" targetRef="endevent1"></sequenceFlow>
-      <userTask id="portOps" name="码头操作" activiti:candidateGroups="ROLE_OPERATING">
-      	<documentation>${employeeName}已经在${endTime}派车。你要进行码头操作。</documentation>
-      </userTask>
-      <sequenceFlow id="flow16" sourceRef="portOps" targetRef="adjustPrice"></sequenceFlow>
+      <userTask id="CDCI" name="报关报检"></userTask>
+      <userTask id="doBargeOps" name="驳船操作"></userTask>
+      <userTask id="doVesselOps" name="大船操作"></userTask>
+      <sequenceFlow id="flow16" sourceRef="sendTruck" targetRef="CDCI"></sequenceFlow>
+      <sequenceFlow id="flow17" sourceRef="CDCI" targetRef="doBargeOps"></sequenceFlow>
+      <sequenceFlow id="flow18" sourceRef="doBargeOps" targetRef="doVesselOps"></sequenceFlow>
+      <sequenceFlow id="flow19" sourceRef="doVesselOps" targetRef="adjustPrice"></sequenceFlow>
     </subProcess>
     <boundaryEvent id="boundarymessage1" name="Message" attachedToRef="subprocess1" cancelActivity="true">
       <messageEventDefinition messageRef="changeOrderMessage"></messageEventDefinition>
@@ -101,8 +103,14 @@
       <bpmndi:BPMNShape bpmnElement="adjustPrice" id="BPMNShape_adjustPrice">
         <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="380.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="CDCI" id="BPMNShape_CDCI">
+        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="390.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="doBargeOps" id="BPMNShape_doBargeOps">
+        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="300.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="doVesselOps" id="BPMNShape_doVesselOps">
+        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundarymessage1" id="BPMNShape_boundarymessage1">
         <omgdc:Bounds height="30.0" width="30.0" x="300.0" y="594.0"></omgdc:Bounds>
@@ -141,16 +149,24 @@
         <omgdi:waypoint x="372.0" y="560.0"></omgdi:waypoint>
         <omgdi:waypoint x="372.0" y="535.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="372.0" y="480.0"></omgdi:waypoint>
-        <omgdi:waypoint x="372.0" y="435.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="372.0" y="90.0"></omgdi:waypoint>
         <omgdi:waypoint x="372.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="372.0" y="380.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="480.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="445.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="372.0" y="390.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="355.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="372.0" y="300.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="265.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="372.0" y="210.0"></omgdi:waypoint>
         <omgdi:waypoint x="372.0" y="145.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
