@@ -10,32 +10,27 @@
 
 <div th:include="order/shipment/template :: tab"></div>
 
-<div id="t" class="container" th:each="shipment : ${shipmentSet}">
-    <h4>
-        <span th:text="#{shipment} + ${shipment.id}">Route ID</span>
-        <small th:text="#{container.quantity} + '(' + ${shipment.containerQty} + ')'">Container Qty</small>
-    </h4>
-
-            <table class="table table-striped table-hover table-condensed table-16">
-                <thead>
-                <tr>
-                    <th th:text="#{container.no}">Container No.</th>
-                    <th th:text="#{container.type}"></th>
-                    <th th:text="#{container.subtype}">Subtype</th>
-                    <th th:text="#{container.owner}">Owner</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="container : ${shipment.containers}">
-                    <td th:text="${container.container} ? ${container.container.bicCode} : ${container.bicCode}">
-                        Container No.
-                    </td>
-                    <td th:text="#{${containerTypeMap[order.containerType]}}"></td>
-                    <td th:text="${container.container} ? ${container.container.subtype.name} : ${container.bicCode}"></td>
-                    <td th:text="${container.container} ? ${container.container.owner.name} : ''"></td>
-                </tr>
-                </tbody>
-            </table>
+<div id="t" class="container">
+    <table class="table table-striped table-hover table-condensed table-16">
+        <thead>
+        <tr>
+            <th th:text="#{container.no}">Container No.</th>
+            <th th:text="#{container.type}"></th>
+            <th th:text="#{container.subtype}">Subtype</th>
+            <th th:text="#{container.owner}">Owner</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="container : ${containerList}">
+            <td th:text="${container.bicCode}">
+                Container No.
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
 
 </div><!-- container -->
 

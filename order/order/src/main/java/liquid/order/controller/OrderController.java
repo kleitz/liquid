@@ -431,8 +431,7 @@ public class OrderController extends BaseController {
             case "railway":
                 break;
             case "container":
-                Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(id);
-                model.addAttribute("shipmentSet", shipmentSet);
+                model.addAttribute("containerList", order.getContainers());
                 break;
             case "charge":
                 Iterable<Charge> charges = chargeService.getChargesByOrderId(id);
