@@ -19,7 +19,7 @@ public class OrderContainerChange extends BaseIdEntity {
 
     @ManyToOne
     @JoinColumn(name = "ORDER_CONTAINER_ID")
-    private OrderContainer orderContainer;
+    private OrderContainer container;
 
     @Column(name = "OLD_VALUE")
     private String oldValue;
@@ -41,12 +41,12 @@ public class OrderContainerChange extends BaseIdEntity {
         this.orderId = orderId;
     }
 
-    public OrderContainer getOrderContainer() {
-        return orderContainer;
+    public OrderContainer getContainer() {
+        return container;
     }
 
-    public void setOrderContainer(OrderContainer orderContainer) {
-        this.orderContainer = orderContainer;
+    public void setContainer(OrderContainer container) {
+        this.container = container;
     }
 
     public String getOldValue() {
@@ -86,7 +86,7 @@ public class OrderContainerChange extends BaseIdEntity {
         final StringBuilder sb = new StringBuilder("OrderContainerChange{");
         sb.append("super=").append(super.toString()).append('\'');
         sb.append(", orderId=").append(orderId);
-        sb.append(", orderContainer=").append(orderContainer);
+        sb.append(", container=").append(container);
         sb.append(", oldValue='").append(oldValue).append('\'');
         sb.append(", newValue='").append(newValue).append('\'');
         sb.append(", changedAt=").append(changedAt);

@@ -30,7 +30,7 @@ public class OrderContainerChangeService {
 
     @Transactional("transactionManager")
     public void addChange(OrderContainerChange orderContainerChange){
-        OrderContainer orderContainer = orderContainerChange.getOrderContainer();
+        OrderContainer orderContainer = orderContainerChange.getContainer();
 
         orderContainerChange.setOldValue(orderContainer.getBicCode());
         orderContainerChange.setChangedAt(new Date());
