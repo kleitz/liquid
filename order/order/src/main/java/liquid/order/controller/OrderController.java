@@ -546,8 +546,9 @@ public class OrderController extends BaseController {
         return "redirect:/order/" + orderId + "/receivable";
     }
 
-    @RequestMapping(value = "/{id}/containers/change", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/containers/changes", method = RequestMethod.POST)
     public String changeContainer(@PathVariable Long id, OrderContainerChange orderContainerChange) {
+        orderContainerChange.setOrderId(id);
         orderContainerChangeService.addChange(orderContainerChange);
         return "redirect:/order/" + id + "/container";
     }
