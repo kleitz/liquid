@@ -25,7 +25,7 @@ public class OrderContainerChangeService {
     private OrderContainerRepository orderContainerRepository;
 
     public List<OrderContainerChange> findByOrderId(Long orderId) {
-        return orderContainerChangeRepository.findByOrderId(orderId);
+        return orderContainerChangeRepository.findByOrderIdOrderByContainer(orderId);
     }
 
     @Transactional("transactionManager")

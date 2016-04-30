@@ -16,9 +16,6 @@
     <tr>
       <th th:text="#{container.id}">Container No.</th>
       <th th:text="#{container.no}">Container No.</th>
-      <th th:text="#{container.type}"></th>
-      <th th:text="#{container.subtype}">Subtype</th>
-      <th th:text="#{container.owner}">Owner</th>
       <th></th>
     </tr>
     </thead>
@@ -28,9 +25,6 @@
       <td th:text="${container.bicCode}">
           Container No.
       </td>
-      <td></td>
-      <td></td>
-      <td></td>
       <td>
         <a href="#" data-toggle="modal" id="initChange" data-target="#addChange"
             th:attr="data-id=${container.id}, data-old-value=${container.bicCode}">
@@ -55,7 +49,7 @@
 
             <div class="form-group form-group-sm">
               <label for="oldValue" class="control-label" th:text="#{change.old.value}">Old Value</label>
-              <input type="text" class="form-control" id="oldValue" name="oldValue" />
+              <input type="text" class="form-control" id="oldValue" name="oldValue" readonly="readonly" />
             </div>
  
             <div class="form-group form-group-sm">
@@ -84,7 +78,7 @@
     <thead>
       <tr>
         <th>No.</th>
-        <th><span th:text="#{change.item}">Item</span></th>
+        <th><span th:text="#{container.id}">Container Id</span></th>
         <th><span th:text="#{change.old.value}">Old One</span></th>
         <th><span th:text="#{change.new.value}">New One</span></th>
         <th><span th:text="#{change.date}">Changed At</span></th>

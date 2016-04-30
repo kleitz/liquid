@@ -12,5 +12,5 @@ import java.util.List;
 public interface OrderContainerChangeRepository extends CrudRepository<OrderContainerChange, Long>,
         JpaRepository<OrderContainerChange, Long> {
 
-    List<OrderContainerChange> findByOrderId(Long orderId);
+    List<OrderContainerChange> findByOrderIdOrderByContainer(Long orderId);
 }
