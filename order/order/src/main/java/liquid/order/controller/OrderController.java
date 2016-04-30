@@ -21,6 +21,7 @@ import liquid.operation.service.*;
 import liquid.order.domain.*;
 import liquid.order.model.OrderSearchBar;
 import liquid.order.service.OrderChangeService;
+import liquid.order.service.OrderContainerChangeService;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
 import liquid.process.service.BusinessKey;
@@ -108,6 +109,9 @@ public class OrderController extends BaseController {
 
     @Autowired
     private OrderChangeService orderChangeService;
+
+    @Autowired
+    private OrderContainerChangeService orderContainerChangeService;
 
     @ModelAttribute("serviceTypes")
     public Iterable<ServiceType> populateServiceTypes() {
@@ -431,8 +435,8 @@ public class OrderController extends BaseController {
             case "railway":
                 break;
             case "container":
-                Iterable<ShipmentEntity> shipmentSet = shipmentService.findByOrderId(id);
-                model.addAttribute("shipmentSet", shipmentSet);
+                model.addAttribute("containerList", order.getContainers());
+                model.addAttribute("containerChangeList", orderContainerChangeService.findByOrderId(id));
                 break;
             case "charge":
                 Iterable<Charge> charges = chargeService.getChargesByOrderId(id);
@@ -540,5 +544,12 @@ public class OrderController extends BaseController {
         }
         settlementService.save(settlement);
         return "redirect:/order/" + orderId + "/receivable";
+    }
+
+    @RequestMapping(value = "/{id}/containers/changes", method = RequestMethod.POST)
+    public String changeContainer(@PathVariable Long id, OrderContainerChange orderContainerChange) {
+        orderContainerChange.setOrderId(id);
+        orderContainerChangeService.addChange(orderContainerChange);
+        return "redirect:/order/" + id + "/container";
     }
 }

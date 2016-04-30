@@ -1,5 +1,6 @@
 package liquid.order.domain;
 
+import liquid.core.domain.BaseIdEntity;
 import liquid.core.domain.BaseUpdateEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -13,16 +14,17 @@ import java.util.Date;
  * Time: 5:48 PM
  */
 @Entity(name = "ORD_CONTAINER")
-public class OrderContainer extends BaseUpdateEntity {
+public class OrderContainer extends BaseIdEntity {
     @NotNull
     @NotEmpty
     @Column(name = "BIC_CODE")
     private String bicCode;
 
-    @Override
-    public String getCreatedBy() {
-        return super.getCreatedBy();
-    }
+    @Column(name = "ALLOCATED_AT")
+    private Date allocatedAt;
+
+    @Column(name = "ALLOCATED_BY")
+    private String allocatedBy;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name= "REPLACED_BY")

@@ -10,34 +10,93 @@
 
 <div th:include="order/shipment/template :: tab"></div>
 
-<div id="t" class="container" th:each="shipment : ${shipmentSet}">
-    <h4>
-        <span th:text="#{shipment} + ${shipment.id}">Route ID</span>
-        <small th:text="#{container.quantity} + '(' + ${shipment.containerQty} + ')'">Container Qty</small>
-    </h4>
+<div id="t" class="container">
+  <table class="table table-striped table-hover table-condensed table-16">
+    <thead>
+    <tr>
+      <th th:text="#{container.id}">Container No.</th>
+      <th th:text="#{container.no}">Container No.</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="container : ${containerList}">
+      <td><span th:text="${container.id}"></span></td>
+      <td th:text="${container.bicCode}">
+          Container No.
+      </td>
+      <td>
+        <a href="#" data-toggle="modal" id="initChange" data-target="#addChange"
+            th:attr="data-id=${container.id}, data-old-value=${container.bicCode}">
+          <span class="glyphicon glyphicon-edit text-success" />
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 
-            <table class="table table-striped table-hover table-condensed table-16">
-                <thead>
-                <tr>
-                    <th th:text="#{container.no}">Container No.</th>
-                    <th th:text="#{container.type}"></th>
-                    <th th:text="#{container.subtype}">Subtype</th>
-                    <th th:text="#{container.owner}">Owner</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="container : ${shipment.containers}">
-                    <td th:text="${container.container} ? ${container.container.bicCode} : ${container.bicCode}">
-                        Container No.
-                    </td>
-                    <td th:text="#{${containerTypeMap[order.containerType]}}"></td>
-                    <td th:text="${container.container} ? ${container.container.subtype.name} : ${container.bicCode}"></td>
-                    <td th:text="${container.container} ? ${container.container.owner.name} : ''"></td>
-                </tr>
-                </tbody>
-            </table>
+  <div class="modal" id="addChange" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <form id="changeForm" method="POST" th:action="'/order/' + ${order.id} + '/containers/changes'">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel"><span th:text="#{change}">Add Change</span></h4>
+          </div>
 
+          <div class="modal-body">
+            <input type="hidden" class="form-control" id="container" name="container" />
+
+            <div class="form-group form-group-sm">
+              <label for="oldValue" class="control-label" th:text="#{change.old.value}">Old Value</label>
+              <input type="text" class="form-control" id="oldValue" name="oldValue" readonly="readonly" />
+            </div>
+ 
+            <div class="form-group form-group-sm">
+              <label for="newValue" class="control-label" th:text="#{change.new.value}">New Value</label>
+              <input type="text" class="form-control" id="newValue" name="newValue" />
+            </div>
+ 
+          </div>
+  
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
+                <span th:text="#{modal.close}"/>
+              </button>
+              <button type="submit" name="add" value="add" form="changeForm" class="btn btn-warning btn-sm">
+                <span th:text="#{add}">Add</span>
+              </button>
+          </div>
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 </div><!-- container -->
+
+<div id="t" class="container">
+  <table class="table table-striped table-hover table-condensed table-16">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th><span th:text="#{container.id}">Container Id</span></th>
+        <th><span th:text="#{change.old.value}">Old One</span></th>
+        <th><span th:text="#{change.new.value}">New One</span></th>
+        <th><span th:text="#{change.date}">Changed At</span></th>
+        <th><span th:text="#{change.user}">Changed By</span></th>                    
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="item : ${containerChangeList}">
+        <td><span th:text="${item.id}">ID</span></td>
+        <td><span th:text="${item.container.id}">ID</span></td>
+        <td><span th:text="${item.oldValue}">Old One</span></td>
+        <td><span th:text="${item.newValue}">New One</span></td>
+        <td><span th:text="${item.changedAt}">Changed At</span></td>
+        <td><span th:text="${item.changedBy}">Changed By</span></td>                    
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <!-- {!begin layout} -->
 <div th:include="layout :: footer"></div>
@@ -46,6 +105,20 @@
 <!-- {!begin layout} -->
 <div th:replace="layout :: js" />
 <!-- {!end layout} -->
+
+<script>
+/*<![CDATA[*/
+    $(document).on("click", "#initChange", function () {
+        var containerId = $(this).data('id');
+        var oldValue = $(this).data("old-value");
+        console.log(containerId);
+        console.log(oldValue);
+        $(".modal-body #container").val(containerId);  
+        $(".modal-body #oldValue").val(oldValue);  
+    }); // ready end
+/*]]>*/
+</script>
+
 </body>
 
 </html>

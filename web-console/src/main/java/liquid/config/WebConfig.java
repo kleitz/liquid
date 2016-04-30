@@ -3,6 +3,7 @@ package liquid.config;
 import liquid.container.converter.ContainerSubtypeFormatter;
 import liquid.interceptor.LoggingInterceptor;
 import liquid.operation.converter.*;
+import liquid.order.converter.OrderContainerFormatter;
 import liquid.order.converter.OrderFormatter;
 import liquid.transport.converter.LegFormatter;
 import liquid.transport.converter.TruckFormatter;
@@ -93,6 +94,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private TruckFormatter truckFormatter;
 
+    @Autowired
+    private OrderContainerFormatter orderContainerFormatter;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
@@ -120,6 +124,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addFormatter(serviceSubtypeFormatter);
         registry.addFormatter(legFormatter);
         registry.addFormatter(truckFormatter);
+        registry.addFormatter(orderContainerFormatter);
     }
 
     @Bean
