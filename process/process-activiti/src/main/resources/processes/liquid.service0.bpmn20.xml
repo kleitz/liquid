@@ -71,6 +71,7 @@
     </userTask>
     <sequenceFlow id="flow580" sourceRef="comfirmData" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow587" sourceRef="sendInvoicingAndPsFork" targetRef="confirmInvoiceAmount"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_Collaboration">
     <bpmndi:BPMNPlane bpmnElement="Collaboration" id="BPMNPlane_Collaboration">
@@ -175,6 +176,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow580" id="BPMNEdge_flow580">
         <omgdi:waypoint x="861.0" y="193.0"></omgdi:waypoint>
         <omgdi:waypoint x="911.0" y="192.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow587" id="BPMNEdge_flow587">
+        <omgdi:waypoint x="341.0" y="59.0"></omgdi:waypoint>
+        <omgdi:waypoint x="411.0" y="60.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
