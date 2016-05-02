@@ -61,6 +61,7 @@ public class ProcessServiceImpl implements ProcessService {
     private Process getProcess(String serviceTypeCode) {
         switch (serviceTypeCode) {
             case "0":
+                return new Process("service0_process", "processes/liquid.service0.bpmn20.xml");
             case "1":
             case "2":
             case "3":

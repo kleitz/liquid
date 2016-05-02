@@ -527,14 +527,27 @@
         $('#railDestinationName').autoComplete(stations, 'railway.destination');                           
 
         function showOptionalBox(serviceType) {
-            if(serviceType == 7) {
-                $('#railPlanBox').hide();
-                $('#containersBox').show();
-            }
-            else {
-                $('#railPlanBox').show();
-                $('#containersBox').hide();
-            }
+          switch(serviceType) {
+            case '1':
+              console.log('show service 1');
+              $('#railPlanBox').hide();
+              $('#containersBox').hide();
+              break; 
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+              $('#railPlanBox').show();
+              $('#containersBox').hide();
+              break; 
+            case '6':
+            case '7':
+              $('#railPlanBox').hide();
+              $('#containersBox').show();
+              break;
+            defaulte
+              break;
+           }
         }
 
         var serviceType = $('#serviceType').val();
