@@ -21,8 +21,6 @@ import java.util.Set;
 @Entity(name = "OPS_SERVICE_PROVIDER")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ServiceProvider extends StatefulEntity implements Text {
-    @NotNull
-    @NotEmpty
     @Column(name = "CODE")
     private String code;
 

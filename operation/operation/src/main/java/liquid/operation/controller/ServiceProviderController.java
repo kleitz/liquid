@@ -6,6 +6,7 @@ import liquid.core.model.SearchBarForm;
 import liquid.operation.domain.Goods;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.service.InternalServiceProviderService;
+import liquid.operation.service.SequenceService;
 import liquid.operation.service.ServiceProviderTypeService;
 import liquid.operation.service.ServiceSubtypeService;
 import org.slf4j.Logger;
@@ -45,6 +46,9 @@ public class ServiceProviderController extends BaseController {
 
     @Autowired
     private ServiceProviderTypeService serviceProviderTypeService;
+
+    @Autowired
+    private SequenceService sequenceService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String list(SearchBarForm searchBarForm,
@@ -86,8 +90,15 @@ public class ServiceProviderController extends BaseController {
             return ROOT_DIR + "sp";
         } else {
             sp.setStatus(0);
+            sp.setCode(computeCode());
             serviceProviderService.save(sp);
             return "redirect:/sp";
         }
+    }
+
+    private String computeCode() {
+        String sequenceName = "VC";
+        long value = sequenceService.getNextValue(sequenceName);
+        return String.format("%1$s%2$04d", sequenceName, value);
     }
 }
