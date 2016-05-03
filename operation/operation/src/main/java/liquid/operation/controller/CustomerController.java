@@ -83,7 +83,6 @@ public class CustomerController extends BaseController {
     private String computeCode() {
         String sequenceName = "CS";
         long value = sequenceService.getNextValue(sequenceName);
-        return String.format("%1$s%2$04d",
-                sequenceName, value);
+        return String.format("%1$s%2$04d", sequenceName, value);
     }
 }
