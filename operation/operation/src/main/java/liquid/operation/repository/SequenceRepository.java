@@ -19,5 +19,5 @@ public interface SequenceRepository extends CrudRepository<Sequence, Long> {
     void increment(String name);
 
     @Query(value = "SELECT LAST_INSERT_ID()", nativeQuery = true)
-    int getValue();
+    long getValue();
 }

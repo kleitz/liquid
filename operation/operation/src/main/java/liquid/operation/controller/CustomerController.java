@@ -4,7 +4,9 @@ import liquid.core.controller.BaseController;
 import liquid.core.model.Pagination;
 import liquid.core.model.SearchBarForm;
 import liquid.operation.domain.Customer;
+import liquid.operation.domain.Sequence;
 import liquid.operation.service.InternalCustomerService;
+import liquid.operation.service.SequenceService;
 import liquid.pinyin4j.PinyinHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,9 @@ public class CustomerController extends BaseController {
     @Autowired
     private InternalCustomerService customerService;
 
+    @Autowired
+    private SequenceService sequenceService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String list(SearchBarForm searchBarForm, Model model, HttpServletRequest request) {
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
@@ -59,7 +64,9 @@ public class CustomerController extends BaseController {
             if (null == customer.getId()) {
                 String queryName = PinyinHelper.converterToFirstSpell(customer.getName()) + ";" + customer.getName();
                 customer.setQueryName(queryName);
+                customer.setCode(computeCode());
             }
+
             customerService.save(customer);
             return "redirect:/customer";
         }
@@ -71,5 +78,12 @@ public class CustomerController extends BaseController {
         Customer customer = customerService.find(id);
         model.addAttribute("customer", customer);
         return "customer/form";
+    }
+
+    private String computeCode() {
+        String sequenceName = "CS";
+        long value = sequenceService.getNextValue(sequenceName);
+        return String.format("%1$s%2$04d",
+                sequenceName, value);
     }
 }

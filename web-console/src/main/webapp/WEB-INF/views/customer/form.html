@@ -17,6 +17,7 @@
         <input type="hidden" th:field="*{id}"/>
     
         <div class="row">
+            <!--
             <div class="col-xs-6">
                 <div class="form-group" th:classappend="${#fields.hasErrors('code')} ? 'has-error'">
                     <label th:text="#{customer.code} + '*'" class="control-label">Code</label>
@@ -24,6 +25,7 @@
                     <span th:errors="*{code}">error</span>
                 </div>
             </div>
+            -->
             
             <div class="col-xs-6">
                 <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'has-error'">
