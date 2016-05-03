@@ -18,10 +18,10 @@ public class SequenceServiceImpl implements SequenceService{
     private SequenceRepository sequenceRepository;
 
     @Transactional(value = "transactionManager", propagation = Propagation.REQUIRED)
-    public int getNextValue(String name) {
+    public long getNextValue(String name) {
         sequenceRepository.increment(name);
-        int value = sequenceRepository.getValue();
-        if (0 == value) {
+        long value = sequenceRepository.getValue();
+        if (0L == value) {
             Sequence sequence = new Sequence();
             sequence.setName(name);
             sequence.setPrefix(name);

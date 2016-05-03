@@ -15,8 +15,6 @@ import javax.validation.constraints.NotNull;
  */
 @Entity(name = "OPS_CUSTOMER")
 public class Customer extends BaseUpdateEntity {
-    @NotNull
-    @NotEmpty
     @Column(name = "CODE")
     private String code;
 
