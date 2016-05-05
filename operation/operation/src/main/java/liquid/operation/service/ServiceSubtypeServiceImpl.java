@@ -30,4 +30,18 @@ public class ServiceSubtypeServiceImpl implements ServiceSubtypeService {
     public ServiceSubtype find(Long id) {
         return serviceSubtypeRepository.findOne(id);
     }
+
+    @Override
+    public ServiceSubtype disable(Long id) {
+        ServiceSubtype serviceSubtype = find(id);
+        serviceSubtype.setStatus(1);
+        return serviceSubtypeRepository.save(serviceSubtype);
+    }
+
+    @Override
+    public ServiceSubtype enable(Long id) {
+        ServiceSubtype serviceSubtype = find(id);
+        serviceSubtype.setStatus(0);
+        return serviceSubtypeRepository.save(serviceSubtype);
+    }
 }

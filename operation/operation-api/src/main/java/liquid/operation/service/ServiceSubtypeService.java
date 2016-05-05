@@ -12,4 +12,8 @@ public interface ServiceSubtypeService extends CrudService<ServiceSubtype> {
     List<ServiceSubtype> findEnabled();
 
     void add(ServiceSubtype serviceSubtype);
+
+    ServiceSubtype disable(Long id);
+
+    ServiceSubtype enable(Long id);
 }

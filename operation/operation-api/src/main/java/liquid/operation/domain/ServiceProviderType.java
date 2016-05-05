@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
  * Date: 10/25/13
  * Time: 7:31 PM
  */
+@Deprecated
 @Entity(name = "OPS_SERVICE_PROVIDER_TYPE")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ServiceProviderType extends BaseUpdateEntity implements Text {

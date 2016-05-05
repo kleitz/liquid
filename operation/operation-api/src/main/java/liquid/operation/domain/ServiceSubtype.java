@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 /**
  * Service Provider Type which means what kind of service the providers offer.
  * Created by redbrick9 on 5/9/14.
+ * FIXME - Rename ServiceItemType
  */
 @Entity(name = "OPS_SERVICE_SUBTYPE")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
