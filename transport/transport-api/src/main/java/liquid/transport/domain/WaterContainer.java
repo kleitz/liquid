@@ -20,6 +20,9 @@ public class WaterContainer extends BaseLegContainer {
     @Column(name = "SLOT")
     private String slot;
 
+    @Column(name = "ISSUED_AT")
+    private Date issuedAt;
+
     /**
      * Estimated time of transport
      */
@@ -49,6 +52,14 @@ public class WaterContainer extends BaseLegContainer {
         this.slot = slot;
     }
 
+    public Date getIssuedAt() {
+        return issuedAt;
+    }
+
+    public void setIssuedAt(Date issuedAt) {
+        this.issuedAt = issuedAt;
+    }
+
     public Date getEts() {
         return ets;
     }
@@ -75,10 +86,11 @@ public class WaterContainer extends BaseLegContainer {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder(super.toString());
-        sb.append("BargeContainer{");
-        sb.append("bolNo='").append(bolNo).append('\'');
+        final StringBuilder sb = new StringBuilder("WaterContainer{");
+        sb.append("super=").append(super.toString()).append('\'');
+        sb.append(", bolNo='").append(bolNo).append('\'');
         sb.append(", slot='").append(slot).append('\'');
+        sb.append(", issuedAt=").append(issuedAt);
         sb.append(", ets=").append(ets);
         sb.append(", etsStr='").append(etsStr).append('\'');
         sb.append(", batch=").append(batch);

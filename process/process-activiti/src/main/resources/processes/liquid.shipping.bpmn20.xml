@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://activiti.org/bpmn20" id="definitions">
-  <message id="changeOrderMessage" name="changeOrder"></message>
   <collaboration id="Collaboration">
     <participant id="pool_liquid" name="发货订单" processRef="shipping"></participant>
   </collaboration>
+  <message id="changeOrderMessage" name="changeOrder"></message>
   <process id="shipping" name="Liquid Shipping Process" isExecutable="true">
     <documentation>Liquid Shipping Process</documentation>
     <extensionElements>
@@ -16,7 +16,7 @@
       <lane id="lane_operating" name="操作"></lane>
       <lane id="lane_container" name="箱管"></lane>
     </laneSet>
-    <subProcess id="subprocess1" name="子流程">
+    <subProcess id="subprocess1" name="Sub Process">
       <startEvent id="startevent1" name="Start"></startEvent>
       <exclusiveGateway id="shipDecision" name="Exclusive Gateway"></exclusiveGateway>
       <sequenceFlow id="flow010" sourceRef="shipDecision" targetRef="allocateContainers">
@@ -106,10 +106,6 @@
       <endEvent id="endevent1" name="End"></endEvent>
     </subProcess>
     <sequenceFlow id="flow584" sourceRef="subprocess1" targetRef="reclaimReceipt"></sequenceFlow>
-    <userTask id="sendSettling" name="发送采购结算指令" activiti:candidateGroups="ROLE_COMMERCE">
-      <documentation>您需要发送采购结算指令。</documentation>
-    </userTask>
-    <sequenceFlow id="flow460" sourceRef="sendSettling" targetRef="checkCostFork"></sequenceFlow>
     <parallelGateway id="settlementJoin" name="结算合并"></parallelGateway>
     <sequenceFlow id="flow570" sourceRef="settlementJoin" targetRef="comfirmData"></sequenceFlow>
     <userTask id="checkCostByMarketing" name="核对金额" activiti:candidateGroups="ROLE_MARKETING">
@@ -152,22 +148,14 @@
       <documentation>您需要催收款。</documentation>
     </userTask>
     <sequenceFlow id="flow440" sourceRef="return" targetRef="confirmIncomeSettlement"></sequenceFlow>
-    <userTask id="sendInvoicing" name="发送开发票指令" activiti:candidateGroups="ROLE_COMMERCE">
-      <documentation>上一操作已经在${endTime}完成，您需要发送开发票指令。</documentation>
-    </userTask>
-    <sequenceFlow id="flow410" sourceRef="sendInvoicing" targetRef="confirmInvoiceAmount"></sequenceFlow>
     <userTask id="confirmInvoiceAmount" name="确认发票金额" activiti:assignee="${orderOwner}">
       <documentation>您需要确认发票金额${salesPrice}。</documentation>
     </userTask>
     <sequenceFlow id="flow420" sourceRef="confirmInvoiceAmount" targetRef="invoice"></sequenceFlow>
     <parallelGateway id="checkJoin" name="核对采购金额合并"></parallelGateway>
     <sequenceFlow id="flow550" sourceRef="checkJoin" targetRef="confirmPurchaingSettlement"></sequenceFlow>
-    <parallelGateway id="checkCostFork" name="市场操作同时核对金额"></parallelGateway>
-    <sequenceFlow id="flow470" sourceRef="checkCostFork" targetRef="checkCostByMarketing"></sequenceFlow>
-    <sequenceFlow id="flow480" sourceRef="checkCostFork" targetRef="confirmProviderInvoicingByOperating"></sequenceFlow>
     <parallelGateway id="sendInvoicingAndPsFork"></parallelGateway>
-    <sequenceFlow id="flow390" sourceRef="sendInvoicingAndPsFork" targetRef="sendInvoicing"></sequenceFlow>
-    <sequenceFlow id="flow400" sourceRef="sendInvoicingAndPsFork" targetRef="sendSettling"></sequenceFlow>
+    <sequenceFlow id="flow400" sourceRef="sendInvoicingAndPsFork" targetRef="confirmProviderInvoicingByOperating"></sequenceFlow>
     <userTask id="confirmProviderInvoicingByOperating" name="确认供应商开具发票" activiti:candidateGroups="ROLE_OPERATING">
       <documentation>您需要确认供应商开具发票。</documentation>
     </userTask>
@@ -183,6 +171,7 @@
       <messageEventDefinition messageRef="changeOrderMessage"></messageEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow585" sourceRef="boundarymessage1" targetRef="subprocess1"></sequenceFlow>
+    <sequenceFlow id="flow586" sourceRef="sendInvoicingAndPsFork" targetRef="checkCostByMarketing"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_Collaboration">
     <bpmndi:BPMNPlane bpmnElement="Collaboration" id="BPMNPlane_Collaboration">
@@ -273,14 +262,11 @@
       <bpmndi:BPMNShape bpmnElement="boundarymessage1" id="BPMNShape_boundarymessage1">
         <omgdc:Bounds height="30.0" width="30.0" x="1053.0" y="480.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="sendSettling" id="BPMNShape_sendSettling">
-        <omgdc:Bounds height="60.0" width="100.0" x="370.0" y="130.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="settlementJoin" id="BPMNShape_settlementJoin">
         <omgdc:Bounds height="40.0" width="40.0" x="1080.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="checkCostByMarketing" id="BPMNShape_checkCostByMarketing">
-        <omgdc:Bounds height="60.0" width="100.0" x="490.0" y="309.0"></omgdc:Bounds>
+        <omgdc:Bounds height="60.0" width="100.0" x="489.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="confirmPurchaingSettlement" id="BPMNShape_confirmPurchaingSettlement">
         <omgdc:Bounds height="60.0" width="100.0" x="970.0" y="211.0"></omgdc:Bounds>
@@ -289,7 +275,7 @@
         <omgdc:Bounds height="60.0" width="100.0" x="730.0" y="309.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="confirmProviderInvoicingByMarketing" id="BPMNShape_confirmProviderInvoicingByMarketing">
-        <omgdc:Bounds height="60.0" width="100.0" x="610.0" y="130.0"></omgdc:Bounds>
+        <omgdc:Bounds height="60.0" width="100.0" x="583.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="adjustPrice" id="BPMNShape_adjustPrice">
         <omgdc:Bounds height="60.0" width="100.0" x="221.0" y="34.0"></omgdc:Bounds>
@@ -309,17 +295,11 @@
       <bpmndi:BPMNShape bpmnElement="return" id="BPMNShape_return">
         <omgdc:Bounds height="60.0" width="100.0" x="850.0" y="34.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="sendInvoicing" id="BPMNShape_sendInvoicing">
-        <omgdc:Bounds height="60.0" width="100.0" x="490.0" y="130.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="confirmInvoiceAmount" id="BPMNShape_confirmInvoiceAmount">
-        <omgdc:Bounds height="60.0" width="100.0" x="700.0" y="33.0"></omgdc:Bounds>
+        <omgdc:Bounds height="60.0" width="100.0" x="657.0" y="34.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="checkJoin" id="BPMNShape_checkJoin">
         <omgdc:Bounds height="40.0" width="40.0" x="759.0" y="220.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="checkCostFork" id="BPMNShape_checkCostFork">
-        <omgdc:Bounds height="40.0" width="40.0" x="399.0" y="318.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sendInvoicingAndPsFork" id="BPMNShape_sendInvoicingAndPsFork">
         <omgdc:Bounds height="40.0" width="40.0" x="399.0" y="43.0"></omgdc:Bounds>
@@ -449,18 +429,13 @@
         <omgdi:waypoint x="270.0" y="560.0"></omgdi:waypoint>
         <omgdi:waypoint x="271.0" y="470.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow460" id="BPMNEdge_flow460">
-        <omgdi:waypoint x="420.0" y="190.0"></omgdi:waypoint>
-        <omgdi:waypoint x="419.0" y="318.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow570" id="BPMNEdge_flow570">
         <omgdi:waypoint x="1120.0" y="200.0"></omgdi:waypoint>
         <omgdi:waypoint x="1140.0" y="201.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow490" id="BPMNEdge_flow490">
-        <omgdi:waypoint x="590.0" y="339.0"></omgdi:waypoint>
-        <omgdi:waypoint x="659.0" y="338.0"></omgdi:waypoint>
-        <omgdi:waypoint x="660.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="539.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="633.0" y="190.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow560" id="BPMNEdge_flow560">
         <omgdi:waypoint x="1070.0" y="241.0"></omgdi:waypoint>
@@ -472,7 +447,7 @@
         <omgdi:waypoint x="779.0" y="260.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow500" id="BPMNEdge_flow500">
-        <omgdi:waypoint x="710.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="683.0" y="160.0"></omgdi:waypoint>
         <omgdi:waypoint x="730.0" y="160.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow380" id="BPMNEdge_flow380">
@@ -501,35 +476,18 @@
         <omgdi:waypoint x="1019.0" y="63.0"></omgdi:waypoint>
         <omgdi:waypoint x="1020.0" y="130.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow410" id="BPMNEdge_flow410">
-        <omgdi:waypoint x="540.0" y="130.0"></omgdi:waypoint>
-        <omgdi:waypoint x="540.0" y="62.0"></omgdi:waypoint>
-        <omgdi:waypoint x="700.0" y="63.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow420" id="BPMNEdge_flow420">
-        <omgdi:waypoint x="750.0" y="93.0"></omgdi:waypoint>
+        <omgdi:waypoint x="707.0" y="94.0"></omgdi:waypoint>
         <omgdi:waypoint x="900.0" y="130.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow550" id="BPMNEdge_flow550">
         <omgdi:waypoint x="799.0" y="240.0"></omgdi:waypoint>
         <omgdi:waypoint x="970.0" y="241.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow470" id="BPMNEdge_flow470">
-        <omgdi:waypoint x="439.0" y="338.0"></omgdi:waypoint>
-        <omgdi:waypoint x="490.0" y="339.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow480" id="BPMNEdge_flow480">
-        <omgdi:waypoint x="419.0" y="358.0"></omgdi:waypoint>
-        <omgdi:waypoint x="418.0" y="439.0"></omgdi:waypoint>
-        <omgdi:waypoint x="484.0" y="440.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow390" id="BPMNEdge_flow390">
-        <omgdi:waypoint x="419.0" y="83.0"></omgdi:waypoint>
-        <omgdi:waypoint x="540.0" y="130.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow400" id="BPMNEdge_flow400">
         <omgdi:waypoint x="419.0" y="83.0"></omgdi:waypoint>
-        <omgdi:waypoint x="420.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="419.0" y="439.0"></omgdi:waypoint>
+        <omgdi:waypoint x="484.0" y="440.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow530" id="BPMNEdge_flow530">
         <omgdi:waypoint x="584.0" y="440.0"></omgdi:waypoint>
@@ -549,6 +507,10 @@
         <omgdi:waypoint x="1067.0" y="428.0"></omgdi:waypoint>
         <omgdi:waypoint x="978.0" y="428.0"></omgdi:waypoint>
         <omgdi:waypoint x="979.0" y="490.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow586" id="BPMNEdge_flow586">
+        <omgdi:waypoint x="419.0" y="83.0"></omgdi:waypoint>
+        <omgdi:waypoint x="539.0" y="230.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
