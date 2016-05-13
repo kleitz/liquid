@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Created by mat on 2/21/16.
  */
+@Deprecated
 @Controller
 @RequestMapping("/api/pickup_order")
 public class PickupOrderRestController {

@@ -12,58 +12,6 @@
 <div th:include="layout :: task-bar"/>
 <!-- {!end task bar} -->
 
-<div id="t" class="container">
-  <div id="crudTable" />
-</div>
-
-<!--
-<div id="t" class="container">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <span th:text="#{charge}"></span>
-            <span class="pull-right">
-                <a th:href="'/task/' + ${taskId} + '/ajustement/charge'">
-                    <i class="glyphicon glyphicon-plus text-success"/>
-                </a>
-            </span>
-        </div>
-
-        <div class="panel-body">
-            <table class="table table-striped table-hover table-condensed table-16"
-                   th:unless="${#lists.isEmpty(charges)}">
-                <thead>
-                <tr>
-                    <th th:text="#{charge.type}">Type</th>
-                    <th th:text="#{sp.name}">SP Name</th>
-                    <th th:text="#{charge.way}">Way</th>
-                    <th th:text="#{charge.unit.price}">Unit Price</th>
-                    <th th:text="#{charge.total.price}">Total Price</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="charge : ${charges}">
-                    <td th:text="${charge.serviceSubtype.name}">Type</td>
-                    <td th:text="${charge.sp.name}">SP Name</td>
-                    <td th:text="#{${chargeWays[__${charge.way}__].i18nKey}}">Way</td>
-                    <td th:text="${charge.unitPrice}">Unit Price</td>
-                    <td th:text="${charge.totalPrice}">Total Price</td>
-                    <th>
-                        <a th:href="'/task/' + ${taskId} + '/ajustement/charge/' + ${charge.id}">
-                            <i class="glyphicon glyphicon-remove text-danger"/>
-                        </a>
-                    </th>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="panel-footer">
-            <span th:text="#{total} + ':' + ${chargesTotal}"></span>
-        </div>
-    </div>
-</div>
--->
-<br/>
 
 <!-- {!begin layout} -->
 <div th:include="layout :: footer"></div>
@@ -73,42 +21,42 @@
 <div th:replace="layout :: js" />
 <!-- {!end layout} -->
 
+<div class="container">
+  <table id="f" class="table table-bordered table-16">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th th:text="#{service.item}">Service Item</th>
+        <th th:text="#{currency}">Unit Price</th>
+        <th th:text="#{price}">Unit Price</th>
+        <th th:text="#{comment}">Comment</th>
+        <th>
+          <button type="submit" class="btn btn-default btn-block btn-xs" name="addServiceItem">
+            <i class="glyphicon glyphicon-plus"></i>
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="serviceItem, rowStat : ${serviceItemList}">
+        <td><span th:text="${serviceItemList[__${rowStat.index}__].id}" /></td>
+        <td><span th:text="${serviceItemList[__${rowStat.index}__].serviceSubtype}" /></td>
+        <td><span th:text="${serviceItemList[__${rowStat.index}__].currency}" /></td>
+        <td><span th:text="${serviceItemList[__${rowStat.index}__].quotation}" /></td>
+        <td><span th:text="${serviceItemList[__${rowStat.index}__].comment}" /></td>        
+        <td>
+            <button type="submit" name="removeServiceItem" class="btn btn-default btn-block btn-sm" th:value="${rowStat.index}" >
+                <i class="glyphicon glyphicon-minus"></i>
+            </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <script th:inline="javascript">
 /*<![CDATA[*/
   var orderId = [[${task.orderId}]]
-/*]]>*/
-</script>
-<script type="text/jsx" src="/resources/js/CrudTable.js"></script>
-<script type="text/jsx">
-/*<![CDATA[*/
-  console.log("order id", orderId)
-  var definition = {
-    source: '/api/order/' + orderId + '/service-item',
-    columns: [
-      {name: 'id', type: 'hidden'},
-      {name: 'serviceSubtype', type: 'descendant', pattern: 'serviceSubtype.name'},
-      {name: 'currency'},
-      {name: 'quotation'},
-      {name: 'comment'}
-    ],
-    modal: {
-      title: 'serviceItem',
-      url: '/api/order/' + orderId + '/service-item',
-      fields: [
-        {name: 'id', type: 'hidden'},
-        {name: 'serviceSubtype', type: 'select', value: 'descendant', pattern: 'serviceSubtype.id', default: 1, url:'/api/service-subtype' },
-        {name: 'currency', type: 'select', default: 'CNY', options: [{id:'CNY', name:'CNY'}, {id:'USD', name:'USD'}]},
-        {name: 'quotation'},
-        {name: 'comment'}
-      ]
-    }
-  }
-
-  React.render(
-    <CrudTable definition={definition} {...i18n} />,
-    document.getElementById('crudTable')
-  );
 /*]]>*/
 </script>
 </body>
