@@ -21,6 +21,7 @@ public interface DefinitionKey {
     String applyRailwayPlan = "applyRailwayPlan";
     String loadOnYard = "loadOnYard";
     String loadByTruck = "loadByTruck";
+    String reclaimReceipt = "reclaimReceipt";
     String recordTory = "recordTory";
     String recordTod = "recordTod";
     String CDCI = "CDCI";
