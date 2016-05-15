@@ -12,14 +12,7 @@
 <div th:include="layout :: task-bar"/>
 <!-- {!end task bar} -->
 
-
-<!-- {!begin layout} -->
-<div th:include="layout :: footer"></div>
-<!-- {!end layout} -->
-
-<!-- {!begin layout} -->
-<div th:replace="layout :: js" />
-<!-- {!end layout} -->
+<br />
 
 <div class="container">
   <table id="f" class="table table-bordered table-16">
@@ -31,34 +24,174 @@
         <th th:text="#{price}">Unit Price</th>
         <th th:text="#{comment}">Comment</th>
         <th>
-          <button type="submit" class="btn btn-default btn-block btn-xs" name="addServiceItem">
-            <i class="glyphicon glyphicon-plus"></i>
-          </button>
+          <a data-toggle="modal" data-target="#addServiceItem" href="#">
+            <span class="glyphicon glyphicon-plus text-success" />
+          </a>
         </th>
       </tr>
     </thead>
     <tbody>
       <tr th:each="serviceItem, rowStat : ${serviceItemList}">
         <td><span th:text="${serviceItemList[__${rowStat.index}__].id}" /></td>
-        <td><span th:text="${serviceItemList[__${rowStat.index}__].serviceSubtype}" /></td>
+        <td><span th:text="${serviceItemList[__${rowStat.index}__].serviceSubtype.name}" /></td>
         <td><span th:text="${serviceItemList[__${rowStat.index}__].currency}" /></td>
-        <td><span th:text="${serviceItemList[__${rowStat.index}__].quotation}" /></td>
+        <td><span th:text="${#numbers.formatDecimal(serviceItemList[__${rowStat.index}__].quotation, 0, 'COMMA', 2, 'POINT')}" /></td>
         <td><span th:text="${serviceItemList[__${rowStat.index}__].comment}" /></td>        
         <td>
-            <button type="submit" name="removeServiceItem" class="btn btn-default btn-block btn-sm" th:value="${rowStat.index}" >
-                <i class="glyphicon glyphicon-minus"></i>
-            </button>
+          <span th:if="${serviceItem.status == 1}" class="glyphicon glyphicon-remove text-danger" aria-hidden="true"></span>
+          <a th:unless="${serviceItem.status == 1}" href="#" name="voidServiceItem" data-toggle="modal" data-target="#voidServiceItem"
+            th:attr="data-service-item-id=${serviceItem.id}">
+            <span class="glyphicon glyphicon-trash text-success" aria-hidden="true"></span>
+          </a>
         </td>
       </tr>
     </tbody>
   </table>
+
+  <div class="modal" id="addServiceItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <form id="serviceItemForm" method="POST" th:action="${action}"
+              th:object="${serviceItem}">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel"><span th:text="#{service.item}">Add Service Item</span></h4>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="definitionKey" name="definitionKey" th:value="${task.definitionKey}" />
+          <div class="form-group form-group-sm">
+            <label for="transportMode" class="control-label" th:text="#{service.item}">Service Subtype</label>
+            <select class="form-control input-sm" th:field="*{serviceSubtype}">
+              <option th:each="serviceSubtype : ${serviceSubtypes}" th:value="${serviceSubtype.id}" th:text="${serviceSubtype.name}">Service Subtype</option>
+            </select>
+          </div>
+
+          <div class="form-group form-group-sm">
+            <label for="serviceSubtype" class="control-label" th:text="#{charge.type}">Charge Type</label>
+            <select th:field="*{currency}" class="form-control input-sm">
+              <option value="CNY">CNY</option>
+              <option value="USD">USD</option>
+            </select>        
+          </div>
+
+          <div class="form-group form-group-sm">
+            <label for="unitPrice" class="control-label">
+              <span th:text="#{unit.price}">Unit Price</span>
+              <span>*</span>
+            </label>
+            <input type="text" th:field="*{quotation}" class="form-control input-sm"/>
+          </div>
+
+          <div class="form-group form-group-sm">
+            <label for="comment" class="control-label" th:text="#{comment}">Comment</label>
+            <input type="text" th:field="*{comment}" class="form-control" />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
+            <span th:text="#{modal.close}"/>
+          </button>
+          <button type="submit" name="add" value="add" form="serviceItemForm" class="btn btn-warning btn-sm">
+            <span th:text="#{charge.add}">Add</span>
+          </button>
+        </div>
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div class="modal" id="voidServiceItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+      <form id="voidServiceItemForm" method="POST" th:action="${action}">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel"><span th:text="#{purchase}">Void Purchase</span></h4>
+          </div>
+  
+          <div class="modal-body">
+            <input type="hidden" id="definitionKey" name="definitionKey" th:value="${task.definitionKey}" />
+            <input type="hidden" name="voidServiceItem" value="voidServiceItem" />
+            <input type="hidden" id="id" name="id" value="" />
+            <div class="form-group">
+              <label for="reason" class="control-label"><span th:text="#{comment}">Comment</span><span>*</span></label>
+              <input type="text" id="comment" name="comment" class="form-control" />
+            </div>
+          </div>
+  
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
+              <span th:text="#{modal.close}"/>
+            </button>
+            <button type="submit" name="void" value="void" form="voidServiceItemForm" class="btn btn-warning btn-sm">
+              <span th:text="#{purchase.void}">Void</span>
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+      </form>
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 </div>
+
+<!-- {!begin layout} -->
+<div th:include="layout :: footer"></div>
+<!-- {!end layout} -->
+
+<!-- {!begin layout} -->
+<div th:replace="layout :: js" />
+<!-- {!end layout} -->
 
 <script th:inline="javascript">
 /*<![CDATA[*/
   var orderId = [[${task.orderId}]]
 /*]]>*/
 </script>
+<script>
+/*<![CDATA[*/
+  $(document).ready(function() {
+    $('#serviceItemForm').validate({
+      rules: {
+        'unitPrice': {
+          required: true,
+          number: true
+        },
+      },
+      highlight: function(element) {
+          $(element).parent().addClass('has-error');
+      },
+      unhighlight: function(element) {
+          $(element).parent().removeClass('has-error');
+      },
+      submitHandler: function(form) {
+          form.submit();
+      }
+    });
+
+    $('#voidServiceItemForm').validate({
+      rules: {
+        'comment': 'required'
+      },
+      highlight: function(element) {
+          $(element).parent().addClass('has-error');
+      },
+      unhighlight: function(element) {
+          $(element).parent().removeClass('has-error');
+      },
+      submitHandler: function(form) {
+          form.submit();
+      }
+    });
+
+    $('a[name="voidServiceItem"]').click(function() {
+      var serviceItemId = $(this).data('service-item-id');
+      console.log('Service Item Id: %s', serviceItemId);
+      $('.modal-body #id').val(serviceItemId);
+    });
+  }); // ready end
+/*]]>*/
+</script>
+ 
 </body>
 
 </html>

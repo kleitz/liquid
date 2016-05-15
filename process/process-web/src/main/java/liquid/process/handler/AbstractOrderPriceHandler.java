@@ -2,6 +2,7 @@ package liquid.process.handler;
 
 import liquid.operation.domain.ServiceSubtype;
 import liquid.order.domain.Order;
+import liquid.order.domain.ServiceItem;
 import liquid.order.service.OrderService;
 import liquid.process.domain.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class AbstractOrderPriceHandler extends AbstractTaskHandler {
 
         Iterable<ServiceSubtype> serviceSubtypes = serviceSubtypeService.findEnabled();
         model.addAttribute("serviceSubtypes", serviceSubtypes);
+
+        model.addAttribute("serviceItem", new ServiceItem());
+        model.addAttribute("action", "/task/" + task.getId());
     }
 
     @Override

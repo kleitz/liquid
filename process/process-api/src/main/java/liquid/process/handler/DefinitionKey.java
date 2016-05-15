@@ -27,6 +27,7 @@ public interface DefinitionKey {
     String CDCI = "CDCI";
     String doBargeOps = "doBargeOps";
     String doVesselOps = "doVesselOps";
+    String adjustPrice = "adjustPrice";
     String deliver = "deliver";
     String sendInvoicing = "sendInvoicing";
 }

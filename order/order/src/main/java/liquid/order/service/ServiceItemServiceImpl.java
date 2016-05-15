@@ -27,6 +27,16 @@ public class ServiceItemServiceImpl implements ServiceItemService {
         return serviceProviderService.findByServiceSubtypeId(CONTAINER_PROVIDER_TYPE_ID);
     }
 
+    @Override
+    public ServiceItem save(ServiceItem serviceItem) {
+        return serviceItemRepository.save(serviceItem);
+    }
+
+    @Override
+    public ServiceItem find(Long id) {
+        return serviceItemRepository.findOne(id);
+    }
+
     public Iterable<ServiceItem> findEnabled() {
         return serviceItemRepository.findAll();
     }

@@ -31,6 +31,9 @@ public class ServiceItem extends BaseIdEntity {
     @Column(name = "COMMENT")
     private String comment;
 
+    @Column(name = "STATUS")
+    private Integer status;
+
     public ServiceSubtype getServiceSubtype() {
         return serviceSubtype;
     }
@@ -63,13 +66,23 @@ public class ServiceItem extends BaseIdEntity {
         this.comment = comment;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ServiceItem{");
-        sb.append("serviceSubtype=").append(serviceSubtype);
+        sb.append("super=").append(super.toString()).append('\'');
+        sb.append(", serviceSubtype=").append(serviceSubtype);
         sb.append(", currency=").append(currency);
         sb.append(", quotation=").append(quotation);
         sb.append(", comment='").append(comment).append('\'');
+        sb.append(", status=").append(status);
         sb.append('}');
         return sb.toString();
     }

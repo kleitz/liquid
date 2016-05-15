@@ -1,6 +1,7 @@
 package liquid.order.service;
 
 import liquid.operation.domain.ServiceProvider;
+import liquid.order.domain.ServiceItem;
 
 import java.util.List;
 
@@ -9,4 +10,8 @@ import java.util.List;
  */
 public interface ServiceItemService {
     List<ServiceProvider> findContainerOwners();
+
+    ServiceItem save(ServiceItem serviceItem);
+
+    ServiceItem find(Long id);
 }
