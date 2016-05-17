@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="layout :: head" />
+
+<body>
+<!-- {!begin layout} -->
+<div th:include="layout :: header"></div>
+<!-- {!end layout} -->
+
+<!-- {!begin task bar} -->
+<div th:include="layout :: task-bar"/>
+<!-- {!end task bar} -->
+
+<br />
+
+<div th:include="layout :: purchase"></div>
+
+<!-- {!begin layout} -->
+<div th:include="layout :: footer"></div>
+<!-- {!end layout} -->
+
+<!-- {!begin layout} -->
+<div th:replace="layout :: js" />
+<!-- {!end layout} -->
+
+<script>
+/*<![CDATA[*/
+    $(document).ready(function() {
+        var rowCount = $('#f > tbody > tr').length;
+        for(var i = 0; i < rowCount; i++) {
+            $('#etsPicker' + i).dtPicker();
+        }
+    }); // ready end
+
+/*]]>*/
+</script>
+
+<div th:replace="layout :: js-task" />
+
+</body>
+
+</html>
