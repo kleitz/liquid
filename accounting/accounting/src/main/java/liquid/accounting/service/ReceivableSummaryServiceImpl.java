@@ -12,6 +12,7 @@ import liquid.core.service.AbstractService;
 import liquid.operation.domain.Customer_;
 import liquid.order.domain.Order;
 import liquid.order.domain.Order_;
+import liquid.util.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -179,7 +180,8 @@ public class ReceivableSummaryServiceImpl extends AbstractService<ReceivableSumm
         Order order = new Order();
         sum.setOrder(order);
         for (ReceivableSummary entity : page) {
-            sum.getOrder().setContainerQty(sum.getOrder().getContainerQty() + entity.getOrder().getContainerQty());
+            sum.getOrder().setContainerQty(NumberUtils.valueOf(sum.getOrder().getContainerQty()) +
+                    NumberUtils.valueOf(entity.getOrder().getContainerQty()));
             sum.setCny(sum.getCny().add(entity.getCny()));
             sum.setUsd(sum.getUsd().add(entity.getUsd()));
             sum.setRemainingBalanceCny(sum.getRemainingBalanceCny() + entity.getRemainingBalanceCny());
