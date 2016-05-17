@@ -107,7 +107,7 @@
     </subProcess>
     <sequenceFlow id="flow584" sourceRef="subprocess1" targetRef="reclaimReceipt"></sequenceFlow>
     <parallelGateway id="settlementJoin" name="结算合并"></parallelGateway>
-    <sequenceFlow id="flow570" sourceRef="settlementJoin" targetRef="comfirmData"></sequenceFlow>
+    <sequenceFlow id="flow570" sourceRef="settlementJoin" targetRef="endevent2"></sequenceFlow>
     <userTask id="checkCostByMarketing" name="核对金额" activiti:candidateGroups="ROLE_MARKETING">
       <documentation>您需要核对金额。</documentation>
     </userTask>
@@ -124,10 +124,6 @@
       <documentation>${employeeName}已经在${endTime}完成回收签收单，您需要修正订单价格。</documentation>
     </userTask>
     <sequenceFlow id="flow380" sourceRef="adjustPrice" targetRef="sendInvoicingAndPsFork"></sequenceFlow>
-    <userTask id="comfirmData" name="确认修正数据" activiti:candidateGroups="ROLE_COMMERCE">
-      <documentation>您需要确认修正数据。</documentation>
-    </userTask>
-    <sequenceFlow id="flow580" sourceRef="comfirmData" targetRef="endevent2"></sequenceFlow>
     <userTask id="invoice" name="开发票" activiti:candidateGroups="ROLE_COMMERCE">
       <documentation>您需要开发票。</documentation>
     </userTask>
@@ -267,9 +263,6 @@
       <bpmndi:BPMNShape bpmnElement="adjustPrice" id="BPMNShape_adjustPrice">
         <omgdc:Bounds height="60.0" width="100.0" x="221.0" y="104.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="comfirmData" id="BPMNShape_comfirmData">
-        <omgdc:Bounds height="60.0" width="100.0" x="1231.0" y="211.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="invoice" id="BPMNShape_invoice">
         <omgdc:Bounds height="60.0" width="100.0" x="660.0" y="105.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -295,7 +288,7 @@
         <omgdc:Bounds height="35.0" width="35.0" x="160.0" y="648.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="1382.0" y="223.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1245.0" y="223.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow010" id="BPMNEdge_flow010">
         <omgdi:waypoint x="469.0" y="712.0"></omgdi:waypoint>
@@ -412,7 +405,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow570" id="BPMNEdge_flow570">
         <omgdi:waypoint x="1180.0" y="240.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1231.0" y="241.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1245.0" y="240.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow490" id="BPMNEdge_flow490">
         <omgdi:waypoint x="591.0" y="350.0"></omgdi:waypoint>
@@ -430,10 +423,6 @@
       <bpmndi:BPMNEdge bpmnElement="flow380" id="BPMNEdge_flow380">
         <omgdi:waypoint x="321.0" y="134.0"></omgdi:waypoint>
         <omgdi:waypoint x="392.0" y="133.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow580" id="BPMNEdge_flow580">
-        <omgdi:waypoint x="1331.0" y="241.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1382.0" y="240.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow430" id="BPMNEdge_flow430">
         <omgdi:waypoint x="760.0" y="135.0"></omgdi:waypoint>
