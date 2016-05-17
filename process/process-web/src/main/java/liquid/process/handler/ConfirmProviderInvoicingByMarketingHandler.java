@@ -10,11 +10,10 @@ import org.springframework.ui.Model;
 import java.util.Map;
 
 /**
- * Created by mat on 5/16/16.
+ * Created by mat on 5/17/16.
  */
 @Component
-public class CheckCostByMarketingHandler extends AbstractTaskHandler {
-
+public class ConfirmProviderInvoicingByMarketingHandler extends AbstractTaskHandler {
     @Autowired
     private OrderService orderService;
 
