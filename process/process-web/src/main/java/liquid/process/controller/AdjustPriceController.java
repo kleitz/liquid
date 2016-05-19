@@ -33,10 +33,7 @@ public class AdjustPriceController extends AbstractTaskController {
     @RequestMapping(method = RequestMethod.POST, params = "definitionKey=" + DefinitionKey.adjustPrice)
     public String addServiceItem(@PathVariable String taskId, ServiceItem serviceItem) {
         Long orderId = taskService.getOrderIdByTaskId(taskId);
-        Order order = orderService.find(orderId);
-        serviceItem.setStatus(0);
-        order.getServiceItems().add(serviceItem);
-        orderService.save(order);
+        orderService.addItem(orderId, serviceItem);
         return computeRedirect(taskId);
     }
 
@@ -44,10 +41,8 @@ public class AdjustPriceController extends AbstractTaskController {
             params = {"definitionKey=" + DefinitionKey.adjustPrice, "voidServiceItem=voidServiceItem"})
     public String voidServiceItem(@PathVariable String taskId, Long id, String comment) {
         logger.debug("Service Item Id: {}; Comment: {}", id, comment);
-        ServiceItem serviceItem = serviceItemService.find(id);
-        serviceItem.setStatus(1);
-        serviceItem.setComment(serviceItem.getComment() + ";" + comment);
-        serviceItemService.save(serviceItem);
+        Long orderId = taskService.getOrderIdByTaskId(taskId);
+        orderService.voidItem(orderId, id);
         return computeRedirect(taskId);
     }
 }

@@ -1,8 +1,11 @@
 package liquid.order.service;
 
 import liquid.accounting.domain.ReceivableSummary;
+import liquid.accounting.domain.Revenue;
 import liquid.accounting.service.ReceivableSummaryService;
+import liquid.accounting.service.RevenueService;
 import liquid.core.security.SecurityContext;
+import liquid.operation.domain.Currency;
 import liquid.operation.domain.Customer_;
 import liquid.order.domain.Order;
 import liquid.order.domain.OrderStatus;
@@ -45,6 +48,10 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
     @Autowired
     private ServiceItemServiceImpl serviceItemService;
 
+    @Autowired
+    private RevenueService revenueService;
+
+    @Deprecated
     @Autowired
     private ReceivableSummaryService receivableSummaryService;
 
@@ -159,19 +166,67 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
             ServiceItem serviceItem = serviceItemIterator.next();
             if (serviceItem.getQuotation() == null) serviceItemIterator.remove();
         }
-
         order = save(order);
 
-        ReceivableSummary receivableSummary = receivableSummaryService.findByOrderId(order.getId());
-        if(null == receivableSummary) {
-            receivableSummary = new ReceivableSummary();
+        Revenue revenue = revenueService.findByCustomerId(order.getCustomer().getId());
+        if(null == revenue) {
+            revenue = new Revenue();
+            revenue.setCustomer(order.getCustomer());
         }
-        receivableSummary.setCny(order.getTotalCny());
-        receivableSummary.setUsd(order.getTotalUsd());
-        receivableSummary.setOrder(order);
+        revenue.setTotalCny(revenue.getTotalCny().add(order.getTotalCny()));
+        revenue.setTotalUsd(revenue.getTotalUsd().add(order.getTotalUsd()));
+        revenueService.save(revenue);
 
-        receivableSummaryService.save(receivableSummary);
+        return order;
+    }
 
+    @Transactional(value = "transactionManager")
+    @Override
+    public Order addItem(Long id, ServiceItem item) {
+        Order order = find(id);
+        order.getServiceItems().add(item);
+
+        Revenue revenue = revenueService.findByCustomerId(order.getCustomer().getId());
+        switch (item.getCurrency()) {
+            case CNY:
+                order.setTotalCny(order.getTotalCny().add(item.getQuotation()));
+                revenue.setTotalCny(revenue.getTotalCny().add(item.getQuotation()));
+                break;
+            case USD:
+                order.setTotalUsd(order.getTotalUsd().add(item.getQuotation()));
+                revenue.setTotalUsd(revenue.getTotalUsd().add(item.getQuotation()));
+                break;
+            default:
+                break;
+        }
+        save(order);
+        revenueService.save(revenue);
+
+        return order;
+    }
+
+    @Transactional(value = "transactionManager")
+    @Override
+    public Order voidItem(Long id, Long itemId) {
+        Order order = find(id);
+        ServiceItem item = order.getServiceItems().stream().filter(i -> itemId == i.getId()).
+                findFirst().get();
+        item.setStatus(1);
+        Revenue revenue = revenueService.findByCustomerId(order.getCustomer().getId());
+        switch (item.getCurrency()) {
+            case CNY:
+                order.setTotalCny(order.getTotalCny().subtract(item.getQuotation()));
+                revenue.setTotalCny(revenue.getTotalCny().subtract(item.getQuotation()));
+                break;
+            case USD:
+                order.setTotalUsd(order.getTotalUsd().subtract(item.getQuotation()));
+                revenue.setTotalUsd(revenue.getTotalUsd().subtract(item.getQuotation()));
+                break;
+            default:
+                break;
+        }
+        save(order);
+        revenueService.save(revenue);
         return order;
     }
 

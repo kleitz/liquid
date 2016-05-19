@@ -11,7 +11,7 @@ public interface ReceivableSummaryService {
 
     void deleteByOrderId(Long orderId);
 
-    ReceivableSummary save(ReceivableSummary receivableSummaryEntity);
+    ReceivableSummary save(ReceivableSummary receivableSummary);
 
     Earning calculateEarning(Long orderId);
 }

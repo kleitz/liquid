@@ -1,6 +1,7 @@
 package liquid.order.service;
 
 import liquid.order.domain.Order;
+import liquid.order.domain.ServiceItem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -30,6 +31,10 @@ public interface OrderService {
     Page<Order> findByOrderNoLike(String orderNo, Pageable pageable);
 
     Order saveOrder(Order order);
+
+    Order addItem(Long id, ServiceItem item);
+
+    Order voidItem(Long id, Long itemId);
 
     /**
      * Permanently delete a unsubmitted order.
