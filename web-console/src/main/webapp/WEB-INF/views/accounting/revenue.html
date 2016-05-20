@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="layout :: head" />
+
+<body>
+<!-- {!begin layout} -->
+<div th:include="layout :: header"></div>
+<!-- {!end layout} -->
+
+<div th:include="accounting/fragments :: title-bar('charge.receivable')"></div>
+
+<div class="container-fluid">
+
+<!-- {!begin layout} -->
+<div th:include="layout :: charge-tab"></div>
+<!-- {!end layout} -->
+
+  <table class="table table-striped table-hover table-condensed table-bordered table-16">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th th:text="#{customer.name}">Customer Name</th>
+        <th>Total CNY</th>
+        <th>Total USD</th>
+        <th>Total Invoiced CNY</th>
+        <th>Total Invoiced USD</th>
+        <th>Total Received CNY</th>
+        <th>Total Received USD</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="item : ${page}">
+        <td><span th:text="${item.id}" /></td>
+        <td>
+          <a th:href="'/accounting/receivable/ledger?customerId=' + ${item.customer.id}"><span th:text="${item.customer.name}" /></a>
+        </td>
+        <td><span th:text="${item.totalCny}" /></td>
+        <td><span th:text="${item.totalUsd}" /></td>
+        <td><span th:text="${item.totalInvoicedCny}" /></td>
+        <td><span th:text="${item.totalInvoicedUsd}" /></td>
+        <td><span th:text="${item.totalReceivedCny}" /></td>
+        <td><span th:text="${item.totalReceivedUsd}" /></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div th:include="layout :: pagination_bar(${searchBarForm.href})"></div>        
+</div>
+
+<!-- {!begin layout} -->
+<div th:include="layout :: footer"></div>
+<!-- {!end layout} -->
+
+<!-- {!begin layout} -->
+<div th:replace="layout :: js" />
+<!-- {!end layout} -->
+
+<script>
+/*<![CDATA[*/
+  $(document).ready(function() {
+
+  }); // ready end
+/*]]>*/
+</script>
+</body>
+
+</html>

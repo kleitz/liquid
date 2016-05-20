@@ -3,9 +3,11 @@ package liquid.accounting.controller;
 import liquid.accounting.domain.Charge;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.domain.ReceivableSummary;
+import liquid.accounting.domain.Revenue;
 import liquid.accounting.service.ChargeService;
 import liquid.accounting.service.ExchangeRateService;
 import liquid.accounting.service.InternalReceivableSummaryService;
+import liquid.accounting.service.RevenueService;
 import liquid.core.domain.SumPage;
 import liquid.core.model.SearchBarForm;
 import liquid.order.domain.TradeType;
@@ -40,6 +42,9 @@ public class AccountingController {
 
     @Autowired
     private InternalReceivableSummaryService receivableSummaryService;
+
+    @Autowired
+    private RevenueService revenueService;
 
     @RequestMapping(value = "/gross_profit", method = RequestMethod.GET)
     public String grossProfit(@Valid SearchBarForm searchBarForm,
@@ -151,5 +156,13 @@ public class AccountingController {
     @RequestMapping(value = "/payable/ledger", method = RequestMethod.GET)
     public String listPayableLedger(Model model) {
         return "accounting/payable/ledger";
+    }
+
+    @RequestMapping(value = "/revenues", method = RequestMethod.GET)
+    public String listRevenues(@Valid SearchBarForm searchBarForm, Model model) {
+        PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
+        Page<Revenue> page = revenueService.findAll(pageRequest);
+        model.addAttribute("page", page);
+        return "accounting/revenue";
     }
 }
