@@ -476,9 +476,6 @@ public class OrderController extends BaseController {
         Statement<Invoice> statement = invoiceFacade.findByOrderId(orderId);
         model.addAttribute("statement", statement);
 
-        Statement<Receipt> receiptStatement = receiptFacade.findByOrderId(orderId);
-        model.addAttribute("receiptStatement", receiptStatement);
-
         Statement<Settlement> settlementStatement = settlementService.findByOrderId(orderId);
         model.addAttribute("settlementStatement", settlementStatement);
 

@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 /**
  *  
  * User: tao
@@ -49,4 +51,6 @@ public interface OrderRepository extends CrudRepository<Order, Long>, JpaReposit
     Iterable<Order> findByOrderNoLike(String orderNo);
 
     Page<Order> findByCustomerIdAndCreatedBy(Long customerId, String createdBy, Pageable pageable);
+
+    List<Order> findByCustomerId(Long customerId);
 }

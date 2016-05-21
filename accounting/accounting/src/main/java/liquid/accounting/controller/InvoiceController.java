@@ -36,8 +36,6 @@ public class InvoiceController {
             Statement<Invoice> statement = invoiceService.findByOrderId(invoice.getOrderId());
             model.addAttribute("statement", statement);
 
-            Statement<Receipt> receiptStatement = receiptService.findByOrderId(invoice.getOrderId());
-            model.addAttribute("receiptStatement", receiptStatement);
             Receipt receipt = new Receipt();
             receipt.setOrderId(invoice.getOrderId());
             receipt.setIssuedAt(DateUtil.dayStrOf());

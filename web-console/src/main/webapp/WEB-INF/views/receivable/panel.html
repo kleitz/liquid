@@ -106,7 +106,7 @@
                         <td class="text-right" th:text="${invoice.cny}"></td>
                         <td class="text-right" th:text="${invoice.usd}"></td>
                         <td th:text="${invoice.buyerName}"></td>
-                        <td th:text="${invoice.issuedAt}"></td>
+                        <td th:text="${invoice.receivedAt}"></td>
                         <td th:text="${invoice.expectedPaymentAt}"></td>
                         <td></td>
                     </tr>
@@ -166,7 +166,7 @@
                         <td><span th:text="${row.count}" /></td>
                         <td class="text-right" th:text="${receipt.cny}">></td>
                         <td class="text-right" th:text="${receipt.usd}">></td>
-                        <td th:text="${receipt.issuedAt}"></td>
+                        <td th:text="${receipt.receivedAt}"></td>
                         <td></td>
                     </tr>
                     <tr>

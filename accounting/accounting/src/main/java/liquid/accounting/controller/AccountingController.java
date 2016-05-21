@@ -1,16 +1,16 @@
 package liquid.accounting.controller;
 
-import liquid.accounting.domain.Charge;
-import liquid.accounting.domain.ChargeWay;
-import liquid.accounting.domain.ReceivableSummary;
-import liquid.accounting.domain.Revenue;
+import liquid.accounting.domain.*;
+import liquid.accounting.model.Invoice;
 import liquid.accounting.service.ChargeService;
 import liquid.accounting.service.ExchangeRateService;
 import liquid.accounting.service.InternalReceivableSummaryService;
 import liquid.accounting.service.RevenueService;
 import liquid.core.domain.SumPage;
 import liquid.core.model.SearchBarForm;
+import liquid.order.domain.Order;
 import liquid.order.domain.TradeType;
+import liquid.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,12 +19,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Tao Ma on 1/10/15.
@@ -45,6 +47,9 @@ public class AccountingController {
 
     @Autowired
     private RevenueService revenueService;
+
+    @Autowired
+    private OrderService orderService;
 
     @RequestMapping(value = "/gross_profit", method = RequestMethod.GET)
     public String grossProfit(@Valid SearchBarForm searchBarForm,
@@ -164,5 +169,14 @@ public class AccountingController {
         Page<Revenue> page = revenueService.findAll(pageRequest);
         model.addAttribute("page", page);
         return "accounting/revenue";
+    }
+
+    @RequestMapping(value = "/revenues/{customerId}", method = RequestMethod.GET)
+    public String listRevenues(@PathVariable Long customerId, Model model) {
+        List<Order> orderList = orderService.findByCustomerId(customerId);
+        model.addAttribute("invoice", new Invoice());
+        model.addAttribute("receipt", new Receipt());
+        model.addAttribute("orderList", orderList);
+        return "accounting/receivable/details";
     }
 }

@@ -1,11 +1,9 @@
 package liquid.order.service;
 
-import liquid.accounting.domain.ReceivableSummary;
 import liquid.accounting.domain.Revenue;
 import liquid.accounting.service.ReceivableSummaryService;
 import liquid.accounting.service.RevenueService;
 import liquid.core.security.SecurityContext;
-import liquid.operation.domain.Currency;
 import liquid.operation.domain.Customer_;
 import liquid.order.domain.Order;
 import liquid.order.domain.OrderStatus;
@@ -151,6 +149,11 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
 
     public Page<Order> findByCustomerId(Long customerId, String createdBy, Pageable pageable) {
         return repository.findByCustomerIdAndCreatedBy(customerId, createdBy, pageable);
+    }
+
+    @Override
+    public List<Order> findByCustomerId(Long customerId) {
+        return repository.findByCustomerId(customerId);
     }
 
     public Page<Order> findByOrderNoLike(String orderNo, Pageable pageable) {

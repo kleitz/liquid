@@ -33,7 +33,7 @@
       <tr th:each="item : ${page}">
         <td><span th:text="${item.id}" /></td>
         <td>
-          <a th:href="'/accounting/receivable/ledger?customerId=' + ${item.customer.id}"><span th:text="${item.customer.name}" /></a>
+          <a th:href="'/accounting/revenues/' + ${item.customer.id}"><span th:text="${item.customer.name}" /></a>
         </td>
         <td><span th:text="${item.totalCny}" /></td>
         <td><span th:text="${item.totalUsd}" /></td>

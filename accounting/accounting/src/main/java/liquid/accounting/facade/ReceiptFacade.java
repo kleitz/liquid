@@ -2,9 +2,7 @@ package liquid.accounting.facade;
 
 import liquid.accounting.domain.AccountingOperator;
 import liquid.accounting.domain.AccountingType;
-import liquid.accounting.domain.ReceiptEntity;
-import liquid.accounting.model.Receipt;
-import liquid.accounting.model.Statement;
+import liquid.accounting.domain.Receipt;
 import liquid.accounting.service.InternalReceiptService;
 import liquid.accounting.service.InternalReceivableSummaryService;
 import liquid.accounting.service.ReceiptServiceImpl;
@@ -14,9 +12,6 @@ import liquid.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Tao Ma on 1/8/15.
@@ -32,61 +27,33 @@ public class ReceiptFacade implements InternalReceiptService {
     @Autowired
     private InternalReceivableSummaryService receivableSummaryService;
 
-    public Statement<Receipt> findByOrderId(Long orderId) {
-        Statement<Receipt> statement = new Statement<>();
-        List<Receipt> receiptList = new ArrayList<>();
-        Receipt total = new Receipt();
-
-        Iterable<ReceiptEntity> receiptEntities = receiptService.findByOrderId(orderId);
-        for (ReceiptEntity receiptEntity : receiptEntities) {
-            Receipt receipt = new Receipt();
-            receipt.setId(receiptEntity.getId());
-            receipt.setOrderId(receiptEntity.getOrder().getId());
-            receipt.setOrderNo(receiptEntity.getOrder().getOrderNo());
-            receipt.setCny(receiptEntity.getCny());
-            receipt.setUsd(receiptEntity.getUsd());
-            receipt.setIssuedAt(DateUtil.dayStrOf(receiptEntity.getIssuedAt()));
-            receiptList.add(receipt);
-            total.setCny(total.getCny() + receipt.getCny());
-            total.setUsd(total.getUsd() + receipt.getUsd());
-        }
-        statement.setContent(receiptList);
-        statement.setTotal(total);
-
-        return statement;
-    }
-
     @Transactional(value = "transactionManager")
-    public Receipt save(Receipt receipt) {
+    public liquid.accounting.model.Receipt save(liquid.accounting.model.Receipt receipt) {
         Order orderEntity = orderService.find(receipt.getOrderId());
 
-        ReceiptEntity receiptEntity = new ReceiptEntity();
+        Receipt receiptEntity = new Receipt();
         receiptEntity.setId(receipt.getId());
-        receiptEntity.setOrder(orderEntity);
-        receiptEntity.setPayerId(orderEntity.getCustomer().getId());
-        receiptEntity.setCny(receipt.getCny());
-        receiptEntity.setUsd(receipt.getUsd());
-        receiptEntity.setIssuedAt(DateUtil.dayOf(receipt.getIssuedAt()));
+        receiptEntity.setCustomer(orderEntity.getCustomer());
+        receiptEntity.setAmountCny(receipt.getCny());
+        receiptEntity.setAmountUsd(receipt.getUsd());
+        receiptEntity.setReceivedAt(DateUtil.dayOf(receipt.getIssuedAt()));
         receiptService.save(receiptEntity);
         receivableSummaryService.update(receipt.getOrderId(), AccountingType.PAYMENT, AccountingOperator.PLUS, receipt.getCny(), receipt.getUsd());
         return receipt;
     }
 
     @Transactional(value = "transactionManager")
-    public Receipt update(Receipt receipt) {
+    public liquid.accounting.model.Receipt update(liquid.accounting.model.Receipt receipt) {
         Order orderEntity = orderService.find(receipt.getOrderId());
 
-        ReceiptEntity receiptEntity = new ReceiptEntity();
+        Receipt receiptEntity = new Receipt();
         receiptEntity.setId(receipt.getId());
-        receiptEntity.setOrder(orderEntity);
-        receiptEntity.setPayerId(orderEntity.getCustomer().getId());
-        receiptEntity.setCny(receipt.getCny());
-        receiptEntity.setUsd(receipt.getUsd());
-        receiptEntity.setIssuedAt(DateUtil.dayOf(receipt.getIssuedAt()));
+        receiptEntity.setCustomer(orderEntity.getCustomer());
+        receiptEntity.setAmountCny(receipt.getCny());
+        receiptEntity.setAmountUsd(receipt.getUsd());
+        receiptEntity.setReceivedAt(DateUtil.dayOf(receipt.getIssuedAt()));
         receiptService.save(receiptEntity);
 
-        Statement<Receipt> statement = findByOrderId(receipt.getOrderId());
-        receivableSummaryService.update(receipt.getOrderId(), AccountingType.PAYMENT, statement.getTotal().getCny(), statement.getTotal().getUsd());
         return receipt;
     }
 }

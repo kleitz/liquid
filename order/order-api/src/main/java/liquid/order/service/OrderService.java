@@ -5,6 +5,8 @@ import liquid.order.domain.ServiceItem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * Created by Tao Ma on 4/4/15.
  */
@@ -27,6 +29,8 @@ public interface OrderService {
     Page<Order> findByStatus(Integer status, Pageable pageable);
 
     Page<Order> findByCustomerId(Long customerId, String createdBy, Pageable pageable);
+
+    List<Order> findByCustomerId(Long customerId);
 
     Page<Order> findByOrderNoLike(String orderNo, Pageable pageable);
 
