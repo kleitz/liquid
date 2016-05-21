@@ -23,7 +23,7 @@ public class ReceiptController {
     public String add(@ModelAttribute(value = "receipt") Receipt receipt,
                       @RequestHeader(value = "referer", required = false) final String referer,
                       BindingResult bindingResult) {
-        receiptService.save(receipt);
+
         return "redirect:" + referer;
     }
 }

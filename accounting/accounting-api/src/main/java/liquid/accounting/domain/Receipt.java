@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -20,11 +21,11 @@ public class Receipt extends BaseUpdateEntity {
     @JoinColumn(name = "CUSTOMER_ID")
     private Customer customer;
 
-    @Column(name = "CNY")
-    private Long amountCny;
+    @Column(precision = 19, scale = 4, name = "AMOUNT_CNY")
+    private BigDecimal amountCny;
 
-    @Column(name = "USD")
-    private Long amountUsd;
+    @Column(precision = 19, scale = 4, name = "AMOUNT_USD")
+    private BigDecimal amountUsd;
 
     @Column(name = "RECIPIENT_ID")
     private Long recipientId;
@@ -40,19 +41,19 @@ public class Receipt extends BaseUpdateEntity {
         this.customer = customer;
     }
 
-    public Long getAmountCny() {
+    public BigDecimal getAmountCny() {
         return amountCny;
     }
 
-    public void setAmountCny(Long amountCny) {
+    public void setAmountCny(BigDecimal amountCny) {
         this.amountCny = amountCny;
     }
 
-    public Long getAmountUsd() {
+    public BigDecimal getAmountUsd() {
         return amountUsd;
     }
 
-    public void setAmountUsd(Long amountUsd) {
+    public void setAmountUsd(BigDecimal amountUsd) {
         this.amountUsd = amountUsd;
     }
 

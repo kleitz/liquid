@@ -64,7 +64,7 @@
 
   <div class="modal" id="addInvoice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;" data-backdrop="static">
     <div class="modal-dialog modal-sm">
-      <form id="invoiceForm" method="POST" th:action="'/invoice'"
+      <form id="invoiceForm" method="POST" th:action="'/accounting/revenues/' + ${customerId} + '/invoices'"
         th:object="${invoice}">
 
         <div class="modal-content">
@@ -83,19 +83,32 @@
             </div>
 
             <div class="form-group form-group-sm">
-              <label for="cny" class="control-label">
+              <label for="amountCny" class="control-label">
                 <span>Total CNY</span>
                 <span>*</span>
               </label>
-              <input type="text" th:field="*{cny}" class="form-control input-sm"/>
+              <input type="text" th:field="*{amountCny}" class="form-control input-sm"/>
             </div>
 
             <div class="form-group form-group-sm">
-              <label for="usd" class="control-label">
+              <label for="amountUsd" class="control-label">
                 <span>Total USD</span>
                 <span>*</span>
               </label>
-              <input type="text" th:field="*{usd}" class="form-control input-sm"/>
+              <input type="text" th:field="*{amountUsd}" class="form-control input-sm"/>
+            </div>
+
+            <div class="form-group form-group-sm">
+              <label for="issuedAt" class="control-label">
+                <span>Issued At</span>
+                <span>*</span>
+              </label>
+              <div class='input-group input-group-sm date' id='issuedAtTimePicker'>
+                <input type='text' data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{issuedAt}" />
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>        
             </div>
           </div>
   
@@ -115,7 +128,7 @@
 
   <div class="modal" id="addReceipt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;" data-backdrop="static">
     <div class="modal-dialog modal-sm">
-      <form id="receiptForm" method="POST" th:action="'/receipt'"
+      <form id="receiptForm" method="POST" th:action="'/accounting/revenues/' + ${customerId} + '/receipts'"
         th:object="${receipt}">
 
         <div class="modal-content">
@@ -126,7 +139,7 @@
 
           <div class="modal-body">
             <div class="form-group form-group-sm">
-              <label for="cny" class="control-label">
+              <label for="amountCny" class="control-label">
                 <span>Total CNY</span>
                 <span>*</span>
               </label>
@@ -134,11 +147,24 @@
             </div>
 
             <div class="form-group form-group-sm">
-              <label for="usd" class="control-label">
+              <label for="amountUsd" class="control-label">
                 <span>Total USD</span>
                 <span>*</span>
               </label>
               <input type="text" th:field="*{amountUsd}" class="form-control input-sm"/>
+            </div>
+
+            <div class="form-group form-group-sm">
+              <label for="receivedAt" class="control-label">
+                <span>Received At</span>
+                <span>*</span>
+              </label>
+              <div class='input-group input-group-sm date' id='receivedAtTimePicker'>
+                <input type='text' data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{receivedAt}" />
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>        
             </div>
           </div>
   
@@ -170,7 +196,8 @@
 <script>
 /*<![CDATA[*/
   $(document).ready(function() {
-
+    $('#issuedAtTimePicker').dtPicker();
+    $('#receivedAtTimePicker').dtPicker();
   }); // ready end
 /*]]>*/
 </script>

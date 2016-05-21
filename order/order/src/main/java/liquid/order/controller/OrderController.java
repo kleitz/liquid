@@ -27,7 +27,6 @@ import liquid.process.domain.Task;
 import liquid.process.service.BusinessKey;
 import liquid.process.service.ProcessService;
 import liquid.process.service.TaskService;
-import liquid.transport.domain.ShipmentEntity;
 import liquid.transport.service.ShipmentService;
 import liquid.util.DateUtil;
 import org.slf4j.Logger;
@@ -94,12 +93,6 @@ public class OrderController extends BaseController {
 
     @Autowired
     private RailwayPlanTypeService railwayPlanTypeService;
-
-    @Autowired
-    private InvoiceService invoiceFacade;
-
-    @Autowired
-    private ReceiptService receiptFacade;
 
     @Autowired
     private SettlementService settlementService;
@@ -473,9 +466,6 @@ public class OrderController extends BaseController {
     public String initPanel(@PathVariable Long orderId, Model model) {
         Order order = orderService.find(orderId);
 
-        Statement<Invoice> statement = invoiceFacade.findByOrderId(orderId);
-        model.addAttribute("statement", statement);
-
         Statement<Settlement> settlementStatement = settlementService.findByOrderId(orderId);
         model.addAttribute("settlementStatement", settlementStatement);
 
@@ -495,16 +485,6 @@ public class OrderController extends BaseController {
         return "invoice/form";
     }
 
-    @RequestMapping(value = "/{orderId}/invoice", method = RequestMethod.POST)
-    public String addInvoice(@PathVariable Long orderId, @Valid @ModelAttribute Invoice invoice,
-                             BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "invoice/form";
-        }
-        invoiceFacade.update(invoice);
-        return "redirect:/order/" + orderId + "/receivable";
-    }
-
     @RequestMapping(value = "/{orderId}/receipt", method = RequestMethod.GET)
     public String initReceipt(@PathVariable Long orderId, Model model) {
         Receipt receipt = new Receipt();
@@ -512,16 +492,6 @@ public class OrderController extends BaseController {
         receipt.setIssuedAt(DateUtil.dayStrOf());
         model.addAttribute("receipt", receipt);
         return "receipt/form";
-    }
-
-    @RequestMapping(value = "/{orderId}/receipt", method = RequestMethod.POST)
-    public String addReceipt(@PathVariable Long orderId, @Valid @ModelAttribute Receipt receipt,
-                             BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "receipt/form";
-        }
-        receiptFacade.update(receipt);
-        return "redirect:/order/" + orderId + "/receivable";
     }
 
     @RequestMapping(value = "/{orderId}/settlement", method = RequestMethod.GET)

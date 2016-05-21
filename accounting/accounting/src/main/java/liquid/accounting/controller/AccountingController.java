@@ -1,16 +1,16 @@
 package liquid.accounting.controller;
 
 import liquid.accounting.domain.*;
-import liquid.accounting.model.Invoice;
-import liquid.accounting.service.ChargeService;
-import liquid.accounting.service.ExchangeRateService;
-import liquid.accounting.service.InternalReceivableSummaryService;
-import liquid.accounting.service.RevenueService;
+import liquid.accounting.service.*;
 import liquid.core.domain.SumPage;
 import liquid.core.model.SearchBarForm;
+import liquid.operation.domain.Customer;
+import liquid.operation.service.CustomerService;
 import liquid.order.domain.Order;
 import liquid.order.domain.TradeType;
 import liquid.order.service.OrderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -34,6 +34,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/accounting")
 public class AccountingController {
+    private static final Logger logger = LoggerFactory.getLogger(AccountingController.class);
     private static final int size = 20;
 
     @Autowired
@@ -50,6 +51,15 @@ public class AccountingController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private CustomerService customerService;
+
+    @Autowired
+    private InvoiceService invoiceService;
+
+    @Autowired
+    private ReceiptService receiptService;
 
     @RequestMapping(value = "/gross_profit", method = RequestMethod.GET)
     public String grossProfit(@Valid SearchBarForm searchBarForm,
@@ -177,6 +187,25 @@ public class AccountingController {
         model.addAttribute("invoice", new Invoice());
         model.addAttribute("receipt", new Receipt());
         model.addAttribute("orderList", orderList);
+        model.addAttribute("customerId", customerId);
         return "accounting/receivable/details";
+    }
+
+    @RequestMapping(value = "/revenues/{customerId}/invoices", method = RequestMethod.POST)
+    public String addInvoice(@PathVariable Long customerId, Invoice invoice) {
+        logger.debug("customerId: {}; invoice: {}", customerId, invoice);
+        Customer customer = customerService.find(customerId);
+        invoice.setCustomer(customer);
+        invoiceService.save(invoice);
+        return "redirect:/accounting/revenues/" + customerId;
+    }
+
+    @RequestMapping(value = "/revenues/{customerId}/receipts", method = RequestMethod.POST)
+    public String addReceipt(@PathVariable Long customerId, Receipt receipt) {
+        logger.debug("customerId: {}; receipt: {}", customerId, receipt);
+        Customer customer = customerService.find(customerId);
+        receipt.setCustomer(customer);
+        receiptService.save(receipt);
+        return "redirect:/accounting/revenues/" + customerId;
     }
 }

@@ -33,16 +33,12 @@ public class InvoiceController {
     public String add(@Valid @ModelAttribute Invoice invoice,
                       BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            Statement<Invoice> statement = invoiceService.findByOrderId(invoice.getOrderId());
-            model.addAttribute("statement", statement);
-
             Receipt receipt = new Receipt();
             receipt.setOrderId(invoice.getOrderId());
             receipt.setIssuedAt(DateUtil.dayStrOf());
             model.addAttribute("receipt", receipt);
             return "receivable/panel";
         }
-        invoiceService.save(invoice);
         return "redirect:" + "/receivable/120";
     }
 }

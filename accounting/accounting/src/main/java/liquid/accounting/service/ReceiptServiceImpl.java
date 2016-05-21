@@ -9,12 +9,17 @@ import org.springframework.stereotype.Service;
  * Created by Tao Ma on 1/8/15.
  */
 @Service
-public class ReceiptServiceImpl extends AbstractService<Receipt, ReceiptRepository> {
+public class ReceiptServiceImpl extends AbstractService<Receipt, ReceiptRepository> implements InternalReceiptService{
 
     @Override
     public void doSaveBefore(Receipt entity) {}
 
     public Iterable<Receipt> findByCustomerId(Long payerId) {
         return repository.findByCustomerId(payerId);
+    }
+
+    @Override
+    public Receipt update(Receipt receipt) {
+        return null;
     }
 }
