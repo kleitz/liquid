@@ -184,28 +184,36 @@ public class AccountingController {
     @RequestMapping(value = "/revenues/{customerId}", method = RequestMethod.GET)
     public String listRevenues(@PathVariable Long customerId, Model model) {
         List<Order> orderList = orderService.findByCustomerId(customerId);
+        List<Invoice> invoiceList = invoiceService.findByCustomerId(customerId);
+        List<Receipt> receiptList = receiptService.findByCustomerId(customerId);
+        for(int i = invoiceList.size(); i < orderList.size(); i++){
+            invoiceList.add(new Invoice());
+        }
+        for(int i = receiptList.size(); i < orderList.size(); i++){
+            receiptList.add(new Receipt());
+        }
+        Revenue revenue = revenueService.findByCustomerId(customerId);
+        model.addAttribute("orderList", orderList);
+        model.addAttribute("invoiceList", invoiceList);
+        model.addAttribute("receiptList", receiptList);
         model.addAttribute("invoice", new Invoice());
         model.addAttribute("receipt", new Receipt());
-        model.addAttribute("orderList", orderList);
         model.addAttribute("customerId", customerId);
+        model.addAttribute("revenue", revenue);
         return "accounting/receivable/details";
     }
 
     @RequestMapping(value = "/revenues/{customerId}/invoices", method = RequestMethod.POST)
     public String addInvoice(@PathVariable Long customerId, Invoice invoice) {
         logger.debug("customerId: {}; invoice: {}", customerId, invoice);
-        Customer customer = customerService.find(customerId);
-        invoice.setCustomer(customer);
-        invoiceService.save(invoice);
+        revenueService.addInvoice(customerId, invoice);
         return "redirect:/accounting/revenues/" + customerId;
     }
 
     @RequestMapping(value = "/revenues/{customerId}/receipts", method = RequestMethod.POST)
     public String addReceipt(@PathVariable Long customerId, Receipt receipt) {
         logger.debug("customerId: {}; receipt: {}", customerId, receipt);
-        Customer customer = customerService.find(customerId);
-        receipt.setCustomer(customer);
-        receiptService.save(receipt);
+        revenueService.addReceipt(customerId, receipt);
         return "redirect:/accounting/revenues/" + customerId;
     }
 }

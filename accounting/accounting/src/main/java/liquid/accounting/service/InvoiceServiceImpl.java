@@ -16,6 +16,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.Date;
+import java.util.List;
 
 import static org.springframework.data.jpa.domain.Specifications.where;
 
@@ -55,7 +56,7 @@ public class InvoiceServiceImpl extends AbstractService<Invoice, InvoiceReposito
         return repository.findAll(specifications, pageable);
     }
 
-    public Iterable<Invoice> findByBuyerId(Long buyerId) {
+    public List<Invoice> findByCustomerId(Long buyerId) {
         return repository.findByCustomerId(buyerId);
     }
 

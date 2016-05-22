@@ -5,6 +5,8 @@ import liquid.accounting.repository.ReceiptRepository;
 import liquid.core.service.AbstractService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by Tao Ma on 1/8/15.
  */
@@ -14,7 +16,7 @@ public class ReceiptServiceImpl extends AbstractService<Receipt, ReceiptReposito
     @Override
     public void doSaveBefore(Receipt entity) {}
 
-    public Iterable<Receipt> findByCustomerId(Long payerId) {
+    public List<Receipt> findByCustomerId(Long payerId) {
         return repository.findByCustomerId(payerId);
     }
 
