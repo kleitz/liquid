@@ -21,12 +21,12 @@
       <tr>
         <th>ID</th>
         <th th:text="#{customer.name}">Customer Name</th>
-        <th>Total CNY</th>
-        <th>Total USD</th>
-        <th>Total Invoiced CNY</th>
-        <th>Total Invoiced USD</th>
-        <th>Total Received CNY</th>
-        <th>Total Received USD</th>
+        <th><span th:text="#{amount}">Total</span>(CNY)</th>
+        <th><span th:text="#{amount}">Total</span>(USD)</th>
+        <th><span th:text="#{invoiced.total}">Total Invoiced</span>(CNY)</th>
+        <th><span th:text="#{invoiced.total}">Total Invoiced</span>(USD)</th>
+        <th><span th:text="#{received.total}">Total Received</span>(CNY)</th>
+        <th><span th:text="#{received.total}">Total Received</span>(USD)</th>
       </tr>
     </thead>
     <tbody>

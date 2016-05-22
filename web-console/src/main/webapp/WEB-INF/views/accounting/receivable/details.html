@@ -103,13 +103,13 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel"><span>Add Invoice</span></h4>
+            <h4 class="modal-title" id="myModalLabel"><span th:text="#{invoice}">Add Invoice</span></h4>
           </div>
 
           <div class="modal-body">
             <div class="form-group form-group-sm">
               <label for="invoiceNo" class="control-label">
-                <span>Invoice No.</span>
+                <span th:text="#{invoice.no}">Invoice No.</span>
                 <span>*</span>
               </label>
               <input type="text" th:field="*{invoiceNo}" class="form-control input-sm"/>
@@ -117,7 +117,7 @@
 
             <div class="form-group form-group-sm">
               <label for="amountCny" class="control-label">
-                <span>Total CNY</span>
+                <span th:text="#{cny.of.invoice}">Invoice Amount CNY</span>
                 <span>*</span>
               </label>
               <input type="text" th:field="*{amountCny}" class="form-control input-sm"/>
@@ -125,7 +125,7 @@
 
             <div class="form-group form-group-sm">
               <label for="amountUsd" class="control-label">
-                <span>Total USD</span>
+                <span th:text="#{usd.of.invoice}">Invoice Amount USD</span>
                 <span>*</span>
               </label>
               <input type="text" th:field="*{amountUsd}" class="form-control input-sm"/>
@@ -133,7 +133,7 @@
 
             <div class="form-group form-group-sm">
               <label for="issuedAt" class="control-label">
-                <span>Issued At</span>
+                <span th:text="#{invoiced.at}">Invoiced At</span>
                 <span>*</span>
               </label>
               <div class='input-group input-group-sm date' id='issuedAtTimePicker'>
@@ -167,13 +167,13 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel"><span>Add Receipt</span></h4>
+            <h4 class="modal-title" id="myModalLabel"><span th:text="#{receipt}">Add Receipt</span></h4>
           </div>
 
           <div class="modal-body">
             <div class="form-group form-group-sm">
               <label for="amountCny" class="control-label">
-                <span>Total CNY</span>
+                <span th:text="#{actual.cny}">Total CNY</span>
                 <span>*</span>
               </label>
               <input type="text" th:field="*{amountCny}" class="form-control input-sm"/>
@@ -181,7 +181,7 @@
 
             <div class="form-group form-group-sm">
               <label for="amountUsd" class="control-label">
-                <span>Total USD</span>
+                <span th:text="#{actual.usd}">Total USD</span>
                 <span>*</span>
               </label>
               <input type="text" th:field="*{amountUsd}" class="form-control input-sm"/>
@@ -189,7 +189,7 @@
 
             <div class="form-group form-group-sm">
               <label for="receivedAt" class="control-label">
-                <span>Received At</span>
+                <span th:text="#{date.of.receivable}">Received At</span>
                 <span>*</span>
               </label>
               <div class='input-group input-group-sm date' id='receivedAtTimePicker'>
