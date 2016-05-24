@@ -42,6 +42,11 @@ public class PurchaseServiceImpl extends AbstractService<Purchase, PurchaseRepos
         return purchaseRepository.findByOrderId(orderId);
     }
 
+    @Override
+    public List<Purchase> findByServiceProviderId(Long serviceProviderId) {
+        return repository.findBySpId(serviceProviderId);
+    }
+
     @Transactional("transactionManager")
     @Override
     public Purchase addOne(Purchase purchase) {
@@ -50,16 +55,18 @@ public class PurchaseServiceImpl extends AbstractService<Purchase, PurchaseRepos
 
         PayableSummary payableSummary = payableSummaryService.findByServiceProviderId(purchase.getSp().getId());
         if(null == payableSummary) {
-            switch (purchase.getCurrency()) {
-                case CNY:
-                    payableSummary.setTotalCny(payableSummary.getTotalCny().add(purchase.getTotalAmount()));
-                    break;
-                case USD:
-                    payableSummary.setTotalUsd(payableSummary.getTotalUsd().add(purchase.getTotalAmount()));
-                    break;
-                default:
-                    break;
-            }
+            payableSummary = new PayableSummary();
+            payableSummary.setServiceProvider(purchase.getSp());
+        }
+        switch (purchase.getCurrency()) {
+            case CNY:
+                payableSummary.setTotalCny(payableSummary.getTotalCny().add(purchase.getTotalAmount()));
+                break;
+            case USD:
+                payableSummary.setTotalUsd(payableSummary.getTotalUsd().add(purchase.getTotalAmount()));
+                break;
+            default:
+                break;
         }
         payableSummaryService.save(payableSummary);
 

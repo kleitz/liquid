@@ -25,5 +25,5 @@ public interface RevenueService {
 
     Revenue addReceipt(Long customerId, Receipt receipt);
 
-    Revenue voidReceipt(Long customerId, long receiptId);
+    Revenue voidReceipt(Long customerId, Long receiptId);
 }

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="layout :: head" />
+
+<body>
+<!-- {!begin layout} -->
+<div th:include="layout :: header"></div>
+<!-- {!end layout} -->
+
+<div class="container-fluid">
+
+  <table class="table table-striped table-hover table-condensed table-bordered table-16">
+    <thead>
+      <tr>
+        <th><span th:text="#{purchase.id}">ID</span></th>
+        <th><span th:text="#{sp.name}">SP Name</span></th>
+        <th><span th:text="#{purchase.type}">Purchase Type</span></th>
+        <th><span th:text="#{cny.total}">Total CNY</span></th>
+        <th><span th:text="#{usd.total}">Total USD</span></th>
+        <th>
+          <a data-toggle="modal" data-target="#addInvoice" href="#">
+            <span class="glyphicon glyphicon-plus text-success" />
+          </a>
+          <span th:text="#{invoiced.at}">Invoiced At</span>
+        </th>
+        <th><span th:text="#{invoice.no}">Invoice No.</span></th>
+        <th><span th:text="#{cny.of.invoice}">Invoice Amount CNY</span></th>
+        <th><span th:text="#{usd.of.invoice}">Invoice Amount USD</span></th>
+        <th>
+          <a data-toggle="modal" data-target="#addPayment" href="#">
+            <span class="glyphicon glyphicon-plus text-success" />
+          </a>
+          <span th:text="#{date.of.receivable}">Received At</span>
+        </th>
+        <th><span th:text="#{actual.cny}">Payment Amount CNY</span></th>
+        <th><span th:text="#{actual.usd}">Payment Amount USD</span></th>
+        <!--
+        <th>Not Received Amount CNY</th>
+        <th>Not Received Amount USD</th>
+        -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="item, rowState : ${purchaseList}">
+        <!-- orders -->
+        <td><span th:text="${item.id}" /></td>
+        <td><span th:text="${item.sp.name}" /></td>
+        <td><span th:text="${item.serviceSubtype.name}" /></td>
+        <td><span th:text="${item.totalAmount}" /></td>
+        <td><span th:text="${item.totalAmount}" /></td>
+        <!-- invoices -->
+        <td><span th:text="${purchaseInvoiceList[__${rowState.index}__].issuedAt}"></span></td>
+        <td><span th:text="${purchaseInvoiceList[__${rowState.index}__].invoiceNo}"></span></td>
+        <td><span th:text="${purchaseInvoiceList[__${rowState.index}__].amountCny}"></span></td>
+        <td><span th:text="${purchaseInvoiceList[__${rowState.index}__].amountUsd}"></span></td>
+        <!-- receipt -->
+        <td><span th:text="${paymentList[__${rowState.index}__].paidAt}"></span></td>
+        <td><span th:text="${paymentList[__${rowState.index}__].amountCny}"></span></td>
+        <td><span th:text="${paymentList[__${rowState.index}__].amountUsd}"></span></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><span th:text="#{settled.total}">Settled Total</span></td>
+        <td><span th:text="${payableSummary.totalInvoicedCny}"></span></td>
+        <td><span th:text="${payableSummary.totalInvoicedUsd}"></span></td>
+        <td></td>
+        <td><span th:text="#{invoiced.total}">Invoiced Total</span></td>
+        <td><span th:text="${payableSummary.totalInvoicedCny}"></span></td>
+        <td><span th:text="${payableSummary.totalInvoicedUsd}"></span></td>
+        <td><span th:text="#{received.total}">Received Total</span></td>
+        <td><span th:text="${payableSummary.totalPaidCny}"></span></td>
+        <td><span th:text="${payableSummary.totalPaidUsd}"></span></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><span th:text="#{not.settled.total}">Not Settled Total</span></td>
+        <td><span th:text="${payableSummary.totalCny - payableSummary.totalInvoicedCny}"></span></td>
+        <td><span th:text="${payableSummary.totalUsd - payableSummary.totalInvoicedUsd}"></span></td>
+        <td></td>
+        <td><span th:text="#{not.invoiced.total}">Not Invoiced Total</span></td>
+        <td><span th:text="${payableSummary.totalCny - payableSummary.totalInvoicedCny}"></span></td>
+        <td><span th:text="${payableSummary.totalUsd - payableSummary.totalInvoicedUsd}"></span></td>
+        <td><span th:text="#{not.received.total}">Not Received Total</span></td>
+        <td><span th:text="${payableSummary.totalInvoicedCny - payableSummary.totalPaidCny}"></span></td>
+        <td><span th:text="${payableSummary.totalInvoicedUsd - payableSummary.totalPaidUsd}"></span></td>
+      </tr>
+ 
+    </tbody>
+  </table>
+
+  <div class="modal" id="addInvoice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+      <form id="invoiceForm" method="POST" th:action="'/accounting/aps/' + ${serviceProviderId} + '/invoices'"
+        th:object="${invoice}">
+
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel"><span th:text="#{invoice}">Add Invoice</span></h4>
+          </div>
+
+          <div class="modal-body">
+            <div class="form-group form-group-sm">
+              <label for="invoiceNo" class="control-label">
+                <span th:text="#{invoice.no}">Invoice No.</span>
+                <span>*</span>
+              </label>
+              <input type="text" th:field="*{invoiceNo}" class="form-control input-sm"/>
+            </div>
+
+            <div class="form-group form-group-sm">
+              <label for="amountCny" class="control-label">
+                <span th:text="#{cny.of.invoice}">Invoice Amount CNY</span>
+                <span>*</span>
+              </label>
+              <input type="text" th:field="*{amountCny}" class="form-control input-sm"/>
+            </div>
+
+            <div class="form-group form-group-sm">
+              <label for="amountUsd" class="control-label">
+                <span th:text="#{usd.of.invoice}">Invoice Amount USD</span>
+                <span>*</span>
+              </label>
+              <input type="text" th:field="*{amountUsd}" class="form-control input-sm"/>
+            </div>
+
+            <div class="form-group form-group-sm">
+              <label for="issuedAt" class="control-label">
+                <span th:text="#{invoiced.at}">Invoiced At</span>
+                <span>*</span>
+              </label>
+              <div class='input-group input-group-sm date' id='issuedAtTimePicker'>
+                <input type='text' data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{issuedAt}" />
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>        
+            </div>
+          </div>
+  
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
+              <span th:text="#{modal.close}"/>
+            </button>
+            <button type="submit" name="add" value="add" form="invoiceForm" class="btn btn-warning btn-sm">
+              <span>Add</span>
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+
+      </form>
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div class="modal" id="addPayment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+      <form id="paymentForm" method="POST" th:action="'/accounting/aps/' + ${serviceProviderId} + '/payments'"
+        th:object="${payment}">
+
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel"><span th:text="#{receipt}">Add Receipt</span></h4>
+          </div>
+
+          <div class="modal-body">
+            <div class="form-group form-group-sm">
+              <label for="amountCny" class="control-label">
+                <span th:text="#{actual.cny}">Total CNY</span>
+                <span>*</span>
+              </label>
+              <input type="text" th:field="*{amountCny}" class="form-control input-sm"/>
+            </div>
+
+            <div class="form-group form-group-sm">
+              <label for="amountUsd" class="control-label">
+                <span th:text="#{actual.usd}">Total USD</span>
+                <span>*</span>
+              </label>
+              <input type="text" th:field="*{amountUsd}" class="form-control input-sm"/>
+            </div>
+
+            <div class="form-group form-group-sm">
+              <label for="paidAt" class="control-label">
+                <span th:text="#{date.of.receivable}">Paid At</span>
+                <span>*</span>
+              </label>
+              <div class='input-group input-group-sm date' id='paidAtTimePicker'>
+                <input type='text' data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{paidAt}" />
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>        
+            </div>
+          </div>
+  
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
+              <span th:text="#{modal.close}"/>
+            </button>
+            <button type="submit" name="add" value="add" form="paymentForm" class="btn btn-warning btn-sm">
+              <span>Add</span>
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+
+      </form>
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+</div>
+
+<!-- {!begin layout} -->
+<div th:include="layout :: footer"></div>
+<!-- {!end layout} -->
+
+<!-- {!begin layout} -->
+<div th:replace="layout :: js" />
+<!-- {!end layout} -->
+
+<script>
+/*<![CDATA[*/
+  $(document).ready(function() {
+    $('#issuedAtTimePicker').dtPicker();
+    $('#paidAtTimePicker').dtPicker();
+  }); // ready end
+/*]]>*/
+</script>
+</body>
+
+</html>

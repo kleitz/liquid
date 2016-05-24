@@ -8,9 +8,7 @@ import java.util.List;
  * Created by mat on 5/24/16.
  */
 public interface PaymentService {
-    Payment update(Payment receipt);
-
-    Payment save(Payment receipt);
+    Payment save(Payment payment);
 
     List<Payment> findByServiceProviderId(Long serviceProviderId);
 }

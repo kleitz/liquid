@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface PurchaseRepository extends CrudRepository<Purchase, Long> {
     List<Purchase> findByOrderId(Long orderId);
+
+    List<Purchase> findBySpId(Long serviceProviderId);
 }

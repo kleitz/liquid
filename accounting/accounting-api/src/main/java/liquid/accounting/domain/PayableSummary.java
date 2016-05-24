@@ -1,5 +1,6 @@
 package liquid.accounting.domain;
 
+import liquid.core.domain.BaseUpdateEntity;
 import liquid.operation.domain.ServiceProvider;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
  * Created by mat on 5/23/16.
  */
 @Entity(name = "ACC_PAYABLE_SUM")
-public class PayableSummary {
+public class PayableSummary extends BaseUpdateEntity {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "SP_ID")
     private ServiceProvider serviceProvider;

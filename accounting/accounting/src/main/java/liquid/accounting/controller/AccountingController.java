@@ -5,6 +5,7 @@ import liquid.accounting.service.*;
 import liquid.core.domain.SumPage;
 import liquid.core.model.SearchBarForm;
 import liquid.operation.service.CustomerService;
+import liquid.operation.service.ServiceProviderService;
 import liquid.order.domain.Order;
 import liquid.order.domain.TradeType;
 import liquid.order.service.OrderService;
@@ -59,6 +60,22 @@ public class AccountingController {
 
     @Autowired
     private ReceiptService receiptService;
+
+    @Autowired
+    private PurchaseService purchaseService;
+
+    @Autowired
+    private PayableSummaryService payableSummaryService;
+
+    @Autowired
+    private PurchaseInvoiceService purchaseInvoiceService;
+
+    @Autowired
+    private ServiceProviderService serviceProviderService;
+
+    @Autowired
+    private PaymentService paymentService;
+
 
     @RequestMapping(value = "/gross_profit", method = RequestMethod.GET)
     public String grossProfit(@Valid SearchBarForm searchBarForm,
@@ -185,10 +202,10 @@ public class AccountingController {
         List<Order> orderList = orderService.findByCustomerId(customerId);
         List<SalesInvoice> salesInvoiceList = salesInvoiceService.findByCustomerId(customerId);
         List<Receipt> receiptList = receiptService.findByCustomerId(customerId);
-        for(int i = salesInvoiceList.size(); i < orderList.size(); i++){
+        for (int i = salesInvoiceList.size(); i < orderList.size(); i++) {
             salesInvoiceList.add(new SalesInvoice());
         }
-        for(int i = receiptList.size(); i < orderList.size(); i++){
+        for (int i = receiptList.size(); i < orderList.size(); i++) {
             receiptList.add(new Receipt());
         }
         Revenue revenue = revenueService.findByCustomerId(customerId);
@@ -214,5 +231,49 @@ public class AccountingController {
         logger.debug("customerId: {}; receipt: {}", customerId, receipt);
         revenueService.addReceipt(customerId, receipt);
         return "redirect:/accounting/revenues/" + customerId;
+    }
+
+    @RequestMapping(value = "/aps", method = RequestMethod.GET)
+    public String listAps(@Valid SearchBarForm searchBarForm, Model model) {
+        PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
+        Page<PayableSummary> page = payableSummaryService.findAll(pageRequest);
+        model.addAttribute("page", page);
+        return "accounting/payable/summary";
+    }
+
+    @RequestMapping(value = "/aps/{serviceProviderId}", method = RequestMethod.GET)
+    public String listAps(@PathVariable Long serviceProviderId, Model model) {
+        List<Purchase> purchaseList = purchaseService.findByServiceProviderId(serviceProviderId);
+        List<PurchaseInvoice> purchaseInvoiceList = purchaseInvoiceService.findByServiceProviderId(serviceProviderId);
+        List<Payment> paymentList = paymentService.findByServiceProviderId(serviceProviderId);
+        for (int i = purchaseInvoiceList.size(); i < purchaseList.size(); i++) {
+            purchaseInvoiceList.add(new PurchaseInvoice());
+        }
+        for (int i = paymentList.size(); i < purchaseList.size(); i++) {
+            paymentList.add(new Payment());
+        }
+        PayableSummary payableSummary = payableSummaryService.findByServiceProviderId(serviceProviderId);
+        model.addAttribute("purchaseList", purchaseList);
+        model.addAttribute("purchaseInvoiceList", purchaseInvoiceList);
+        model.addAttribute("paymentList", paymentList);
+        model.addAttribute("invoice", new PurchaseInvoice());
+        model.addAttribute("payment", new Payment());
+        model.addAttribute("serviceProviderId", serviceProviderId);
+        model.addAttribute("payableSummary", payableSummary);
+        return "accounting/payable/details";
+    }
+
+    @RequestMapping(value = "/aps/{serviceProviderId}/invoices", method = RequestMethod.POST)
+    public String addInvoice(@PathVariable Long serviceProviderId, PurchaseInvoice purchaseInvoice) {
+        logger.debug("serviceProviderId: {}; purchaseInvoice: {}", serviceProviderId, purchaseInvoice);
+        payableSummaryService.addInvoice(serviceProviderId, purchaseInvoice);
+        return "redirect:/accounting/aps/" + serviceProviderId;
+    }
+
+    @RequestMapping(value = "/aps/{serviceProviderId}/payments", method = RequestMethod.POST)
+    public String addPayment(@PathVariable Long serviceProviderId, Payment payment) {
+        logger.debug("serviceProviderId: {}; payment: {}", serviceProviderId, payment);
+        payableSummaryService.addPayment(serviceProviderId, payment);
+        return "redirect:/accounting/aps/" + serviceProviderId;
     }
 }

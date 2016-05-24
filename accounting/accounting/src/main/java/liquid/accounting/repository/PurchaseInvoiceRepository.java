@@ -14,7 +14,7 @@ import java.util.List;
 public interface PurchaseInvoiceRepository extends CrudRepository<PurchaseInvoice, Long>{
     Page<PurchaseInvoice> findAll(Pageable pageable);
 
-    List<PurchaseInvoice> findByCustomerId(Long customerId);
+    List<PurchaseInvoice> findByServiceProviderId(Long serviceProviderId);
 
     Page<PurchaseInvoice> findAll(Specification<PurchaseInvoice> specification, Pageable pageable);
 }

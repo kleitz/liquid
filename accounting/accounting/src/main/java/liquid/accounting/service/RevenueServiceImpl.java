@@ -1,8 +1,8 @@
 package liquid.accounting.service;
 
-import liquid.accounting.domain.SalesInvoice;
 import liquid.accounting.domain.Receipt;
 import liquid.accounting.domain.Revenue;
+import liquid.accounting.domain.SalesInvoice;
 import liquid.accounting.repository.RevenueRepository;
 import liquid.core.model.SearchBarForm;
 import liquid.core.service.AbstractService;
@@ -41,7 +41,7 @@ public class RevenueServiceImpl extends AbstractService<Revenue, RevenueReposito
 
     @Override
     public Page<Revenue> findAll(SearchBarForm searchBarForm, Pageable pageable) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -77,15 +77,15 @@ public class RevenueServiceImpl extends AbstractService<Revenue, RevenueReposito
         receiptService.save(receipt);
 
         Revenue revenue = findByCustomerId(customerId);
-        revenue.setTotalReceivedCny(revenue.getTotalInvoicedCny().add(receipt.getAmountCny()));
-        revenue.setTotalReceivedUsd(revenue.getTotalInvoicedUsd().add(receipt.getAmountUsd()));
+        revenue.setTotalReceivedCny(revenue.getTotalReceivedUsd().add(receipt.getAmountCny()));
+        revenue.setTotalReceivedUsd(revenue.getTotalReceivedUsd().add(receipt.getAmountUsd()));
         save(revenue);
         return revenue;
     }
 
     @Override
     @Transactional("transactionManager")
-    public Revenue voidReceipt(Long customerId, long receiptId) {
+    public Revenue voidReceipt(Long customerId, Long receiptId) {
         Revenue revenue = findByCustomerId(customerId);
 
         return revenue;

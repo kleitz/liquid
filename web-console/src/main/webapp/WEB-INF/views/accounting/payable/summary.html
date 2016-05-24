@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="layout :: head" />
+
+<body>
+<!-- {!begin layout} -->
+<div th:include="layout :: header"></div>
+<!-- {!end layout} -->
+
+<div th:include="accounting/fragments :: title-bar('charge.receivable')"></div>
+
+<div class="container-fluid">
+
+<!-- {!begin layout} -->
+<div th:include="layout :: charge-tab"></div>
+<!-- {!end layout} -->
+
+  <table class="table table-striped table-hover table-condensed table-bordered table-16">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th th:text="#{sp.name}">SP Name</th>
+        <th><span th:text="#{amount}">Total</span>(CNY)</th>
+        <th><span th:text="#{amount}">Total</span>(USD)</th>
+        <th><span th:text="#{invoiced.total}">Total Invoiced</span>(CNY)</th>
+        <th><span th:text="#{invoiced.total}">Total Invoiced</span>(USD)</th>
+        <th><span th:text="#{paid.total}">Total Paid</span>(CNY)</th>
+        <th><span th:text="#{paid.total}">Total Paid</span>(USD)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="item : ${page}">
+        <td><span th:text="${item.id}" /></td>
+        <td>
+          <a th:href="'/accounting/aps/' + ${item.serviceProvider.id}"><span th:text="${item.serviceProvider.name}" /></a>
+        </td>
+        <td><span th:text="${item.totalCny}" /></td>
+        <td><span th:text="${item.totalUsd}" /></td>
+        <td><span th:text="${item.totalInvoicedCny}" /></td>
+        <td><span th:text="${item.totalInvoicedUsd}" /></td>
+        <td><span th:text="${item.totalPaidCny}" /></td>
+        <td><span th:text="${item.totalPaidUsd}" /></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div th:include="layout :: pagination_bar(${searchBarForm.href})"></div>        
+</div>
+
+<!-- {!begin layout} -->
+<div th:include="layout :: footer"></div>
+<!-- {!end layout} -->
+
+<!-- {!begin layout} -->
+<div th:replace="layout :: js" />
+<!-- {!end layout} -->
+
+<script>
+/*<![CDATA[*/
+  $(document).ready(function() {
+
+  }); // ready end
+/*]]>*/
+</script>
+</body>
+
+</html>
