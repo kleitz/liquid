@@ -25,9 +25,9 @@
           </a>
           <span th:text="#{invoiced.at}">Invoiced At</span>
         </th>
-        <th><span th:text="#{invoice.no}">Invoice No.</span></th>
-        <th><span th:text="#{cny.of.invoice}">Invoice Amount CNY</span></th>
-        <th><span th:text="#{usd.of.invoice}">Invoice Amount USD</span></th>
+        <th><span th:text="#{salesInvoice.no}">Invoice No.</span></th>
+        <th><span th:text="#{cny.of.salesInvoice}">Invoice Amount CNY</span></th>
+        <th><span th:text="#{usd.of.salesInvoice}">Invoice Amount USD</span></th>
         <th>
           <a data-toggle="modal" data-target="#addReceipt" href="#">
             <span class="glyphicon glyphicon-plus text-success" />
@@ -52,10 +52,10 @@
         <td><span th:text="${item.totalCny}" /></td>
         <td><span th:text="${item.totalUsd}" /></td>
         <!-- invoices -->
-        <td><span th:text="${invoiceList[__${rowState.index}__].issuedAt}"></span></td>
-        <td><span th:text="${invoiceList[__${rowState.index}__].invoiceNo}"></span></td>
-        <td><span th:text="${invoiceList[__${rowState.index}__].amountCny}"></span></td>
-        <td><span th:text="${invoiceList[__${rowState.index}__].amountUsd}"></span></td>
+        <td><span th:text="${salesInvoiceList[__${rowState.index}__].issuedAt}"></span></td>
+        <td><span th:text="${salesInvoiceList[__${rowState.index}__].invoiceNo}"></span></td>
+        <td><span th:text="${salesInvoiceList[__${rowState.index}__].amountCny}"></span></td>
+        <td><span th:text="${salesInvoiceList[__${rowState.index}__].amountUsd}"></span></td>
         <!-- receipt -->
         <td><span th:text="${receiptList[__${rowState.index}__].receivedAt}"></span></td>
         <td><span th:text="${receiptList[__${rowState.index}__].amountCny}"></span></td>
@@ -98,18 +98,18 @@
   <div class="modal" id="addInvoice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;" data-backdrop="static">
     <div class="modal-dialog modal-sm">
       <form id="invoiceForm" method="POST" th:action="'/accounting/revenues/' + ${customerId} + '/invoices'"
-        th:object="${invoice}">
+        th:object="${salesInvoice}">
 
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel"><span th:text="#{invoice}">Add Invoice</span></h4>
+            <h4 class="modal-title" id="myModalLabel"><span th:text="#{salesInvoice}">Add Invoice</span></h4>
           </div>
 
           <div class="modal-body">
             <div class="form-group form-group-sm">
               <label for="invoiceNo" class="control-label">
-                <span th:text="#{invoice.no}">Invoice No.</span>
+                <span th:text="#{salesInvoice.no}">Invoice No.</span>
                 <span>*</span>
               </label>
               <input type="text" th:field="*{invoiceNo}" class="form-control input-sm"/>
@@ -117,7 +117,7 @@
 
             <div class="form-group form-group-sm">
               <label for="amountCny" class="control-label">
-                <span th:text="#{cny.of.invoice}">Invoice Amount CNY</span>
+                <span th:text="#{cny.of.salesInvoice}">Invoice Amount CNY</span>
                 <span>*</span>
               </label>
               <input type="text" th:field="*{amountCny}" class="form-control input-sm"/>
@@ -125,7 +125,7 @@
 
             <div class="form-group form-group-sm">
               <label for="amountUsd" class="control-label">
-                <span th:text="#{usd.of.invoice}">Invoice Amount USD</span>
+                <span th:text="#{usd.of.salesInvoice}">Invoice Amount USD</span>
                 <span>*</span>
               </label>
               <input type="text" th:field="*{amountUsd}" class="form-control input-sm"/>

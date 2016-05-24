@@ -4,7 +4,6 @@ import liquid.accounting.domain.*;
 import liquid.accounting.service.*;
 import liquid.core.domain.SumPage;
 import liquid.core.model.SearchBarForm;
-import liquid.operation.domain.Customer;
 import liquid.operation.service.CustomerService;
 import liquid.order.domain.Order;
 import liquid.order.domain.TradeType;
@@ -56,7 +55,7 @@ public class AccountingController {
     private CustomerService customerService;
 
     @Autowired
-    private InvoiceService invoiceService;
+    private SalesInvoiceService salesInvoiceService;
 
     @Autowired
     private ReceiptService receiptService;
@@ -184,19 +183,19 @@ public class AccountingController {
     @RequestMapping(value = "/revenues/{customerId}", method = RequestMethod.GET)
     public String listRevenues(@PathVariable Long customerId, Model model) {
         List<Order> orderList = orderService.findByCustomerId(customerId);
-        List<Invoice> invoiceList = invoiceService.findByCustomerId(customerId);
+        List<SalesInvoice> salesInvoiceList = salesInvoiceService.findByCustomerId(customerId);
         List<Receipt> receiptList = receiptService.findByCustomerId(customerId);
-        for(int i = invoiceList.size(); i < orderList.size(); i++){
-            invoiceList.add(new Invoice());
+        for(int i = salesInvoiceList.size(); i < orderList.size(); i++){
+            salesInvoiceList.add(new SalesInvoice());
         }
         for(int i = receiptList.size(); i < orderList.size(); i++){
             receiptList.add(new Receipt());
         }
         Revenue revenue = revenueService.findByCustomerId(customerId);
         model.addAttribute("orderList", orderList);
-        model.addAttribute("invoiceList", invoiceList);
+        model.addAttribute("salesInvoiceList", salesInvoiceList);
         model.addAttribute("receiptList", receiptList);
-        model.addAttribute("invoice", new Invoice());
+        model.addAttribute("invoice", new SalesInvoice());
         model.addAttribute("receipt", new Receipt());
         model.addAttribute("customerId", customerId);
         model.addAttribute("revenue", revenue);
@@ -204,9 +203,9 @@ public class AccountingController {
     }
 
     @RequestMapping(value = "/revenues/{customerId}/invoices", method = RequestMethod.POST)
-    public String addInvoice(@PathVariable Long customerId, Invoice invoice) {
-        logger.debug("customerId: {}; invoice: {}", customerId, invoice);
-        revenueService.addInvoice(customerId, invoice);
+    public String addInvoice(@PathVariable Long customerId, SalesInvoice salesInvoice) {
+        logger.debug("customerId: {}; salesInvoice: {}", customerId, salesInvoice);
+        revenueService.addInvoice(customerId, salesInvoice);
         return "redirect:/accounting/revenues/" + customerId;
     }
 

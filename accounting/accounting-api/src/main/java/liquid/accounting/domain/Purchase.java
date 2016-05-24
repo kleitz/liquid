@@ -1,6 +1,7 @@
 package liquid.accounting.domain;
 
 import liquid.core.domain.BaseUpdateEntity;
+import liquid.operation.domain.Currency;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.order.domain.Order;
@@ -42,8 +43,9 @@ public class Purchase extends BaseUpdateEntity {
     @Column(precision = 19, scale = 4, name = "TOTAL_AMOUNT")
     private BigDecimal totalAmount;
 
-    @Column(name = "CURRENCY")
-    private String currency;
+    @Column(name = "CURRENCY", length = 4)
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 
     @Column(name = "STATUS")
     private Integer status;
@@ -110,11 +112,11 @@ public class Purchase extends BaseUpdateEntity {
         this.totalAmount = totalAmount;
     }
 
-    public String getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
+    public void setCurrency(Currency currency) {
         this.currency = currency;
     }
 

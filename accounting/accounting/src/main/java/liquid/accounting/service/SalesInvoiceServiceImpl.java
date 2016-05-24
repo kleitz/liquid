@@ -1,8 +1,8 @@
 package liquid.accounting.service;
 
-import liquid.accounting.domain.Invoice;
-import liquid.accounting.domain.Invoice_;
-import liquid.accounting.repository.InvoiceRepository;
+import liquid.accounting.domain.SalesInvoice;
+import liquid.accounting.domain.SalesInvoice_;
+import liquid.accounting.repository.SalesInvoiceRepository;
 import liquid.core.service.AbstractService;
 import liquid.operation.domain.Customer_;
 import org.springframework.data.domain.Page;
@@ -24,30 +24,30 @@ import static org.springframework.data.jpa.domain.Specifications.where;
  * Created by Tao Ma on 1/8/15.
  */
 @Service
-public class InvoiceServiceImpl extends AbstractService<Invoice, InvoiceRepository> implements InternalInvoiceService  {
+public class SalesInvoiceServiceImpl extends AbstractService<SalesInvoice, SalesInvoiceRepository> implements InternalInvoiceService {
     @Override
-    public void doSaveBefore(Invoice entity) {}
+    public void doSaveBefore(SalesInvoice entity) {}
 
-    public Page<Invoice> findAll(Pageable pageable) {
+    public Page<SalesInvoice> findAll(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public Page<Invoice> findAll(Date start, Date end, Long customerId, Pageable pageable) {
-        Specification<Invoice> dateSpec = new Specification<Invoice>() {
+    public Page<SalesInvoice> findAll(Date start, Date end, Long customerId, Pageable pageable) {
+        Specification<SalesInvoice> dateSpec = new Specification<SalesInvoice>() {
             @Override
-            public Predicate toPredicate(Root<Invoice> root, CriteriaQuery<?> criteriaQuery,
+            public Predicate toPredicate(Root<SalesInvoice> root, CriteriaQuery<?> criteriaQuery,
                                          CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.between(root.get(Invoice_.issuedAt), start, end);
+                return criteriaBuilder.between(root.get(SalesInvoice_.issuedAt), start, end);
             }
         };
-        Specifications<Invoice> specifications = where(dateSpec);
+        Specifications<SalesInvoice> specifications = where(dateSpec);
 
         if (null != customerId) {
-            Specification<Invoice> buyerSpec = new Specification<Invoice>() {
+            Specification<SalesInvoice> buyerSpec = new Specification<SalesInvoice>() {
                 @Override
-                public Predicate toPredicate(Root<Invoice> root, CriteriaQuery<?> criteriaQuery,
+                public Predicate toPredicate(Root<SalesInvoice> root, CriteriaQuery<?> criteriaQuery,
                                              CriteriaBuilder criteriaBuilder) {
-                    return criteriaBuilder.equal(root.get(Invoice_.customer).get(Customer_.id), customerId);
+                    return criteriaBuilder.equal(root.get(SalesInvoice_.customer).get(Customer_.id), customerId);
                 }
             };
             specifications.and(buyerSpec);
@@ -56,12 +56,12 @@ public class InvoiceServiceImpl extends AbstractService<Invoice, InvoiceReposito
         return repository.findAll(specifications, pageable);
     }
 
-    public List<Invoice> findByCustomerId(Long buyerId) {
+    public List<SalesInvoice> findByCustomerId(Long buyerId) {
         return repository.findByCustomerId(buyerId);
     }
 
     @Override
-    public Invoice update(Invoice invoice) {
+    public SalesInvoice update(SalesInvoice salesInvoice) {
         return null;
     }
 }

@@ -124,10 +124,10 @@
       <documentation>${employeeName}已经在${endTime}完成回收签收单，您需要修正订单价格。</documentation>
     </userTask>
     <sequenceFlow id="flow380" sourceRef="adjustPrice" targetRef="sendInvoicingAndPsFork"></sequenceFlow>
-    <userTask id="invoice" name="开发票" activiti:candidateGroups="ROLE_COMMERCE">
+    <userTask id="salesInvoice" name="开发票" activiti:candidateGroups="ROLE_COMMERCE">
       <documentation>您需要开发票。</documentation>
     </userTask>
-    <sequenceFlow id="flow430" sourceRef="invoice" targetRef="return"></sequenceFlow>
+    <sequenceFlow id="flow430" sourceRef="salesInvoice" targetRef="return"></sequenceFlow>
     <userTask id="checkFromMarketing" name="核对市场采购金额" activiti:candidateGroups="ROLE_COMMERCE">
       <documentation>您需要核对市场采购金额。</documentation>
     </userTask>
@@ -143,7 +143,7 @@
     <userTask id="confirmInvoiceAmount" name="确认发票金额" activiti:assignee="${orderOwner}">
       <documentation>您需要确认发票金额${salesPrice}。</documentation>
     </userTask>
-    <sequenceFlow id="flow420" sourceRef="confirmInvoiceAmount" targetRef="invoice"></sequenceFlow>
+    <sequenceFlow id="flow420" sourceRef="confirmInvoiceAmount" targetRef="salesInvoice"></sequenceFlow>
     <parallelGateway id="sendInvoicingAndPsFork"></parallelGateway>
     <userTask id="reclaimReceipt" name="回收签收单" activiti:candidateGroups="ROLE_OPERATING">
       <documentation>${employeeName}已经在${endTime}完成配送，您需要回收签收单。</documentation>
@@ -263,7 +263,7 @@
       <bpmndi:BPMNShape bpmnElement="adjustPrice" id="BPMNShape_adjustPrice">
         <omgdc:Bounds height="60.0" width="100.0" x="221.0" y="104.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="invoice" id="BPMNShape_invoice">
+      <bpmndi:BPMNShape bpmnElement="salesInvoice" id="BPMNShape_invoice">
         <omgdc:Bounds height="60.0" width="100.0" x="660.0" y="105.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="checkFromMarketing" id="BPMNShape_checkFromMarketing">

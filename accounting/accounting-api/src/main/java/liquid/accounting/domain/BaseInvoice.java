@@ -1,26 +1,17 @@
 package liquid.accounting.domain;
 
 import liquid.core.domain.BaseUpdateEntity;
-import liquid.operation.domain.Customer;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
+import javax.persistence.MappedSuperclass;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * Created by Tao Ma on 1/8/15.
+ * Created by mat on 5/24/16.
  */
-@Entity(name = "ACC_INVOICE")
-public class Invoice extends BaseUpdateEntity {
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "CUSTOMER_ID")
-    private Customer customer;
-
+@MappedSuperclass
+public class BaseInvoice extends BaseUpdateEntity {
     @Column(name = "INVOICE_NO")
     private String invoiceNo;
 
@@ -33,23 +24,12 @@ public class Invoice extends BaseUpdateEntity {
     @Column(name = "ISSUED_AT")
     private Date issuedAt;
 
-    @Column(name = "EXP_PAY_AT")
-    private Date expectedPaymentAt;
-
     public String getInvoiceNo() {
         return invoiceNo;
     }
 
     public void setInvoiceNo(String invoiceNo) {
         this.invoiceNo = invoiceNo;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
     }
 
     public BigDecimal getAmountCny() {
@@ -76,11 +56,15 @@ public class Invoice extends BaseUpdateEntity {
         this.issuedAt = issuedAt;
     }
 
-    public Date getExpectedPaymentAt() {
-        return expectedPaymentAt;
-    }
-
-    public void setExpectedPaymentAt(Date expectedPaymentAt) {
-        this.expectedPaymentAt = expectedPaymentAt;
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("BaseInvoice{");
+        sb.append("super=").append(super.toString()).append('\'');
+        sb.append(", invoiceNo='").append(invoiceNo).append('\'');
+        sb.append(", amountCny=").append(amountCny);
+        sb.append(", amountUsd=").append(amountUsd);
+        sb.append(", issuedAt=").append(issuedAt);
+        sb.append('}');
+        return sb.toString();
     }
 }

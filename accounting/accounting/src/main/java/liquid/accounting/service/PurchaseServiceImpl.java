@@ -1,5 +1,6 @@
 package liquid.accounting.service;
 
+import liquid.accounting.domain.PayableSummary;
 import liquid.accounting.domain.Purchase;
 import liquid.accounting.domain.PurchaseStatus;
 import liquid.accounting.repository.ChargeRepository;
@@ -7,6 +8,7 @@ import liquid.accounting.repository.PurchaseRepository;
 import liquid.core.service.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +23,9 @@ public class PurchaseServiceImpl extends AbstractService<Purchase, PurchaseRepos
 
     @Autowired
     private PurchaseRepository purchaseRepository;
+
+    @Autowired
+    private PayableSummaryService payableSummaryService;
 
     @Override
     public void doSaveBefore(Purchase entity) {
@@ -37,10 +42,28 @@ public class PurchaseServiceImpl extends AbstractService<Purchase, PurchaseRepos
         return purchaseRepository.findByOrderId(orderId);
     }
 
+    @Transactional("transactionManager")
     @Override
     public Purchase addOne(Purchase purchase) {
         purchase.setStatus(PurchaseStatus.VALID.ordinal());
-        return save(purchase);
+        save(purchase);
+
+        PayableSummary payableSummary = payableSummaryService.findByServiceProviderId(purchase.getSp().getId());
+        if(null == payableSummary) {
+            switch (purchase.getCurrency()) {
+                case CNY:
+                    payableSummary.setTotalCny(payableSummary.getTotalCny().add(purchase.getTotalAmount()));
+                    break;
+                case USD:
+                    payableSummary.setTotalUsd(payableSummary.getTotalUsd().add(purchase.getTotalAmount()));
+                    break;
+                default:
+                    break;
+            }
+        }
+        payableSummaryService.save(payableSummary);
+
+        return purchase;
     }
 
     @Override

@@ -19,7 +19,7 @@
       </lane>
       <lane id="lane_accounting" name="商务">
         <flowNodeRef>checkFromMarketing</flowNodeRef>
-        <flowNodeRef>invoice</flowNodeRef>
+        <flowNodeRef>salesInvoice</flowNodeRef>
         <flowNodeRef>settlementJoin</flowNodeRef>
         <flowNodeRef>comfirmData</flowNodeRef>
         <flowNodeRef>theEnd1</flowNodeRef>
@@ -47,11 +47,11 @@
     <userTask id="confirmInvoiceAmount" name="确认发票金额" activiti:assignee="${orderOwner}">
       <documentation>您需要确认发票金额${salesPrice}。</documentation>
     </userTask>
-    <sequenceFlow id="flow050" sourceRef="confirmInvoiceAmount" targetRef="invoice"></sequenceFlow>
-    <userTask id="invoice" name="开发票" activiti:candidateGroups="ROLE_COMMERCE">
+    <sequenceFlow id="flow050" sourceRef="confirmInvoiceAmount" targetRef="salesInvoice"></sequenceFlow>
+    <userTask id="salesInvoice" name="开发票" activiti:candidateGroups="ROLE_COMMERCE">
       <documentation>您需要开发票。</documentation>
     </userTask>
-    <sequenceFlow id="flow060" sourceRef="invoice" targetRef="return"></sequenceFlow>
+    <sequenceFlow id="flow060" sourceRef="salesInvoice" targetRef="return"></sequenceFlow>
     <userTask id="return" name="催收款" activiti:assignee="${orderOwner}">
       <documentation>您需要催收款。</documentation>
     </userTask>
@@ -104,7 +104,7 @@
       <bpmndi:BPMNShape bpmnElement="confirmInvoiceAmount" id="BPMNShape_confirmInvoiceAmount">
         <omgdc:Bounds height="60.0" width="100.0" x="480.0" y="32.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="invoice" id="BPMNShape_invoice">
+      <bpmndi:BPMNShape bpmnElement="salesInvoice" id="BPMNShape_invoice">
         <omgdc:Bounds height="60.0" width="100.0" x="690.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="return" id="BPMNShape_return">

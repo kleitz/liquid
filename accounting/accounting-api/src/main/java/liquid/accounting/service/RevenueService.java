@@ -1,6 +1,6 @@
 package liquid.accounting.service;
 
-import liquid.accounting.domain.Invoice;
+import liquid.accounting.domain.SalesInvoice;
 import liquid.accounting.domain.Receipt;
 import liquid.accounting.domain.Revenue;
 import liquid.core.model.SearchBarForm;
@@ -19,7 +19,7 @@ public interface RevenueService {
 
     Page<Revenue> findAll(SearchBarForm searchBarForm, Pageable pageable);
 
-    Revenue addInvoice(Long customerId, Invoice invoice);
+    Revenue addInvoice(Long customerId, SalesInvoice salesInvoice);
 
     Revenue voidInvoice(Long customerId, Long invoiceId);
 

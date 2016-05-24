@@ -1,7 +1,7 @@
 package liquid.accounting.domain;
 
 import liquid.core.domain.BaseUpdateEntity;
-import liquid.operation.domain.Customer;
+import liquid.operation.domain.ServiceProvider;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,14 +12,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * Created by Tao Ma on 1/8/15.
+ * Created by mat on 5/24/16.
  */
-@Entity(name = "ACC_RECEIPT")
-public class Receipt extends BaseUpdateEntity {
+@Entity(name = "ACC_PAYMENT")
+public class Payment extends BaseUpdateEntity {
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "CUSTOMER_ID")
-    private Customer customer;
+    @JoinColumn(name = "SP_ID")
+    private ServiceProvider serviceProvider;
 
     @Column(precision = 19, scale = 4, name = "AMOUNT_CNY")
     private BigDecimal amountCny;
@@ -27,18 +27,15 @@ public class Receipt extends BaseUpdateEntity {
     @Column(precision = 19, scale = 4, name = "AMOUNT_USD")
     private BigDecimal amountUsd;
 
-    @Column(name = "RECIPIENT_ID")
-    private Long recipientId;
+    @Column(name = "PAID_AT")
+    private Date paidAt;
 
-    @Column(name = "RECEIVED_AT")
-    private Date receivedAt;
-
-    public Customer getCustomer() {
-        return customer;
+    public ServiceProvider getServiceProvider() {
+        return serviceProvider;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setServiceProvider(ServiceProvider serviceProvider) {
+        this.serviceProvider = serviceProvider;
     }
 
     public BigDecimal getAmountCny() {
@@ -57,31 +54,22 @@ public class Receipt extends BaseUpdateEntity {
         this.amountUsd = amountUsd;
     }
 
-    public Long getRecipientId() {
-        return recipientId;
+    public Date getPaidAt() {
+        return paidAt;
     }
 
-    public void setRecipientId(Long recipientId) {
-        this.recipientId = recipientId;
-    }
-
-    public Date getReceivedAt() {
-        return receivedAt;
-    }
-
-    public void setReceivedAt(Date receivedAt) {
-        this.receivedAt = receivedAt;
+    public void setPaidAt(Date paidAt) {
+        this.paidAt = paidAt;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Receipt{");
+        final StringBuilder sb = new StringBuilder("Payment{");
         sb.append("super=").append(super.toString()).append('\'');
-        sb.append(", customer=").append(customer);
+        sb.append(", serviceProvider=").append(serviceProvider);
         sb.append(", amountCny=").append(amountCny);
         sb.append(", amountUsd=").append(amountUsd);
-        sb.append(", recipientId=").append(recipientId);
-        sb.append(", receivedAt=").append(receivedAt);
+        sb.append(", paidAt=").append(paidAt);
         sb.append('}');
         return sb.toString();
     }

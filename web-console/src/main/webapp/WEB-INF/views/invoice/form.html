@@ -9,28 +9,28 @@
 <!-- {!end layout} -->
 
 <div id="f" class="container">
-    <h3><span th:text="#{add.invoice}"></span></h3>
+    <h3><span th:text="#{add.salesInvoice}"></span></h3>
     
     <hr />
     
-    <form method="POST" th:action="'/order/' + ${invoice.orderId} + '/invoice'" th:object="${invoice}">
+    <form method="POST" th:action="'/order/' + ${salesInvoice.orderId} + '/salesInvoice'" th:object="${salesInvoice}">
         <input type="hidden" th:field="*{id}"></input>
         <input type="hidden" th:field="*{orderId}"></input>
 
         <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('invoiceNo')} ? 'has-error'">
-            <label for="invoiceNo" th:text="#{invoice.no}">Invoice No</label>
+            <label for="invoiceNo" th:text="#{salesInvoice.no}">Invoice No</label>
             <input type="text" class="form-control input-sm" th:field="*{invoiceNo}"></input>                        
             <span class="text-danger" th:errors="*{invoiceNo}">error</span>
         </div>
 
         <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('cny')} ? 'has-error'">
-            <label for="cny" th:text="#{cny.of.invoice}">Invoice CNY</label>
+            <label for="cny" th:text="#{cny.of.salesInvoice}">Invoice CNY</label>
             <input type="text" class="form-control input-sm" th:field="*{cny}"></input>
             <span class="text-danger" th:errors="*{cny}">error</span>
         </div>
         
         <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('usd')} ? 'has-error'">
-            <label for="usd" th:text="#{usd.of.invoice}">Invoice USD</label>
+            <label for="usd" th:text="#{usd.of.salesInvoice}">Invoice USD</label>
             <input type="text" class="form-control input-sm" th:field="*{usd}"></input>
             <span class="text-danger" th:errors="*{usd}">error</span>
         </div>
@@ -43,7 +43,7 @@
         </div>
             
         <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('receivedAt')} ? 'has-error'">
-            <label for="receivedAt" th:text="#{date.of.invoice}">Issued At</label>
+            <label for="receivedAt" th:text="#{date.of.salesInvoice}">Issued At</label>
             <div class="input-group input-group-sm date" id="invoiceIssuedAtPicker">
                 <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control input-sm" th:field="*{receivedAt}" />
                 <span class="input-group-addon">

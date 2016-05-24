@@ -7,8 +7,6 @@ import liquid.accounting.model.Receipt;
 import liquid.accounting.model.Settlement;
 import liquid.accounting.model.Statement;
 import liquid.accounting.service.ChargeService;
-import liquid.accounting.service.InvoiceService;
-import liquid.accounting.service.ReceiptService;
 import liquid.accounting.service.SettlementService;
 import liquid.container.domain.ContainerCap;
 import liquid.container.domain.ContainerSubtype;

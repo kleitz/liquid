@@ -1,6 +1,6 @@
 package liquid.accounting.service;
 
-import liquid.accounting.domain.Invoice;
+import liquid.accounting.domain.SalesInvoice;
 import liquid.accounting.domain.Receipt;
 import liquid.accounting.domain.Revenue;
 import liquid.accounting.repository.RevenueRepository;
@@ -24,7 +24,7 @@ public class RevenueServiceImpl extends AbstractService<Revenue, RevenueReposito
     private CustomerService customerService;
 
     @Autowired
-    private InvoiceService invoiceService;
+    private SalesInvoiceService salesInvoiceService;
 
     @Autowired
     private ReceiptService receiptService;
@@ -49,14 +49,14 @@ public class RevenueServiceImpl extends AbstractService<Revenue, RevenueReposito
 
     @Override
     @Transactional("transactionManager")
-    public Revenue addInvoice(Long customerId, Invoice invoice) {
+    public Revenue addInvoice(Long customerId, SalesInvoice salesInvoice) {
         Customer customer = customerService.find(customerId);
-        invoice.setCustomer(customer);
-        invoiceService.save(invoice);
+        salesInvoice.setCustomer(customer);
+        salesInvoiceService.save(salesInvoice);
 
         Revenue revenue = findByCustomerId(customerId);
-        revenue.setTotalInvoicedCny(revenue.getTotalInvoicedCny().add(invoice.getAmountCny()));
-        revenue.setTotalInvoicedUsd(revenue.getTotalInvoicedUsd().add(invoice.getAmountUsd()));
+        revenue.setTotalInvoicedCny(revenue.getTotalInvoicedCny().add(salesInvoice.getAmountCny()));
+        revenue.setTotalInvoicedUsd(revenue.getTotalInvoicedUsd().add(salesInvoice.getAmountUsd()));
         save(revenue);
         return revenue;
     }

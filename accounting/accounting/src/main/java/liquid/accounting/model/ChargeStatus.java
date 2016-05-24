@@ -14,7 +14,7 @@ public enum ChargeStatus {
 
     private final String i18nKey;
 
-    private ChargeStatus(int value, String i18nKey) {
+    ChargeStatus(int value, String i18nKey) {
         this.value = value;
         this.i18nKey = i18nKey;
     }
