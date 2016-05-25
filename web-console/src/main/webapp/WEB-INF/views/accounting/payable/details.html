@@ -31,10 +31,10 @@
           <a data-toggle="modal" data-target="#addPayment" href="#">
             <span class="glyphicon glyphicon-plus text-success" />
           </a>
-          <span th:text="#{date.of.receivable}">Received At</span>
+          <span th:text="#{paid.at}">Paid At</span>
         </th>
-        <th><span th:text="#{actual.cny}">Payment Amount CNY</span></th>
-        <th><span th:text="#{actual.usd}">Payment Amount USD</span></th>
+        <th><span th:text="#{actual.payable.cny}">Payment Amount CNY</span></th>
+        <th><span th:text="#{actual.payable.usd}">Payment Amount USD</span></th>
         <!--
         <th>Not Received Amount CNY</th>
         <th>Not Received Amount USD</th>
@@ -146,7 +146,7 @@
               <span th:text="#{modal.close}"/>
             </button>
             <button type="submit" name="add" value="add" form="invoiceForm" class="btn btn-warning btn-sm">
-              <span>Add</span>
+              <span th:text="#{save}">Add</span>
             </button>
           </div>
         </div><!-- /.modal-content -->
@@ -169,7 +169,7 @@
           <div class="modal-body">
             <div class="form-group form-group-sm">
               <label for="amountCny" class="control-label">
-                <span th:text="#{actual.cny}">Total CNY</span>
+                <span th:text="#{actual.payable.cny}">Total CNY</span>
                 <span>*</span>
               </label>
               <input type="text" th:field="*{amountCny}" class="form-control input-sm"/>
@@ -177,7 +177,7 @@
 
             <div class="form-group form-group-sm">
               <label for="amountUsd" class="control-label">
-                <span th:text="#{actual.usd}">Total USD</span>
+                <span th:text="#{actual.payable.usd}">Total USD</span>
                 <span>*</span>
               </label>
               <input type="text" th:field="*{amountUsd}" class="form-control input-sm"/>
@@ -202,7 +202,7 @@
               <span th:text="#{modal.close}"/>
             </button>
             <button type="submit" name="add" value="add" form="paymentForm" class="btn btn-warning btn-sm">
-              <span>Add</span>
+              <span th:text="#{save}">Add</span>
             </button>
           </div>
         </div><!-- /.modal-content -->
