@@ -4,7 +4,7 @@ import liquid.accounting.domain.Charge;
 import liquid.accounting.domain.ChargeWay;
 import liquid.accounting.model.Earning;
 import liquid.accounting.service.ChargeService;
-import liquid.accounting.service.ReceivableSummaryService;
+import liquid.accounting.service.ReceivableSummaryObsoloteService;
 import liquid.core.model.Alert;
 import liquid.core.security.SecurityContext;
 import liquid.operation.domain.ServiceSubtype;
@@ -21,7 +21,6 @@ import liquid.process.service.TaskService;
 import liquid.transport.service.RouteService;
 import liquid.transport.service.ShipmentService;
 import liquid.transport.service.TruckService;
-import liquid.user.domain.User;
 import liquid.user.domain.UserProfile;
 import liquid.user.service.UserService;
 import org.activiti.engine.ActivitiTaskAlreadyClaimedException;
@@ -65,7 +64,7 @@ public class TaskController extends AbstractTaskController {
     private ChargeService chargeService;
 
     @Autowired
-    private ReceivableSummaryService receivableSummaryService;
+    private ReceivableSummaryObsoloteService receivableSummaryService;
 
     @Autowired
     private ServiceSubtypeService serviceSubtypeService;

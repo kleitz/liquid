@@ -1,7 +1,7 @@
 package liquid.accounting.service;
 
 import liquid.accounting.domain.CashReceiptsJournal;
-import liquid.accounting.domain.ReceivableSummary;
+import liquid.accounting.domain.ReceivableSummaryObsolete;
 import liquid.accounting.repository.CashReceiptsJournalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class CashReceiptsJournalServiceImpl implements InternalCashReceiptsJourn
     private CashReceiptsJournalRepository cashReceiptsJournalRepository;
 
     @Autowired
-    private ReceivableSummaryService receivableSummaryService;
+    private ReceivableSummaryObsoloteService receivableSummaryService;
 
     @Override
     public Iterable<CashReceiptsJournal> findByOrderId(Long orderId) {
@@ -34,7 +34,7 @@ public class CashReceiptsJournalServiceImpl implements InternalCashReceiptsJourn
     @Transactional("transactionManager")
     @Override
     public CashReceiptsJournal save(CashReceiptsJournal cashReceiptsJournal) {
-        ReceivableSummary receivableSummary = receivableSummaryService.findByOrderId(cashReceiptsJournal.getOrder().getId());
+        ReceivableSummaryObsolete receivableSummary = receivableSummaryService.findByOrderId(cashReceiptsJournal.getOrder().getId());
         receivableSummary.setCny(receivableSummary.getCny().add(cashReceiptsJournal.getInvoicedAmt() == null ? BigDecimal.ZERO : cashReceiptsJournal.getInvoicedAmt()));
         receivableSummary.setPaidCny(receivableSummary.getPaidCny() + (cashReceiptsJournal.getReceivedAmt() == null ? 0L : cashReceiptsJournal.getReceivedAmt().longValue()));
         receivableSummary.setInvoicedCny(receivableSummary.getInvoicedCny() + (cashReceiptsJournal.getInvoicedAmt() == null ? 0L : cashReceiptsJournal.getInvoicedAmt().longValue()));

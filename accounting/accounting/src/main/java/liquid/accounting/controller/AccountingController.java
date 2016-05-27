@@ -44,10 +44,10 @@ public class AccountingController {
     private ChargeService chargeService;
 
     @Autowired
-    private InternalReceivableSummaryService receivableSummaryService;
+    private InternalReceivableSummaryObsoloteService receivableSummaryService;
 
     @Autowired
-    private RevenueService revenueService;
+    private ReceivableService receivableService;
 
     @Autowired
     private OrderService orderService;
@@ -86,7 +86,7 @@ public class AccountingController {
         searchBarForm.prepand(request.getRequestURI());
 
         if (bindingResult.hasErrors()) {
-            Page<ReceivableSummary> page = new PageImpl<ReceivableSummary>(new ArrayList<>());
+            Page<ReceivableSummaryObsolete> page = new PageImpl<ReceivableSummaryObsolete>(new ArrayList<>());
             model.addAttribute("page", page);
             return "accounting/gross_profit";
         }
@@ -95,7 +95,7 @@ public class AccountingController {
         model.addAttribute("searchBarForm", searchBarForm);
 
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
-        SumPage<ReceivableSummary> page = receivableSummaryService.findAll(searchBarForm, pageRequest);
+        SumPage<ReceivableSummaryObsolete> page = receivableSummaryService.findAll(searchBarForm, pageRequest);
         model.addAttribute("page", page);
         return "accounting/gross_profit";
     }
@@ -107,7 +107,7 @@ public class AccountingController {
         model.addAttribute("exchangeRate", exchangeRateService.getExchangeRate().getValue());
         searchBarForm.prepand(request.getRequestURI());
         if (bindingResult.hasErrors()) {
-            Page<ReceivableSummary> page = new PageImpl<ReceivableSummary>(new ArrayList<>());
+            Page<ReceivableSummaryObsolete> page = new PageImpl<ReceivableSummaryObsolete>(new ArrayList<>());
             model.addAttribute("page", page);
             return "accounting/summary";
         }
@@ -116,7 +116,7 @@ public class AccountingController {
         model.addAttribute("searchBarForm", searchBarForm);
 
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
-        SumPage<ReceivableSummary> page = receivableSummaryService.findAll(searchBarForm, pageRequest);
+        SumPage<ReceivableSummaryObsolete> page = receivableSummaryService.findAll(searchBarForm, pageRequest);
 
         model.addAttribute("page", page);
         return "accounting/summary";
@@ -131,7 +131,7 @@ public class AccountingController {
         searchBarForm.prepand(request.getRequestURI());
 
         if (bindingResult.hasErrors()) {
-            Page<ReceivableSummary> page = new PageImpl<ReceivableSummary>(new ArrayList<>());
+            Page<ReceivableSummaryObsolete> page = new PageImpl<ReceivableSummaryObsolete>(new ArrayList<>());
             model.addAttribute("page", page);
             return "accounting/receivable";
         }
@@ -140,7 +140,7 @@ public class AccountingController {
         model.addAttribute("searchBarForm", searchBarForm);
 
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
-        SumPage<ReceivableSummary> page = receivableSummaryService.findAll(searchBarForm, pageRequest);
+        SumPage<ReceivableSummaryObsolete> page = receivableSummaryService.findAll(searchBarForm, pageRequest);
         model.addAttribute("page", page);
 
         return "accounting/receivable";
@@ -189,15 +189,15 @@ public class AccountingController {
         return "accounting/payable/ledger";
     }
 
-    @RequestMapping(value = "/revenues", method = RequestMethod.GET)
+    @RequestMapping(value = "/ars", method = RequestMethod.GET)
     public String listRevenues(@Valid SearchBarForm searchBarForm, Model model) {
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
-        Page<Revenue> page = revenueService.findAll(pageRequest);
+        Page<ReceivableSummary> page = receivableService.findAll(pageRequest);
         model.addAttribute("page", page);
-        return "accounting/revenue";
+        return "accounting/receivable/summary";
     }
 
-    @RequestMapping(value = "/revenues/{customerId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/ars/{customerId}", method = RequestMethod.GET)
     public String listRevenues(@PathVariable Long customerId, Model model) {
         List<Order> orderList = orderService.findByCustomerId(customerId);
         List<SalesInvoice> salesInvoiceList = salesInvoiceService.findByCustomerId(customerId);
@@ -208,29 +208,29 @@ public class AccountingController {
         for (int i = receiptList.size(); i < orderList.size(); i++) {
             receiptList.add(new Receipt());
         }
-        Revenue revenue = revenueService.findByCustomerId(customerId);
+        ReceivableSummary receivableSummary = receivableService.findByCustomerId(customerId);
         model.addAttribute("orderList", orderList);
         model.addAttribute("salesInvoiceList", salesInvoiceList);
         model.addAttribute("receiptList", receiptList);
         model.addAttribute("invoice", new SalesInvoice());
         model.addAttribute("receipt", new Receipt());
         model.addAttribute("customerId", customerId);
-        model.addAttribute("revenue", revenue);
+        model.addAttribute("receivableSummary", receivableSummary);
         return "accounting/receivable/details";
     }
 
-    @RequestMapping(value = "/revenues/{customerId}/invoices", method = RequestMethod.POST)
+    @RequestMapping(value = "/ars/{customerId}/invoices", method = RequestMethod.POST)
     public String addInvoice(@PathVariable Long customerId, SalesInvoice salesInvoice) {
         logger.debug("customerId: {}; salesInvoice: {}", customerId, salesInvoice);
-        revenueService.addInvoice(customerId, salesInvoice);
+        receivableService.addInvoice(customerId, salesInvoice);
         return "redirect:/accounting/revenues/" + customerId;
     }
 
-    @RequestMapping(value = "/revenues/{customerId}/receipts", method = RequestMethod.POST)
+    @RequestMapping(value = "/ars/{customerId}/receipts", method = RequestMethod.POST)
     public String addReceipt(@PathVariable Long customerId, Receipt receipt) {
         logger.debug("customerId: {}; receipt: {}", customerId, receipt);
-        revenueService.addReceipt(customerId, receipt);
-        return "redirect:/accounting/revenues/" + customerId;
+        receivableService.addReceipt(customerId, receipt);
+        return "redirect:/accounting/ars/" + customerId;
     }
 
     @RequestMapping(value = "/aps", method = RequestMethod.GET)

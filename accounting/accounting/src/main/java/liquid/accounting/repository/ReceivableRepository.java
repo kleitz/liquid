@@ -7,12 +7,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.CrudRepository;
 
 /**
- * Created by redbrick9 on 8/28/14.
+ * Created by mat on 5/19/16.
  */
-public interface ReceivableSummaryRepository extends CrudRepository<ReceivableSummary, Long> {
-    ReceivableSummary findByOrderId(Long orderId);
-
-    void deleteByOrderId(Long orderId);
+public interface ReceivableRepository extends CrudRepository<ReceivableSummary, Long> {
+    ReceivableSummary findByCustomerId(Long customerId);
 
     Page<ReceivableSummary> findAll(Pageable pageable);
 

@@ -1,11 +1,8 @@
 package liquid.accounting.service;
 
-import liquid.accounting.domain.AccountingOperator;
-import liquid.accounting.domain.AccountingType;
-import liquid.accounting.domain.ReceivableSummary;
-import liquid.accounting.domain.ReceivableSummary_;
+import liquid.accounting.domain.*;
 import liquid.accounting.model.Earning;
-import liquid.accounting.repository.ReceivableSummaryRepository;
+import liquid.accounting.repository.ReceivableSummaryObsoloteRepository;
 import liquid.core.domain.SumPage;
 import liquid.core.model.SearchBarForm;
 import liquid.core.service.AbstractService;
@@ -32,15 +29,15 @@ import java.util.Date;
  * Created by Tao Ma on 1/10/15.
  */
 @Service
-public class ReceivableSummaryServiceImpl extends AbstractService<ReceivableSummary, ReceivableSummaryRepository>
-        implements InternalReceivableSummaryService {
+public class ReceivableSummaryServiceObsoloteImpl extends AbstractService<ReceivableSummaryObsolete, ReceivableSummaryObsoloteRepository>
+        implements InternalReceivableSummaryObsoloteService {
     @Autowired
     private ExchangeRateService exchangeRateService;
 
     @Override
-    public void doSaveBefore(ReceivableSummary entity) {}
+    public void doSaveBefore(ReceivableSummaryObsolete entity) {}
 
-    public ReceivableSummary findByOrderId(Long orderId) {
+    public ReceivableSummaryObsolete findByOrderId(Long orderId) {
         return repository.findByOrderId(orderId);
     }
 
@@ -51,7 +48,7 @@ public class ReceivableSummaryServiceImpl extends AbstractService<ReceivableSumm
 
     @Transactional(value = "transactionManager")
     public void update(Long orderId, AccountingType type, AccountingOperator op, Long amountCny, Long amountUsd) {
-        ReceivableSummary entity = repository.findByOrderId(orderId);
+        ReceivableSummaryObsolete entity = repository.findByOrderId(orderId);
         switch (type) {
             case SETTLEMENT:
                 switch (op) {
@@ -89,7 +86,7 @@ public class ReceivableSummaryServiceImpl extends AbstractService<ReceivableSumm
 
     @Transactional(value = "transactionManager")
     public void update(Long orderId, AccountingType type, Long totalCny, Long totalUsd) {
-        ReceivableSummary entity = repository.findByOrderId(orderId);
+        ReceivableSummaryObsolete entity = repository.findByOrderId(orderId);
         switch (type) {
             case SETTLEMENT:
                 break;
@@ -105,34 +102,34 @@ public class ReceivableSummaryServiceImpl extends AbstractService<ReceivableSumm
         save(entity);
     }
 
-    public Page<ReceivableSummary> findAll(Pageable pageable) {
+    public Page<ReceivableSummaryObsolete> findAll(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public Page<ReceivableSummary> findAll(final Date start, final Date end, final Long orderId, final Long customerId, final Pageable pageable) {
-        Specification<ReceivableSummary> dateRangeSpec = new Specification<ReceivableSummary>() {
+    public Page<ReceivableSummaryObsolete> findAll(final Date start, final Date end, final Long orderId, final Long customerId, final Pageable pageable) {
+        Specification<ReceivableSummaryObsolete> dateRangeSpec = new Specification<ReceivableSummaryObsolete>() {
             @Override
-            public Predicate toPredicate(Root<ReceivableSummary> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+            public Predicate toPredicate(Root<ReceivableSummaryObsolete> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 return cb.between(root.get(ReceivableSummary_.createdAt), start, end);
             }
         };
-        Specifications<ReceivableSummary> specifications = Specifications.where(dateRangeSpec);
+        Specifications<ReceivableSummaryObsolete> specifications = Specifications.where(dateRangeSpec);
 
         if (null != orderId) {
-            Specification<ReceivableSummary> orderIdSpec = new Specification<ReceivableSummary>() {
+            Specification<ReceivableSummaryObsolete> orderIdSpec = new Specification<ReceivableSummaryObsolete>() {
                 @Override
-                public Predicate toPredicate(Root<ReceivableSummary> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                    return cb.equal(root.get(ReceivableSummary_.order).get(Order_.id), orderId);
+                public Predicate toPredicate(Root<ReceivableSummaryObsolete> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                    return cb.equal(root.get(ReceivableSummaryObsolete_.order).get(Order_.id), orderId);
                 }
             };
             specifications = specifications.and(orderIdSpec);
         }
 
         if (null != customerId) {
-            Specification<ReceivableSummary> customerIdSpec = new Specification<ReceivableSummary>() {
+            Specification<ReceivableSummaryObsolete> customerIdSpec = new Specification<ReceivableSummaryObsolete>() {
                 @Override
-                public Predicate toPredicate(Root<ReceivableSummary> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                    return cb.equal(root.get(ReceivableSummary_.order).get(Order_.customer).get(Customer_.id), customerId);
+                public Predicate toPredicate(Root<ReceivableSummaryObsolete> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                    return cb.equal(root.get(ReceivableSummaryObsolete_.order).get(Order_.customer).get(Customer_.id), customerId);
                 }
             };
             specifications = specifications.and(customerIdSpec);
@@ -141,45 +138,45 @@ public class ReceivableSummaryServiceImpl extends AbstractService<ReceivableSumm
     }
 
     @Override
-    public SumPage<ReceivableSummary> findAll(final SearchBarForm searchBarForm, final Pageable pageable) {
-        Specification<ReceivableSummary> dateRangeSpec = new Specification<ReceivableSummary>() {
+    public SumPage<ReceivableSummaryObsolete> findAll(final SearchBarForm searchBarForm, final Pageable pageable) {
+        Specification<ReceivableSummaryObsolete> dateRangeSpec = new Specification<ReceivableSummaryObsolete>() {
             @Override
-            public Predicate toPredicate(Root<ReceivableSummary> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+            public Predicate toPredicate(Root<ReceivableSummaryObsolete> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 return cb.between(root.get(ReceivableSummary_.createdAt), searchBarForm.getStartDate(), searchBarForm.getEndDate());
             }
         };
-        Specifications<ReceivableSummary> specifications = Specifications.where(dateRangeSpec);
+        Specifications<ReceivableSummaryObsolete> specifications = Specifications.where(dateRangeSpec);
 
         if ("order".equals(searchBarForm.getType())) {
             if (null != searchBarForm.getId()) {
-                Specification<ReceivableSummary> orderIdSpec = new Specification<ReceivableSummary>() {
+                Specification<ReceivableSummaryObsolete> orderIdSpec = new Specification<ReceivableSummaryObsolete>() {
                     @Override
-                    public Predicate toPredicate(Root<ReceivableSummary> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                        return cb.equal(root.get(ReceivableSummary_.order).get(Order_.id), searchBarForm.getId());
+                    public Predicate toPredicate(Root<ReceivableSummaryObsolete> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                        return cb.equal(root.get(ReceivableSummaryObsolete_.order).get(Order_.id), searchBarForm.getId());
                     }
                 };
                 specifications = specifications.and(orderIdSpec);
             }
         } else if ("customer".equals(searchBarForm.getType())) {
             if (null != searchBarForm.getId()) {
-                Specification<ReceivableSummary> customerIdSpec = new Specification<ReceivableSummary>() {
+                Specification<ReceivableSummaryObsolete> customerIdSpec = new Specification<ReceivableSummaryObsolete>() {
                     @Override
-                    public Predicate toPredicate(Root<ReceivableSummary> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                        return cb.equal(root.get(ReceivableSummary_.order).get(Order_.customer).get(Customer_.id), searchBarForm.getId());
+                    public Predicate toPredicate(Root<ReceivableSummaryObsolete> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                        return cb.equal(root.get(ReceivableSummaryObsolete_.order).get(Order_.customer).get(Customer_.id), searchBarForm.getId());
                     }
                 };
                 specifications = specifications.and(customerIdSpec);
             }
         }
-        Page<ReceivableSummary> page = repository.findAll(specifications, pageable);
+        Page<ReceivableSummaryObsolete> page = repository.findAll(specifications, pageable);
         return appendSum(page, pageable);
     }
 
-    private SumPage<ReceivableSummary> appendSum(Page<ReceivableSummary> page, Pageable pageable) {
-        ReceivableSummary sum = new ReceivableSummary();
+    private SumPage<ReceivableSummaryObsolete> appendSum(Page<ReceivableSummaryObsolete> page, Pageable pageable) {
+        ReceivableSummaryObsolete sum = new ReceivableSummaryObsolete();
         Order order = new Order();
         sum.setOrder(order);
-        for (ReceivableSummary entity : page) {
+        for (ReceivableSummaryObsolete entity : page) {
             sum.getOrder().setContainerQty(NumberUtils.valueOf(sum.getOrder().getContainerQty()) +
                     NumberUtils.valueOf(entity.getOrder().getContainerQty()));
             sum.setCny(sum.getCny().add(entity.getCny()));
@@ -197,7 +194,7 @@ public class ReceivableSummaryServiceImpl extends AbstractService<ReceivableSumm
             sum.getOrder().setGrandTotal(sum.getOrder().getGrandTotal().add(entity.getOrder().getGrandTotal()));
         }
 
-        return new SumPage<ReceivableSummary>(page, sum, pageable);
+        return new SumPage<ReceivableSummaryObsolete>(page, sum, pageable);
     }
 
     @Override
@@ -206,7 +203,7 @@ public class ReceivableSummaryServiceImpl extends AbstractService<ReceivableSumm
 
         BigDecimal exchangeRate = exchangeRateService.getExchangeRate().getValue();
 
-        ReceivableSummary receivableSummaryEntity = findByOrderId(orderId);
+        ReceivableSummaryObsolete receivableSummaryEntity = findByOrderId(orderId);
 
         earning.setSalesPriceCny(receivableSummaryEntity.getCny());
         earning.setSalesPriceUsd(receivableSummaryEntity.getUsd());

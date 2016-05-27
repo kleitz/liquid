@@ -1,6 +1,6 @@
 package liquid.order.restfulapi;
 
-import liquid.accounting.service.ReceivableSummaryService;
+import liquid.accounting.service.ReceivableSummaryObsoloteService;
 import liquid.core.model.SearchBarForm;
 import liquid.operation.domain.Customer;
 import liquid.operation.service.CustomerService;
@@ -36,7 +36,7 @@ public class OrderRestController {
     private OrderService orderService;
 
     @Autowired
-    private ReceivableSummaryService receivableSummaryService;
+    private ReceivableSummaryObsoloteService receivableSummaryService;
 
     @Autowired
     private TaskService taskService;

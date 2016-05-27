@@ -8,7 +8,7 @@ import liquid.accounting.model.ChargeStatus;
 import liquid.accounting.model.Earning;
 import liquid.accounting.service.ExchangeRateService;
 import liquid.accounting.service.InternalChargeService;
-import liquid.accounting.service.ReceivableSummaryService;
+import liquid.accounting.service.ReceivableSummaryObsoloteService;
 import liquid.container.domain.ContainerCap;
 import liquid.container.domain.ContainerType;
 import liquid.core.model.Alert;
@@ -41,7 +41,6 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -79,7 +78,7 @@ public class ChargeController {
     private ExchangeRateService exchangeRateService;
 
     @Autowired
-    private ReceivableSummaryService receivableSummaryService;
+    private ReceivableSummaryObsoloteService receivableSummaryService;
 
     @ModelAttribute("transModes")
     public Map<Integer, String> populateTransModes() {

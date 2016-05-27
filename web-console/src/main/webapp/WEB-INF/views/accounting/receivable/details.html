@@ -66,30 +66,30 @@
         <td></td>
         <td></td>
         <td><span th:text="#{settled.total}">Settled Total</span></td>
-        <td><span th:text="${revenue.totalInvoicedCny}"></span></td>
-        <td><span th:text="${revenue.totalInvoicedUsd}"></span></td>
+        <td><span th:text="${receivableSummary.totalInvoicedCny}"></span></td>
+        <td><span th:text="${receivableSummary.totalInvoicedUsd}"></span></td>
         <td></td>
         <td><span th:text="#{invoiced.total}">Invoiced Total</span></td>
-        <td><span th:text="${revenue.totalInvoicedCny}"></span></td>
-        <td><span th:text="${revenue.totalInvoicedUsd}"></span></td>
+        <td><span th:text="${receivableSummary.totalInvoicedCny}"></span></td>
+        <td><span th:text="${receivableSummary.totalInvoicedUsd}"></span></td>
         <td><span th:text="#{received.total}">Received Total</span></td>
-        <td><span th:text="${revenue.totalReceivedCny}"></span></td>
-        <td><span th:text="${revenue.totalReceivedUsd}"></span></td>
+        <td><span th:text="${receivableSummary.totalReceivedCny}"></span></td>
+        <td><span th:text="${receivableSummary.totalReceivedUsd}"></span></td>
       </tr>
       <tr>
         <td></td>
         <td></td>
         <td></td>
         <td><span th:text="#{not.settled.total}">Not Settled Total</span></td>
-        <td><span th:text="${revenue.totalCny - revenue.totalInvoicedCny}"></span></td>
-        <td><span th:text="${revenue.totalUsd - revenue.totalInvoicedUsd}"></span></td>
+        <td><span th:text="${receivableSummary.totalCny - receivableSummary.totalInvoicedCny}"></span></td>
+        <td><span th:text="${receivableSummary.totalUsd - receivableSummary.totalInvoicedUsd}"></span></td>
         <td></td>
         <td><span th:text="#{not.invoiced.total}">Not Invoiced Total</span></td>
-        <td><span th:text="${revenue.totalCny - revenue.totalInvoicedCny}"></span></td>
-        <td><span th:text="${revenue.totalUsd - revenue.totalInvoicedUsd}"></span></td>
+        <td><span th:text="${receivableSummary.totalCny - receivableSummary.totalInvoicedCny}"></span></td>
+        <td><span th:text="${receivableSummary.totalUsd - receivableSummary.totalInvoicedUsd}"></span></td>
         <td><span th:text="#{not.received.total}">Not Received Total</span></td>
-        <td><span th:text="${revenue.totalInvoicedCny - revenue.totalReceivedCny}"></span></td>
-        <td><span th:text="${revenue.totalInvoicedUsd - revenue.totalReceivedUsd}"></span></td>
+        <td><span th:text="${receivableSummary.totalInvoicedCny - receivableSummary.totalReceivedCny}"></span></td>
+        <td><span th:text="${receivableSummary.totalInvoicedUsd - receivableSummary.totalReceivedUsd}"></span></td>
       </tr>
  
     </tbody>
@@ -97,7 +97,7 @@
 
   <div class="modal" id="addInvoice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;" data-backdrop="static">
     <div class="modal-dialog modal-sm">
-      <form id="invoiceForm" method="POST" th:action="'/accounting/revenues/' + ${customerId} + '/invoices'"
+      <form id="invoiceForm" method="POST" th:action="'/accounting/ars/' + ${customerId} + '/invoices'"
         th:object="${invoice}">
 
         <div class="modal-content">
@@ -161,7 +161,7 @@
 
   <div class="modal" id="addReceipt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;" data-backdrop="static">
     <div class="modal-dialog modal-sm">
-      <form id="receiptForm" method="POST" th:action="'/accounting/revenues/' + ${customerId} + '/receipts'"
+      <form id="receiptForm" method="POST" th:action="'/accounting/ars/' + ${customerId} + '/receipts'"
         th:object="${receipt}">
 
         <div class="modal-content">

@@ -1,8 +1,8 @@
 package liquid.order.service;
 
-import liquid.accounting.domain.Revenue;
-import liquid.accounting.service.ReceivableSummaryService;
-import liquid.accounting.service.RevenueService;
+import liquid.accounting.domain.ReceivableSummary;
+import liquid.accounting.service.ReceivableService;
+import liquid.accounting.service.ReceivableSummaryObsoloteService;
 import liquid.core.security.SecurityContext;
 import liquid.operation.domain.Customer_;
 import liquid.order.domain.Order;
@@ -47,11 +47,11 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
     private ServiceItemServiceImpl serviceItemService;
 
     @Autowired
-    private RevenueService revenueService;
+    private ReceivableService receivableService;
 
     @Deprecated
     @Autowired
-    private ReceivableSummaryService receivableSummaryService;
+    private ReceivableSummaryObsoloteService receivableSummaryService;
 
     @Transactional("transactionManager")
     public void doSaveBefore(Order order) { }
@@ -171,14 +171,14 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
         }
         order = save(order);
 
-        Revenue revenue = revenueService.findByCustomerId(order.getCustomer().getId());
-        if(null == revenue) {
-            revenue = new Revenue();
-            revenue.setCustomer(order.getCustomer());
+        ReceivableSummary receivableSummary = receivableService.findByCustomerId(order.getCustomer().getId());
+        if(null == receivableSummary) {
+            receivableSummary = new ReceivableSummary();
+            receivableSummary.setCustomer(order.getCustomer());
         }
-        revenue.setTotalCny(revenue.getTotalCny().add(order.getTotalCny()));
-        revenue.setTotalUsd(revenue.getTotalUsd().add(order.getTotalUsd()));
-        revenueService.save(revenue);
+        receivableSummary.setTotalCny(receivableSummary.getTotalCny().add(order.getTotalCny()));
+        receivableSummary.setTotalUsd(receivableSummary.getTotalUsd().add(order.getTotalUsd()));
+        receivableService.save(receivableSummary);
 
         return order;
     }
@@ -189,21 +189,21 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
         Order order = find(id);
         order.getServiceItems().add(item);
 
-        Revenue revenue = revenueService.findByCustomerId(order.getCustomer().getId());
+        ReceivableSummary receivableSummary = receivableService.findByCustomerId(order.getCustomer().getId());
         switch (item.getCurrency()) {
             case CNY:
                 order.setTotalCny(order.getTotalCny().add(item.getQuotation()));
-                revenue.setTotalCny(revenue.getTotalCny().add(item.getQuotation()));
+                receivableSummary.setTotalCny(receivableSummary.getTotalCny().add(item.getQuotation()));
                 break;
             case USD:
                 order.setTotalUsd(order.getTotalUsd().add(item.getQuotation()));
-                revenue.setTotalUsd(revenue.getTotalUsd().add(item.getQuotation()));
+                receivableSummary.setTotalUsd(receivableSummary.getTotalUsd().add(item.getQuotation()));
                 break;
             default:
                 break;
         }
         save(order);
-        revenueService.save(revenue);
+        receivableService.save(receivableSummary);
 
         return order;
     }
@@ -215,21 +215,21 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
         ServiceItem item = order.getServiceItems().stream().filter(i -> itemId == i.getId()).
                 findFirst().get();
         item.setStatus(1);
-        Revenue revenue = revenueService.findByCustomerId(order.getCustomer().getId());
+        ReceivableSummary receivableSummary = receivableService.findByCustomerId(order.getCustomer().getId());
         switch (item.getCurrency()) {
             case CNY:
                 order.setTotalCny(order.getTotalCny().subtract(item.getQuotation()));
-                revenue.setTotalCny(revenue.getTotalCny().subtract(item.getQuotation()));
+                receivableSummary.setTotalCny(receivableSummary.getTotalCny().subtract(item.getQuotation()));
                 break;
             case USD:
                 order.setTotalUsd(order.getTotalUsd().subtract(item.getQuotation()));
-                revenue.setTotalUsd(revenue.getTotalUsd().subtract(item.getQuotation()));
+                receivableSummary.setTotalUsd(receivableSummary.getTotalUsd().subtract(item.getQuotation()));
                 break;
             default:
                 break;
         }
         save(order);
-        revenueService.save(revenue);
+        receivableService.save(receivableSummary);
         return order;
     }
 

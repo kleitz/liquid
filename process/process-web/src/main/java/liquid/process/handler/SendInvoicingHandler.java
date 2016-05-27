@@ -1,7 +1,7 @@
 package liquid.process.handler;
 
-import liquid.accounting.domain.ReceivableSummary;
-import liquid.accounting.service.ReceivableSummaryService;
+import liquid.accounting.domain.ReceivableSummaryObsolete;
+import liquid.accounting.service.ReceivableSummaryObsoloteService;
 import liquid.process.domain.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,12 +15,12 @@ import java.util.Map;
 @Component
 public class SendInvoicingHandler extends AbstractTaskHandler {
     @Autowired
-    private ReceivableSummaryService receivableSummaryService;
+    private ReceivableSummaryObsoloteService receivableSummaryService;
 
     @Override
     public void preComplete(String taskId, Map<String, Object> variableMap) {
         Long orderId = taskService.getOrderIdByTaskId(taskId);
-        ReceivableSummary receivableSummaryEntity = receivableSummaryService.findByOrderId(orderId);
+        ReceivableSummaryObsolete receivableSummaryEntity = receivableSummaryService.findByOrderId(orderId);
         variableMap.put("salesPrice", "CNY: " + receivableSummaryEntity.getCny() + "; USD: " + receivableSummaryEntity.getUsd());
     }
 

@@ -1,131 +1,107 @@
 package liquid.accounting.domain;
 
 import liquid.core.domain.BaseUpdateEntity;
-import liquid.order.domain.Order;
+import liquid.operation.domain.Customer;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
- * Created by redbrick9 on 8/28/14.
- * SalesLedger
+ * Created by mat on 5/19/16.
  */
-@Entity(name = "ACC_RECEIVABLE_SUMMARY")
+@Entity(name = "ACC_RECEIVABLE_SUM")
 public class ReceivableSummary extends BaseUpdateEntity {
-    @OneToOne
-    @JoinColumn(name = "ORDER_ID")
-    private Order order;
 
-    @Column(precision = 19, scale = 4, name = "CNY")
-    private BigDecimal cny = BigDecimal.ZERO;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "CUSTOMER_ID")
+    private Customer customer;
 
-    @Column(precision = 19, scale = 4, name = "USD")
-    private BigDecimal usd = BigDecimal.ZERO;
+    @Column(precision = 19, scale = 4, name = "TOTAL_CNY")
+    private BigDecimal totalCny = BigDecimal.ZERO;
 
-    @Column(name = "PREPAID_TIME")
-    private Date prepaidTime;
+    @Column(precision = 19, scale = 4, name = "TOTAL_USD")
+    private BigDecimal totalUsd = BigDecimal.ZERO;
 
-    @Deprecated
-    @Column(name = "REM_BAL_CNY")
-    private Long remainingBalanceCny = 0L;
+    @Column(precision = 19, scale = 4, name = "TOTAL_INVOICED_CNY")
+    private BigDecimal totalInvoicedCny = BigDecimal.ZERO;
 
-    @Deprecated
-    @Column(name = "REM_BAL_USD")
-    private Long remainingBalanceUsd = 0L;
+    @Column(precision = 19, scale = 4, name = "TOTAL_INVOICED_USD")
+    private BigDecimal totalInvoicedUsd = BigDecimal.ZERO;
 
-    @Column(name = "PAID_CNY")
-    private Long paidCny = 0L;
+    @Column(precision = 19, scale = 4, name = "TOTAL_RECEIVED_CNY")
+    private BigDecimal totalReceivedCny = BigDecimal.ZERO;
 
-    @Column(name = "PAID_USD")
-    private Long paidUsd = 0L;
+    @Column(precision = 19, scale = 4, name = "TOTAL_RECEIVED_USD")
+    private BigDecimal totalReceivedUsd = BigDecimal.ZERO;
 
-    @Column(name = "INVOICED_CNY")
-    private Long invoicedCny = 0L;
-
-    @Column(name = "INVOICED_USD")
-    private Long invoicedUsd = 0L;
-
-    public Order getOrder() {
-        return order;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public BigDecimal getCny() {
-        return cny;
+    public BigDecimal getTotalCny() {
+        return totalCny;
     }
 
-    public void setCny(BigDecimal cny) {
-        this.cny = cny;
+    public void setTotalCny(BigDecimal totalCny) {
+        this.totalCny = totalCny;
     }
 
-    public BigDecimal getUsd() {
-        return usd;
+    public BigDecimal getTotalUsd() {
+        return totalUsd;
     }
 
-    public void setUsd(BigDecimal usd) {
-        this.usd = usd;
+    public void setTotalUsd(BigDecimal totalUsd) {
+        this.totalUsd = totalUsd;
     }
 
-    public Date getPrepaidTime() {
-        return prepaidTime;
+    public BigDecimal getTotalInvoicedCny() {
+        return totalInvoicedCny;
     }
 
-    public void setPrepaidTime(Date prepaidTime) {
-        this.prepaidTime = prepaidTime;
+    public void setTotalInvoicedCny(BigDecimal totalInvoicedCny) {
+        this.totalInvoicedCny = totalInvoicedCny;
     }
 
-    public Long getRemainingBalanceCny() {
-        return remainingBalanceCny;
+    public BigDecimal getTotalInvoicedUsd() {
+        return totalInvoicedUsd;
     }
 
-    public void setRemainingBalanceCny(Long remainingBalanceCny) {
-        this.remainingBalanceCny = remainingBalanceCny;
+    public void setTotalInvoicedUsd(BigDecimal totalInvoicedUsd) {
+        this.totalInvoicedUsd = totalInvoicedUsd;
     }
 
-    public Long getRemainingBalanceUsd() {
-        return remainingBalanceUsd;
+    public BigDecimal getTotalReceivedCny() {
+        return totalReceivedCny;
     }
 
-    public void setRemainingBalanceUsd(Long remainingBalanceUsd) {
-        this.remainingBalanceUsd = remainingBalanceUsd;
+    public void setTotalReceivedCny(BigDecimal totalReceivedCny) {
+        this.totalReceivedCny = totalReceivedCny;
     }
 
-    public Long getPaidCny() {
-        return paidCny;
+    public BigDecimal getTotalReceivedUsd() {
+        return totalReceivedUsd;
     }
 
-    public void setPaidCny(Long paidCny) {
-        this.paidCny = paidCny;
+    public void setTotalReceivedUsd(BigDecimal totalReceivedUsd) {
+        this.totalReceivedUsd = totalReceivedUsd;
     }
 
-    public Long getPaidUsd() {
-        return paidUsd;
-    }
-
-    public void setPaidUsd(Long paidUsd) {
-        this.paidUsd = paidUsd;
-    }
-
-    public Long getInvoicedCny() {
-        return invoicedCny;
-    }
-
-    public void setInvoicedCny(Long invoicedCny) {
-        this.invoicedCny = invoicedCny;
-    }
-
-    public Long getInvoicedUsd() {
-        return invoicedUsd;
-    }
-
-    public void setInvoicedUsd(Long invoicedUsd) {
-        this.invoicedUsd = invoicedUsd;
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ReceivableSummary{");
+        sb.append("super=").append(super.toString()).append('\'');
+        sb.append(", customer=").append(customer);
+        sb.append(", totalCny=").append(totalCny);
+        sb.append(", totalUsd=").append(totalUsd);
+        sb.append(", totalInvoicedCny=").append(totalInvoicedCny);
+        sb.append(", totalInvoicedUsd=").append(totalInvoicedUsd);
+        sb.append(", totalReceivedCny=").append(totalReceivedCny);
+        sb.append(", totalReceivedUsd=").append(totalReceivedUsd);
+        sb.append('}');
+        return sb.toString();
     }
 }
