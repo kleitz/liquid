@@ -231,6 +231,54 @@
   $(document).ready(function() {
     $('#issuedAtTimePicker').dtPicker();
     $('#receivedAtTimePicker').dtPicker();
+
+    $('#invoiceForm').validate({
+      rules: {
+        'invoiceNo': 'required',
+        'amountCny': {
+          required: true,
+          number: true
+        },
+        'amountUsd': {
+          required: true,
+          number: true
+        },
+        'issuedAt': 'required'
+      },
+      highlight: function(element) {
+          $(element).parent().addClass('has-error');
+      },
+      unhighlight: function(element) {
+          $(element).parent().removeClass('has-error');
+      },
+      submitHandler: function(form) {
+          form.submit();
+      }
+    });
+
+    $('#receiptForm').validate({
+      rules: {
+        'amountCny': {
+          required: true,
+          number: true
+        },
+        'amountUsd': {
+          required: true,
+          number: true
+        },
+        'receivedAt': 'required'
+      },
+      highlight: function(element) {
+          $(element).parent().addClass('has-error');
+      },
+      unhighlight: function(element) {
+          $(element).parent().removeClass('has-error');
+      },
+      submitHandler: function(form) {
+          form.submit();
+      }
+    });
+ 
   }); // ready end
 /*]]>*/
 </script>

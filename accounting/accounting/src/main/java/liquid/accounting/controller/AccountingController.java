@@ -223,7 +223,7 @@ public class AccountingController {
     public String addInvoice(@PathVariable Long customerId, SalesInvoice salesInvoice) {
         logger.debug("customerId: {}; salesInvoice: {}", customerId, salesInvoice);
         receivableService.addInvoice(customerId, salesInvoice);
-        return "redirect:/accounting/revenues/" + customerId;
+        return "redirect:/accounting/ars/" + customerId;
     }
 
     @RequestMapping(value = "/ars/{customerId}/receipts", method = RequestMethod.POST)
