@@ -63,6 +63,8 @@ public class SendTruckHandler extends AbstractTaskHandler {
         model.addAttribute("sendingTruckForm", sendingTruckForm);
         model.addAttribute("sps", serviceProviderService.findByType(4L));
 
+        buildPurchase(task, model, order);
+
         model.addAttribute("task", task);
     }
 }

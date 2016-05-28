@@ -85,8 +85,12 @@
 </div>
 <!-- /.container -->
 
+<br />
+
+<div th:include="layout :: purchase"></div>
+
 <!-- {!begin layout} -->
-<div th:include=" layout :: footer"/>
+<div th:include="layout :: footer"/>
 <!-- {!end layout} -->
 
 <!-- {!begin layout} -->
@@ -103,6 +107,9 @@
     }); // ready end
 /*]]>*/
 </script>
+
+<div th:replace="layout :: js-task" />
+
 </body>
 
 </html>
