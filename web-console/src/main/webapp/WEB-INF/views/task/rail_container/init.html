@@ -44,7 +44,8 @@
                             <span th:text="${container.container} ? ${container.container.bicCode} : ${container.container.bicCode}">Container No.</span>
                         </td>
                         <td>
-                            <select th:field="*{list[__${rowStat.index}__].fleet}" class="form-control input-sm" th:readonly="${task.definitionKey != 'loadOnYard' and task.definitionKey != 'loadByTruck'}">
+                            <select th:field="*{list[__${rowStat.index}__].fleet}" class="form-control input-sm"
+                                    th:readonly="${task.definitionKey != 'sendTruck' and task.definitionKey != 'loadOnYard' and task.definitionKey != 'loadByTruck'}">
                                 <option th:each="sp : ${sps}"
                                         th:value="${sp.id}"
                                         th:text="${sp.name}"
@@ -54,10 +55,12 @@
                             </select>
                         </td>
                         <td>
-                            <input type="text" th:field="*{list[__${rowStat.index}__].plateNo}" class="form-control input-sm" th:readonly="${task.definitionKey != 'loadOnYard' and task.definitionKey != 'loadByTruck'}" />
+                            <input type="text" th:field="*{list[__${rowStat.index}__].plateNo}" class="form-control input-sm"
+                                   th:readonly="${task.definitionKey != 'sendTruck' and task.definitionKey != 'loadOnYard' and task.definitionKey != 'loadByTruck'}" />
                         </td>
                         <td>
-                            <input type="text" th:field="*{list[__${rowStat.index}__].trucker}" class="form-control input-sm" th:readonly="${task.definitionKey != 'loadOnYard' and task.definitionKey != 'loadByTruck'}" />
+                            <input type="text" th:field="*{list[__${rowStat.index}__].trucker}" class="form-control input-sm"
+                                   th:readonly="${task.definitionKey != 'sendTruck' and task.definitionKey != 'loadOnYard' and task.definitionKey != 'loadByTruck'}" />
                         </td>
                         <td>
                             <div class='input-group input-group-sm date' th:id="'loadingTocPicker' + ${rowStat.index}">

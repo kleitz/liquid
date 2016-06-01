@@ -20,7 +20,7 @@ import java.util.Map;
  * Created by Tao Ma on 4/16/15.
  */
 @Component
-public class SendTruckHandler extends AbstractTaskHandler {
+public class SendTruckHandler extends AbstractRailContainerHandler {
     public static final String TASK_DEFINITION_KEY = "sendTruck";
 
     @Autowired
@@ -43,28 +43,28 @@ public class SendTruckHandler extends AbstractTaskHandler {
         return false;
     }
 
-    @Override
-    public void init(Task task, Model model) {
-        Order order = orderService.find(task.getOrderId());
-
-        SendingTruckForm sendingTruckForm = new SendingTruckForm();
-        sendingTruckForm.setDefinitionKey(task.getDefinitionKey());
-        sendingTruckForm.setOrderId(task.getOrderId());
-
-        List<Truck> truckList = truckService.findByOrderId(order.getId());
-
-        for (int i = truckList.size(); i < order.getContainerQty(); i++) {
-            Truck truck = new Truck();
-            truck.setPickingAt(new Date());
-            truckList.add(truck);
-        }
-        sendingTruckForm.setTruckList(truckList);
-
-        model.addAttribute("sendingTruckForm", sendingTruckForm);
-        model.addAttribute("sps", serviceProviderService.findByType(4L));
-
-        buildPurchase(task, model, order);
-
-        model.addAttribute("task", task);
-    }
+//    @Override
+//    public void init(Task task, Model model) {
+//        Order order = orderService.find(task.getOrderId());
+//
+//        SendingTruckForm sendingTruckForm = new SendingTruckForm();
+//        sendingTruckForm.setDefinitionKey(task.getDefinitionKey());
+//        sendingTruckForm.setOrderId(task.getOrderId());
+//
+//        List<Truck> truckList = truckService.findByOrderId(order.getId());
+//
+//        for (int i = truckList.size(); i < order.getContainerQty(); i++) {
+//            Truck truck = new Truck();
+//            truck.setPickingAt(new Date());
+//            truckList.add(truck);
+//        }
+//        sendingTruckForm.setTruckList(truckList);
+//
+//        model.addAttribute("sendingTruckForm", sendingTruckForm);
+//        model.addAttribute("sps", serviceProviderService.findByType(4L));
+//
+//        buildPurchase(task, model, order);
+//
+//        model.addAttribute("task", task);
+//    }
 }

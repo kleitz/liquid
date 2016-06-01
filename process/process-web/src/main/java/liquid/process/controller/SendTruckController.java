@@ -4,7 +4,9 @@ import liquid.core.model.Alert;
 import liquid.operation.service.ServiceProviderService;
 import liquid.order.domain.Order;
 import liquid.process.domain.Task;
+import liquid.process.handler.DefinitionKey;
 import liquid.process.handler.SendTruckHandler;
+import liquid.process.model.RailContainerListForm;
 import liquid.process.model.SendingTruckForm;
 import liquid.process.service.TaskService;
 import liquid.transport.domain.Truck;
@@ -27,7 +29,7 @@ import javax.validation.Valid;
  * Created by Tao Ma on 4/16/15.
  */
 @Controller
-public class SendTruckController extends AbstractTaskController {
+public class SendTruckController extends AbstractTruckController {
     private static final Logger logger = LoggerFactory.getLogger(SendTruckController.class);
 
     @Autowired
@@ -39,7 +41,14 @@ public class SendTruckController extends AbstractTaskController {
     @Autowired
     private TruckService truckService;
 
-    @RequestMapping(method = RequestMethod.POST, params = "definitionKey=" + SendTruckHandler.TASK_DEFINITION_KEY)
+    @RequestMapping(method = RequestMethod.POST, params = "definitionKey=" + DefinitionKey.sendTruck)
+    public String save(@PathVariable String taskId, RailContainerListForm railContainerListForm,
+                       Model model, RedirectAttributes redirectAttributes) {
+        return super.save(taskId, railContainerListForm, model, redirectAttributes);
+    }
+
+    @Deprecated
+    //@RequestMapping(method = RequestMethod.POST, params = "definitionKey=" + SendTruckHandler.TASK_DEFINITION_KEY)
     public String fillIn(@PathVariable String taskId,
                          @Valid @ModelAttribute SendingTruckForm sendingTruckForm, BindingResult bindingResult,
                          Model model, RedirectAttributes redirectAttributes) {
