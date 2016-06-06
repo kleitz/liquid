@@ -76,6 +76,9 @@ public class AccountingController {
     @Autowired
     private PaymentService paymentService;
 
+    @Autowired
+    private AccountingService accountingService;
+
 
     @RequestMapping(value = "/gross_profit", method = RequestMethod.GET)
     public String grossProfit(@Valid SearchBarForm searchBarForm,
@@ -231,6 +234,30 @@ public class AccountingController {
         logger.debug("customerId: {}; receipt: {}", customerId, receipt);
         receivableService.addReceipt(customerId, receipt);
         return "redirect:/accounting/ars/" + customerId;
+    }
+
+    @RequestMapping(value = "/ars/{customerId}/statements", method = RequestMethod.GET)
+    public String listStatements(@PathVariable Long customerId, Model model) {
+        logger.debug("customerId: {}", customerId);
+
+        model.addAttribute("customerId", customerId);
+        model.addAttribute("statementList", accountingService.findSalesStatementByCustomerId(customerId));
+        return "accounting/receivable/statements";
+    }
+
+    @RequestMapping(value = "/ars/{customerId}/statements/form", method = RequestMethod.GET)
+    public String initStatementForm(@PathVariable Long customerId, Model model){
+        logger.debug("customerId: {}", customerId);
+        List<Order> orderList = orderService.findByCustomerId(customerId);
+        model.addAttribute("orderList", orderList);
+        return "accounting/receivable/statement_form";
+    }
+
+    @RequestMapping(value = "/ars/{customerId}/statements", method = RequestMethod.POST)
+    public String addStatement(@PathVariable Long customerId, Long[] orderIds) {
+        logger.debug("customerId: {}; orderIds: {}", customerId, orderIds);
+
+        return "redirect:/accounting/ars/" + customerId + "/statements";
     }
 
     @RequestMapping(value = "/aps", method = RequestMethod.GET)
