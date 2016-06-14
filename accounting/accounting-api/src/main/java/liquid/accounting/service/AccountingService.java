@@ -10,4 +10,6 @@ import java.util.List;
 public interface AccountingService {
 
     List<SalesStatement> findSalesStatementByCustomerId(Long customerId);
+
+    SalesStatement save(Long customerId, Long[] orderIds);
 }

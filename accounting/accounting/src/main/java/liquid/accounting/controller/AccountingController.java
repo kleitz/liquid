@@ -246,7 +246,7 @@ public class AccountingController {
     }
 
     @RequestMapping(value = "/ars/{customerId}/statements/form", method = RequestMethod.GET)
-    public String initStatementForm(@PathVariable Long customerId, Model model){
+    public String initStatementForm(@PathVariable Long customerId, Model model) {
         logger.debug("customerId: {}", customerId);
         List<Order> orderList = orderService.findByCustomerId(customerId);
         model.addAttribute("orderList", orderList);
@@ -256,6 +256,8 @@ public class AccountingController {
     @RequestMapping(value = "/ars/{customerId}/statements", method = RequestMethod.POST)
     public String addStatement(@PathVariable Long customerId, Long[] orderIds) {
         logger.debug("customerId: {}; orderIds: {}", customerId, orderIds);
+
+        accountingService.save(customerId, orderIds);
 
         return "redirect:/accounting/ars/" + customerId + "/statements";
     }

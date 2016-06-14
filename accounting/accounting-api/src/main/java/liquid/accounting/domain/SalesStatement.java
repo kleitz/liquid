@@ -2,13 +2,12 @@ package liquid.accounting.domain;
 
 import liquid.core.domain.BaseUpdateEntity;
 import liquid.operation.domain.Customer;
+import liquid.order.domain.Order;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Created by mat on 6/5/16.
@@ -28,6 +27,14 @@ public class SalesStatement extends BaseUpdateEntity {
 
     @Column(name = "COMMENT")
     private String comment;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "ACC_SALES_STATEMENT_ORDER",
+            joinColumns = {@JoinColumn(name = "STATEMENT_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "ORDER_ID", referencedColumnName = "ID", unique = true)}
+    )
+    private List<Order> orders;
 
     public Customer getCustomer() {
         return customer;
@@ -59,6 +66,14 @@ public class SalesStatement extends BaseUpdateEntity {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     @Override
