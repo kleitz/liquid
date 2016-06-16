@@ -5,6 +5,7 @@ import liquid.accounting.repository.SalesStatementRepository;
 import liquid.operation.domain.Customer;
 import liquid.operation.service.CustomerService;
 import liquid.order.domain.Order;
+import liquid.order.domain.OrderStatus;
 import liquid.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,8 @@ public class AccountingServiceImpl implements AccountingService {
             orders.add(order);
             totalCny = totalCny.add(order.getTotalCny());
             totalUsd = totalUsd.add(order.getTotalUsd());
+            order.setStatus(OrderStatus.PAID.getValue());
+            orderService.save(order);
         }
 
         SalesStatement salesStatement = new SalesStatement();

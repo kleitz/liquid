@@ -11,7 +11,8 @@ public enum OrderStatus {
     SAVED(1, "order.status.saved"),
     SUBMITTED(2, "order.status.submitted"),
     DISCARDED(3, "order.status.discarded"),
-    COMPLETED(8, "order.status.completed");
+    COMPLETED(8, "order.status.completed"),
+    PAID(9, "order.status.paid");
 
     private final int value;
 

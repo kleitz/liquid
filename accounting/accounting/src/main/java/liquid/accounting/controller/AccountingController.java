@@ -7,6 +7,7 @@ import liquid.core.model.SearchBarForm;
 import liquid.operation.service.CustomerService;
 import liquid.operation.service.ServiceProviderService;
 import liquid.order.domain.Order;
+import liquid.order.domain.OrderStatus;
 import liquid.order.domain.TradeType;
 import liquid.order.service.OrderService;
 import org.slf4j.Logger;
@@ -248,7 +249,7 @@ public class AccountingController {
     @RequestMapping(value = "/ars/{customerId}/statements/form", method = RequestMethod.GET)
     public String initStatementForm(@PathVariable Long customerId, Model model) {
         logger.debug("customerId: {}", customerId);
-        List<Order> orderList = orderService.findByCustomerId(customerId);
+        List<Order> orderList = orderService.findByCustomerIdLessThanStatus(customerId, OrderStatus.PAID.getValue());
         model.addAttribute("orderList", orderList);
         return "accounting/receivable/statement_form";
     }

@@ -32,7 +32,7 @@ public class SalesStatement extends BaseUpdateEntity {
     @JoinTable(
             name = "ACC_SALES_STATEMENT_ORDER",
             joinColumns = {@JoinColumn(name = "STATEMENT_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "ORDER_ID", referencedColumnName = "ID", unique = true)}
+            inverseJoinColumns = {@JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")}
     )
     private List<Order> orders;
 
