@@ -16,6 +16,7 @@
         <th>ID</th>
         <th><span th:text="#{cny.total}">Total CNY</span></th>
         <th><span th:text="#{usd.total}">Total USD</span></th>
+        <th><span th:text="#{settled.at}">Settled At</span></th>
         <th>
           <a th:href="'/accounting/ars/' + ${customerId} + '/statements/form'">
             <span class="glyphicon glyphicon-plus text-success" />
@@ -25,9 +26,15 @@
     </thead>
     <tbody>
       <tr th:each="item, rowState : ${statementList}">
-        <td><span th:text="${item.id}" /></td>
+        <td>
+          <a th:href="'/accounting/ars/' + ${customerId} + '/statements/' + ${item.id}">
+            <span th:text="${item.id}" />
+          </a>
+        </td>
         <td><span th:text="${item.totalCny}" /></td>
         <td><span th:text="${item.totalUsd}" /></td>
+        <td><span th:text="${item.createdAt}" /></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

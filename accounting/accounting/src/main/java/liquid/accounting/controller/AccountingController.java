@@ -4,10 +4,14 @@ import liquid.accounting.domain.*;
 import liquid.accounting.service.*;
 import liquid.core.domain.SumPage;
 import liquid.core.model.SearchBarForm;
+import liquid.operation.domain.Currency;
+import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.CustomerService;
 import liquid.operation.service.ServiceProviderService;
+import liquid.operation.service.ServiceSubtypeService;
 import liquid.order.domain.Order;
 import liquid.order.domain.OrderStatus;
+import liquid.order.domain.ServiceItem;
 import liquid.order.domain.TradeType;
 import liquid.order.service.OrderService;
 import org.slf4j.Logger;
@@ -26,8 +30,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * Created by Tao Ma on 1/10/15.
@@ -78,8 +82,10 @@ public class AccountingController {
     private PaymentService paymentService;
 
     @Autowired
-    private AccountingService accountingService;
+    private SalesStatementService salesStatementService;
 
+    @Autowired
+    private ServiceSubtypeService serviceSubtypeService;
 
     @RequestMapping(value = "/gross_profit", method = RequestMethod.GET)
     public String grossProfit(@Valid SearchBarForm searchBarForm,
@@ -242,8 +248,93 @@ public class AccountingController {
         logger.debug("customerId: {}", customerId);
 
         model.addAttribute("customerId", customerId);
-        model.addAttribute("statementList", accountingService.findSalesStatementByCustomerId(customerId));
+        model.addAttribute("statementList", salesStatementService.findSalesStatementByCustomerId(customerId));
         return "accounting/receivable/statements";
+    }
+
+    @RequestMapping(value = "/ars/{customerId}/statements/{id}", method = RequestMethod.GET)
+    public String getStatement(@PathVariable Long customerId, @PathVariable Long id, Model model) {
+        logger.debug("customerId: {}; statementId: {}", customerId, id);
+
+        SalesStatement salesStatement = salesStatementService.find(id);
+        List<ServiceSubtype> serviceSubtypeList = serviceSubtypeService.findEnabled();
+        List<ServiceSubtype> currencyServiceSubtypeList = new ArrayList<>();
+        for (ServiceSubtype serviceSubtype : serviceSubtypeList) {
+            ServiceSubtype cnyServiceSubtype = new ServiceSubtype();
+            cnyServiceSubtype.setId(serviceSubtype.getId());
+            cnyServiceSubtype.setName(serviceSubtype.getName() + "(CNY)");
+            currencyServiceSubtypeList.add(cnyServiceSubtype);
+            ServiceSubtype usdServiceSubtype = new ServiceSubtype();
+            usdServiceSubtype.setId(serviceSubtype.getId() + 1000);
+            usdServiceSubtype.setName(serviceSubtype.getName() + "(USD)");
+            currencyServiceSubtypeList.add(usdServiceSubtype);
+        }
+
+        List<List<ServiceItem>> serviceItemListList = new ArrayList<>();
+        Set<Long> serviceSubtypeSet = new HashSet<Long>();
+        for (Order order : salesStatement.getOrders()) {
+            List<ServiceItem> serviceItemList = new ArrayList<ServiceItem>();
+            for (ServiceSubtype serviceSubtype : currencyServiceSubtypeList) {
+                boolean exist = false;
+                for (ServiceItem serviceItem : order.getServiceItems()) {
+                    Long serviceTypeId = serviceItem.getServiceSubtype().getId();
+                    if(serviceItem.getCurrency().equals(Currency.USD))
+                        serviceTypeId = 1000L + serviceTypeId;
+                    if (serviceSubtype.getId() == serviceTypeId) {
+                        serviceSubtypeSet.add(serviceSubtype.getId());
+                        serviceItemList.add(serviceItem);
+                        exist = true;
+                    }
+                }
+                if (!exist) {
+                    serviceItemList.add(null);
+                }
+            }
+            serviceItemListList.add(serviceItemList);
+        }
+        int index = 0;
+        Iterator<ServiceSubtype> iterator = currencyServiceSubtypeList.iterator();
+        while (iterator.hasNext()) {
+            ServiceSubtype serviceSubtype = iterator.next();
+            if (!serviceSubtypeSet.contains(serviceSubtype.getId())) {
+                iterator.remove();
+                for (List serviceItemList : serviceItemListList) {
+                    serviceItemList.remove(index);
+                }
+            } else {
+                index++;
+            }
+        }
+
+        List<ServiceItem> totalServiceItemList = new ArrayList<>(currencyServiceSubtypeList.size());
+        BigDecimal cnyTotal = BigDecimal.ZERO;
+        BigDecimal usdTotal = BigDecimal.ZERO;
+        for(int i = 0; i < currencyServiceSubtypeList.size(); i++) {
+            ServiceItem serviceItem = new ServiceItem();
+            serviceItem.setQuotation(BigDecimal.ZERO);
+            totalServiceItemList.add(serviceItem);
+        }
+        for(List<ServiceItem> serviceItemList : serviceItemListList) {
+            for(int i =0; i < serviceItemList.size(); i++) {
+                ServiceItem totalServiceItem = totalServiceItemList.get(i);
+                totalServiceItem.setQuotation(totalServiceItem.getQuotation().add(serviceItemList.get(i).getQuotation()));
+                if(serviceItemList.get(i).getCurrency().equals(Currency.USD)) {
+                    usdTotal = usdTotal.add(serviceItemList.get(i).getQuotation());
+                }else{
+                    cnyTotal = cnyTotal.add(serviceItemList.get(i).getQuotation());
+                }
+            }
+        }
+
+        model.addAttribute("customerId", customerId);
+        model.addAttribute("statement", salesStatement);
+        model.addAttribute("serviceSubtypeList", currencyServiceSubtypeList);
+        model.addAttribute("serviceItemListList", serviceItemListList);
+        model.addAttribute("totalServiceItemList", totalServiceItemList);
+        model.addAttribute("cnyTotal", cnyTotal);
+        model.addAttribute("usdTotal", usdTotal);
+
+        return "accounting/receivable/statement_detail";
     }
 
     @RequestMapping(value = "/ars/{customerId}/statements/form", method = RequestMethod.GET)
@@ -258,7 +349,7 @@ public class AccountingController {
     public String addStatement(@PathVariable Long customerId, Long[] orderIds) {
         logger.debug("customerId: {}; orderIds: {}", customerId, orderIds);
 
-        accountingService.save(customerId, orderIds);
+        salesStatementService.save(customerId, orderIds);
 
         return "redirect:/accounting/ars/" + customerId + "/statements";
     }

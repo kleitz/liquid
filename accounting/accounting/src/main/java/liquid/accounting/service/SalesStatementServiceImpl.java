@@ -2,6 +2,7 @@ package liquid.accounting.service;
 
 import liquid.accounting.domain.SalesStatement;
 import liquid.accounting.repository.SalesStatementRepository;
+import liquid.core.service.AbstractService;
 import liquid.operation.domain.Customer;
 import liquid.operation.service.CustomerService;
 import liquid.order.domain.Order;
@@ -19,7 +20,8 @@ import java.util.List;
  * Created by mat on 6/6/16.
  */
 @Service
-public class AccountingServiceImpl implements AccountingService {
+public class SalesStatementServiceImpl extends AbstractService<SalesStatement, SalesStatementRepository>
+        implements SalesStatementService {
 
     @Autowired
     private SalesStatementRepository salesStatementRepository;
@@ -56,6 +58,17 @@ public class AccountingServiceImpl implements AccountingService {
         salesStatement.setTotalCny(totalCny);
         salesStatement.setTotalUsd(totalUsd);
         salesStatement.setOrders(orders);
-        return salesStatementRepository.save(salesStatement);
+        return save(salesStatement);
     }
+
+    @Transactional(value = "transactionManager")
+    @Override
+    public SalesStatement find(Long id) {
+        SalesStatement statement = super.find(id);
+        statement.getOrders().size();
+        return statement;
+    }
+
+    @Override
+    public void doSaveBefore(SalesStatement entity) {}
 }
