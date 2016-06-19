@@ -24,13 +24,16 @@ public interface OrderService {
 
     Page<Order> findAll(Pageable pageable);
 
-    Page<Order> findAll(final Long id, final Long customerId, final String username, final Boolean isDiscarded, final Pageable pageable);
+    Page<Order> findAll(final Long id, final Long customerId, final String username, final Boolean isDiscarded,
+                        final Pageable pageable);
 
     Page<Order> findByStatus(Integer status, Pageable pageable);
 
     Page<Order> findByCustomerId(Long customerId, String createdBy, Pageable pageable);
 
     List<Order> findByCustomerId(Long customerId);
+
+    List<Order> findByCustomerIdLessThanStatus(Long customerId, Integer status);
 
     Page<Order> findByOrderNoLike(String orderNo, Pageable pageable);
 

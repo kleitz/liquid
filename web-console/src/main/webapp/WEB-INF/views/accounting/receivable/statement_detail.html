@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="layout :: head" />
+
+<body>
+<!-- {!begin layout} -->
+<div th:include="layout :: header"></div>
+<!-- {!end layout} -->
+
+<div class="container-fluid">
+
+  <table class="table table-striped table-hover table-condensed table-bordered table-16">
+    <thead>
+      <tr>
+        <th><span th:text="#{order.no}">Order Id</span></th>
+        <th><span th:text="#{origination}">Origin</span></th>
+        <th><span th:text="#{destination}">Destination</span></th>
+        <th><span th:text="#{goods.name}">Cargo Name</span></th>
+        <th><span>BOL</span></th>
+        <th th:text="#{container.type}">Container Type</th>
+        <th th:each="item, rowState : ${serviceSubtypeList}">
+          <span th:text="${item.name}">Item Name</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="item, rowState : ${statement.orders}">
+        <td><span th:text="${item.orderNo}" /></td>
+        <td><span th:text="${item.source.name}" /></td>
+        <td><span th:text="${item.destination.name}" /></td>
+        <td><span th:text="${item.goods.name}" /></td>
+        <td>BOL</td>
+        <td><span th:text="${item.containerSubtype.name}" /></td>
+        <td th:each="serviceItem : ${serviceItemListList[__${rowState.index}__]}">
+          <span th:text="${serviceItem.quotation}"></span>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><span th:text="#{subtotal}">Subtotal</span></td>
+        <td th:each="serviceItem : ${totalServiceItemList}">
+          <span th:text="${serviceItem.quotation}"></span>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><span th:text="#{cny.total}">CNY Total</span></td>
+        <td><span th:text="${cnyTotal}"></span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><span th:text="#{usd.total}">USD Total</span></td>
+        <td><span th:text="${usdTotal}"></span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- {!begin layout} -->
+<div th:include="layout :: footer"></div>
+<!-- {!end layout} -->
+
+<!-- {!begin layout} -->
+<div th:replace="layout :: js" />
+<!-- {!end layout} -->
+
+<script>
+/*<![CDATA[*/
+  $(document).ready(function() {
+ 
+  }); // ready end
+/*]]>*/
+</script>
+</body>
+
+</html>

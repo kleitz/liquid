@@ -156,6 +156,11 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
         return repository.findByCustomerId(customerId);
     }
 
+    @Override
+    public List<Order> findByCustomerIdLessThanStatus(Long customerId, Integer status) {
+        return repository.findByCustomerIdAndStatusLessThan(customerId, status);
+    }
+
     public Page<Order> findByOrderNoLike(String orderNo, Pageable pageable) {
         return repository.findByOrderNoLike("%" + orderNo + "%", pageable);
     }

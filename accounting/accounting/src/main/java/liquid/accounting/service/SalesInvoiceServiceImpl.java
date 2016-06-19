@@ -24,7 +24,8 @@ import static org.springframework.data.jpa.domain.Specifications.where;
  * Created by Tao Ma on 1/8/15.
  */
 @Service
-public class SalesInvoiceServiceImpl extends AbstractService<SalesInvoice, SalesInvoiceRepository> implements InternalInvoiceService {
+public class SalesInvoiceServiceImpl extends AbstractService<SalesInvoice, SalesInvoiceRepository>
+        implements InternalInvoiceService {
     @Override
     public void doSaveBefore(SalesInvoice entity) {}
 

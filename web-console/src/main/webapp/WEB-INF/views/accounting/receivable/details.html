@@ -45,7 +45,11 @@
     <tbody>
       <tr th:each="item, rowState : ${orderList}">
         <!-- orders -->
-        <td><span th:text="${item.orderNo}" /></td>
+        <td>
+          <a th:href="'/order/' + ${item.id}">
+            <span th:text="${item.orderNo}" />
+          </a>
+        </td>
         <td><span th:text="${item.customer.name}" /></td>
         <td><span th:text="${item.containerQty}" /></td>
         <td><span th:text="${item.goods.name}" /></td>

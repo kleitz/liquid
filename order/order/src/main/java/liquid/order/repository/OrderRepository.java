@@ -53,4 +53,6 @@ public interface OrderRepository extends CrudRepository<Order, Long>, JpaReposit
     Page<Order> findByCustomerIdAndCreatedBy(Long customerId, String createdBy, Pageable pageable);
 
     List<Order> findByCustomerId(Long customerId);
+
+    List<Order> findByCustomerIdAndStatusLessThan(Long customerId, Integer status);
 }
