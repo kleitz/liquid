@@ -33,7 +33,7 @@
         <td>BOL</td>
         <td><span th:text="${item.containerSubtype.name}" /></td>
         <td th:each="serviceItem : ${serviceItemListList[__${rowState.index}__]}">
-          <span th:text="${serviceItem.quotation}"></span>
+          <span th:text="${serviceItem} ? ${serviceItem.quotation}"></span>
         </td>
       </tr>
       <tr>

@@ -278,9 +278,9 @@ public class AccountingController {
                 boolean exist = false;
                 for (ServiceItem serviceItem : order.getServiceItems()) {
                     Long serviceTypeId = serviceItem.getServiceSubtype().getId();
-                    if(serviceItem.getCurrency().equals(Currency.USD))
+                    if (serviceItem.getCurrency().equals(Currency.USD))
                         serviceTypeId = 1000L + serviceTypeId;
-                    if (serviceSubtype.getId() == serviceTypeId) {
+                    if (serviceSubtype.getId().equals(serviceTypeId)) {
                         serviceSubtypeSet.add(serviceSubtype.getId());
                         serviceItemList.add(serviceItem);
                         exist = true;
@@ -309,19 +309,23 @@ public class AccountingController {
         List<ServiceItem> totalServiceItemList = new ArrayList<>(currencyServiceSubtypeList.size());
         BigDecimal cnyTotal = BigDecimal.ZERO;
         BigDecimal usdTotal = BigDecimal.ZERO;
-        for(int i = 0; i < currencyServiceSubtypeList.size(); i++) {
+        for (int i = 0; i < currencyServiceSubtypeList.size(); i++) {
             ServiceItem serviceItem = new ServiceItem();
             serviceItem.setQuotation(BigDecimal.ZERO);
             totalServiceItemList.add(serviceItem);
         }
-        for(List<ServiceItem> serviceItemList : serviceItemListList) {
-            for(int i =0; i < serviceItemList.size(); i++) {
+        for (List<ServiceItem> serviceItemList : serviceItemListList) {
+            for (int i = 0; i < currencyServiceSubtypeList.size(); i++) {
                 ServiceItem totalServiceItem = totalServiceItemList.get(i);
-                totalServiceItem.setQuotation(totalServiceItem.getQuotation().add(serviceItemList.get(i).getQuotation()));
-                if(serviceItemList.get(i).getCurrency().equals(Currency.USD)) {
-                    usdTotal = usdTotal.add(serviceItemList.get(i).getQuotation());
-                }else{
-                    cnyTotal = cnyTotal.add(serviceItemList.get(i).getQuotation());
+                ServiceItem serviceItem = serviceItemList.get(i);
+                // Order could not contain this service item
+                if (null != serviceItem) {
+                    totalServiceItem.setQuotation(totalServiceItem.getQuotation().add(serviceItem.getQuotation()));
+                    if (serviceItemList.get(i).getCurrency().equals(Currency.USD)) {
+                        usdTotal = usdTotal.add(serviceItemList.get(i).getQuotation());
+                    } else {
+                        cnyTotal = cnyTotal.add(serviceItemList.get(i).getQuotation());
+                    }
                 }
             }
         }
