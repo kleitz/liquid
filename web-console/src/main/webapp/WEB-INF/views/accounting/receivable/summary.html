@@ -8,7 +8,7 @@
 <div th:include="layout :: header"></div>
 <!-- {!end layout} -->
 
-<div th:include="accounting/fragments :: title-bar('charge.receivable')"></div>
+<div th:include="accounting/fragments :: title-bar('finance.receivable.sum')"></div>
 
 <div class="container-fluid">
 
@@ -36,12 +36,12 @@
         <td>
           <a th:href="'/accounting/ars/' + ${item.customer.id}"><span th:text="${item.customer.name}" /></a>
         </td>
-        <td><span th:text="${item.totalCny}" /></td>
-        <td><span th:text="${item.totalUsd}" /></td>
-        <td><span th:text="${item.totalInvoicedCny}" /></td>
-        <td><span th:text="${item.totalInvoicedUsd}" /></td>
-        <td><span th:text="${item.totalReceivedCny}" /></td>
-        <td><span th:text="${item.totalReceivedUsd}" /></td>
+        <td><span th:text="${#numbers.formatDecimal(item.totalCny, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td><span th:text="${#numbers.formatDecimal(item.totalUsd, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td><span th:text="${#numbers.formatDecimal(item.totalInvoicedCny, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td><span th:text="${#numbers.formatDecimal(item.totalInvoicedUsd, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td><span th:text="${#numbers.formatDecimal(item.totalReceivedCny, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td><span th:text="${#numbers.formatDecimal(item.totalReceivedUsd, 0, 'COMMA', 2, 'POINT')}" /></td>
         <td>
             <a th:href="'/accounting/ars/' + ${item.customer.id} + '/statements'">
                 <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>

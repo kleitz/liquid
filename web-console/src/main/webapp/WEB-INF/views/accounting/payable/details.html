@@ -8,6 +8,8 @@
 <div th:include="layout :: header"></div>
 <!-- {!end layout} -->
 
+<div th:include="accounting/fragments :: title-bar-0('finance.payable.sum')"></div>
+
 <div class="container-fluid">
 
   <table class="table table-striped table-hover table-condensed table-bordered table-16">
@@ -47,45 +49,45 @@
         <td><span th:text="${item.id}" /></td>
         <td><span th:text="${item.sp.name}" /></td>
         <td><span th:text="${item.serviceSubtype.name}" /></td>
-        <td><span th:text="${item.totalAmount}" /></td>
-        <td><span th:text="${item.totalAmount}" /></td>
+        <td><span th:text="${#numbers.formatDecimal(item.totalAmount, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td><span th:text="${#numbers.formatDecimal(item.totalAmount, 0, 'COMMA', 2, 'POINT')}" /></td>
         <!-- invoices -->
         <td><span th:text="${purchaseInvoiceList[__${rowState.index}__].issuedAt}"></span></td>
         <td><span th:text="${purchaseInvoiceList[__${rowState.index}__].invoiceNo}"></span></td>
-        <td><span th:text="${purchaseInvoiceList[__${rowState.index}__].amountCny}"></span></td>
-        <td><span th:text="${purchaseInvoiceList[__${rowState.index}__].amountUsd}"></span></td>
+        <td><span th:text="${#numbers.formatDecimal(purchaseInvoiceList[__${rowState.index}__].amountCny, 0, 'COMMA', 2, 'POINT')}"></span></td>
+        <td><span th:text="${#numbers.formatDecimal(purchaseInvoiceList[__${rowState.index}__].amountUsd, 0, 'COMMA', 2, 'POINT')}"></span></td>
         <!-- receipt -->
         <td><span th:text="${paymentList[__${rowState.index}__].paidAt}"></span></td>
-        <td><span th:text="${paymentList[__${rowState.index}__].amountCny}"></span></td>
-        <td><span th:text="${paymentList[__${rowState.index}__].amountUsd}"></span></td>
+        <td><span th:text="${#numbers.formatDecimal(paymentList[__${rowState.index}__].amountCny, 0, 'COMMA', 2, 'POINT')}"></span></td>
+        <td><span th:text="${#numbers.formatDecimal(paymentList[__${rowState.index}__].amountUsd, 0, 'COMMA', 2, 'POINT')}"></span></td>
       </tr>
       <tr>
         <td></td>
         <td></td>
         <td><span th:text="#{settled.total}">Settled Total</span></td>
-        <td><span th:text="${payableSummary.totalInvoicedCny}"></span></td>
-        <td><span th:text="${payableSummary.totalInvoicedUsd}"></span></td>
+        <td><span th:text="${#numbers.formatDecimal(payableSummary.totalInvoicedCny, 0, 'COMMA', 2, 'POINT')}"></span></td>
+        <td><span th:text="${#numbers.formatDecimal(payableSummary.totalInvoicedUsd, 0, 'COMMA', 2, 'POINT')}"></span></td>
         <td></td>
         <td><span th:text="#{invoiced.total}">Invoiced Total</span></td>
-        <td><span th:text="${payableSummary.totalInvoicedCny}"></span></td>
-        <td><span th:text="${payableSummary.totalInvoicedUsd}"></span></td>
+        <td><span th:text="${#numbers.formatDecimal(payableSummary.totalInvoicedCny, 0, 'COMMA', 2, 'POINT')}"></span></td>
+        <td><span th:text="${#numbers.formatDecimal(payableSummary.totalInvoicedUsd, 0, 'COMMA', 2, 'POINT')}"></span></td>
         <td><span th:text="#{received.total}">Received Total</span></td>
-        <td><span th:text="${payableSummary.totalPaidCny}"></span></td>
-        <td><span th:text="${payableSummary.totalPaidUsd}"></span></td>
+        <td><span th:text="${#numbers.formatDecimal(payableSummary.totalPaidCny, 0, 'COMMA', 2, 'POINT')}"></span></td>
+        <td><span th:text="${#numbers.formatDecimal(payableSummary.totalPaidUsd, 0, 'COMMA', 2, 'POINT')}"></span></td>
       </tr>
       <tr>
         <td></td>
         <td></td>
         <td><span th:text="#{not.settled.total}">Not Settled Total</span></td>
-        <td><span th:text="${payableSummary.totalCny - payableSummary.totalInvoicedCny}"></span></td>
-        <td><span th:text="${payableSummary.totalUsd - payableSummary.totalInvoicedUsd}"></span></td>
+        <td><span th:text="${#numbers.formatDecimal(payableSummary.totalCny - payableSummary.totalInvoicedCny, 0, 'COMMA', 2, 'POINT')}"></span></td>
+        <td><span th:text="${#numbers.formatDecimal(payableSummary.totalUsd - payableSummary.totalInvoicedUsd, 0, 'COMMA', 2, 'POINT')}"></span></td>
         <td></td>
         <td><span th:text="#{not.invoiced.total}">Not Invoiced Total</span></td>
-        <td><span th:text="${payableSummary.totalCny - payableSummary.totalInvoicedCny}"></span></td>
-        <td><span th:text="${payableSummary.totalUsd - payableSummary.totalInvoicedUsd}"></span></td>
+        <td><span th:text="${#numbers.formatDecimal(payableSummary.totalCny - payableSummary.totalInvoicedCny, 0, 'COMMA', 2, 'POINT')}"></span></td>
+        <td><span th:text="${#numbers.formatDecimal(payableSummary.totalUsd - payableSummary.totalInvoicedUsd, 0, 'COMMA', 2, 'POINT')}"></span></td>
         <td><span th:text="#{not.received.total}">Not Received Total</span></td>
-        <td><span th:text="${payableSummary.totalInvoicedCny - payableSummary.totalPaidCny}"></span></td>
-        <td><span th:text="${payableSummary.totalInvoicedUsd - payableSummary.totalPaidUsd}"></span></td>
+        <td><span th:text="${#numbers.formatDecimal(payableSummary.totalInvoicedCny - payableSummary.totalPaidCny, 0, 'COMMA', 2, 'POINT')}"></span></td>
+        <td><span th:text="${#numbers.formatDecimal(payableSummary.totalInvoicedUsd - payableSummary.totalPaidUsd, 0, 'COMMA', 2, 'POINT')}"></span></td>
       </tr>
  
     </tbody>

@@ -85,6 +85,9 @@ public class AccountingController {
     private SalesStatementService salesStatementService;
 
     @Autowired
+    private PurchaseStatementService purchaseStatementService;
+
+    @Autowired
     private ServiceSubtypeService serviceSubtypeService;
 
     @RequestMapping(value = "/gross_profit", method = RequestMethod.GET)
@@ -213,10 +216,16 @@ public class AccountingController {
         List<SalesInvoice> salesInvoiceList = salesInvoiceService.findByCustomerId(customerId);
         List<Receipt> receiptList = receiptService.findByCustomerId(customerId);
         for (int i = salesInvoiceList.size(); i < orderList.size(); i++) {
-            salesInvoiceList.add(new SalesInvoice());
+            SalesInvoice salesInvoice = new SalesInvoice();
+            salesInvoice.setAmountCny(BigDecimal.ZERO);
+            salesInvoice.setAmountUsd(BigDecimal.ZERO);
+            salesInvoiceList.add(salesInvoice);
         }
         for (int i = receiptList.size(); i < orderList.size(); i++) {
-            receiptList.add(new Receipt());
+            Receipt receipt = new Receipt();
+            receipt.setAmountCny(BigDecimal.ZERO);
+            receipt.setAmountUsd(BigDecimal.ZERO);
+            receiptList.add(receipt);
         }
         ReceivableSummary receivableSummary = receivableService.findByCustomerId(customerId);
         model.addAttribute("orderList", orderList);
@@ -244,7 +253,7 @@ public class AccountingController {
     }
 
     @RequestMapping(value = "/ars/{customerId}/statements", method = RequestMethod.GET)
-    public String listStatements(@PathVariable Long customerId, Model model) {
+    public String listSalesStatements(@PathVariable Long customerId, Model model) {
         logger.debug("customerId: {}", customerId);
 
         model.addAttribute("customerId", customerId);
@@ -372,10 +381,16 @@ public class AccountingController {
         List<PurchaseInvoice> purchaseInvoiceList = purchaseInvoiceService.findByServiceProviderId(serviceProviderId);
         List<Payment> paymentList = paymentService.findByServiceProviderId(serviceProviderId);
         for (int i = purchaseInvoiceList.size(); i < purchaseList.size(); i++) {
-            purchaseInvoiceList.add(new PurchaseInvoice());
+            PurchaseInvoice purchaseInvoice = new PurchaseInvoice();
+            purchaseInvoice.setAmountCny(BigDecimal.ZERO);
+            purchaseInvoice.setAmountUsd(BigDecimal.ZERO);
+            purchaseInvoiceList.add(purchaseInvoice);
         }
         for (int i = paymentList.size(); i < purchaseList.size(); i++) {
-            paymentList.add(new Payment());
+            Payment payment = new Payment();
+            payment.setAmountCny(BigDecimal.ZERO);
+            payment.setAmountUsd(BigDecimal.ZERO);
+            paymentList.add(payment);
         }
         PayableSummary payableSummary = payableSummaryService.findByServiceProviderId(serviceProviderId);
         model.addAttribute("purchaseList", purchaseList);
@@ -400,5 +415,14 @@ public class AccountingController {
         logger.debug("serviceProviderId: {}; payment: {}", serviceProviderId, payment);
         payableSummaryService.addPayment(serviceProviderId, payment);
         return "redirect:/accounting/aps/" + serviceProviderId;
+    }
+
+    @RequestMapping(value = "/ars/{serviceProviderId}/statements", method = RequestMethod.GET)
+    public String listPurchaseStatements(@PathVariable Long serviceProviderId, Model model) {
+        logger.debug("serviceProviderId: {}", serviceProviderId);
+
+        model.addAttribute("serviceProviderId", serviceProviderId);
+        model.addAttribute("statementList", purchaseInvoiceService.findByServiceProviderId(serviceProviderId));
+        return "accounting/receivable/statements";
     }
 }

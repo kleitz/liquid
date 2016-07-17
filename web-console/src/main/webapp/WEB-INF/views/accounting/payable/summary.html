@@ -8,7 +8,7 @@
 <div th:include="layout :: header"></div>
 <!-- {!end layout} -->
 
-<div th:include="accounting/fragments :: title-bar('charge.payable')"></div>
+<div th:include="accounting/fragments :: title-bar('finance.payable.sum')"></div>
 
 <div class="container-fluid">
 
@@ -27,6 +27,9 @@
         <th><span th:text="#{invoiced.total}">Total Invoiced</span>(USD)</th>
         <th><span th:text="#{paid.total}">Total Paid</span>(CNY)</th>
         <th><span th:text="#{paid.total}">Total Paid</span>(USD)</th>
+        <!--
+        <th></th>
+        -->
       </tr>
     </thead>
     <tbody>
@@ -35,12 +38,19 @@
         <td>
           <a th:href="'/accounting/aps/' + ${item.serviceProvider.id}"><span th:text="${item.serviceProvider.name}" /></a>
         </td>
-        <td><span th:text="${item.totalCny}" /></td>
-        <td><span th:text="${item.totalUsd}" /></td>
-        <td><span th:text="${item.totalInvoicedCny}" /></td>
-        <td><span th:text="${item.totalInvoicedUsd}" /></td>
-        <td><span th:text="${item.totalPaidCny}" /></td>
-        <td><span th:text="${item.totalPaidUsd}" /></td>
+        <td><span th:text="${#numbers.formatDecimal(item.totalCny, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td><span th:text="${#numbers.formatDecimal(item.totalUsd, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td><span th:text="${#numbers.formatDecimal(item.totalInvoicedCny, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td><span th:text="${#numbers.formatDecimal(item.totalInvoicedUsd, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td><span th:text="${#numbers.formatDecimal(item.totalPaidCny, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td><span th:text="${#numbers.formatDecimal(item.totalPaidUsd, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <!--
+        <td>
+            <a th:href="'/accounting/aps/' + ${item.serviceProvider.id} + '/statements'">
+                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+            </a>
+        </td>
+        -->
       </tr>
     </tbody>
   </table>
