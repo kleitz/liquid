@@ -38,12 +38,12 @@
         <td>
           <a th:href="'/accounting/aps/' + ${item.serviceProvider.id}"><span th:text="${item.serviceProvider.name}" /></a>
         </td>
-        <td><span th:text="${#numbers.formatDecimal(item.totalCny, 0, 'COMMA', 2, 'POINT')}" /></td>
-        <td><span th:text="${#numbers.formatDecimal(item.totalUsd, 0, 'COMMA', 2, 'POINT')}" /></td>
-        <td><span th:text="${#numbers.formatDecimal(item.totalInvoicedCny, 0, 'COMMA', 2, 'POINT')}" /></td>
-        <td><span th:text="${#numbers.formatDecimal(item.totalInvoicedUsd, 0, 'COMMA', 2, 'POINT')}" /></td>
-        <td><span th:text="${#numbers.formatDecimal(item.totalPaidCny, 0, 'COMMA', 2, 'POINT')}" /></td>
-        <td><span th:text="${#numbers.formatDecimal(item.totalPaidUsd, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td class="text-right"><span th:text="${#numbers.formatDecimal(item.totalCny, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td class="text-right"><span th:text="${#numbers.formatDecimal(item.totalUsd, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td class="text-right"><span th:text="${#numbers.formatDecimal(item.totalInvoicedCny, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td class="text-right"><span th:text="${#numbers.formatDecimal(item.totalInvoicedUsd, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td class="text-right"><span th:text="${#numbers.formatDecimal(item.totalPaidCny, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td class="text-right"><span th:text="${#numbers.formatDecimal(item.totalPaidUsd, 0, 'COMMA', 2, 'POINT')}" /></td>
         <!--
         <td>
             <a th:href="'/accounting/aps/' + ${item.serviceProvider.id} + '/statements'">

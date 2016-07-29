@@ -203,10 +203,11 @@ public class AccountingController {
     }
 
     @RequestMapping(value = "/ars", method = RequestMethod.GET)
-    public String listRevenues(@Valid SearchBarForm searchBarForm, Model model) {
+    public String listRevenues(@Valid SearchBarForm searchBarForm, Model model, HttpServletRequest request) {
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
         Page<ReceivableSummary> page = receivableService.findAll(pageRequest);
         model.addAttribute("page", page);
+        searchBarForm.prepand(request.getRequestURI());
         return "accounting/receivable/summary";
     }
 
@@ -368,10 +369,11 @@ public class AccountingController {
     }
 
     @RequestMapping(value = "/aps", method = RequestMethod.GET)
-    public String listAps(@Valid SearchBarForm searchBarForm, Model model) {
+    public String listAps(@Valid SearchBarForm searchBarForm, Model model, HttpServletRequest request) {
         PageRequest pageRequest = new PageRequest(searchBarForm.getNumber(), size, new Sort(Sort.Direction.DESC, "id"));
         Page<PayableSummary> page = payableSummaryService.findAll(pageRequest);
         model.addAttribute("page", page);
+        searchBarForm.prepand(request.getRequestURI());
         return "accounting/payable/summary";
     }
 
@@ -417,7 +419,7 @@ public class AccountingController {
         return "redirect:/accounting/aps/" + serviceProviderId;
     }
 
-    @RequestMapping(value = "/ars/{serviceProviderId}/statements", method = RequestMethod.GET)
+    @RequestMapping(value = "/aps/{serviceProviderId}/statements", method = RequestMethod.GET)
     public String listPurchaseStatements(@PathVariable Long serviceProviderId, Model model) {
         logger.debug("serviceProviderId: {}", serviceProviderId);
 

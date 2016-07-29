@@ -16,6 +16,9 @@ import java.math.BigDecimal;
 @EntityListeners(liquid.audit.AuditListener.class)
 public class Purchase extends BaseUpdateEntity {
 
+    @Column(name = "PURCHASE_NO")
+    private String purchaseNo;
+
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
     private Order order;
@@ -55,6 +58,15 @@ public class Purchase extends BaseUpdateEntity {
 
     @Column(name = "TASK_ID")
     private String taskId;
+
+
+    public String getPurchaseNo() {
+        return purchaseNo;
+    }
+
+    public void setPurchaseNo(String purchaseNo) {
+        this.purchaseNo = purchaseNo;
+    }
 
     public Order getOrder() {
         return order;
@@ -147,7 +159,8 @@ public class Purchase extends BaseUpdateEntity {
     @Override
     public String toString() {
         return "Purchase{" +
-                "transportMode=" + transportMode +
+                "purchaseNo=" + purchaseNo +
+                ", transportMode=" + transportMode +
                 ", chargeType=" + chargeType +
                 ", unitPrice=" + unitPrice +
                 ", totalAmount=" + totalAmount +
