@@ -5,9 +5,6 @@ package liquid.accounting.domain;
  */
 public enum PurchaseStatus {
     VALID,
-    INVALID;
-
-    public static void main(String[] args) {
-        System.out.println(PurchaseStatus.INVALID.ordinal());
-    }
+    INVALID,
+    STATED;
 }
