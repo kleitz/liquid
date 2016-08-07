@@ -378,8 +378,9 @@ public class AccountingController {
     }
 
     @RequestMapping(value = "/aps/{serviceProviderId}", method = RequestMethod.GET)
-    public String listAps(@PathVariable Long serviceProviderId, Model model) {
-        List<Purchase> purchaseList = purchaseService.findByServiceProviderId(serviceProviderId);
+    public String listAps(@Valid SearchBarForm searchBarForm, @PathVariable Long serviceProviderId,
+                          Model model, HttpServletRequest request) {
+        List<Purchase> purchaseList = purchaseService.findByServiceProviderId(serviceProviderId, searchBarForm);
         List<PurchaseInvoice> purchaseInvoiceList = purchaseInvoiceService.findByServiceProviderId(serviceProviderId);
         List<Payment> paymentList = paymentService.findByServiceProviderId(serviceProviderId);
         for (int i = purchaseInvoiceList.size(); i < purchaseList.size(); i++) {
@@ -394,14 +395,18 @@ public class AccountingController {
             payment.setAmountUsd(BigDecimal.ZERO);
             paymentList.add(payment);
         }
-        PayableSummary payableSummary = payableSummaryService.findByServiceProviderId(serviceProviderId);
+
         model.addAttribute("purchaseList", purchaseList);
         model.addAttribute("purchaseInvoiceList", purchaseInvoiceList);
         model.addAttribute("paymentList", paymentList);
         model.addAttribute("invoice", new PurchaseInvoice());
         model.addAttribute("payment", new Payment());
         model.addAttribute("serviceProviderId", serviceProviderId);
+
+        PayableSummary payableSummary = payableSummaryService.findByServiceProviderId(serviceProviderId);
         model.addAttribute("payableSummary", payableSummary);
+
+        searchBarForm.prepand(request.getRequestURI());
         return "accounting/payable/details";
     }
 
@@ -424,7 +429,24 @@ public class AccountingController {
         logger.debug("serviceProviderId: {}", serviceProviderId);
 
         model.addAttribute("serviceProviderId", serviceProviderId);
-        model.addAttribute("statementList", purchaseInvoiceService.findByServiceProviderId(serviceProviderId));
-        return "accounting/receivable/statements";
+        model.addAttribute("statementList", purchaseStatementService.findStatementByServiceProviderId(serviceProviderId));
+        return "accounting/payable/statements";
+    }
+
+    @RequestMapping(value = "/aps/{serviceProviderId}/statements", method = RequestMethod.POST)
+    public String addPayableStatement(@PathVariable Long serviceProviderId, Long[] purchaseIds) {
+        logger.debug("serviceProviderId: {}; purchaseIds: {}", serviceProviderId, purchaseIds);
+        purchaseStatementService.save(serviceProviderId, purchaseIds);
+        return "redirect:/accounting/aps/" + serviceProviderId + "/statements";
+    }
+
+    @RequestMapping(value = "/aps/{serviceProviderId}/statements/{id}", method = RequestMethod.GET)
+    public String getPayableStatement(@PathVariable Long serviceProviderId, @PathVariable Long id, Model model) {
+        logger.debug("serviceProviderId: {}; statementId: {}", serviceProviderId, id);
+
+        PurchaseStatement purchaseStatement = purchaseStatementService.find(id);
+
+        model.addAttribute("statement", purchaseStatement);
+        return "accounting/payable/statement_detail";
     }
 }

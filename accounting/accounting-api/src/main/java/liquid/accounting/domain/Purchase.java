@@ -51,7 +51,7 @@ public class Purchase extends BaseUpdateEntity {
     private Currency currency;
 
     @Column(name = "STATUS")
-    private Integer status;
+    private PurchaseStatus status;
 
     @Column(name = "COMMENT")
     private String comment;
@@ -132,11 +132,11 @@ public class Purchase extends BaseUpdateEntity {
         this.currency = currency;
     }
 
-    public Integer getStatus() {
+    public PurchaseStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(PurchaseStatus status) {
         this.status = status;
     }
 

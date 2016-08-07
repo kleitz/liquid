@@ -2,7 +2,6 @@ package liquid.accounting.domain;
 
 import liquid.core.domain.BaseUpdateEntity;
 import liquid.operation.domain.ServiceProvider;
-import liquid.order.domain.Order;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -30,11 +29,11 @@ public class PurchaseStatement extends BaseUpdateEntity {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "ACC_PURCHASE_STATEMENT_ORDER",
+            name = "ACC_PURCHASE_STATEMENT_PURCHASE",
             joinColumns = {@JoinColumn(name = "STATEMENT_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")}
+            inverseJoinColumns = {@JoinColumn(name = "PURCHASE_ID", referencedColumnName = "ID")}
     )
-    private List<Order> orders;
+    private List<Purchase> purchases;
 
     public ServiceProvider getServiceProvider() {
         return serviceProvider;
@@ -68,12 +67,12 @@ public class PurchaseStatement extends BaseUpdateEntity {
         this.comment = comment;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public List<Purchase> getPurchases() {
+        return purchases;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setPurchases(List<Purchase> purchases) {
+        this.purchases = purchases;
     }
 
     @Override

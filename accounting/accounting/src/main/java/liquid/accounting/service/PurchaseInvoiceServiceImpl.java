@@ -20,7 +20,5 @@ public class PurchaseInvoiceServiceImpl extends AbstractService<PurchaseInvoice,
     }
 
     @Override
-    public void doSaveBefore(PurchaseInvoice entity) {
-
-    }
+    public void doSaveBefore(PurchaseInvoice entity) {}
 }

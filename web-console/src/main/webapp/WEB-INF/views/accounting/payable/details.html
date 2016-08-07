@@ -8,13 +8,14 @@
 <div th:include="layout :: header"></div>
 <!-- {!end layout} -->
 
-<div th:include="accounting/fragments :: title-bar-0('finance.payable.sum')"></div>
+<div th:include="accounting/fragments :: title-bar('charge.payable')"></div>
 
 <div class="container-fluid">
-
+  <form method="POST" th:action="'/accounting/aps/' + ${serviceProviderId} + '/statements'">
   <table class="table table-striped table-hover table-condensed table-bordered table-16">
     <thead>
       <tr>
+        <th></th>
         <th>ID</th>
         <th><span th:text="#{purchase.no}">Purchase No.</span></th>
         <th><span th:text="#{order.no}">Order No.</span></th>
@@ -22,6 +23,7 @@
         <th><span th:text="#{service.item}">Purchase Type</span></th>
         <th><span th:text="#{cny.total}">Total CNY</span></th>
         <th><span th:text="#{usd.total}">Total USD</span></th>
+        <th><span th:text="#{create.time}">Total USD</span></th>
         <th>
           <a data-toggle="modal" data-target="#addInvoice" href="#">
             <span class="glyphicon glyphicon-plus text-success" />
@@ -47,6 +49,9 @@
     </thead>
     <tbody>
       <tr th:each="item, rowState : ${purchaseList}">
+        <td>
+            <input name="purchaseIds" type="checkbox" th:value="${item.id}" />
+        </td>
         <!-- orders -->
         <td><span th:text="${item.id}" /></td>
         <td><span th:text="${item.purchaseNo}" /></td>
@@ -59,6 +64,7 @@
         <td><span th:text="${item.serviceSubtype.name}" /></td>
         <td class="text-right"><span th:text="${#numbers.formatDecimal(item.totalAmount, 0, 'COMMA', 2, 'POINT')}" /></td>
         <td class="text-right"><span th:text="${#numbers.formatDecimal(item.totalAmount, 0, 'COMMA', 2, 'POINT')}" /></td>
+        <td class="text-right"><span th:text="${#calendars.format(item.createdAt, 'yyyy-MM-dd')}" /></td>
         <!-- invoices -->
         <td class="text-right"><span th:text="${purchaseInvoiceList[__${rowState.index}__].issuedAt}"></span></td>
         <td class="text-right"><span th:text="${purchaseInvoiceList[__${rowState.index}__].invoiceNo}"></span></td>
@@ -74,9 +80,11 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
         <td><span th:text="#{settled.total}">Settled Total</span></td>
         <td class="text-right"><span th:text="${#numbers.formatDecimal(payableSummary.totalInvoicedCny, 0, 'COMMA', 2, 'POINT')}"></span></td>
         <td class="text-right"><span th:text="${#numbers.formatDecimal(payableSummary.totalInvoicedUsd, 0, 'COMMA', 2, 'POINT')}"></span></td>
+        <td></td>
         <td></td>
         <td><span th:text="#{invoiced.total}">Invoiced Total</span></td>
         <td class="text-right"><span th:text="${#numbers.formatDecimal(payableSummary.totalInvoicedCny, 0, 'COMMA', 2, 'POINT')}"></span></td>
@@ -90,9 +98,11 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
         <td><span th:text="#{not.settled.total}">Not Settled Total</span></td>
         <td class="text-right"><span th:text="${#numbers.formatDecimal(payableSummary.totalCny - payableSummary.totalInvoicedCny, 0, 'COMMA', 2, 'POINT')}"></span></td>
         <td class="text-right"><span th:text="${#numbers.formatDecimal(payableSummary.totalUsd - payableSummary.totalInvoicedUsd, 0, 'COMMA', 2, 'POINT')}"></span></td>
+        <td></td>
         <td></td>
         <td><span th:text="#{not.invoiced.total}">Not Invoiced Total</span></td>
         <td class="text-right"><span th:text="${#numbers.formatDecimal(payableSummary.totalCny - payableSummary.totalInvoicedCny, 0, 'COMMA', 2, 'POINT')}"></span></td>
@@ -104,6 +114,10 @@
  
     </tbody>
   </table>
+
+    <button type="submit"><span th:text="#{settlement}">Settlement</span></button>
+
+  </form>
 
   <div class="modal" id="addInvoice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: hidden;" data-backdrop="static">
     <div class="modal-dialog modal-sm">
@@ -288,6 +302,9 @@
           form.submit();
       }
     });
+
+    $('#startPicker').dtPicker();
+    $('#endPicker').dtPicker();        
  
   }); // ready end
 /*]]>*/

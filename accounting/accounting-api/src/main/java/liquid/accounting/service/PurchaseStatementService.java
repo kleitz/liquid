@@ -8,7 +8,7 @@ import java.util.List;
  * Created by mat on 7/17/16.
  */
 public interface PurchaseStatementService {
-    List<PurchaseStatement> findSalesStatementByServiceProviderId(Long serviceProviderId);
+    List<PurchaseStatement> findStatementByServiceProviderId(Long serviceProviderId);
 
     PurchaseStatement save(Long serviceProviderId, Long[] orderIds);
 

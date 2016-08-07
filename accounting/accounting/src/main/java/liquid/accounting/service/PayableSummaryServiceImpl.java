@@ -36,9 +36,7 @@ public class PayableSummaryServiceImpl extends AbstractService<PayableSummary, P
     }
 
     @Override
-    public void doSaveBefore(PayableSummary entity) {
-
-    }
+    public void doSaveBefore(PayableSummary entity) {}
 
     @Override
     public Page<PayableSummary> findAll(Pageable pageable) {

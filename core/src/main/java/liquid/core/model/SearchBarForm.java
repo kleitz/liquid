@@ -39,10 +39,10 @@ public class SearchBarForm extends Pagination {
 
     public SearchBarForm() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), 1, 0, 0, 0);
-        startDate = calendar.getTime();
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, 0, 0, 0, 0);
         endDate = calendar.getTime();
+        calendar.set(calendar.get(Calendar.YEAR), calendar.JANUARY, 1, 0, 0, 0);
+        startDate = calendar.getTime();
     }
 
     @Deprecated
