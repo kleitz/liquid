@@ -410,6 +410,23 @@ public class AccountingController {
         return "accounting/payable/details";
     }
 
+    @RequestMapping(value = "/aps/{serviceProviderId}/purchases", method = RequestMethod.GET)
+    public String listPurchases(@Valid SearchBarForm searchBarForm, @PathVariable Long serviceProviderId,
+                          Model model, HttpServletRequest request) {
+        List<Purchase> purchaseList = purchaseService.findByServiceProviderId(serviceProviderId, searchBarForm);
+
+        model.addAttribute("purchaseList", purchaseList);
+        model.addAttribute("serviceProviderId", serviceProviderId);
+
+        PayableSummary payableSummary = payableSummaryService.findByServiceProviderId(serviceProviderId);
+        model.addAttribute("payableSummary", payableSummary);
+
+        model.addAttribute("tab", "purchases");
+        
+        searchBarForm.prepand(request.getRequestURI());
+        return "accounting/payable/purchases";
+    }
+
     @RequestMapping(value = "/aps/{serviceProviderId}/invoices", method = RequestMethod.POST)
     public String addInvoice(@PathVariable Long serviceProviderId, PurchaseInvoice purchaseInvoice) {
         logger.debug("serviceProviderId: {}; purchaseInvoice: {}", serviceProviderId, purchaseInvoice);

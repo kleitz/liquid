@@ -36,7 +36,7 @@
       <tr th:each="item : ${page}">
         <td><span th:text="${item.id}" /></td>
         <td>
-          <a th:href="'/accounting/aps/' + ${item.serviceProvider.id}"><span th:text="${item.serviceProvider.name}" /></a>
+          <a th:href="'/accounting/aps/' + ${item.serviceProvider.id} + '/purchases'"><span th:text="${item.serviceProvider.name}" /></a>
         </td>
         <td class="text-right"><span th:text="${#numbers.formatDecimal(item.totalCny, 0, 'COMMA', 2, 'POINT')}" /></td>
         <td class="text-right"><span th:text="${#numbers.formatDecimal(item.totalUsd, 0, 'COMMA', 2, 'POINT')}" /></td>

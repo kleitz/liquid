@@ -36,6 +36,20 @@
       </div><!-- title-bar -->
     </div>
 
-
+    <div th:fragment="tab">
+      <div class="container-fluid">
+        <ul class="nav nav-tabs">
+          <li class="active" th:class="${tab} == 'purchases' ? 'active'">
+            <a th:href="'/accounting/aps/' + ${serviceProviderId} + '/purchases'" th:text="#{purchases}">Purchases</a>
+          </li>
+          <li class="active" th:class="${tab} == 'statements' ? 'active'">
+            <a th:href="'/accounting/aps/' + ${serviceProviderId} + '/statements'" th:text="#{statements}">Order Amount</a>
+          </li>
+          <li class="active" th:class="${tab} == 'overview' ? 'active'">
+            <a th:href="'/accounting/aps/' + ${serviceProviderId}" th:text="#{overview}">Overview</a>
+          </li>
+        </ul>
+      </div><!-- /.container -->
+    </div>
   </body>
 </html>
