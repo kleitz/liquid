@@ -10,7 +10,7 @@ import java.util.List;
 public interface PurchaseStatementService {
     List<PurchaseStatement> findStatementByServiceProviderId(Long serviceProviderId);
 
-    PurchaseStatement save(Long serviceProviderId, Long[] orderIds);
+    PurchaseStatement save(Long serviceProviderId, Long statementId, Long[] orderIds);
 
     PurchaseStatement find(Long id);
 }

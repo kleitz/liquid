@@ -73,7 +73,18 @@
     </tbody>
   </table>
 
-    <button type="submit"><span th:text="#{settlement}">Settlement</span></button>
+  <div class="form-inline">
+    <div class="form-group">
+      <select name="statementId" class="form-control input-sm">
+        <option value="0" th:text="#{add}">New</option>
+        <option th:each="item : ${statements}"
+                th:value="${item.id}"
+                th:text="${item.code}">Code
+        </option>
+      </select>
+    </div>
+    <button class="btn btn-primary" type="submit"><span th:text="#{settlement}">Settlement</span></button>
+  </div>
 
   </form>
 

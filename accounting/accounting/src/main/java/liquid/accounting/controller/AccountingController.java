@@ -405,7 +405,7 @@ public class AccountingController {
 
         PayableSummary payableSummary = payableSummaryService.findByServiceProviderId(serviceProviderId);
         model.addAttribute("payableSummary", payableSummary);
-
+        model.addAttribute("tab", "overview");
         searchBarForm.prepand(request.getRequestURI());
         return "accounting/payable/details";
     }
@@ -422,7 +422,8 @@ public class AccountingController {
         model.addAttribute("payableSummary", payableSummary);
 
         model.addAttribute("tab", "purchases");
-        
+        model.addAttribute("statements", purchaseStatementService.findStatementByServiceProviderId(serviceProviderId));
+
         searchBarForm.prepand(request.getRequestURI());
         return "accounting/payable/purchases";
     }
@@ -447,13 +448,17 @@ public class AccountingController {
 
         model.addAttribute("serviceProviderId", serviceProviderId);
         model.addAttribute("statementList", purchaseStatementService.findStatementByServiceProviderId(serviceProviderId));
+
+        model.addAttribute("tab", "statements");
+
         return "accounting/payable/statements";
     }
 
     @RequestMapping(value = "/aps/{serviceProviderId}/statements", method = RequestMethod.POST)
-    public String addPayableStatement(@PathVariable Long serviceProviderId, Long[] purchaseIds) {
-        logger.debug("serviceProviderId: {}; purchaseIds: {}", serviceProviderId, purchaseIds);
-        purchaseStatementService.save(serviceProviderId, purchaseIds);
+    public String addPayableStatement(@PathVariable Long serviceProviderId, Long statementId, Long[] purchaseIds) {
+        logger.debug("serviceProviderId: {}; statementId: {}; purchaseIds: {}", serviceProviderId, statementId,
+                purchaseIds);
+        purchaseStatementService.save(serviceProviderId, statementId, purchaseIds);
         return "redirect:/accounting/aps/" + serviceProviderId + "/statements";
     }
 

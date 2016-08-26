@@ -8,6 +8,7 @@
 <div th:include="layout :: header"></div>
 <!-- {!end layout} -->
 
+<div th:include="accounting/fragments :: tab"></div>
 <div th:include="accounting/fragments :: title-bar-0('settlement.form')"></div>
 
 <div class="container-fluid">
@@ -16,6 +17,7 @@
     <thead>
       <tr>
         <th>ID</th>
+        <th>Code</th>
         <th><span th:text="#{cny.total}">Total CNY</span></th>
         <th><span th:text="#{usd.total}">Total USD</span></th>
         <th><span th:text="#{settled.at}">Settled At</span></th>
@@ -33,6 +35,7 @@
             <span th:text="${item.id}" />
           </a>
         </td>
+        <td><span th:text="${item.code}" /></td>
         <td><span th:text="${#numbers.formatDecimal(item.totalCny, 0, 'COMMA', 2, 'POINT')}" /></td>
         <td><span th:text="${#numbers.formatDecimal(item.totalUsd, 0, 'COMMA', 2, 'POINT')}" /></td>
         <td><span th:text="${#calendars.format(item.createdAt, 'yyyy-MM-dd')}" /></td>

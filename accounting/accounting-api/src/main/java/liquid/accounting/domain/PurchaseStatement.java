@@ -6,6 +6,7 @@ import liquid.operation.domain.ServiceProvider;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,11 +19,15 @@ public class PurchaseStatement extends BaseUpdateEntity {
     @JoinColumn(name = "SP_ID")
     private ServiceProvider serviceProvider;
 
+    @NotNull
+    @Column(name = "CODE")
+    private String code;
+
     @Column(precision = 19, scale = 4, name = "TOTAL_CNY")
-    private BigDecimal totalCny;
+    private BigDecimal totalCny = BigDecimal.ZERO;
 
     @Column(precision = 19, scale = 4, name = "TOTAL_USD")
-    private BigDecimal totalUsd;
+    private BigDecimal totalUsd = BigDecimal.ZERO;
 
     @Column(name = "COMMENT")
     private String comment;
@@ -33,7 +38,7 @@ public class PurchaseStatement extends BaseUpdateEntity {
             joinColumns = {@JoinColumn(name = "STATEMENT_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "PURCHASE_ID", referencedColumnName = "ID")}
     )
-    private List<Purchase> purchases;
+    private List<Purchase> purchases = new ArrayList<>();
 
     public ServiceProvider getServiceProvider() {
         return serviceProvider;
@@ -41,6 +46,14 @@ public class PurchaseStatement extends BaseUpdateEntity {
 
     public void setServiceProvider(ServiceProvider serviceProvider) {
         this.serviceProvider = serviceProvider;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public BigDecimal getTotalCny() {
@@ -79,6 +92,7 @@ public class PurchaseStatement extends BaseUpdateEntity {
     public String toString() {
         final StringBuilder sb = new StringBuilder("PurchaseStatement{");
         sb.append("super=").append(super.toString()).append('\'');
+        sb.append(", code=").append(code);
         sb.append(", serviceProvider=").append(serviceProvider);
         sb.append(", totalCny=").append(totalCny);
         sb.append(", totalUsd=").append(totalUsd);

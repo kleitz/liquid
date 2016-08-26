@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @Service
 public class PurchaseStatementServiceImpl extends AbstractService<PurchaseStatement, PurchaseStatementRepository>
-        implements PurchaseStatementService  {
+        implements PurchaseStatementService {
 
     private static final Logger logger = LoggerFactory.getLogger("PurchaseStatementServiceImpl");
 
@@ -45,11 +46,13 @@ public class PurchaseStatementServiceImpl extends AbstractService<PurchaseStatem
 
     @Transactional(value = "transactionManager")
     @Override
-    public PurchaseStatement save(Long serviceProviderId, Long[] purchaseIds) {
+    public PurchaseStatement save(Long serviceProviderId, Long statementId, Long[] purchaseIds) {
         ServiceProvider serviceProvider = serviceProviderService.find(serviceProviderId);
         List<Purchase> purchases = new ArrayList<Purchase>(purchaseIds.length);
-        BigDecimal totalCny = BigDecimal.ZERO;
-        BigDecimal totalUsd = BigDecimal.ZERO;
+
+        PurchaseStatement purchaseStatement = 0L == statementId ? new PurchaseStatement() :
+                purchaseStatementRepository.findOne(statementId);
+
         for (int i = 0; i < purchaseIds.length; i++) {
             Purchase purchase = purchaseService.find(purchaseIds[i]);
             purchase.setStatus(PurchaseStatus.STATED);
@@ -57,10 +60,10 @@ public class PurchaseStatementServiceImpl extends AbstractService<PurchaseStatem
             purchases.add(purchase);
             switch (purchase.getCurrency()) {
                 case CNY:
-                    totalCny = totalCny.add(purchase.getTotalAmount());
+                    purchaseStatement.setTotalCny(purchaseStatement.getTotalCny().add(purchase.getTotalAmount()));
                     break;
                 case USD:
-                    totalUsd = totalCny.add(purchase.getTotalAmount());
+                    purchaseStatement.setTotalUsd(purchaseStatement.getTotalUsd().add(purchase.getTotalAmount()));
                     break;
                 default:
                     logger.warn("Illegal currency {}", purchase.getCurrency());
@@ -68,11 +71,12 @@ public class PurchaseStatementServiceImpl extends AbstractService<PurchaseStatem
             }
         }
 
-        PurchaseStatement purchaseStatement = new PurchaseStatement();
-        purchaseStatement.setServiceProvider(serviceProvider);
-        purchaseStatement.setTotalCny(totalCny);
-        purchaseStatement.setTotalUsd(totalUsd);
-        purchaseStatement.setPurchases(purchases);
+        if (null == purchaseStatement.getId()) {
+            purchaseStatement.setCode(String.format("%1$s%2$tY%2$tm%2$td%2$tH%2$tM%2$tS",
+                    serviceProvider.getCode(), Calendar.getInstance()));
+            purchaseStatement.setServiceProvider(serviceProvider);
+        }
+        purchaseStatement.getPurchases().addAll(purchases);
         return save(purchaseStatement);
     }
 
