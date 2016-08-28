@@ -80,6 +80,30 @@ public class PurchaseStatementServiceImpl extends AbstractService<PurchaseStatem
         return save(purchaseStatement);
     }
 
+    public PurchaseStatement remove(Long statementId, Long[] purchaseIds) {
+        PurchaseStatement purchaseStatement = purchaseStatementRepository.findOne(statementId);
+        List<Purchase> purchases = new ArrayList<Purchase>(purchaseIds.length);
+        for (int i = 0; i < purchaseIds.length; i++) {
+            Purchase purchase = purchaseService.find(purchaseIds[i]);
+            purchase.setStatus(PurchaseStatus.STATED);
+            purchase = purchaseService.save(purchase);
+            purchases.add(purchase);
+            switch (purchase.getCurrency()) {
+                case CNY:
+                    purchaseStatement.setTotalCny(purchaseStatement.getTotalCny().subtract(purchase.getTotalAmount()));
+                    break;
+                case USD:
+                    purchaseStatement.setTotalUsd(purchaseStatement.getTotalUsd().subtract(purchase.getTotalAmount()));
+                    break;
+                default:
+                    logger.warn("Illegal currency {}", purchase.getCurrency());
+                    break;
+            }
+        }
+        purchaseStatement.getPurchases().removeAll(purchases);
+        return save(purchaseStatement);
+    }
+
     @Transactional(value = "transactionManager")
     @Override
     public PurchaseStatement find(Long id) {

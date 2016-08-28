@@ -30,7 +30,7 @@
     <tbody>
       <tr th:each="item, rowState : ${purchaseList}">
         <td>
-            <input name="purchaseIds" type="checkbox" th:value="${item.id}" />
+          <input name="purchaseIds" type="checkbox" th:value="${item.id}" />
         </td>
         <!-- orders -->
         <td><span th:text="${item.id}" /></td>

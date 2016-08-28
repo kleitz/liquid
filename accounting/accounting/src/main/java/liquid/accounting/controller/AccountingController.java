@@ -471,4 +471,12 @@ public class AccountingController {
         model.addAttribute("statement", purchaseStatement);
         return "accounting/payable/statement_detail";
     }
+
+    @RequestMapping(value = "/aps/{serviceProviderId}/statements/{id}", method = RequestMethod.POST)
+    public String removePurchaseFromStatement(@PathVariable Long serviceProviderId, @PathVariable Long id,
+                                              Long[] purchaseIds) {
+        logger.debug("serviceProviderId: {}; statementId: {}; purchaseIds: {}", serviceProviderId, id, purchaseIds);
+        purchaseStatementService.remove(id, purchaseIds);
+        return "redirect:/accounting/aps/" + serviceProviderId + "/statements/" + id;
+    }
 }

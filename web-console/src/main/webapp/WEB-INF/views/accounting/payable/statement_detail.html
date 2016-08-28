@@ -12,9 +12,11 @@
 
 <div class="container-fluid">
 
+  <form method="POST" th:action="'/accounting/aps/' + ${statement.serviceProvider.id} + '/statements/' + ${statement.id}">
   <table class="table table-striped table-hover table-condensed table-bordered table-16">
     <thead>
       <tr>
+        <th></th>
         <th>ID</th>
         <th><span th:text="#{purchase.no}">Purchase No.</span></th>
         <th><span th:text="#{order.no}">Order No.</span></th>
@@ -27,6 +29,9 @@
     </thead>
     <tbody>
       <tr th:each="item, rowState : ${statement.purchases}">
+        <td>
+          <input name="purchaseIds" type="checkbox" th:value="${item.id}" />
+        </td>
         <td><span th:text="${item.id}">ID</span></td>
         <td><span th:text="${item.purchaseNo}">Purchase No.</span></td>
         <td><span th:text="${item.order.orderNo}">Order No.</span></td>
@@ -38,6 +43,9 @@
       </tr>
     </tbody>
   </table>
+
+  <button class="btn btn-primary" type="submit"><span th:text="#{remove}">Remove</span></button>
+  </form>
 </div>
 
 <!-- {!begin layout} -->

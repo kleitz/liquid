@@ -12,5 +12,7 @@ public interface PurchaseStatementService {
 
     PurchaseStatement save(Long serviceProviderId, Long statementId, Long[] orderIds);
 
+    PurchaseStatement remove(Long statementId, Long[] purchaseIds);
+
     PurchaseStatement find(Long id);
 }
