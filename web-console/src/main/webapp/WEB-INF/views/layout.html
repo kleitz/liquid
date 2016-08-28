@@ -460,6 +460,14 @@
               th:object="${purchase}">
               <input type="hidden" th:field="*{order}" />
               <input type="hidden" th:field="*{taskId}" />
+
+              <div class="form-group form-group-sm">
+                <label for="purchaseNo" class="control-label">
+                  <span th:text="#{purchase.no}">Purchase No.</span>
+                  <span>*</span>
+                </label>
+                <input type="text" th:field="*{purchaseNo}" class="form-control input-sm"/>
+              </div>
   
               <div class="form-group form-group-sm">
                 <label for="transportMode"  class="control-label" th:text="#{trans.mode}">Transport Mode</label>
