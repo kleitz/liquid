@@ -80,12 +80,14 @@ public class PurchaseStatementServiceImpl extends AbstractService<PurchaseStatem
         return save(purchaseStatement);
     }
 
+    @Transactional(value = "transactionManager")
+    @Override
     public PurchaseStatement remove(Long statementId, Long[] purchaseIds) {
         PurchaseStatement purchaseStatement = purchaseStatementRepository.findOne(statementId);
         List<Purchase> purchases = new ArrayList<Purchase>(purchaseIds.length);
         for (int i = 0; i < purchaseIds.length; i++) {
             Purchase purchase = purchaseService.find(purchaseIds[i]);
-            purchase.setStatus(PurchaseStatus.STATED);
+            purchase.setStatus(PurchaseStatus.VALID);
             purchase = purchaseService.save(purchase);
             purchases.add(purchase);
             switch (purchase.getCurrency()) {
