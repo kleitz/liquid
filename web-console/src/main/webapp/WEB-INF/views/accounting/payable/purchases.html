@@ -9,7 +9,7 @@
 <!-- {!end layout} -->
 
 <div th:include="accounting/fragments :: tab"></div>
-<div th:include="accounting/fragments :: title-bar('charge.payable')"></div>
+<div th:include="accounting/fragments :: search-bar('charge.payable')"></div>
 
 <div class="container-fluid">
   <form method="POST" th:action="'/accounting/aps/' + ${serviceProviderId} + '/statements'">

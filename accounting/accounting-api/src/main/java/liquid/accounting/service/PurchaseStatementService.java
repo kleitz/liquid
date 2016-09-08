@@ -15,4 +15,8 @@ public interface PurchaseStatementService {
     PurchaseStatement remove(Long statementId, Long[] purchaseIds);
 
     PurchaseStatement find(Long id);
+
+    void invalid(Long id);
+
+    void confirm(Long id);
 }

@@ -328,6 +328,46 @@
       </div>             
   </form> 
 </div>
+
+<!--
+- Variables
+- searchBarForm
+-   id:
+-   type:
+-   number:
+-   startDate:
+-   endDate:
+-   text: 
+-->
+<div th:fragment="date-search-bar">
+  <form method="GET" class="form-inline pull-right" role="form" th:action="${searchBarForm.action}" th:object="${searchBarForm}">
+      <input type="hidden" th:field="*{id}"/>
+      <input type="hidden" th:field="*{type}"/>
+      <input type="hidden" th:field="*{number}"/>
+      <div class="input-group date" id="startPicker">
+          <span class="input-group-addon" th:text="#{start.date}">Start Date</span>
+          <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control" th:field="*{startDate}" />
+          <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+      </div>
+      
+      <div class="input-group date" id="endPicker">
+          <span class="input-group-addon" th:text="#{end.date}">End Date</span>
+          <input type="text" data-date-format="YYYY-MM-DD HH:mm" class="form-control" th:field="*{endDate}" />
+          <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+      </div>                
+                          
+      <div class="input-group">
+          <span class="input-group-btn">                    
+              <button type="submit" name="search" class="btn btn-primary"><span class="glyphicon glyphicon-search" /></button>
+          </span>
+      </div>             
+  </form> 
+</div>
+
 <!--
 - Variables
 - contextPath: The context path except number, e.g. /order? or /order?type=abc&.

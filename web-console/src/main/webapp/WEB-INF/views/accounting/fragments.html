@@ -36,6 +36,17 @@
       </div><!-- title-bar -->
     </div>
 
+    <!--
+      - title
+      -->
+    <div th:fragment="search-bar(title)">
+      <div class="title-bar">
+        <div class="container-fluid">
+          <div th:include="layout :: date-search-bar"></div>
+        </div><!-- container -->
+      </div><!-- title-bar -->
+    </div>
+
     <div th:fragment="tab">
       <div class="container-fluid">
         <ul class="nav nav-tabs">

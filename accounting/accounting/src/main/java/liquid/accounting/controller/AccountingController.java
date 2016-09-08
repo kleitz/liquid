@@ -479,4 +479,18 @@ public class AccountingController {
         purchaseStatementService.remove(id, purchaseIds);
         return "redirect:/accounting/aps/" + serviceProviderId + "/statements/" + id;
     }
+
+    @RequestMapping(value = "/aps/{serviceProviderId}/statements/{id}", method = RequestMethod.POST, params = "confirm")
+    public String confirmPurchaseFromStatement(@PathVariable Long serviceProviderId, @PathVariable Long id) {
+        logger.debug("serviceProviderId: {}; statementId: {}", serviceProviderId, id);
+        purchaseStatementService.confirm(id);
+        return "redirect:/accounting/aps/" + serviceProviderId + "/statements/" + id;
+    }
+
+    @RequestMapping(value = "/aps/{serviceProviderId}/statements/{id}", method = RequestMethod.POST, params = "invalid")
+    public String invalidPurchaseFromStatement(@PathVariable Long serviceProviderId, @PathVariable Long id) {
+        logger.debug("serviceProviderId: {}; statementId: {}", serviceProviderId, id);
+        purchaseStatementService.invalid(id);
+        return "redirect:/accounting/aps/" + serviceProviderId + "/statements/" + id;
+    }
 }

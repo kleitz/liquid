@@ -59,7 +59,6 @@ public class Purchase extends BaseUpdateEntity {
     @Column(name = "TASK_ID")
     private String taskId;
 
-
     public String getPurchaseNo() {
         return purchaseNo;
     }

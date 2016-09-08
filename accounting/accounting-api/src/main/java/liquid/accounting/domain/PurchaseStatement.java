@@ -32,7 +32,10 @@ public class PurchaseStatement extends BaseUpdateEntity {
     @Column(name = "COMMENT")
     private String comment;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @Column(name = "STATUS")
+    private PurchaseStatementStatus status = PurchaseStatementStatus.VALID;
+
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "ACC_PURCHASE_STATEMENT_PURCHASE",
             joinColumns = {@JoinColumn(name = "STATEMENT_ID", referencedColumnName = "ID")},
@@ -80,6 +83,14 @@ public class PurchaseStatement extends BaseUpdateEntity {
         this.comment = comment;
     }
 
+    public PurchaseStatementStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PurchaseStatementStatus status) {
+        this.status = status;
+    }
+
     public List<Purchase> getPurchases() {
         return purchases;
     }
@@ -92,11 +103,12 @@ public class PurchaseStatement extends BaseUpdateEntity {
     public String toString() {
         final StringBuilder sb = new StringBuilder("PurchaseStatement{");
         sb.append("super=").append(super.toString()).append('\'');
-        sb.append(", code=").append(code);
         sb.append(", serviceProvider=").append(serviceProvider);
+        sb.append(", code='").append(code).append('\'');
         sb.append(", totalCny=").append(totalCny);
         sb.append(", totalUsd=").append(totalUsd);
         sb.append(", comment='").append(comment).append('\'');
+        sb.append(", status=").append(status);
         sb.append('}');
         return sb.toString();
     }

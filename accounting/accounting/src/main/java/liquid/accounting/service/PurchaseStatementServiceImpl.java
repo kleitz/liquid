@@ -2,6 +2,7 @@ package liquid.accounting.service;
 
 import liquid.accounting.domain.Purchase;
 import liquid.accounting.domain.PurchaseStatement;
+import liquid.accounting.domain.PurchaseStatementStatus;
 import liquid.accounting.domain.PurchaseStatus;
 import liquid.accounting.repository.PurchaseStatementRepository;
 import liquid.core.service.AbstractService;
@@ -112,6 +113,28 @@ public class PurchaseStatementServiceImpl extends AbstractService<PurchaseStatem
         PurchaseStatement statement = super.find(id);
         statement.getPurchases().size();
         return statement;
+    }
+
+    @Transactional(value = "transactionManager")
+    @Override
+    public void invalid(Long id) {
+        PurchaseStatement statement = purchaseStatementRepository.findOne(id);
+        List<Purchase> purchaseList = statement.getPurchases();
+        for (Purchase purchase: purchaseList) {
+            purchase.setStatus(PurchaseStatus.VALID);
+            purchaseService.save(purchase);
+        }
+        statement.setStatus(PurchaseStatementStatus.INVALID);
+        statement.setTotalCny(BigDecimal.ZERO);
+        statement.setTotalUsd(BigDecimal.ZERO);
+        save(statement);
+    }
+
+    @Override
+    public void confirm(Long id) {
+        PurchaseStatement statement = purchaseStatementRepository.findOne(id);
+        statement.setStatus(PurchaseStatementStatus.STATED);
+        save(statement);
     }
 
     @Override
