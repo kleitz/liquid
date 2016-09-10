@@ -43,10 +43,9 @@
       </tr>
     </tbody>
   </table>
-
-    <button class="btn btn-primary" type="submit"><span th:text="#{remove}">Remove</span></button>
-    <button class="btn btn-success" type="submit" name="confirm"><span th:text="#{confirm}">Settlement</span></button>
-    <button class="btn btn-danger" type="submit" name="invalid"><span th:text="#{invalid}">Settlement</span></button>
+    <button class="btn btn-primary" type="submit" th:disabled="${statement.status == T(liquid.accounting.domain.PurchaseStatementStatus).INVALID || statement.status == T(liquid.accounting.domain.PurchaseStatementStatus).STATED}"><span th:text="#{remove}">Remove</span></button>
+    <button class="btn btn-success" type="submit" name="confirm" th:disabled="${statement.status == T(liquid.accounting.domain.PurchaseStatementStatus).INVALID || statement.status == T(liquid.accounting.domain.PurchaseStatementStatus).STATED}"><span th:text="#{confirm}">Settlement</span></button>
+    <button class="btn btn-danger" type="submit" name="invalid" th:disabled="${statement.status == T(liquid.accounting.domain.PurchaseStatementStatus).INVALID}"><span th:text="#{invalid}">Settlement</span></button>
   </form>
 </div>
 

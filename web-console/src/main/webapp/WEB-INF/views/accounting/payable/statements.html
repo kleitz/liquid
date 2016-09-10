@@ -20,6 +20,7 @@
         <th><span th:text="#{cny.total}">Total CNY</span></th>
         <th><span th:text="#{usd.total}">Total USD</span></th>
         <th><span th:text="#{settled.at}">Settled At</span></th>
+        <th><span th:text="#{status}">Status</span></th>
         <th>
           <a th:href="'/accounting/aps/' + ${serviceProviderId} + '/statements/form'">
             <span class="glyphicon glyphicon-plus text-success" />
@@ -38,6 +39,11 @@
         <td><span th:text="${#numbers.formatDecimal(item.totalCny, 0, 'COMMA', 2, 'POINT')}" /></td>
         <td><span th:text="${#numbers.formatDecimal(item.totalUsd, 0, 'COMMA', 2, 'POINT')}" /></td>
         <td><span th:text="${#calendars.format(item.createdAt, 'yyyy-MM-dd')}" /></td>
+        <td>
+          <span th:if="${item.status == T(liquid.accounting.domain.PurchaseStatementStatus).VALID}" class="glyphicon glyphicon glyphicon-th-list" aria-hidden="true"></span>
+          <span th:if="${item.status == T(liquid.accounting.domain.PurchaseStatementStatus).INVALID}" class="glyphicon glyphicon-remove text-danger" aria-hidden="true"></span>
+          <span th:if="${item.status == T(liquid.accounting.domain.PurchaseStatementStatus).STATED}" class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+        </td>
         <td></td>
       </tr>
     </tbody>
