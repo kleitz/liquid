@@ -364,8 +364,9 @@
     <thead>
     <tr>
         <th th:text="#{service.item}">Service Item</th>
-        <th th:text="#{currency}">Unit Price</th>
+        <th th:text="#{currency}">Currency</th>
         <th th:text="#{price}">Unit Price</th>
+        <th th:text="#{tax.rate}">Tax Rate</th>
         <th th:text="#{comment}">Comment</th>
         <th>
             <button type="submit" class="btn btn-default btn-block btn-xs" name="addServiceItem">
@@ -393,6 +394,11 @@
                 <input type="text" th:field="*{serviceItems[__${rowStat.index}__].quotation}" class="form-control input-sm"/>
                 <span class="text-danger" th:errors="*{serviceItems[__${rowStat.index}__].quotation}">error</span>
             </div>
+        </td>
+        <td>
+            <select class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].taxRate}">
+                <option th:each="option : ${taxRateList}" th:value="${option.id}" th:text="${option.name}">Tax Rate</option>
+            </select>
         </td>
         <td>
             <input type="text" class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].comment}" />

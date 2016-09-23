@@ -1,6 +1,6 @@
-package liquid.accounting.service;
+package liquid.operation.service;
 
-import liquid.accounting.domain.TaxRate;
+import liquid.operation.domain.TaxRate;
 
 import java.util.Collection;
 

@@ -1,6 +1,6 @@
-package liquid.accounting.repository;
+package liquid.operation.repository;
 
-import liquid.accounting.domain.TaxRate;
+import liquid.operation.domain.TaxRate;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Collection;

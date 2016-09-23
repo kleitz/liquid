@@ -1,4 +1,4 @@
-package liquid.accounting.domain;
+package liquid.operation.domain;
 
 import liquid.core.domain.BaseUpdateEntity;
 

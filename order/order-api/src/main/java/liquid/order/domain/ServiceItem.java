@@ -5,6 +5,7 @@ import liquid.core.domain.BaseIdEntity;
 import liquid.operation.deserializer.ServiceSubtypeDeserializer;
 import liquid.operation.domain.Currency;
 import liquid.operation.domain.ServiceSubtype;
+import liquid.operation.domain.TaxRate;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
@@ -27,6 +28,10 @@ public class ServiceItem extends BaseIdEntity {
     @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#.###")
     @Column(name = "QUOTATION")
     private BigDecimal quotation;
+
+    @ManyToOne
+    @JoinColumn(name = "TAX_RATE_ID")
+    private TaxRate taxRate;
 
     @Column(name = "COMMENT")
     private String comment;
@@ -58,6 +63,14 @@ public class ServiceItem extends BaseIdEntity {
         this.quotation = quotation;
     }
 
+    public TaxRate getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxRate(TaxRate taxRate) {
+        this.taxRate = taxRate;
+    }
+
     public String getComment() {
         return comment;
     }
@@ -81,6 +94,7 @@ public class ServiceItem extends BaseIdEntity {
         sb.append(", serviceSubtype=").append(serviceSubtype);
         sb.append(", currency=").append(currency);
         sb.append(", quotation=").append(quotation);
+        sb.append(", taxRate=").append(taxRate);
         sb.append(", comment='").append(comment).append('\'');
         sb.append(", status=").append(status);
         sb.append('}');

@@ -104,6 +104,9 @@ public class OrderController extends BaseController {
     @Autowired
     private OrderContainerChangeService orderContainerChangeService;
 
+    @Autowired
+    private TaxRateService taxRateService;
+
     @ModelAttribute("serviceTypes")
     public Iterable<ServiceType> populateServiceTypes() {
         return serviceTypeService.findAll();
@@ -170,6 +173,11 @@ public class OrderController extends BaseController {
     @ModelAttribute("railwayPlanTypes")
     public Iterable<RailPlanType> populateRailwayPlanTypes() {
         return railwayPlanTypeService.findAll();
+    }
+
+    @ModelAttribute("taxRateList")
+    public Iterable<TaxRate> populateTaxRateList() {
+        return taxRateService.findAll();
     }
 
     @RequestMapping(method = RequestMethod.GET)
