@@ -1,10 +1,8 @@
 package liquid.order.domain;
 
 import liquid.container.domain.ContainerSubtype;
-import liquid.core.domain.BaseUpdateEntity;
 import liquid.operation.domain.Customer;
 import liquid.operation.domain.Goods;
-import liquid.operation.domain.Location;
 import liquid.operation.domain.ServiceType;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -137,6 +135,14 @@ public class BaseOrder extends ModifiableOrder {
     @Column(precision = 19, scale = 4, name = "GRAND_TOTAL")
     private BigDecimal grandTotal = BigDecimal.ZERO;
 
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#,###.##")
+    @Column(precision = 19, scale = 4, name = "TOTAL_EXCL_TAX")
+    private BigDecimal totalExclTax = BigDecimal.ZERO;
+
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#,###.##")
+    @Column(precision = 19, scale = 4, name = "TOTAL_INCL_TAX")
+    private BigDecimal totalInclTax = BigDecimal.ZERO;
+
     @Column(name = "CREATE_ROLE")
     private String createRole;
 
@@ -236,7 +242,7 @@ public class BaseOrder extends ModifiableOrder {
         return containerCap;
     }
 
-    public void setContainerCap(Integer containerCap) {
+    public void setContainerCap(int containerCap) {
         this.containerCap = containerCap;
     }
 
@@ -350,6 +356,22 @@ public class BaseOrder extends ModifiableOrder {
 
     public void setTotalUsd(BigDecimal totalUsd) {
         this.totalUsd = totalUsd;
+    }
+
+    public BigDecimal getTotalExclTax() {
+        return totalExclTax;
+    }
+
+    public void setTotalExclTax(BigDecimal totalExclTax) {
+        this.totalExclTax = totalExclTax;
+    }
+
+    public BigDecimal getTotalInclTax() {
+        return totalInclTax;
+    }
+
+    public void setTotalInclTax(BigDecimal totalInclTax) {
+        this.totalInclTax = totalInclTax;
     }
 
     public BigDecimal getDistyCny() {

@@ -33,6 +33,12 @@ public class ServiceItem extends BaseIdEntity {
     @JoinColumn(name = "TAX_RATE_ID")
     private TaxRate taxRate;
 
+    /**
+     * Tax inclusive
+     */
+    @Column(name = "TOTAL_INCL_TAX")
+    private BigDecimal totalInclTax;
+
     @Column(name = "COMMENT")
     private String comment;
 
@@ -71,6 +77,14 @@ public class ServiceItem extends BaseIdEntity {
         this.taxRate = taxRate;
     }
 
+    public BigDecimal getTotalInclTax() {
+        return totalInclTax;
+    }
+
+    public void setTotalInclTax(BigDecimal totalInclTax) {
+        this.totalInclTax = totalInclTax;
+    }
+
     public String getComment() {
         return comment;
     }
@@ -95,6 +109,7 @@ public class ServiceItem extends BaseIdEntity {
         sb.append(", currency=").append(currency);
         sb.append(", quotation=").append(quotation);
         sb.append(", taxRate=").append(taxRate);
+        sb.append(", totalInclTax=").append(totalInclTax);
         sb.append(", comment='").append(comment).append('\'');
         sb.append(", status=").append(status);
         sb.append('}');
