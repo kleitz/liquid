@@ -398,11 +398,11 @@
         </td>
         <td>
             <select class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].taxRate}">
-                <option th:each="option : ${taxRateList}" th:value="${option.id}" th:text="${option.name}">Tax Rate</option>
+                <option th:each="option : ${taxRateList}" th:value="${option.id}" th:text="${option.name + '(' + option.value + '%)'}" th:attr="data-tax-rate=${option.value}">Tax Rate</option>
             </select>
         </td>
         <td>
-            <input type="text" class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].totalInclTax}" />
+            <input type="text" class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].totalInclTax}" readonly="readonly" />
         </td>        
         <td>
             <input type="text" class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].comment}" />
@@ -595,6 +595,7 @@
         caculateTotal();     
         $("input[name$='.quotation']").change(caculateTotal);
         $("select[name$='.currency']").change(caculateTotal);
+        $("select[name$='.taxRate']").change(caculateTotal);
         $("button[name='removeServiceItem']").click(caculateTotal);
                 
         function caculateTotal() {
@@ -607,14 +608,21 @@
                 console.log(priceText);
                 console.log("price: "+ price);
                 console.log(isNaN(price));
+                var taxRate = $('td:eq(3) select option:selected', this).attr('data-tax-rate');
+                console.log("tax rate: " + taxRate);
+                var amountInclTax = 0;
                 if(!isNaN(price)) {
-                    if(currency == 'CNY') cny += price;
+                    amountInclTax = price * (1 + taxRate / 100);
+                }
+                $('td:eq(4) input', this).val(amountInclTax.toFixed(2));
+                if(!isNaN(price)) {
+                    if(currency == 'CNY') cny += amountInclTax;
                     else usd += price;
                 }
             });
             
-            $('#totalUsd').val(usd);
-            $('#totalCny').val(cny);
+            $('#totalUsd').val(usd.toFixed(2));
+            $('#totalCny').val(cny.toFixed(2));
         }
         
         $(".tt-hint").addClass("form-control"); 

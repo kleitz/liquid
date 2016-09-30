@@ -8,6 +8,8 @@ import java.util.Collection;
  * Created by Tao Ma on 4/10/15.
  */
 public interface TaxRateService {
+    TaxRate find(Long id);
+
     Collection<TaxRate> findAll();
 
     Iterable<TaxRate> save(Iterable<TaxRate> taxRates);

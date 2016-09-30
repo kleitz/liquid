@@ -21,6 +21,8 @@ public class TaxRateServiceImpl extends AbstractService<TaxRate, TaxRateReposito
     @Override
     public void doSaveBefore(TaxRate entity) {}
 
+
+
     public Collection<TaxRate> findAll() {
         return taxRateRepository.findAll();
     }
