@@ -12,5 +12,11 @@ public interface TaxRateService {
 
     Collection<TaxRate> findAll();
 
-    Iterable<TaxRate> save(Iterable<TaxRate> taxRates);
+    Collection<TaxRate> findEnabled();
+
+    TaxRate save(TaxRate taxRate);
+
+    TaxRate enable(Long id);
+
+    TaxRate disable(Long id);
 }

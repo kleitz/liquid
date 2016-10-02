@@ -177,7 +177,7 @@ public class OrderController extends BaseController {
 
     @ModelAttribute("taxRateList")
     public Iterable<TaxRate> populateTaxRateList() {
-        return taxRateService.findAll();
+        return taxRateService.findEnabled();
     }
 
     @RequestMapping(method = RequestMethod.GET)

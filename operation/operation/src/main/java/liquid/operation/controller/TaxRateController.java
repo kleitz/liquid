@@ -1,8 +1,6 @@
 package liquid.operation.controller;
 
-import liquid.core.model.Alert;
 import liquid.operation.domain.TaxRate;
-import liquid.operation.model.TaxRates;
 import liquid.operation.service.TaxRateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,9 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
 /**
@@ -31,31 +27,26 @@ public class TaxRateController {
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model) {
         Collection<TaxRate> list = taxRateService.findAll();
-        TaxRates taxRates = new TaxRates();
-        taxRates.setList(list);
-        model.addAttribute("taxRates", taxRates);
+        model.addAttribute("taxRateList", list);
+        model.addAttribute("taxRate", new TaxRate());
         return "charge/tax_rate";
     }
 
-    @RequestMapping(method = RequestMethod.POST, params = "addTaxRate")
-    public String addTaxRate(@ModelAttribute TaxRates taxRates) {
-        taxRates.getList().add(new TaxRate());
-        return "charge/tax_rate";
-    }
-
-    @RequestMapping(method = RequestMethod.POST, params = "removeTaxRate")
-    public String removeRow(@ModelAttribute TaxRates taxRates, HttpServletRequest request) {
-        final Integer rowId = Integer.valueOf(request.getParameter("removeTaxRate"));
-        taxRates.getList().remove(rowId.intValue());
-        return "charge/tax_rate";
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public String add(@ModelAttribute TaxRates taxRates,
-                      RedirectAttributes redirectAttributes) {
-        taxRateService.save(taxRates.getList());
-
-        redirectAttributes.addFlashAttribute("alert", new Alert("save.success"));
+    @RequestMapping(method = RequestMethod.POST, params = "add")
+    public String addTaxRate(@ModelAttribute TaxRate taxRate) {
+        taxRateService.save(taxRate);
         return "redirect:/tax_rate";
+    }
+
+    @RequestMapping(method = RequestMethod.POST, params = "disable")
+    public String disable(@ModelAttribute TaxRate taxRate) {
+        taxRateService.disable(taxRate.getId());
+        return "redirect:/tax_rate";
+    }
+
+    @RequestMapping(method = RequestMethod.POST, params = "enable")
+    public String enable(@ModelAttribute TaxRate taxRate) {
+        taxRateService.enable(taxRate.getId());
+        return "charge/tax_rate";
     }
 }

@@ -86,6 +86,6 @@ public abstract class AbstractTaskHandler implements TaskHandler {
 
         model.addAttribute("chargeWays", ChargeWay.values());
 
-        model.addAttribute("taxRateList", taxRateService.findAll());
+        model.addAttribute("taxRateList", taxRateService.findEnabled());
     }
 }
