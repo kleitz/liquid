@@ -4,6 +4,7 @@ import liquid.core.domain.BaseUpdateEntity;
 import liquid.operation.domain.Currency;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
+import liquid.operation.domain.TaxRate;
 import liquid.order.domain.Order;
 
 import javax.persistence.*;
@@ -49,6 +50,16 @@ public class Purchase extends BaseUpdateEntity {
     @Column(name = "CURRENCY", length = 4)
     @Enumerated(EnumType.STRING)
     private Currency currency;
+
+    @ManyToOne
+    @JoinColumn(name = "TAX_RATE_ID")
+    private TaxRate taxRate;
+
+    /**
+     * Tax inclusive
+     */
+    @Column(name = "TOTAL_INCL_TAX")
+    private BigDecimal totalInclTax;
 
     @Column(name = "STATUS")
     private PurchaseStatus status;
@@ -123,6 +134,22 @@ public class Purchase extends BaseUpdateEntity {
         this.totalAmount = totalAmount;
     }
 
+    public TaxRate getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxRate(TaxRate taxRate) {
+        this.taxRate = taxRate;
+    }
+
+    public BigDecimal getTotalInclTax() {
+        return totalInclTax;
+    }
+
+    public void setTotalInclTax(BigDecimal totalInclTax) {
+        this.totalInclTax = totalInclTax;
+    }
+
     public Currency getCurrency() {
         return currency;
     }
@@ -163,6 +190,8 @@ public class Purchase extends BaseUpdateEntity {
                 ", chargeType=" + chargeType +
                 ", unitPrice=" + unitPrice +
                 ", totalAmount=" + totalAmount +
+                ", taxRate=" + taxRate +
+                ", totalInclTax=" + totalInclTax +
                 ", currency='" + currency + '\'' +
                 ", status=" + status +
                 ", comment='" + comment + '\'' +
