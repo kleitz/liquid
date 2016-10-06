@@ -367,7 +367,8 @@
         <th th:text="#{currency}">Currency</th>
         <th th:text="#{price}">Unit Price</th>
         <th th:text="#{tax.rate}">Tax Rate</th>
-        <th th:text="#{total.incl.tax}">Total Incl Tax</th>
+        <th th:text="#{tax}">Tax</th>
+        <th th:text="#{price.incl.of.tax}">Price Incl Tax</th>
         <th th:text="#{comment}">Comment</th>
         <th>
             <button type="submit" class="btn btn-default btn-block btn-xs" name="addServiceItem">
@@ -398,11 +399,19 @@
         </td>
         <td>
             <select class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].taxRate}">
-                <option th:each="option : ${taxRateList}" th:value="${option.id}" th:text="${option.name + '(' + option.value + '%)'}" th:attr="data-tax-rate=${option.value}">Tax Rate</option>
+                <option th:each="option : ${taxRateList}"
+                        th:value="${option.id}"
+                        th:text="${option.name + '(' + option.value + '%)'}"
+                        th:attr="data-tax-rate=${option.value}">
+                    Tax Rate
+                </option>
             </select>
         </td>
         <td>
-            <input type="text" class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].totalInclTax}" readonly="readonly" />
+            <input type="text" class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].tax}" readonly="readonly" />
+        </td>        
+        <td>
+            <input type="text" class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].priceInclOfTax}" readonly="readonly" />
         </td>        
         <td>
             <input type="text" class="form-control input-sm" th:field="*{serviceItems[__${rowStat.index}__].comment}" />
@@ -420,19 +429,42 @@
     <li class="list-group-item">
         <div class="row">
             <div class="col-lg-3">
-                <div class="form-group" th:classappend="${#fields.hasErrors('totalUsd')} ? 'has-error'">
-                    <label th:text="#{usd.total} + ' *'">USD Total</label>
-                    <input type="text" th:field="*{totalUsd}" class="form-control input-sm" readonly="readonly"/>
-                    <span class="text-danger" th:errors="*{totalUsd}">error</span>
+                <div class="form-group" th:classappend="${#fields.hasErrors('exchangeRate')} ? 'has-error'">
+                    <label><span th:text="#{exchange.rate}">Exchange Rate</span><span>*</span></label>
+                    <input type="text" th:field="*{exchangeRate}" class="form-control input-sm"/>
+                    <span class="text-danger" th:errors="*{exchangeRate}">error</span>
                 </div>
             </div>
             <div class="col-lg-3">
-                <div class="form-group" th:classappend="${#fields.hasErrors('totalCny')} ? 'has-error'">
-                    <label th:text="#{cny.total} + ' *'">CNY Total</label>
-                    <input type="text" th:field="*{totalCny}" class="form-control input-sm" readonly="readonly"/>
-                    <span class="text-danger" th:errors="*{totalCny}">error</span>
+                <div class="form-group">
+                    <label th:text="#{usd.total}">USD Total</label>
+                    <input type="text" th:field="*{totalUsd}" class="form-control input-sm" readonly="readonly"/>
                 </div>
             </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label th:text="#{cny.total}">CNY Total</label>
+                    <input type="text" th:field="*{totalCny}" class="form-control input-sm" readonly="readonly"/>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label th:text="#{tax}">Tax</label>
+                    <input type="text" th:field="*{totalTax}" class="form-control input-sm" readonly="readonly"/>
+                </div>
+            </div>
+        </div><!-- row -->
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label th:text="#{total}">Total</label>
+                    <input type="text" th:field="*{total}" class="form-control input-sm" readonly="readonly"/>
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+            </div>
+ 
             <div class="col-lg-3">
                 <div class="form-group">
                     <label>&nbsp;</label>
@@ -597,32 +629,37 @@
         $("select[name$='.currency']").change(caculateTotal);
         $("select[name$='.taxRate']").change(caculateTotal);
         $("button[name='removeServiceItem']").click(caculateTotal);
+        $('#exchangeRate').change(caculateTotal);
                 
         function caculateTotal() {
-            var usd = 0, cny = 0;
+            var usd = 0, cny = 0, totalTax = 0, total = 0;
+            var exchangeRate = $('#exchangeRate').val();
             $("table[id='f'] > tbody > tr").each(function() {
                 var subtype = $('td:eq(0) select option:selected', this).val();
                 var currency = $('td:eq(1) select option:selected', this).val();
                 var priceText = $('td:eq(2) input', this).val();
                 var price = parseFloat(priceText);
-                console.log(priceText);
-                console.log("price: "+ price);
-                console.log(isNaN(price));
                 var taxRate = $('td:eq(3) select option:selected', this).attr('data-tax-rate');
-                console.log("tax rate: " + taxRate);
-                var amountInclTax = 0;
+                var tax = 0, amountInclTax = 0;
                 if(!isNaN(price)) {
+                    tax = price * taxRate / 100; 
+                    totalTax += tax;
                     amountInclTax = price * (1 + taxRate / 100);
+                    if(currency == 'CNY') {
+                        cny += price;
+                    } else {
+                        usd += price;
+                    }
                 }
-                $('td:eq(4) input', this).val(amountInclTax.toFixed(2));
-                if(!isNaN(price)) {
-                    if(currency == 'CNY') cny += amountInclTax;
-                    else usd += price;
-                }
+                $('td:eq(4) input', this).val(tax.toFixed(2));
+                $('td:eq(5) input', this).val(amountInclTax.toFixed(2));
             });
             
             $('#totalUsd').val(usd.toFixed(2));
             $('#totalCny').val(cny.toFixed(2));
+            $('#totalTax').val(totalTax.toFixed(2));
+            total = usd * exchangeRate + cny + totalTax;  
+            $('#total').val(total.toFixed(2));
         }
         
         $(".tt-hint").addClass("form-control"); 

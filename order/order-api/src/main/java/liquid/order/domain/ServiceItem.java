@@ -33,11 +33,16 @@ public class ServiceItem extends BaseIdEntity {
     @JoinColumn(name = "TAX_RATE_ID")
     private TaxRate taxRate;
 
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#.###")
+    @Column(name = "TAX")
+    private BigDecimal tax;
+
     /**
-     * Tax inclusive
+     * PIT, Price Inclusive of Tax
      */
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#.###")
     @Column(name = "TOTAL_INCL_TAX")
-    private BigDecimal totalInclTax;
+    private BigDecimal priceInclOfTax;
 
     @Column(name = "COMMENT")
     private String comment;
@@ -77,12 +82,20 @@ public class ServiceItem extends BaseIdEntity {
         this.taxRate = taxRate;
     }
 
-    public BigDecimal getTotalInclTax() {
-        return totalInclTax;
+    public BigDecimal getTax() {
+        return tax;
     }
 
-    public void setTotalInclTax(BigDecimal totalInclTax) {
-        this.totalInclTax = totalInclTax;
+    public void setTax(BigDecimal tax) {
+        this.tax = tax;
+    }
+
+    public BigDecimal getPriceInclOfTax() {
+        return priceInclOfTax;
+    }
+
+    public void setPriceInclOfTax(BigDecimal priceInclOfTax) {
+        this.priceInclOfTax = priceInclOfTax;
     }
 
     public String getComment() {
@@ -109,7 +122,8 @@ public class ServiceItem extends BaseIdEntity {
         sb.append(", currency=").append(currency);
         sb.append(", quotation=").append(quotation);
         sb.append(", taxRate=").append(taxRate);
-        sb.append(", totalInclTax=").append(totalInclTax);
+        sb.append(", tax=").append(tax);
+        sb.append(", priceInclOfTax=").append(priceInclOfTax);
         sb.append(", comment='").append(comment).append('\'');
         sb.append(", status=").append(status);
         sb.append('}');
