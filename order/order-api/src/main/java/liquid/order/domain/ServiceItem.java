@@ -41,7 +41,7 @@ public class ServiceItem extends BaseIdEntity {
      * PIT, Price Inclusive of Tax
      */
     @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#.###")
-    @Column(name = "TOTAL_INCL_TAX")
+    @Column(name = "PRICE_INCL_OF_TAX")
     private BigDecimal priceInclOfTax;
 
     @Column(name = "COMMENT")

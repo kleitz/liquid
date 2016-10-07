@@ -6,6 +6,7 @@ import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.domain.TaxRate;
 import liquid.order.domain.Order;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -55,11 +56,15 @@ public class Purchase extends BaseUpdateEntity {
     @JoinColumn(name = "TAX_RATE_ID")
     private TaxRate taxRate;
 
+    @Column(precision = 19, scale = 4, name = "TAX")
+    private BigDecimal tax;
+
     /**
      * Tax inclusive
      */
-    @Column(name = "TOTAL_INCL_TAX")
-    private BigDecimal totalInclTax;
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#.###")
+    @Column(name = "PRICE_INCL_OF_TAX")
+    private BigDecimal priceInclOfTax;
 
     @Column(name = "STATUS")
     private PurchaseStatus status;
@@ -142,12 +147,20 @@ public class Purchase extends BaseUpdateEntity {
         this.taxRate = taxRate;
     }
 
-    public BigDecimal getTotalInclTax() {
-        return totalInclTax;
+    public BigDecimal getTax() {
+        return tax;
     }
 
-    public void setTotalInclTax(BigDecimal totalInclTax) {
-        this.totalInclTax = totalInclTax;
+    public void setTax(BigDecimal tax) {
+        this.tax = tax;
+    }
+
+    public BigDecimal getPriceInclOfTax() {
+        return priceInclOfTax;
+    }
+
+    public void setPriceInclOfTax(BigDecimal priceInclOfTax) {
+        this.priceInclOfTax = priceInclOfTax;
     }
 
     public Currency getCurrency() {
@@ -191,7 +204,8 @@ public class Purchase extends BaseUpdateEntity {
                 ", unitPrice=" + unitPrice +
                 ", totalAmount=" + totalAmount +
                 ", taxRate=" + taxRate +
-                ", totalInclTax=" + totalInclTax +
+                ", tax=" + tax +
+                ", priceInclOfTax=" + priceInclOfTax +
                 ", currency='" + currency + '\'' +
                 ", status=" + status +
                 ", comment='" + comment + '\'' +

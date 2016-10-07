@@ -94,7 +94,7 @@ public class PurchaseServiceImpl extends AbstractService<Purchase, PurchaseRepos
     @Override
     public Purchase addOne(Purchase purchase) {
         purchase.setStatus(PurchaseStatus.VALID);
-        save(purchase);
+        purchase = save(purchase);
 
         PayableSummary payableSummary = payableSummaryService.findByServiceProviderId(purchase.getSp().getId());
         if (null == payableSummary) {
@@ -103,7 +103,7 @@ public class PurchaseServiceImpl extends AbstractService<Purchase, PurchaseRepos
         }
         switch (purchase.getCurrency()) {
             case CNY:
-                payableSummary.setTotalCny(payableSummary.getTotalCny().add(purchase.getTotalAmount()));
+                payableSummary.setTotalCny(payableSummary.getTotalCny().add(purchase.getPriceInclOfTax()));
                 break;
             case USD:
                 payableSummary.setTotalUsd(payableSummary.getTotalUsd().add(purchase.getTotalAmount()));
@@ -116,11 +116,31 @@ public class PurchaseServiceImpl extends AbstractService<Purchase, PurchaseRepos
         return purchase;
     }
 
+    @Transactional("transactionManager")
     @Override
     public Purchase voidOne(Purchase purchase) {
         Purchase originalOne = purchaseRepository.findOne(purchase.getId());
         originalOne.setStatus(PurchaseStatus.INVALID);
         originalOne.setComment(purchase.getComment());
-        return purchaseRepository.save(originalOne);
+        originalOne = purchaseRepository.save(originalOne);
+
+        PayableSummary payableSummary = payableSummaryService.findByServiceProviderId(originalOne.getSp().getId());
+        if (null == payableSummary) {
+            payableSummary = new PayableSummary();
+            payableSummary.setServiceProvider(originalOne.getSp());
+        }
+        switch (originalOne.getCurrency()) {
+            case CNY:
+                payableSummary.setTotalCny(payableSummary.getTotalCny().subtract(originalOne.getPriceInclOfTax()));
+                break;
+            case USD:
+                payableSummary.setTotalUsd(payableSummary.getTotalUsd().subtract(originalOne.getTotalAmount()));
+                break;
+            default:
+                break;
+        }
+        payableSummaryService.save(payableSummary);
+
+        return originalOne;
     }
 }

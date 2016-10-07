@@ -454,7 +454,8 @@
           <th th:text="#{unit.price}">Unit Price</th>
           <th th:text="#{charge.total.price}">Total Price</th>                    
           <th th:text="#{tax.rate}">Tax Rate</th>                    
-          <th th:text="#{total.incl.tax}">Total Incl Tax</th>                    
+          <th th:text="#{tax}">Tax</th>                    
+          <th th:text="#{price.incl.of.tax}">Price Incl of Tax</th>                    
           <th th:text="#{currency}">Currency</th>                    
           <th th:text="#{comment}">Comment</th>
           <th>
@@ -480,17 +481,22 @@
             <span th:text="${purchase.taxRate.value}">Tax Rate</span>
           </td>
           <td>
-            <span th:text="${#numbers.formatDecimal(purchase.totalInclTax, 0, 'COMMA', 2, 'POINT')}">Total Incl Tax</span>
+            <span th:text="${#numbers.formatDecimal(purchase.tax, 0, 'COMMA', 2, 'POINT')}">Tax</span>
+          </td>
+          <td>
+            <span th:text="${#numbers.formatDecimal(purchase.priceInclOfTax, 0, 'COMMA', 2, 'POINT')}">Total Incl Tax</span>
           </td>
           <td><span th:text="${purchase.currency}"></span></td>
           <td><span th:text="${purchase.comment}"></span></td>
           <td>
-            <a href="#" name="voidPurchaseLink" data-toggle="modal" data-target="#voidPurchase"
-              th:if="${purchase.status == 0}" th:attr="data-purchase-id=${purchase.id}">
+            <a th:if="${purchase.status == T(liquid.accounting.domain.PurchaseStatus).VALID}"
+               href="#" name="voidPurchaseLink" data-toggle="modal" data-target="#voidPurchase"
+               th:attr="data-purchase-id=${purchase.id}">
               <span class="glyphicon glyphicon-trash text-success" aria-hidden="true"></span>
             </a>
-            <span class="glyphicon glyphicon-trash text-danger" aria-hidden="true"
-              th:if="${purchase.status == 1}"></span>
+            <span th:if="${purchase.status == T(liquid.accounting.domain.PurchaseStatus).INVALID}"
+                  class="glyphicon glyphicon-trash text-danger" aria-hidden="true">
+            </span>
           </td>
         </tr>
       </tbody>
@@ -586,8 +592,13 @@
               </div>
 
               <div class="form-group form-group-sm">
-                <label for="totalInclTax" class="control-label" th:text="#{total.incl.tax}">Total Incl Tax</label>
-                <input type="text" class="form-control input-sm" th:field="*{totalInclTax}" readonly="readonly" />
+                <label for="tax" class="control-label" th:text="#{tax}">Tax</label>
+                <input type="text" class="form-control input-sm" th:field="*{tax}" readonly="readonly" />
+              </div>
+ 
+              <div class="form-group form-group-sm">
+                <label for="priceInclOfTax" class="control-label" th:text="#{price.incl.of.tax}">Total Incl Tax</label>
+                <input type="text" class="form-control input-sm" th:field="*{priceInclOfTax}" readonly="readonly" />
               </div>
   
               <div class="form-group form-group-sm">
@@ -724,8 +735,10 @@
       } 
 
       $('#totalAmount').val(totalAmount.toFixed(2));
-      var totalInclTax = totalAmount * (1 + taxRate / 100);
-      $('#totalInclTax').val(totalInclTax.toFixed(2));
+      var tax = totalAmount * taxRate / 100;
+      var priceInclOfTax = totalAmount * (1 + taxRate / 100);
+      $('#tax').val(tax.toFixed(2));
+      $('#priceInclOfTax').val(priceInclOfTax.toFixed(2));
     }
 
     $('#unitPrice').change(caculateTotal);
