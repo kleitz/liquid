@@ -4,7 +4,9 @@ import liquid.core.domain.BaseUpdateEntity;
 import liquid.operation.domain.Currency;
 import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
+import liquid.operation.domain.TaxRate;
 import liquid.order.domain.Order;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -49,6 +51,20 @@ public class Purchase extends BaseUpdateEntity {
     @Column(name = "CURRENCY", length = 4)
     @Enumerated(EnumType.STRING)
     private Currency currency;
+
+    @ManyToOne
+    @JoinColumn(name = "TAX_RATE_ID")
+    private TaxRate taxRate;
+
+    @Column(precision = 19, scale = 4, name = "TAX")
+    private BigDecimal tax;
+
+    /**
+     * Tax inclusive
+     */
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#.###")
+    @Column(name = "PRICE_INCL_OF_TAX")
+    private BigDecimal priceInclOfTax;
 
     @Column(name = "STATUS")
     private PurchaseStatus status;
@@ -123,6 +139,30 @@ public class Purchase extends BaseUpdateEntity {
         this.totalAmount = totalAmount;
     }
 
+    public TaxRate getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxRate(TaxRate taxRate) {
+        this.taxRate = taxRate;
+    }
+
+    public BigDecimal getTax() {
+        return tax;
+    }
+
+    public void setTax(BigDecimal tax) {
+        this.tax = tax;
+    }
+
+    public BigDecimal getPriceInclOfTax() {
+        return priceInclOfTax;
+    }
+
+    public void setPriceInclOfTax(BigDecimal priceInclOfTax) {
+        this.priceInclOfTax = priceInclOfTax;
+    }
+
     public Currency getCurrency() {
         return currency;
     }
@@ -163,6 +203,9 @@ public class Purchase extends BaseUpdateEntity {
                 ", chargeType=" + chargeType +
                 ", unitPrice=" + unitPrice +
                 ", totalAmount=" + totalAmount +
+                ", taxRate=" + taxRate +
+                ", tax=" + tax +
+                ", priceInclOfTax=" + priceInclOfTax +
                 ", currency='" + currency + '\'' +
                 ", status=" + status +
                 ", comment='" + comment + '\'' +

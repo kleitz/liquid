@@ -181,7 +181,7 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
             receivableSummary = new ReceivableSummary();
             receivableSummary.setCustomer(order.getCustomer());
         }
-        receivableSummary.setTotalCny(receivableSummary.getTotalCny().add(order.getTotalCny()));
+        receivableSummary.setTotalCny(receivableSummary.getTotalCny().add(order.getTotalCny()).add(order.getTotalTax()));
         receivableSummary.setTotalUsd(receivableSummary.getTotalUsd().add(order.getTotalUsd()));
         receivableService.save(receivableSummary);
 
@@ -198,7 +198,7 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
         switch (item.getCurrency()) {
             case CNY:
                 order.setTotalCny(order.getTotalCny().add(item.getQuotation()));
-                receivableSummary.setTotalCny(receivableSummary.getTotalCny().add(item.getQuotation()));
+                receivableSummary.setTotalCny(receivableSummary.getTotalCny().add(item.getPriceInclOfTax()));
                 break;
             case USD:
                 order.setTotalUsd(order.getTotalUsd().add(item.getQuotation()));
@@ -224,7 +224,7 @@ public class OrderServiceImpl extends AbstractBaseOrderService<Order, OrderRepos
         switch (item.getCurrency()) {
             case CNY:
                 order.setTotalCny(order.getTotalCny().subtract(item.getQuotation()));
-                receivableSummary.setTotalCny(receivableSummary.getTotalCny().subtract(item.getQuotation()));
+                receivableSummary.setTotalCny(receivableSummary.getTotalCny().subtract(item.getPriceInclOfTax()));
                 break;
             case USD:
                 order.setTotalUsd(order.getTotalUsd().subtract(item.getQuotation()));

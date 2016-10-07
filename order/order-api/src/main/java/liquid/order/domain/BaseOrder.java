@@ -22,13 +22,23 @@ import java.util.List;
  * Time: 8:34 PM
  */
 @MappedSuperclass
-public class BaseOrder extends ModifiableOrder {
+public class BaseOrder extends BaseUpdateEntity {
     @ManyToOne
     @JoinColumn(name = "SERVICE_TYPE_ID")
     private ServiceType serviceType;
 
     @Column(name = "ORDER_NO")
     private String orderNo;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "SRC_LOC_ID")
+    private Location source;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "DST_LOC_ID")
+    private Location destination;
 
     @NotNull
     @ManyToOne
@@ -51,6 +61,7 @@ public class BaseOrder extends ModifiableOrder {
     /**
      * unit ton
      */
+    @NotNull
     @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#.###")
     @Column(name = "WEIGHT")
     private BigDecimal goodsWeight;
@@ -65,6 +76,11 @@ public class BaseOrder extends ModifiableOrder {
     @ManyToOne
     @JoinColumn(name = "CONTAINER_SUBTYPE_ID")
     private ContainerSubtype containerSubtype;
+
+    @NotNull
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#")
+    @Column(name = "CONTAINER_QTY")
+    private Integer containerQty;
 
     @Column(name = "CONTAINER_CAP")
     private int containerCap;
@@ -121,12 +137,26 @@ public class BaseOrder extends ModifiableOrder {
     @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")
     private List<OrderContainer> containers;
 
+    @NotNull
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#,###.##")
+    @Column(precision = 19, scale = 4, name = "EXCHANGE_RATE")
+    private BigDecimal exchangeRate;
+
     @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#,###.##")
     @Column(precision = 19, scale = 4, name = "TOTAL_CNY")
     private BigDecimal totalCny = BigDecimal.ZERO;
 
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#,###.##")
     @Column(precision = 19, scale = 4, name = "TOTAL_USD")
     private BigDecimal totalUsd = BigDecimal.ZERO;
+
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#,###.##")
+    @Column(precision = 19, scale = 4, name = "TOTAL_TAX")
+    private BigDecimal totalTax = BigDecimal.ZERO;
+
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "#,###.##")
+    @Column(precision = 19, scale = 4, name = "TOTAL")
+    private BigDecimal total = BigDecimal.ZERO;
 
     @Column(precision = 19, scale = 4, name = "DISTY_CNY")
     private BigDecimal distyCny = BigDecimal.ZERO;
@@ -166,6 +196,22 @@ public class BaseOrder extends ModifiableOrder {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Location getSource() {
+        return source;
+    }
+
+    public void setSource(Location source) {
+        this.source = source;
+    }
+
+    public Location getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Location destination) {
+        this.destination = destination;
     }
 
     public String getConsignee() {
@@ -232,11 +278,19 @@ public class BaseOrder extends ModifiableOrder {
         this.containerSubtype = containerSubtype;
     }
 
+    public Integer getContainerQty() {
+        return containerQty;
+    }
+
+    public void setContainerQty(Integer containerQty) {
+        this.containerQty = containerQty;
+    }
+
     public int getContainerCap() {
         return containerCap;
     }
 
-    public void setContainerCap(Integer containerCap) {
+    public void setContainerCap(int containerCap) {
         this.containerCap = containerCap;
     }
 
@@ -336,6 +390,14 @@ public class BaseOrder extends ModifiableOrder {
         this.containers = containers;
     }
 
+    public BigDecimal getExchangeRate() {
+        return exchangeRate;
+    }
+
+    public void setExchangeRate(BigDecimal exchangeRate) {
+        this.exchangeRate = exchangeRate;
+    }
+
     public BigDecimal getTotalCny() {
         return totalCny;
     }
@@ -350,6 +412,22 @@ public class BaseOrder extends ModifiableOrder {
 
     public void setTotalUsd(BigDecimal totalUsd) {
         this.totalUsd = totalUsd;
+    }
+
+    public BigDecimal getTotalTax() {
+        return totalTax;
+    }
+
+    public void setTotalTax(BigDecimal totalTax) {
+        this.totalTax = totalTax;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
     }
 
     public BigDecimal getDistyCny() {

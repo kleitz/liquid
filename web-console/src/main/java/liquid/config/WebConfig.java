@@ -97,6 +97,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private OrderContainerFormatter orderContainerFormatter;
 
+    @Autowired
+    private TaxRateFormatter taxRateFormatter;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
@@ -125,6 +128,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addFormatter(legFormatter);
         registry.addFormatter(truckFormatter);
         registry.addFormatter(orderContainerFormatter);
+        registry.addFormatter(taxRateFormatter);
     }
 
     @Bean

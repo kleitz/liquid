@@ -7,6 +7,7 @@ import liquid.operation.domain.ServiceProvider;
 import liquid.operation.domain.ServiceSubtype;
 import liquid.operation.service.ServiceProviderService;
 import liquid.operation.service.ServiceSubtypeService;
+import liquid.operation.service.TaxRateService;
 import liquid.order.domain.Order;
 import liquid.process.domain.Task;
 import liquid.process.service.TaskService;
@@ -34,6 +35,9 @@ public abstract class AbstractTaskHandler implements TaskHandler {
 
     @Autowired
     protected ServiceSubtypeService serviceSubtypeService;
+
+    @Autowired
+    protected TaxRateService taxRateService;
 
     private String definitionKey;
 
@@ -81,5 +85,7 @@ public abstract class AbstractTaskHandler implements TaskHandler {
         model.addAttribute("sps", sps);
 
         model.addAttribute("chargeWays", ChargeWay.values());
+
+        model.addAttribute("taxRateList", taxRateService.findEnabled());
     }
 }
